@@ -57,4 +57,5 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+#Added via GitHubDesktop to not generate a change when just moving between Scenes in Unity Editor
 UserSettings/EditorUserSettings.asset
