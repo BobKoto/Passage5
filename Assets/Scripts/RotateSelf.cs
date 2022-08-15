@@ -11,6 +11,9 @@ public class RotateSelf : MonoBehaviour
     void Start()
     {
 
+        if (clockWise) Debug.Log("With clockwise set we rotate Self...");
+        else
+            Debug.Log("With clockwise NOT set we rotate World...");
     }
 
     // Update is called once per frame
@@ -19,11 +22,11 @@ public class RotateSelf : MonoBehaviour
         float ro = Time.deltaTime * speed;
         if (clockWise)
         {
-         transform.Rotate(0f, 0f, -ro);
+         transform.Rotate(-ro,   0f, 0f,  Space.Self);
         }
         else
         {
-            transform.Rotate(0f, 0f, ro);  //counter clockwise 
+            transform.Rotate(ro,   0f, 0f,  Space.World);  //counter clockwise 
         }
 
         //transform.RotateAround(target.transform.position, Vector3.right, ro );
