@@ -1,3 +1,3 @@
 # Passage5
-UnityAndroidGame
+Unity Android Game
 This is only for learning git with UNITY
