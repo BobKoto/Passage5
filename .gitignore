@@ -13,6 +13,9 @@
 # keep the *.asset files from Library
 !/[Ll]ibrary/*.asset
 
+#Now try to ignore this one .asset file
+[Li]brary/SceneVisibilityState.asset
+
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
@@ -62,3 +65,4 @@ sysinfo.txt
 crashlytics-build.properties
 #Added via GitHubDesktop to not generate a change when just moving between Scenes in Unity Editor
 UserSettings/EditorUserSettings.asset
+Library/SceneVisibilityState.asset
