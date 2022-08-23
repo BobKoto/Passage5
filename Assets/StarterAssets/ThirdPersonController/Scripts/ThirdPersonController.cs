@@ -22,7 +22,7 @@ namespace StarterAssets
         public float SprintSpeed = 5.335f;
 
         [Tooltip("How fast the character turns to face movement direction")]
-        [Range(0.0f, 0.3f)]
+        [Range(0.0f, 5f)]  //Ori 0.3f   try to resolve spin issue 
         public float RotationSmoothTime = 0.12f;
 
         [Tooltip("Acceleration and deceleration")]
@@ -106,7 +106,7 @@ namespace StarterAssets
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
-        private const float _threshold = 0.01f;
+        private const float _threshold = 0.01f;   // Ori 0.01f   tryin to fix cam spin issue 
 
         private bool _hasAnimator;
 
@@ -163,7 +163,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            CameraRotation();
+            CameraRotation();  
         }
 
         private void AssignAnimationIDs()
