@@ -2948,39 +2948,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602678, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 135.11
+      value: 179
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602678, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 110.4
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602678, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5646864
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602678, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.82530326
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602678, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.0015086706
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602678, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0012660874
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602678, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 111.24
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602678, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602678, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.62
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697796608651602681, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
+      propertyPath: m_CameraType
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7697796608651602682, guid: df27ad8bfa025c048b863464fcd8e686, type: 3}
       propertyPath: m_Name
