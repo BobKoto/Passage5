@@ -2632,6 +2632,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6598392788554582196, guid: 6fe71e25ea55dde408415d5ddb2bf6aa, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: aea07daa020335f438315c12fb1afe47, type: 2}
     - target: {fileID: 6598392789717232466, guid: 6fe71e25ea55dde408415d5ddb2bf6aa, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -2683,6 +2687,10 @@ PrefabInstance:
     - target: {fileID: 6598392790016982643, guid: 6fe71e25ea55dde408415d5ddb2bf6aa, type: 3}
       propertyPath: m_Name
       value: Environment
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598392790137355263, guid: 6fe71e25ea55dde408415d5ddb2bf6aa, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fe71e25ea55dde408415d5ddb2bf6aa, type: 3}
