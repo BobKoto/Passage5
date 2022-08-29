@@ -425,6 +425,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 2762043283717201692, guid: ddc6d0e12f6b4e44cb5c99c4a9c08fd2, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 2762043283717201693, guid: ddc6d0e12f6b4e44cb5c99c4a9c08fd2, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1487,7 +1491,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 900
-  m_Range: 200
+  m_Range: 500
   m_SpotAngle: 50.425312
   m_InnerSpotAngle: 50.425312
   m_CookieSize: 10
