@@ -3169,6 +3169,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 2762043283717201692, guid: ddc6d0e12f6b4e44cb5c99c4a9c08fd2, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 2762043283717201693, guid: ddc6d0e12f6b4e44cb5c99c4a9c08fd2, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3420,7 +3424,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3203261901127694256}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 169.6, y: 1.9, z: -35.61}
+  m_LocalPosition: {x: 169.6, y: 0.18000007, z: -35.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3203261900653234059}
@@ -4132,7 +4136,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5542111179611315557}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 169.6, y: 1.9, z: -35.61}
+  m_LocalPosition: {x: 169.6, y: 0.18000007, z: -35.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2119775929805739191}
@@ -4435,7 +4439,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6341998658706139330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 169.6, y: 0.82, z: -32.5}
+  m_LocalPosition: {x: 169.6, y: -0.9, z: -32.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1654321999983088030}
