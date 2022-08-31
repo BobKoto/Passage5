@@ -27,26 +27,26 @@ public class Teleport01 : MonoBehaviour
 
     //}
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("teleport01 sees TriggerENTER " + other.ToString());
-        if (!teleportPerformed)
-        {
-            playerTransform.SetPositionAndRotation(teleportToThisPosition, rotateToThisRotation);
-            StartCoroutine(WaitToMove());
-          //  teleportPerformed = true;
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.Log("teleport01 sees TriggerENTER " + other.ToString());
+    //    if (!teleportPerformed)
+    //    {
+    //        playerTransform.SetPositionAndRotation(teleportToThisPosition, rotateToThisRotation);
+    //        StartCoroutine(WaitToMove());
+    //      //  teleportPerformed = true;
+    //    }
+    //}
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("teleport01 sees TriggerStay " + other.ToString());
         if (!teleportPerformed)
         {
+            Debug.Log("teleport01 sees TriggerStay " + other.ToString());
             playerTransform.SetPositionAndRotation(teleportToThisPosition, rotateToThisRotation);
-            StartCoroutine(WaitToMove());
-         //   teleportPerformed = true;
+           // playerCameraRootTransform.Rotate(rotateVector);
+            StartCoroutine(RotatePlayerCameraRoot());  //doesn't seem to work anyway
+            // teleportPerformed = true;
         }
-
     }
     private void OnCollisionEnter(Collision other)
     {
@@ -58,10 +58,10 @@ public class Teleport01 : MonoBehaviour
         Debug.Log("teleport01 sees collisionSTAY " + other.ToString());
         playerTransform.SetPositionAndRotation(teleportToThisPosition, rotateToThisRotation);
     }
-    IEnumerator WaitToMove()
+    IEnumerator RotatePlayerCameraRoot()
     {
-        yield return new WaitForSeconds (5f);
-        Debug.Log("teleport01 supposedly SPINS THE CAM?");
+        yield return new WaitForSeconds (2f);
+        Debug.Log("teleport01 supposedly SPIN THE CAM?");
         playerCameraRootTransform.Rotate(rotateVector);
 
     }
