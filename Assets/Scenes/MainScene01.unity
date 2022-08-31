@@ -3635,7 +3635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3490969042686209377, guid: 8cdb001edfdeeb34598d0c1382b10ca8, type: 3}
       propertyPath: teleportPlayerToPosition.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3490969042686209377, guid: 8cdb001edfdeeb34598d0c1382b10ca8, type: 3}
       propertyPath: teleportPlayerToPosition.z
