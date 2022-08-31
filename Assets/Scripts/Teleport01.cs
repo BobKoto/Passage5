@@ -54,7 +54,7 @@ public class Teleport01 : MonoBehaviour
     {
         Debug.Log("teleport01 sees TriggerEXIT " + other.ToString());
         playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
-        StartCoroutine(RotatePlayerCameraRoot());  //doesn't seem to work anyway
+      //  StartCoroutine(RotatePlayerCameraRoot());  //doesn't seem to work anyway
     }
 
     private void OnCollisionEnter(Collision other)
