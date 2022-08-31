@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Teleport01 : MonoBehaviour
 {
-    public GameObject player, playerCameraRoot;
+    //public GameObject player, playerCameraRoot;
     public Transform playerTransform, playerCameraRootTransform;
-    public Vector3 teleportToThisPosition;
-    public Quaternion rotateToThisRotation;
-    public Vector3 rotateVector;
+    public Vector3 teleportPlayerToPosition;
+    public Quaternion rotatePlayerToRotation;
+    public Vector3 teleportCameraRootToPosition;
+    public Quaternion rotateCameraRootToRotation;
+    //public Vector3 rotateVector;
     public bool teleportPerformed;
 
    // IEnumerator WaitToMove;
@@ -41,28 +43,37 @@ public class Teleport01 : MonoBehaviour
     {
         if (!teleportPerformed)
         {
-            Debug.Log("teleport01 sees TriggerStay " + other.ToString());
-            playerTransform.SetPositionAndRotation(teleportToThisPosition, rotateToThisRotation);
+            Debug.Log("teleport01 sees TriggerSTAY " + other.ToString());
+            playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
            // playerCameraRootTransform.Rotate(rotateVector);
-            StartCoroutine(RotatePlayerCameraRoot());  //doesn't seem to work anyway
+
             // teleportPerformed = true;
         }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("teleport01 sees TriggerEXIT " + other.ToString());
+        playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
+        StartCoroutine(RotatePlayerCameraRoot());  //doesn't seem to work anyway
+    }
+
     private void OnCollisionEnter(Collision other)
     {
         Debug.Log("teleport01 sees collision " + other.ToString());
-        playerTransform.SetPositionAndRotation(teleportToThisPosition, rotateToThisRotation);
+        playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
     }
     private void OnCollisionStay(Collision other)
     {
         Debug.Log("teleport01 sees collisionSTAY " + other.ToString());
-        playerTransform.SetPositionAndRotation(teleportToThisPosition, rotateToThisRotation);
+        playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
     }
     IEnumerator RotatePlayerCameraRoot()
     {
-        yield return new WaitForSeconds (2f);
-        Debug.Log("teleport01 supposedly SPIN THE CAM?");
-        playerCameraRootTransform.Rotate(rotateVector);
+        Debug.Log("teleport01/RotatePlayerCameraRoot supposedly SPIN THE CAM?  BEFORE yield");
 
+        yield return new WaitForSeconds (2f);
+        Debug.Log("teleport01/RotatePlayerCameraRoot supposedly SPIN THE CAM?  AFTER yield");
+       // playerCameraRootTransform.Rotate(rotateVector);
+        playerCameraRootTransform.SetPositionAndRotation(playerCameraRootTransform.position, rotateCameraRootToRotation);
     }
 }
