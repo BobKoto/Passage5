@@ -39,34 +39,41 @@ public class Teleport01 : MonoBehaviour
     //      //  teleportPerformed = true;
     //    }
     //}
-    private void OnTriggerStay(Collider other)
-    {
-        if (!teleportPerformed)
-        {
-            Debug.Log("teleport01 sees TriggerSTAY " + other.ToString());
-            playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
-           // playerCameraRootTransform.Rotate(rotateVector);
 
-            // teleportPerformed = true;
-        }
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("TriggerEnter ...");
+        playerTransform.position = teleportPlayerToPosition;
+        Physics.SyncTransforms();  
     }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (!teleportPerformed)
+    //    {
+    //        Debug.Log("teleport01 sees TriggerSTAY " + other.ToString());
+    //        playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
+    //       // playerCameraRootTransform.Rotate(rotateVector);
+
+    //        // teleportPerformed = true;
+    //    }
+    //}
     private void OnTriggerExit(Collider other)
     {
         Debug.Log("teleport01 sees TriggerEXIT " + other.ToString());
-        playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
-      //  StartCoroutine(RotatePlayerCameraRoot());  //doesn't seem to work anyway
+      //  playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
+        StartCoroutine(RotatePlayerCameraRoot());  //doesn't seem to work anyway
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        Debug.Log("teleport01 sees collision " + other.ToString());
-        playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
-    }
-    private void OnCollisionStay(Collision other)
-    {
-        Debug.Log("teleport01 sees collisionSTAY " + other.ToString());
-        playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
-    }
+    //private void OnCollisionEnter(Collision other)
+    //{
+    //    Debug.Log("teleport01 sees collision " + other.ToString());
+    //    playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
+    //}
+    //private void OnCollisionStay(Collision other)
+    //{
+    //    Debug.Log("teleport01 sees collisionSTAY " + other.ToString());
+    //    playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
+    //}
     IEnumerator RotatePlayerCameraRoot()
     {
         Debug.Log("teleport01/RotatePlayerCameraRoot supposedly SPIN THE CAM?  BEFORE yield");
@@ -74,6 +81,6 @@ public class Teleport01 : MonoBehaviour
         yield return new WaitForSeconds (2f);
         Debug.Log("teleport01/RotatePlayerCameraRoot supposedly SPIN THE CAM?  AFTER yield");
        // playerCameraRootTransform.Rotate(rotateVector);
-        playerCameraRootTransform.SetPositionAndRotation(playerCameraRootTransform.position, rotateCameraRootToRotation);
+       // playerCameraRootTransform.SetPositionAndRotation(playerCameraRootTransform.position, rotateCameraRootToRotation);
     }
 }
