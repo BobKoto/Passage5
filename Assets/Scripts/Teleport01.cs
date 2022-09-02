@@ -12,8 +12,11 @@ public class Teleport01 : MonoBehaviour
     public Quaternion rotateCameraRootToRotation;
     //public Vector3 rotateVector;
     public bool teleportPerformed;
+    [Header("Cinemachine")]
+    [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
+    public GameObject CinemachineCameraTarget;
 
-   // IEnumerator WaitToMove;
+    // IEnumerator WaitToMove;
 
     // Start is called before the first frame update
     void Start()
@@ -80,8 +83,31 @@ public class Teleport01 : MonoBehaviour
         Debug.Log("teleport01/RotatePlayerCameraRoot supposedly SPIN THE CAM?  BEFORE yield");
 
         yield return new WaitForSeconds (2f);
-        Debug.Log("teleport01/RotatePlayerCameraRoot supposedly SPIN THE CAM?  AFTER yield");
-       // playerCameraRootTransform.Rotate(rotateVector);
-       // playerCameraRootTransform.SetPositionAndRotation(playerCameraRootTransform.position, rotateCameraRootToRotation);
+       
+        // playerCameraRootTransform.Rotate(rotateVector);
+        // playerCameraRootTransform.SetPositionAndRotation(playerCameraRootTransform.position, rotateCameraRootToRotation);
+       // CinemachineCameraTarget.transform.rotation = Quaternion.Euler(0f, -36f, 0f);
+           Debug.Log("teleport01/RotatePlayerCameraRoot supposedly SPIN THE CAM?  AFTER yield");
+    }
+
+    private void CameraRotation()  //Ripped right outta ThirdPersonController.cs 
+    {
+        //// if there is an input and camera position is not fixed
+        //if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
+        //{
+        //    //Don't multiply mouse input by Time.deltaTime;
+        //    float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+
+        //    _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
+        //    _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
+        //}
+
+        //// clamp our rotations so our values are limited 360 degrees
+        //_cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+        //_cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+
+        //// Cinemachine will follow this target
+        //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
+        //    _cinemachineTargetYaw, 0.0f);
     }
 }
