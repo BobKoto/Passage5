@@ -25,6 +25,10 @@ public class SelectSceneMenu : MonoBehaviour
     {
         SceneManager.LoadScene("MainScene02");
     }
+    public void OnButtonMirrorRoutine()
+    {
+        SceneManager.LoadScene("MirrorRoutine");
+    }
     public void OnButtonExit()
     {
         Application.Quit();
