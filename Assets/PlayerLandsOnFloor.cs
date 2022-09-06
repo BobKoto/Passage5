@@ -25,4 +25,12 @@ public class PlayerLandsOnFloor : MonoBehaviour
             Debug.Log("Player hit the floor ...");
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("cube hit by " + other);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("OnTrigger Player hit the floor ...");
+        }
+    }
 }
