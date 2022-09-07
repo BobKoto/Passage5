@@ -748,8 +748,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 29.25, y: 2.82, z: 0.7}
-  m_Center: {x: -0.35765648, y: 0, z: 0}
+  m_Size: {x: 25, y: 3, z: 0.5}
+  m_Center: {x: -0.75, y: 0, z: 0}
 --- !u!4 &256154971
 Transform:
   m_ObjectHideFlags: 0
@@ -775,8 +775,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.24412537, y: 2.4731796, z: 22.274757}
-  m_Center: {x: 11.780573, y: -0.17341006, z: -10.820858}
+  m_Size: {x: 0.4, y: 3, z: 27}
+  m_Center: {x: 8, y: 0, z: -8.5}
 --- !u!65 &256154973
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -788,8 +788,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.65533066, y: 3.0511081, z: 22.274757}
-  m_Center: {x: -12.898935, y: 0.115554094, z: -10.820858}
+  m_Size: {x: 0.4, y: 3, z: 27}
+  m_Center: {x: -8, y: 0, z: -8.5}
 --- !u!65 &256154974
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -801,8 +801,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 30.4, y: 2.6736658, z: 0.3044033}
-  m_Center: {x: -0.6999998, y: -0.073167086, z: -20.026703}
+  m_Size: {x: 25, y: 3, z: 0.5}
+  m_Center: {x: -0.75, y: 0, z: -16.82}
 --- !u!1 &261143881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,7 +1762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478907, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: far clip plane
-      value: 17.5
+      value: 18.1
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478907, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_TargetTexture
@@ -4361,7 +4361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478907, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: far clip plane
-      value: 17.21
+      value: 18.1
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478907, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_TargetTexture
@@ -5132,15 +5132,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.05
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.45
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.88
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5172,7 +5172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478907, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: far clip plane
-      value: 22.12
+      value: 19.3
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478907, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_TargetTexture
@@ -6020,15 +6020,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.07
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.61
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.78
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6040,15 +6040,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9999993
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0012217354
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.14
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -6060,7 +6060,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478907, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: far clip plane
-      value: 22
+      value: 18.5
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478907, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_TargetTexture
@@ -6438,7 +6438,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1989159449}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -2.95}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1004560831}
