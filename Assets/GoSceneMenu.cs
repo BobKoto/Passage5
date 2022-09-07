@@ -11,7 +11,7 @@ public class GoSceneMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        lightComponent = playerCameraRoot.GetComponent<Light>();
+       if (lightComponent) lightComponent = playerCameraRoot.GetComponent<Light>();
     }
 
     // Update is called once per frame
