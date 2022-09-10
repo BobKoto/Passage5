@@ -1230,7 +1230,7 @@ PrefabInstance:
     - target: {fileID: 7950659975431954240, guid: 51b76051789807b42bf1dc7457769828, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 5874d773b88c8544e97332374927733c, type: 2}
+      objectReference: {fileID: 2100000, guid: b2e03e618d7dbf3439121126099e2120, type: 2}
     - target: {fileID: 7950659975431954241, guid: 51b76051789807b42bf1dc7457769828, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1710,7 +1710,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4423234792313478886, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_Name
-      value: CameraOnCube1
+      value: WestCamLooksEast
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478886, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_IsActive
@@ -2421,6 +2421,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 4.0032296
       objectReference: {fileID: 0}
+    - target: {fileID: 3203261902030644825, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+      propertyPath: m_Lens.FarClipPlane
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3203261902030644825, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+      propertyPath: m_Lens.m_SensorSize.x
+      value: 1.6666666
+      objectReference: {fileID: 0}
     - target: {fileID: 3515378426519774779, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: starterAssetsInputs
       value: 
@@ -2484,6 +2492,10 @@ PrefabInstance:
     - target: {fileID: 5542111180780342640, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_ClearFlags
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542111180780342640, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+      propertyPath: far clip plane
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5542111180780342640, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: orthographic size
@@ -4409,7 +4421,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4423234792313478886, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_Name
-      value: CameraOnCube1
+      value: EastCamLooksWest
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_RootOrder
@@ -5220,7 +5232,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4423234792313478886, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_Name
-      value: CameraOnCube1
+      value: NorthCamLooksSouth
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478906, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_RootOrder
@@ -6104,7 +6116,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4423234792313478886, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_Name
-      value: CameraOnCube1
+      value: SouthCamLooksNorth
       objectReference: {fileID: 0}
     - target: {fileID: 4423234792313478886, guid: 27def922e78a77b4bbb4421734197add, type: 3}
       propertyPath: m_IsActive
@@ -6256,7 +6268,7 @@ PrefabInstance:
     - target: {fileID: 6211400728791350771, guid: 3ede1011e672b0748a6196319ec1a92f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b2e03e618d7dbf3439121126099e2120, type: 2}
+      objectReference: {fileID: 2100000, guid: 5874d773b88c8544e97332374927733c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ede1011e672b0748a6196319ec1a92f, type: 3}
 --- !u!1001 &1928348449
