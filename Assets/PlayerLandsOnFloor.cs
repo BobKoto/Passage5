@@ -7,10 +7,12 @@ public class PlayerLandsOnFloor : MonoBehaviour
     public GameObject player;
     public AudioManager audioManager;
     bool loopTheClip = true;
+    Material material;
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("HELLO FROM Player hit the floor ...");
+        material  = GetComponent<Renderer>().material;
     }
 
     //// Update is called once per frame
@@ -32,7 +34,12 @@ public class PlayerLandsOnFloor : MonoBehaviour
        // Debug.Log("cube hit by " + other);
         if (other.gameObject.CompareTag("Player"))
         {
-          //  Debug.Log("OnTrigger Player hit the floor ...");
+            if (gameObject.CompareTag("ObstacleType01"))
+            {
+                // var setColor = gameObject.GetComponent<Material>(); // 
+                material.color = Color.black;
+            }
+            //  Debug.Log("OnTrigger Player hit the floor ...");
             audioManager.PlayAudio(audioManager.clipApplause);
         }
     }
@@ -42,11 +49,7 @@ public class PlayerLandsOnFloor : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             //  Debug.Log("OnTrigger Player Exited the Cube ...");
-            if (other.gameObject.CompareTag("ObstacleType01"))
-            {
-                var setColor = gameObject.GetComponent<Material>(); // 
-                setColor.color = Color.black;
-            }
+
 
             audioManager.PlayAudio(audioManager.clipkongasNoVocal, loopTheClip);
         }
