@@ -29,19 +29,25 @@ public class PlayerLandsOnFloor : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("cube hit by " + other);
+       // Debug.Log("cube hit by " + other);
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("OnTrigger Player hit the floor ...");
+          //  Debug.Log("OnTrigger Player hit the floor ...");
             audioManager.PlayAudio(audioManager.clipApplause);
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("cube Exited by " + other);
+       // Debug.Log("cube Exited by " + other);
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("OnTrigger Player Exited the Cube ...");
+            //  Debug.Log("OnTrigger Player Exited the Cube ...");
+            if (other.gameObject.CompareTag("ObstacleType01"))
+            {
+                var setColor = gameObject.GetComponent<Material>(); // 
+                setColor.color = Color.black;
+            }
+
             audioManager.PlayAudio(audioManager.clipkongasNoVocal, loopTheClip);
         }
     }
