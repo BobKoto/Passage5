@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLandsOnFloor : MonoBehaviour
+public class PlayerEnterOrLeaveObstacle : MonoBehaviour
 {
     public GameObject player;
     public AudioManager audioManager;
@@ -12,8 +12,8 @@ public class PlayerLandsOnFloor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("HELLO FROM Player hit the floor ...");
-        material  = GetComponent<Renderer>().material;
+        Debug.Log("HELLO FROM Player hit Enter or Leave Obstacle ...");
+        material = GetComponent<Renderer>().material;
     }
 
     //// Update is called once per frame
@@ -32,30 +32,28 @@ public class PlayerLandsOnFloor : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-       // Debug.Log("cube hit by " + other);
+        // Debug.Log("cube hit by " + other);
         if (other.gameObject.CompareTag("Player"))
         {
-            if (gameObject.CompareTag("ObstacleType01") && !alreadyHit)
+            if (!alreadyHit)
             {
                 material.color = Color.black;
                 audioManager.PlayAudio(audioManager.clipApplause);
-                alreadyHit = true;
+              //  alreadyHit = true;
             }
-            if (gameObject.name == "StartPosition") audioManager.PlayAudio(audioManager.clipApplause);
+
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (gameObject.name == "StartPosition") audioManager.PlayAudio(audioManager.clipkongasNoVocal, loopTheClip);
-            else
             if (!alreadyHit)
             {
                 alreadyHit = true; //Ignore alreadyHit boolean for StartPosition
-
+                audioManager.PlayAudio(audioManager.clipkongasNoVocal,loopTheClip);
             }
-            
+
         }
 
     }
