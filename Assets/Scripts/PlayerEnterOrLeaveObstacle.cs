@@ -6,13 +6,14 @@ public class PlayerEnterOrLeaveObstacle : MonoBehaviour
 {
     public GameObject player;
     public AudioManager audioManager;
+    public ParticleSystem psFire01;
     bool loopTheClip = true;
     bool alreadyHit;
     Material material;
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("HELLO FROM Player hit Enter or Leave Obstacle ...");
+       // Debug.Log("HELLO FROM Player hit Enter or Leave Obstacle ...");
         material = GetComponent<Renderer>().material;
     }
 
@@ -52,6 +53,7 @@ public class PlayerEnterOrLeaveObstacle : MonoBehaviour
             {
                 alreadyHit = true; //Ignore alreadyHit boolean for StartPosition
                 audioManager.PlayAudio(audioManager.clipkongasNoVocal,loopTheClip);
+                if (psFire01) psFire01.Play();
             }
 
         }
