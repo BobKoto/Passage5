@@ -39,7 +39,7 @@ public class PlayerEnterOrLeaveObstacle : MonoBehaviour
             if (!alreadyHit)
             {
                 material.color = Color.black;
-                audioManager.PlayAudio(audioManager.clipApplause);
+                audioManager.PlayAudio(audioManager.clipapert);
               //  alreadyHit = true;
             }
 
