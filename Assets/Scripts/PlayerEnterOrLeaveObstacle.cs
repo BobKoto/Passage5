@@ -40,6 +40,7 @@ public class PlayerEnterOrLeaveObstacle : MonoBehaviour
             {
                 material.color = Color.black;
                 audioManager.PlayAudio(audioManager.clipapert);
+
               //  alreadyHit = true;
             }
 
