@@ -31,6 +31,23 @@ namespace SwitchCam
         private void OnTriggerEnter(Collider other)
         {
             virtualCameras[0].MoveToTopOfPrioritySubqueue();
+            string gOName = this.gameObject.name;
+            switch (gOName)
+            {
+                case ( "MoveNorth"): Debug.Log("Moving NORTH");
+                    break;
+                case ("MoveSouth"):
+                    Debug.Log("Moving SOUTH");
+                    break;
+                case ("MoveEast"):
+                    Debug.Log("Moving EAST");
+                    break;
+                case ("MoveWest"):
+                    Debug.Log("Moving WEST");
+                    break;
+                default: Debug.Log("switch case default");
+                    break;
+            }
         }
     }
 }
