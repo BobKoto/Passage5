@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - ObstacleType01
+  - DirectionCollider
   layers:
   - Default
   - TransparentFX

@@ -457,9 +457,10 @@ GameObject:
   m_Component:
   - component: {fileID: 139165433}
   - component: {fileID: 139165434}
+  - component: {fileID: 139165435}
   m_Layer: 0
   m_Name: MoveEast
-  m_TagString: Untagged
+  m_TagString: DirectionCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,6 +492,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.65, y: 0.93, z: 0.07}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &139165435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139165432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46de50796732a874fa04de24652f4202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCameras:
+  - {fileID: 606362569}
+  startPositionCamera: {fileID: 3203261901554688441}
+  directionColliders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &155505445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3422,7 +3448,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 13
+  m_Priority: 1
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 490576249372092714}
   m_Follow: {fileID: 0}
@@ -5044,9 +5070,10 @@ GameObject:
   m_Component:
   - component: {fileID: 979782797}
   - component: {fileID: 979782798}
+  - component: {fileID: 979782799}
   m_Layer: 0
   m_Name: MoveNorth
-  m_TagString: Untagged
+  m_TagString: DirectionCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5059,7 +5086,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979782796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.84}
+  m_LocalPosition: {x: 0, y: 0, z: 0.845}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2010580445}
@@ -5078,6 +5105,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.65, y: 0.93, z: 0.07}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &979782799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979782796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46de50796732a874fa04de24652f4202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCameras:
+  - {fileID: 1481733559}
+  startPositionCamera: {fileID: 3203261901554688441}
+  directionColliders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &989785375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5801,7 +5853,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 12
+  m_Priority: 1
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 490576249372092714}
   m_Follow: {fileID: 0}
@@ -5833,9 +5885,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1166634351}
   - component: {fileID: 1166634352}
+  - component: {fileID: 1166634353}
   m_Layer: 0
   m_Name: MoveSouth
-  m_TagString: Untagged
+  m_TagString: DirectionCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5848,7 +5901,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1166634350}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.89}
+  m_LocalPosition: {x: 0, y: 0, z: -0.865}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2010580445}
@@ -5867,6 +5920,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.65, y: 0.93, z: 0.07}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1166634353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166634350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46de50796732a874fa04de24652f4202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCameras:
+  - {fileID: 1655589473}
+  startPositionCamera: {fileID: 3203261901554688441}
+  directionColliders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1204999327
 GameObject:
   m_ObjectHideFlags: 0
@@ -6871,7 +6949,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 11
+  m_Priority: 1
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 490576249372092714}
   m_Follow: {fileID: 0}
@@ -7799,7 +7877,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 1
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 490576249372092714}
   m_Follow: {fileID: 0}
@@ -8067,9 +8145,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1758084324}
   - component: {fileID: 1758084325}
+  - component: {fileID: 1758084326}
   m_Layer: 0
   m_Name: MoveWest
-  m_TagString: Untagged
+  m_TagString: DirectionCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8101,6 +8180,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.65, y: 0.93, z: 0.07}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1758084326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758084323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46de50796732a874fa04de24652f4202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCameras:
+  - {fileID: 1162854184}
+  startPositionCamera: {fileID: 3203261901554688441}
+  directionColliders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!4 &1758424206 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7950659975431954246, guid: 51b76051789807b42bf1dc7457769828, type: 3}
@@ -10013,6 +10117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 974238579299546000}
   audioManager: {fileID: 1204999328}
+  player3rdPersonFollowCamera: {fileID: 3203261901554688441}
 --- !u!1 &2073497264
 GameObject:
   m_ObjectHideFlags: 0
@@ -11885,7 +11990,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 20
+  m_Priority: 1
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 4860276692634340044}

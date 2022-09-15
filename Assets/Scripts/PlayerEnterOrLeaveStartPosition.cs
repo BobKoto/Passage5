@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerEnterOrLeaveStartPosition : MonoBehaviour
 {
     public GameObject player;
     public AudioManager audioManager;
+    public CinemachineVirtualCamera player3rdPersonFollowCamera;
     bool loopTheClip = true;
     Material material;
     // Start is called before the first frame update
@@ -35,6 +37,7 @@ public class PlayerEnterOrLeaveStartPosition : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             audioManager.PlayAudio(audioManager.clipApplause);
+            player3rdPersonFollowCamera.MoveToTopOfPrioritySubqueue();
         }
     }
     private void OnTriggerExit(Collider other)
