@@ -10,7 +10,7 @@ public class  DirectionTracker
     {
         wasMovingNorth = north; wasMovingSouth = south; wasMovingEast = east; wasMovingWest = west;
 
-        Debug.Log("Direction tracker report {0}, {1}, {2}, {3}" + north + south + east + west);
+      //  Debug.Log("Direction tracker report {0}, {1}, {2}, {3}" + north + south + east + west);
     }
     public static string MovingInDirection()
     {
@@ -40,7 +40,7 @@ public class  DirectionTracker
             //  return movingInDirection;
         }
 
-        Debug.Log("MovingInDirection reports " + movingInDirection  + "  out of itself");
+     //   Debug.Log("MovingInDirection reports " + movingInDirection  + "  out of itself");
         return movingInDirection;
     }
 }
