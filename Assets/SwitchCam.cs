@@ -32,22 +32,30 @@ namespace SwitchCam
         {
             virtualCameras[0].MoveToTopOfPrioritySubqueue();
             string gOName = this.gameObject.name;
+
             switch (gOName)
             {
-                case ( "MoveNorth"): Debug.Log("Moving NORTH");
+                case ( "MoveNorth"):  Debug.Log("Moving NORTH");
+                    DirectionTracker.RegisterDirection(true, false, false, false);
+                    
                     break;
-                case ("MoveSouth"):
-                    Debug.Log("Moving SOUTH");
+                case ("MoveSouth"):   Debug.Log("Moving SOUTH");
+                    DirectionTracker.RegisterDirection(false, true, false, false);
+
                     break;
-                case ("MoveEast"):
-                    Debug.Log("Moving EAST");
+                case ("MoveEast"):    Debug.Log("Moving EAST");
+                    DirectionTracker.RegisterDirection(false, false, true, false);
+
                     break;
-                case ("MoveWest"):
-                    Debug.Log("Moving WEST");
+                case ("MoveWest"):    Debug.Log("Moving WEST");
+                    DirectionTracker.RegisterDirection(false, false, false, true);
+
                     break;
                 default: Debug.Log("switch case default");
                     break;
             }
+
+            Debug.Log(DirectionTracker.MovingInDirection() + " DirectionTracker.MovingInDirection() called by OnTriggerEnter...");
         }
     }
 }
