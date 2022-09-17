@@ -9,12 +9,11 @@ public class PlayerEnterOrLeaveStartPosition : MonoBehaviour
     public AudioManager audioManager;
     public CinemachineVirtualCamera player3rdPersonFollowCamera;
     bool loopTheClip = true;
-    Material material;
+    bool switchTheCam = true;
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("HELLO FROM Player hit the StartPosition ...");
-        material = GetComponent<Renderer>().material;
     }
 
     //// Update is called once per frame
@@ -37,7 +36,12 @@ public class PlayerEnterOrLeaveStartPosition : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             audioManager.PlayAudio(audioManager.clipApplause);
-            player3rdPersonFollowCamera.MoveToTopOfPrioritySubqueue();
+            if (switchTheCam)
+            {
+                player3rdPersonFollowCamera.MoveToTopOfPrioritySubqueue();
+                switchTheCam = false;
+            }
+
         }
     }
     private void OnTriggerExit(Collider other)
@@ -45,6 +49,7 @@ public class PlayerEnterOrLeaveStartPosition : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             audioManager.PlayAudio(audioManager.clipkongasNoVocal, loopTheClip);
+           // DirectionTracker.RegisterDirection(false, false, false, false);
         }
     }
 }
