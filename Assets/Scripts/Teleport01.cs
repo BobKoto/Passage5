@@ -5,13 +5,13 @@ using UnityEngine;
 public class Teleport01 : MonoBehaviour
 {
     //public GameObject player, playerCameraRoot;
-    public Transform playerTransform, playerCameraRootTransform;
+    public Transform playerTransform; //, playerCameraRootTransform;
     public Vector3 teleportPlayerToPosition;
-    public Quaternion rotatePlayerToRotation;
-    public Vector3 teleportCameraRootToPosition;
-    public Quaternion rotateCameraRootToRotation;
+   // public Quaternion rotatePlayerToRotation;
+   // public Vector3 teleportCameraRootToPosition;
+   // public Quaternion rotateCameraRootToRotation;
     //public Vector3 rotateVector;
-    public bool teleportPerformed;
+    //public bool teleportPerformed;
     [Header("Cinemachine")]
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
     public GameObject CinemachineCameraTarget;
@@ -21,8 +21,6 @@ public class Teleport01 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //  teleportToThisPosition = new Vector3(-16f, -1f, -10f);
-        // rotateToThisRotation = new Quaternion(0f, 0f, 0f, 0f);
         Debug.Log("hello from teleport01");
     }
 
@@ -45,7 +43,7 @@ public class Teleport01 : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TriggerEnter ...");
+        Debug.Log("TriggerEnter ... Teleport player to " + teleportPlayerToPosition);
         playerTransform.position = teleportPlayerToPosition;
         Physics.SyncTransforms();  
     }
