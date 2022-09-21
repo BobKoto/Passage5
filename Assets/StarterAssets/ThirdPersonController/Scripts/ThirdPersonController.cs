@@ -161,6 +161,7 @@ namespace StarterAssets
             PlayerLookRotation(); // added on 9/20/22
 
             Move();
+
         }
 
         private void LateUpdate()
@@ -201,7 +202,7 @@ namespace StarterAssets
 
                 _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
                 _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
-            }
+           // }
 
             // clamp our rotations so our values are limited 360 degrees
             _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
@@ -212,6 +213,7 @@ namespace StarterAssets
             //    _cinemachineTargetYaw, 0.0f); //Change to the player's transform on next line 
             transform.rotation = Quaternion.Euler(0.0f,
                  _cinemachineTargetYaw, 0.0f);
+            }
         }  //END Add Method on 9/20/22 
         private void CameraRotation()
         {
