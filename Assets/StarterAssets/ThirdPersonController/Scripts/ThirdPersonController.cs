@@ -79,6 +79,8 @@ namespace StarterAssets
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
 
+        // character   // 9/21/22 
+        private float _characterTargetYaw;
         // player
         private float _speed;
         private float _animationBlend;
@@ -200,10 +202,10 @@ namespace StarterAssets
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
                 float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;   //IsCurrentDeviceMouse = False on Touch/GamePad 
-                _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
+                _characterTargetYaw += _input.look.x * deltaTimeMultiplier;
                 // clamp our rotations so our values are limited 360 degrees
-                _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-                transform.rotation = Quaternion.Euler(0.0f,_cinemachineTargetYaw, 0.0f);
+                _characterTargetYaw = ClampAngle(_characterTargetYaw, float.MinValue, float.MaxValue);
+                transform.rotation = Quaternion.Euler(0.0f,_characterTargetYaw, 0.0f);
             }
         }  //END Add Method on 9/20/22 
         private void CameraRotation()
@@ -278,7 +280,7 @@ namespace StarterAssets
 
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-                _cinemachineTargetYaw = rotation;   // 9/20/22 to maintain rotation when in PlayerLookRotation()
+                _characterTargetYaw = rotation;   // 9/20/22 to maintain rotation when in PlayerLookRotation()
             }
 
 
