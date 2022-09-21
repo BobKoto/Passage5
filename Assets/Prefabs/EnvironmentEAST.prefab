@@ -417,7 +417,7 @@ Transform:
   m_LocalScale: {x: 0.72905004, y: 0.10036032, z: 0.79519784}
   m_Children: []
   m_Father: {fileID: 4637150867646757415}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4637150866819978062
 MonoBehaviour:
@@ -1271,7 +1271,7 @@ Transform:
   m_LocalScale: {x: 0.6525, y: 1, z: 0.68522}
   m_Children: []
   m_Father: {fileID: 4637150867646757415}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4637150867168257581
 MonoBehaviour:
@@ -1834,7 +1834,7 @@ Transform:
   m_LocalScale: {x: 9.814189, y: 9.814189, z: 9.814189}
   m_Children: []
   m_Father: {fileID: 4637150867646757415}
-  m_RootOrder: 5
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4637150867178895933
 MeshFilter:
@@ -1932,7 +1932,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4637150867646757415}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4637150867372201413
 MonoBehaviour:
@@ -6055,7 +6055,7 @@ Transform:
   m_LocalScale: {x: 7.770631, y: 3.858076, z: 18.721254}
   m_Children: []
   m_Father: {fileID: 4637150867646757415}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4637150867606866191
 MeshFilter:
@@ -6249,11 +6249,11 @@ Transform:
   - {fileID: 4637150867998314335}
   - {fileID: 4637150866874379687}
   - {fileID: 4637150867165646529}
-  - {fileID: 4637150867178895930}
   - {fileID: 4637150867372201410}
   - {fileID: 4637150867168257578}
   - {fileID: 4637150866819978063}
   - {fileID: 4637150867606866188}
+  - {fileID: 4637150867178895930}
   - {fileID: 4637150868064860867}
   - {fileID: 4637150866784854910}
   - {fileID: 4637150866885080237}
@@ -8789,12 +8789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
-  playerCameraRootTransform: {fileID: 0}
   teleportPlayerToPosition: {x: -16, y: -1, z: -10}
-  rotatePlayerToRotation: {x: 0, y: 0, z: 0, w: 0}
-  teleportCameraRootToPosition: {x: -16, y: 2, z: -21}
-  rotateCameraRootToRotation: {x: 0, y: 0, z: 0, w: 0}
-  teleportPerformed: 0
   CinemachineCameraTarget: {fileID: 0}
 --- !u!65 &3621010375079241349
 BoxCollider:
