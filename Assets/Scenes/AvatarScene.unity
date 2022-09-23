@@ -1337,7 +1337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1781955719}
-  teleportPlayerToPosition: {x: 214, y: -0.9, z: -83}
+  teleportPlayerToPosition: {x: 214, y: -0.97, z: -83}
   CinemachineCameraTarget: {fileID: 2076436241}
 --- !u!65 &412240972
 BoxCollider:
@@ -1462,7 +1462,7 @@ GameObject:
   - component: {fileID: 447443307}
   - component: {fileID: 447443306}
   m_Layer: 0
-  m_Name: BlueSubCubeEye (2)
+  m_Name: BlueSubCubeEye3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1475,13 +1475,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 447443304}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 205.5, y: -88.73999, z: 0}
   m_LocalScale: {x: 6, y: 4.1, z: 0.40757048}
   m_Children:
   - {fileID: 1059266362}
   m_Father: {fileID: 648999601}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &447443306
 MonoBehaviour:
@@ -2006,8 +2006,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1054607514}
-  - {fileID: 447443305}
   - {fileID: 1675099765}
+  - {fileID: 447443305}
   m_Father: {fileID: 2142442909}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3253,8 +3253,9 @@ GameObject:
   - component: {fileID: 1054607516}
   - component: {fileID: 1054607515}
   - component: {fileID: 1054607518}
+  - component: {fileID: 1054607519}
   m_Layer: 0
-  m_Name: BlueSubCubeEye
+  m_Name: BlueSubCubeEye1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3351,6 +3352,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToLookAt: {fileID: 1781955719}
+--- !u!95 &1054607519
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054607513}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dd984bf0d6747e648ade01d6722757ef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1058192283
 GameObject:
   m_ObjectHideFlags: 0
@@ -3495,7 +3515,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1059266361}
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 1.398531}
+  m_LocalPosition: {x: 0, y: 0, z: 0.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 447443305}
@@ -3762,7 +3782,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1068239030}
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 1.398531}
+  m_LocalPosition: {x: 0, y: 0, z: 0.76000005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1054607514}
@@ -4985,7 +5005,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1339410840}
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 1.398531}
+  m_LocalPosition: {x: 0, y: 0, z: 0.76000005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1675099765}
@@ -5640,8 +5660,9 @@ GameObject:
   - component: {fileID: 1675099768}
   - component: {fileID: 1675099767}
   - component: {fileID: 1675099766}
+  - component: {fileID: 1675099770}
   m_Layer: 0
-  m_Name: BlueSubCubeEye (1)
+  m_Name: BlueSubCubeEye2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5660,7 +5681,7 @@ Transform:
   m_Children:
   - {fileID: 1339410841}
   m_Father: {fileID: 648999601}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1675099766
 MonoBehaviour:
@@ -5738,6 +5759,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1675099764}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &1675099770
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675099764}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2780b05528c3ed940821e026357c4240, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1681034818
 GameObject:
   m_ObjectHideFlags: 0

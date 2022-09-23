@@ -44,7 +44,10 @@ public class Teleport01 : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("TriggerEnter ... Teleport player to " + teleportPlayerToPosition);
-        playerTransform.position = teleportPlayerToPosition;
+        playerTransform.position = teleportPlayerToPosition; //original worked but with Jank
+        //var destination = Vector3.Lerp(playerTransform.position, teleportPlayerToPosition, 0.1f);
+        //playerTransform.position = destination;
+
         Physics.SyncTransforms();  
     }
     //private void OnTriggerStay(Collider other)
