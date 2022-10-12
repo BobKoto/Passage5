@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FlapArms : StateMachineBehaviour
 {
@@ -10,50 +11,34 @@ public class FlapArms : StateMachineBehaviour
     //  OnStateEnter is called before OnStateEnter is called on any state inside this state machine
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-     //   int flapArmsHash = Animator.StringToHash(animator.parameters[5].name);
-        int baseLayerSpeedHash = Animator.StringToHash(animator.parameters[0].name);
-
-      //  float flapArmsWeight;
-      //  bool flapArmsBool;
-        float speedBaseLayer;
-
-        speedBaseLayer = animator.GetFloat(baseLayerSpeedHash);
-     //   flapArmsBool = animator.GetBool(flapArmsHash);
-        if (speedBaseLayer > 1f)  //is character moving? and if so we don't want to flap arms 
+        Scene activeScene;
+        //
+        activeScene = SceneManager.GetActiveScene();   
         {
-            animator.SetLayerWeight(1, 0);    //weight 0 stops arm flaps
+            if (activeScene.buildIndex == 3)   //here we try to only starr and stop waving in sceneIndex 3 //the mirror routine/scene 
+            {
+                int baseLayerSpeedHash = Animator.StringToHash(animator.parameters[0].name);  // get the speed name 
+                float speedBaseLayer;
+                speedBaseLayer = animator.GetFloat(baseLayerSpeedHash);  //get the speed 
+                if (speedBaseLayer > 1f)  //is character moving? and if so we don't want to flap arms 
+                {
+                    animator.SetLayerWeight(1, 0);    //weight 0 stops arm flaps
+                }
+                else
+                    animator.SetLayerWeight(1, 1);     //weight 1 lets arms flap 
+            }
+            else animator.SetLayerWeight(1, 0);    //weight 0 stops arm flaps
         }
-        else
-            animator.SetLayerWeight(1, 1);     //weight 1 lets arms flap 
-        //var animClipsSize = animator.GetNextAnimatorClipInfo(1).Length;
-        //if (animClipsSize > 0)
-        //{
-
-        // Debug.Log("Array size is " + animClipsSize + " Next clip WEIGHT is " + animator.GetNextAnimatorClipInfo(1)[0].weight);
-        //animator.GetNextAnimatorClipInfo(1)[0].weight = 1; // can't do because ReadOnly
-
-        //animator.SetLayerWeight(1, 1);
-        //flapArmsWeight = animator.GetNextAnimatorClipInfo(1)[0].weight;
-        //flapArmsWeight = animator.GetLayerWeight(1);
-
-        // Debug.Log("Starting clip : " + animator.GetNextAnimatorClipInfo(1)[0].clip);
-        //flapArmsWeight = animator.GetLayerWeight(1);
-        //Debug.Log("flaparms clip  Weight = " + flapArmsWeight + " flapArmsBool is " + flapArmsBool);
-        //}
-
-        //  Debug.Log("ArmUp layer ENTERED animator= " + animator.name + "  stateInfoSpeed= " + stateInfo.speed + " layerIndex =" + layerIndex);
-        //  Debug.Log("ENTER params[5] = " + animator.parameters[5].name + " value = " + animator.GetBool(flapArmsHash));
-        //  Debug.Log(" flapArmsWeight = flapArms ['RobotArmsUp'].weight = " + flapArmsWeight);
-
+        //For this to  work you gotta have an EXIT state and a TRANSITION to it in layerIndex 1 
 
     }
     // OnStateExit is called before OnStateExit is called on any state inside this state machine
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        int flapArmsHash = Animator.StringToHash(animator.parameters[5].name);
-        animator.SetBool(flapArmsHash, false);
-      //  Debug.Log("ArmUp layer EXITED animator= " + animator.name + "  stateInfoSpeed= " + stateInfo.speed + " layerIndex =" + layerIndex);
-      //  Debug.Log("EXIT params[5] = " + animator.parameters[5].name + " value = " + animator.GetBool(flapArmsHash));
+        //int flapArmsHash = Animator.StringToHash(animator.parameters[5].name);
+        //animator.SetBool(flapArmsHash, false);
+        //  Debug.Log("ArmUp layer EXITED animator= " + animator.name + "  stateInfoSpeed= " + stateInfo.speed + " layerIndex =" + layerIndex);
+        //  Debug.Log("EXIT params[5] = " + animator.parameters[5].name + " value = " + animator.GetBool(flapArmsHash));
     }
 
 
