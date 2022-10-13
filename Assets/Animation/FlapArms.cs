@@ -12,10 +12,11 @@ public class FlapArms : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         Scene activeScene;
-        //
+        int flapArmsHash = Animator.StringToHash(animator.parameters[5].name);
+        bool waveArms = animator.GetBool(flapArmsHash);
         activeScene = SceneManager.GetActiveScene();   
         {
-            if (activeScene.buildIndex == 3)   //here we try to only starr and stop waving in sceneIndex 3 //the mirror routine/scene 
+            if (activeScene.buildIndex == 3 && waveArms)   //here we try to only start and stop waving in sceneIndex 3 //the mirror routine/scene 
             {
                 int baseLayerSpeedHash = Animator.StringToHash(animator.parameters[0].name);  // get the speed name 
                 float speedBaseLayer;
