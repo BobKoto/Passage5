@@ -18,7 +18,7 @@ public class PlayerInRangeToPressMe : MonoBehaviour
             other = GameObject.Find("PlayerArmature").GetComponent<Transform>();
             tooFarToPress = true; // IF and ONLY IF we start too far from a pressable object
         }
-        Debug.Log("hello from " + this.name );
+      //  Debug.Log("hello from " + this.name );
     }
 
     // Update is called once per frame
@@ -31,31 +31,27 @@ public class PlayerInRangeToPressMe : MonoBehaviour
             {
                 if (!closeEnoughToPress && tooFarToPress)
                 {
-                    print("Distance to other is Close : " + dist);
+                  //  print("Distance to other just became Close : " + dist);
                     closeEnoughToPress = !closeEnoughToPress;
                     tooFarToPress = !tooFarToPress;
                     mat.color = Color.red;
                 }
-
             }
             if (dist > pressableDistance)  //we are too far   AND always true on start 
-            //else    //we are too far away    and we suck at boolean logic so far 
             {
                 if (closeEnoughToPress && !tooFarToPress)
                 {
-                    print("Distance to other on ELSE (not <=) is too Far: " + dist);
+                  //  print("Distance to other just became too Far: " + dist);
                     tooFarToPress = !tooFarToPress;
                     closeEnoughToPress = !closeEnoughToPress;
                     mat.color = Color.blue;
                 }
-
             }
-
-
-        }
+        } // if other
     }
     private void OnCollisionEnter(Collision collision)
     {
+        print("Collided with " + collision.collider);
         mat.color = Color.green;
     }
 }
