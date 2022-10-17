@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInRangeToPressMe : MonoBehaviour
 {
-    public Transform other  ;
+    public Transform otherTransform  ;
     public float pressableDistance = 3f;
     bool tooFarToPress, closeEnoughToPress;
     Material mat;
@@ -13,9 +13,10 @@ public class PlayerInRangeToPressMe : MonoBehaviour
     void Start()
     {
        mat = GetComponent<MeshRenderer>().material;
-        if (!other)
+        if (!otherTransform)
         {
-            other = GameObject.Find("PlayerArmature").GetComponent<Transform>();
+            otherTransform = GameObject.Find("Right_Hand").GetComponent<Transform>();
+            // otherTransform = GameObject.Find("PlayerArmature").GetComponent<Transform>();
             tooFarToPress = true; // IF and ONLY IF we start too far from a pressable object
         }
       //  Debug.Log("hello from " + this.name );
@@ -24,9 +25,9 @@ public class PlayerInRangeToPressMe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (other)
+        if (otherTransform)
         {
-            float dist = Vector3.Distance(other.position, transform.position);
+            float dist = Vector3.Distance(otherTransform.position, transform.position);
             if (dist <= pressableDistance)  //we are close enough 
             {
                 if (!closeEnoughToPress && tooFarToPress)
