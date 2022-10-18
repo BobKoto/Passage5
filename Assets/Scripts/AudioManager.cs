@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Use me like this : audioManager.PlayAudio(audioManager.clipApplause); // where clipApplause can be any clip declared below 
 public class AudioManager : MonoBehaviour
 {
     [Header("Audio Stuff")]

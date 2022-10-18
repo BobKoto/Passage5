@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerInRangeToPressMe : MonoBehaviour
 {
+    //public AudioSource audiosource;
+    //public AudioClip clip;
+    public AudioManager audioManager;
     public Transform otherTransform  ;
     public float pressableDistance = 3f;
     bool tooFarToPress, closeEnoughToPress;
@@ -12,7 +15,8 @@ public class PlayerInRangeToPressMe : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       mat = GetComponent<MeshRenderer>().material;
+        audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        mat = GetComponent<MeshRenderer>().material;
         if (!otherTransform)
         {
             otherTransform = GameObject.Find("Right_Hand").GetComponent<Transform>();
@@ -54,5 +58,6 @@ public class PlayerInRangeToPressMe : MonoBehaviour
     {
         print("Collided with " + collision.collider);
         mat.color = Color.green;
+        audioManager.PlayAudio(audioManager.clipapert);
     }
 }
