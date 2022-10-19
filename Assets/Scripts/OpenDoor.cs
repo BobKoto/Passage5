@@ -16,7 +16,7 @@ public class OpenDoor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        anim = GetComponent<Animator>();
+        anim = GameObject.Find("SlidingDoor1").GetComponent<Animator>();
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         mat = GetComponent<MeshRenderer>().material;
         if (!otherTransform)
