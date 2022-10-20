@@ -19,11 +19,11 @@ public class SelectSceneMenu : MonoBehaviour
 
     public void  OnButtonCapsulePlayer()
     {
-        SceneManager.LoadScene("MainScene01"); 
+        SceneManager.LoadScene("CapsuleScene"); 
     }
     public void OnButtonRobotAvatarPlayer()
     {
-        SceneManager.LoadScene("MainScene02");
+        SceneManager.LoadScene("AvatarScene");
     }
     public void OnButtonMirrorRoutine()
     {
