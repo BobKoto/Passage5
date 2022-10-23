@@ -13,7 +13,7 @@ public class PunchLayerBehaviour : StateMachineBehaviour
         //int punchHash = Animator.StringToHash(animator.parameters[6].name);
         // waveArms = animator.GetBool(flapArmsHash);
         activeScene = SceneManager.GetActiveScene();
-        playerRightHandCollider = GameObject.Find("Right_Hand").GetComponent<SphereCollider>();
+       // playerRightHandCollider = GameObject.Find("Right_Hand").GetComponent<SphereCollider>();
             if (activeScene.buildIndex == 2 )   //here we try to only do punches in sceneIndex 2 //the avatar scene 
             {
                 int baseLayerSpeedHash = Animator.StringToHash(animator.parameters[0].name);  // get the speed name 
@@ -25,9 +25,9 @@ public class PunchLayerBehaviour : StateMachineBehaviour
                 }
                else
                {
-                    playerRightHandCollider.enabled = true;
+                 //   playerRightHandCollider.enabled = true;
                     animator.SetLayerWeight(2, 1);     //does a punch 
-                    Debug.Log("Punch started collider.enabled set TRUE");
+                 //   Debug.Log("Punch started collider.enabled set TRUE");
                }
 
             }
@@ -45,9 +45,9 @@ public class PunchLayerBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        playerRightHandCollider = GameObject.Find("Right_Hand").GetComponent<SphereCollider>();
-        playerRightHandCollider.enabled = false;
-        Debug.Log(" Punch Exited collider.enabled set FALSE");
+        //playerRightHandCollider = GameObject.Find("Right_Hand").GetComponent<SphereCollider>();
+        //playerRightHandCollider.enabled = false;
+        //Debug.Log(" Punch Exited collider.enabled set FALSE");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
