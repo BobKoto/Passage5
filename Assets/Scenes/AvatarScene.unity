@@ -238,11 +238,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
   target: {fileID: 0}
-  maxDistance: 1.36
-  angle: 100
+  player: {fileID: 1781955719}
+  maxDistance: 1.7
+  angle: 360
   sphereRadius: 0.3
-  transformRightXAdjust: 2
-  transformSphereCheckXAdjust: -1
+  transformRightXAdjust: 0
+  transformXOffset: 1
+  transformZOffset: -0.7
+  yAngleMin: -104
+  yAngleMax: -74
+  pressToOpenButton: {fileID: 1211312009}
   visualize: 1
 --- !u!4 &72039619 stripped
 Transform:
@@ -4766,8 +4771,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 962241034900705878, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
+      propertyPath: m_Size.y
+      value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 962241034900705878, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962241034900705878, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
+      propertyPath: m_Center.y
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 962241034900705878, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
       propertyPath: m_IsTrigger
@@ -4778,12 +4791,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 962241034900705883, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.1630778
+      objectReference: {fileID: 0}
+    - target: {fileID: 962241034900705883, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 282.80054
       objectReference: {fileID: 0}
     - target: {fileID: 962241034900705883, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.82
+      value: 2.56
       objectReference: {fileID: 0}
     - target: {fileID: 962241034900705883, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11462,6 +11479,25 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 962241034900705883, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
   m_PrefabInstance: {fileID: 1808407863}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1957184117 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4222942335510494491, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+  m_PrefabInstance: {fileID: 2095143393}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &1957184119
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957184117}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.06478546
+  m_Height: 0.32445663
+  m_Direction: 1
+  m_Center: {x: -0.0077804415, y: -0.1500012, z: 0.00006308094}
 --- !u!1 &1965377222
 GameObject:
   m_ObjectHideFlags: 3

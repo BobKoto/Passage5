@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimButtons : MonoBehaviour
+public class PlayerAnimButtons : MonoBehaviour     //Find this on PlayerArmature Game Object 
 {
     Animator anim;
     // Start is called before the first frame update

@@ -9,14 +9,20 @@ public class OpenDoor : MonoBehaviour
      Animator anim;
     public AudioManager audioManager;
     public Transform target;
+    public Transform player;
     public float maxDistance = 1.5f;
     [Range(0f, 360f)]
     public float angle = 45f;
 
     public float sphereRadius = 2f;
     public float transformRightXAdjust = 2f;
-    public float transformSphereCheckXAdjust = 2f;
-  //  bool tooFarToPress, inRangeToPress;
+    public float transformXOffset = 1f;
+    public float transformZOffset = 1f;
+    public float yAngleMin = -104f;
+    public float yAngleMax = -74f; 
+    public GameObject pressToOpenButton;
+    Vector3 playerRotationY;
+    //  bool tooFarToPress, inRangeToPress;
     Material mat;
     MeshRenderer meshRenderer;
     Vector3 transformRightAdjusted;
@@ -32,25 +38,42 @@ public class OpenDoor : MonoBehaviour
         anim = GameObject.Find("SlidingDoor1").GetComponent<Animator>();
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         mat = GetComponent<Renderer>().material;
-        if (!target)
+        if (!target)  // we didn't set a target in the editor 
         {
-         //   target = GameObject.Find("Right_Hand").GetComponent<Transform>(); //10/22 try looking at the collider - see next line 
+           //   target = GameObject.Find("Right_Hand").GetComponent<Transform>(); //10/22 try looking at the collider - see next line 
             target = GameObject.Find("Right_Hand").GetComponent<SphereCollider>().transform;
             //tooFarToPress = true; // IF and ONLY IF we start too far from a pressable object
         }
         transformRightAdjusted = new Vector3(transform.position.x - transformRightXAdjust, transform.position.y, transform.position.z);
-        transformSphereCheck = new Vector3(transform.position.x - transformSphereCheckXAdjust, transform.position.y, transform.position.z);
+        transformSphereCheck = new Vector3(
+            transform.position.x + transformXOffset,
+            transform.position.y,
+            transform.position.z + transformZOffset);
 
+        pressToOpenButton.SetActive(false);
+
+        // playerRotationY = player.rotation.y;
+        //Debug.Log("player y = " + playerRotationY + " transform.rotation = " + player.rotation + " and Transform.Rotation = " + player.T );
+        playerRotationY = player.transform.eulerAngles;
+        Debug.Log(" playerY rotation = " + playerRotationY);
         //  Debug.Log("hello from " + this.name );
     }
 
     // Update is called once per frame
     void Update()
     {
-        //targetIsVisible = CheckVisibility();    //CheckVisibilityWithSphere();
-        targetIsVisible = CheckVisibilityWithSphere();
-        if (visualize)
+        targetIsVisible = CheckVisibility();    //CheckVisibilityWithSphere();
+       // targetIsVisible = CheckVisibilityWithSphere();
+        if (visualize)   // not sure about this in the long run but Color uses it for now 
         {
+            if (targetIsVisible)
+            {
+                pressToOpenButton.SetActive(true);
+            }
+            else
+            {
+                pressToOpenButton.SetActive(false);
+            }
             Color color = targetIsVisible ? Color.yellow : Color.white;
             mat.color = color;
         }
@@ -84,7 +107,7 @@ public class OpenDoor : MonoBehaviour
     public bool CheckVisibility()
     {
         Vector3 directionToTarget = target.position - transform.position;
-        float degreesToTarget = Vector3.Angle(transformRightAdjusted, directionToTarget);
+        float degreesToTarget = Vector3.Angle(transform.right, directionToTarget);
         bool withinArc = degreesToTarget < (angle / 2);
         if (withinArc == false)
         {
@@ -97,7 +120,10 @@ public class OpenDoor : MonoBehaviour
         var canSee = false;
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance))
         {
-            if (hit.collider.transform == target)
+            playerRotationY = player.transform.eulerAngles;
+            var playerRotation = playerRotationY.y - 360f;  // fuck if I know why we gotta do this - but I know
+            //Debug.Log(playerRotationY.y - 360);
+            if (hit.collider.transform == target  && playerRotation > yAngleMin && playerRotation < yAngleMax)  //10/23/22 added 2 && conditions
             {
                 canSee = true;
             }
@@ -111,7 +137,7 @@ public class OpenDoor : MonoBehaviour
     }
     public bool CheckVisibilityWithSphere()
     {
-        if (Physics.CheckSphere(transformSphereCheck, sphereRadius))
+        if (Physics.CheckSphere(transformSphereCheck, sphereRadius))   //Make sure the GizmoDrawSphere matches this
         {
             return true;
         }
@@ -123,7 +149,7 @@ public class OpenDoor : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         // Draw a black sphere at the transform's position
-        Gizmos.color = Color.black;
+        Gizmos.color = Color.green;
         Gizmos.DrawSphere(transformSphereCheck, sphereRadius);
     }
     private void OnCollisionEnter(Collision collision)
