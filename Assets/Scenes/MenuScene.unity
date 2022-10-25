@@ -2793,8 +2793,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Robotic Avatar
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1628ebd59289e7140a236734a5294642, type: 2}
-  m_sharedMaterial: {fileID: -8333250609966275279, guid: 1628ebd59289e7140a236734a5294642, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
+  m_sharedMaterial: {fileID: -8333250609966275279, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
