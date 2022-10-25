@@ -74,7 +74,7 @@ public class OpenDoor : MonoBehaviour
             {
                 pressToOpenButton.SetActive(false);
             }
-            Color color = targetIsVisible ? Color.yellow : Color.white;
+            Color color = targetIsVisible ? Color.green : Color.red;
             mat.color = color;
         }
 
@@ -166,9 +166,9 @@ public class OpenDoor : MonoBehaviour
 public class OpenDoorEditor : Editor
 {
     private void OnSceneGUI()
-    { 
-       // Debug.Log("entered editor code");  //runs every frame so we know and we commented
-        var visibility = target as OpenDoor;
+    {
+        // Debug.Log("entered editor code");  //runs every frame so we know and we commented
+        OpenDoor visibility = target as OpenDoor;
         Handles.color = new Color(1, 1, 1, 0.1f);
         Vector3 forwardPointMinusHalfAngle = Quaternion.Euler(0, -visibility.angle / 2, 0) * visibility.transform.right;
         Vector3 arcStart = forwardPointMinusHalfAngle * visibility.maxDistance;
