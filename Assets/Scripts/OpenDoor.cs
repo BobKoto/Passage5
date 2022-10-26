@@ -21,11 +21,13 @@ public class OpenDoor : MonoBehaviour
     public float yAngleMin = -104f;
     public float yAngleMax = -74f; 
     public GameObject pressToOpenButton;
+    public string operateButton = "DoorSlideDown";  // we change in the prefab(s)
+   
     Vector3 playerRotationY;
     //  bool tooFarToPress, inRangeToPress;
     Material mat;
     MeshRenderer meshRenderer;
-    Vector3 transformRightAdjusted;
+    //Vector3 transformRightAdjusted;
     Vector3 transformSphereCheck;
     //By The Cookbook
     public bool targetIsVisible { get; private set; }
@@ -35,7 +37,24 @@ public class OpenDoor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        anim = GameObject.Find("SlidingDoor1").GetComponent<Animator>();
+        Debug.Log("hello from " + this.name);
+        string myName = this.name;
+        switch (myName)
+        {
+            case "DoorOpener":
+                {
+                    anim = GameObject.Find("SlidingDoor1").GetComponent<Animator>();
+                    break;
+                }
+            case "StepsRaise":
+                {
+                    anim = GameObject.Find("RaiseSteps1").GetComponent<Animator>();
+                    break;
+                }
+        }
+
+ 
+
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         mat = GetComponent<Renderer>().material;
         if (!target)  // we didn't set a target in the editor 
@@ -44,7 +63,7 @@ public class OpenDoor : MonoBehaviour
             target = GameObject.Find("Right_Hand").GetComponent<SphereCollider>().transform;
             //tooFarToPress = true; // IF and ONLY IF we start too far from a pressable object
         }
-        transformRightAdjusted = new Vector3(transform.position.x - transformRightXAdjust, transform.position.y, transform.position.z);
+        //transformRightAdjusted = new Vector3(transform.position.x - transformRightXAdjust, transform.position.y, transform.position.z);
         transformSphereCheck = new Vector3(
             transform.position.x + transformXOffset,
             transform.position.y,
@@ -56,7 +75,7 @@ public class OpenDoor : MonoBehaviour
         //Debug.Log("player y = " + playerRotationY + " transform.rotation = " + player.rotation + " and Transform.Rotation = " + player.T );
         playerRotationY = player.transform.eulerAngles;
         Debug.Log(" playerY rotation = " + playerRotationY);
-        //  Debug.Log("hello from " + this.name );
+
     }
 
     // Update is called once per frame
@@ -157,7 +176,7 @@ public class OpenDoor : MonoBehaviour
         print("Collided with " + collision.collider);
         mat.color = Color.green;
         audioManager.PlayAudio(audioManager.clipapert);
-        anim.SetTrigger("DoorSlideDown");
+        anim.SetTrigger(operateButton);
     }
 }
 #if UNITY_EDITOR

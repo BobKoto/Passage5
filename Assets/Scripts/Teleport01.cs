@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Teleport01 : MonoBehaviour
 {
-    //public GameObject player, playerCameraRoot;
     public Transform playerTransform; //, playerCameraRootTransform;
     public Vector3 teleportPlayerToPosition;
    // public Quaternion rotatePlayerToRotation;
@@ -21,7 +20,7 @@ public class Teleport01 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("hello from teleport01");
+       // Debug.Log("hello from teleport01");
     }
 
     // Update is called once per frame
