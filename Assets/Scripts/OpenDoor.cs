@@ -127,6 +127,7 @@ public class OpenDoor : MonoBehaviour
     {
         Vector3 directionToTarget = target.position - transform.position;
         float degreesToTarget = Vector3.Angle(transform.right, directionToTarget);
+        //new Vector3(transform.position.x,transform.position.y,transform.position.z)
         bool withinArc = degreesToTarget < (angle / 2);
         if (withinArc == false)
         {
@@ -144,14 +145,14 @@ public class OpenDoor : MonoBehaviour
 
             if (hit.collider.transform == target  && (playerRotation > yAngleMin && playerRotation < yAngleMax))  //10/23/22 added 2 && conditions
             {
-                //Debug.Log("canSee is True and playerRotationY = " + playerRotationY);
+              //  Debug.Log(this.name + " canSee is True and playerRotationY = " + playerRotationY);
                 canSee = true;
             }
             Debug.DrawLine(transform.position, hit.point);
         }
         else
         {
-            Debug.Log("ray hit nothing, rayDistance  = " + rayDistance);
+           // Debug.Log(this.name + "  ray hit nothing, rayDistance  = " + rayDistance);
             Debug.DrawRay(transform.position, directionToTarget.normalized * rayDistance);
         }
         return canSee;
