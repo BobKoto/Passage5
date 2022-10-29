@@ -22,11 +22,13 @@ public class RotateSelf : MonoBehaviour
         float ro = Time.deltaTime * speed;
         if (clockWise)
         {
-         transform.Rotate(-ro,   0f, 0f,  Space.Self);
+        //  transform.Rotate(-ro,   0f, 0f,  Space.Self);
+            transform.Rotate(0f, 0f, -ro, Space.Self);
         }
         else
         {
-            transform.Rotate(ro,   0f, 0f,  Space.World);  //counter clockwise 
+         //   transform.Rotate(ro,   0f, 0f,  Space.World);  //counter clockwise 
+            transform.Rotate(0f, 0f, ro, Space.World);  //counter clockwise 
         }
 
         //transform.RotateAround(target.transform.position, Vector3.right, ro );
