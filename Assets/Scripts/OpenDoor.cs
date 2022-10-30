@@ -74,7 +74,7 @@ public class OpenDoor : MonoBehaviour
         // playerRotationY = player.rotation.y;
         //Debug.Log("player y = " + playerRotationY + " transform.rotation = " + player.rotation + " and Transform.Rotation = " + player.T );
         playerRotationY = player.transform.eulerAngles;
-        Debug.Log(" playerY rotation = " + playerRotationY);
+      //  Debug.Log(" playerY rotation = " + playerRotationY);
 
     }
 

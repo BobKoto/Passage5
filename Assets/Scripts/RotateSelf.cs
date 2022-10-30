@@ -11,9 +11,9 @@ public class RotateSelf : MonoBehaviour
     void Start()
     {
 
-        if (clockWise) Debug.Log("With clockwise set we rotate Self...");
-        else
-            Debug.Log("With clockwise NOT set we rotate World...");
+        //if (clockWise) Debug.Log("With clockwise set we rotate Self...");
+        //else
+        //    Debug.Log("With clockwise NOT set we rotate World...");
     }
 
     // Update is called once per frame
