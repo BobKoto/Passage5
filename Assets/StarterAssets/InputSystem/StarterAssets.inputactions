@@ -36,6 +36,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ObjectTouch",
+                    "type": "Button",
+                    "id": "02a7bc5f-9510-4419-82bc-27ab4efdab38",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -214,6 +222,44 @@
                     "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "882d9803-8cf8-484e-aea9-161e7015e137",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ObjectTouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Touch action map",
+            "id": "bb89a5cb-18a2-48c3-9b5a-17856e7595e9",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Value",
+                    "id": "96d915a4-8ed7-4328-8ebe-776efbc15f97",
+                    "expectedControlType": "Touch",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "17f3289b-5e07-446e-9d26-5eaf380afb07",
+                    "path": "<Touchscreen>/primaryTouch",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch control scheme;Gamepad",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
@@ -265,6 +311,17 @@
             "name": "PS4 Controller",
             "bindingGroup": "PS4 Controller",
             "devices": []
+        },
+        {
+            "name": "Touch control scheme",
+            "bindingGroup": "Touch control scheme",
+            "devices": [
+                {
+                    "devicePath": "<Touchscreen>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
         }
     ]
 }
