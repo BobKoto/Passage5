@@ -307,6 +307,19 @@ MonoBehaviour:
   pressToOpenButton: {fileID: 1211312009}
   operateButton: DoorSlideDown
   visualize: 1
+--- !u!114 &33981051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33981045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56ecde699bcd8894996c3b7125ed1cfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  operateButton: DoorSlideDown
 --- !u!1001 &38627623
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2641,7 +2654,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26732
+  m_Name: pb_Mesh26736
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9426,8 +9439,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1075966630}
   m_LocalRotation: {x: 0, y: -0.67880076, z: 0, w: 0.7343225}
-  m_LocalPosition: {x: 270.68, y: 4.52, z: -176.25}
-  m_LocalScale: {x: 4.7376256, y: 2.2844079, z: 3.9608972}
+  m_LocalPosition: {x: 270.71, y: 4.52, z: -175.89}
+  m_LocalScale: {x: 4.9238563, y: 2.2844079, z: 3.9608972}
   m_Children:
   - {fileID: 1543934862}
   m_Father: {fileID: 1623471597}
@@ -9442,7 +9455,7 @@ MeshCollider:
   m_GameObject: {fileID: 1075966630}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -10073,6 +10086,19 @@ MonoBehaviour:
   pressToOpenButton: {fileID: 113739307}
   operateButton: Steps1Raise
   visualize: 1
+--- !u!114 &1157211162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157211156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e846ba2784593664fb2fb2bd2ed9aaeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  operateButton: Steps1Raise
 --- !u!1001 &1158710044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10249,7 +10275,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Come toward me. \nPress when Green \nto open the Door."
+  m_text: "Robot, come toward me. \nPress when Green \nto open the Door."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10258,8 +10284,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283754326
-  m_fontColor: {r: 0.33904362, g: 0.9056604, b: 0.32808825, a: 1}
+    rgba: 4287735441
+  m_fontColor: {r: 0.56856245, g: 0.6509434, b: 0.56742615, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11527,7 +11553,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26614
+  m_Name: pb_Mesh26618
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11801,7 +11827,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26880
+  m_Name: pb_Mesh26884
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12811,16 +12837,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1543934861}
-  m_LocalRotation: {x: 0, y: -0.048849784, z: 0, w: 0.9988062}
-  m_LocalPosition: {x: 0, y: 0, z: 0.12}
-  m_LocalScale: {x: 0.19471163, y: 0.34413296, z: 0.25202087}
+  m_LocalRotation: {x: 0, y: -0.061919555, z: 0, w: 0.99808115}
+  m_LocalPosition: {x: 0, y: 0, z: 0.13}
+  m_LocalScale: {x: 0.17287019, y: 0.34413296, z: 0.25145492}
   m_Children: []
   m_Father: {fileID: 1075966631}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -5.6, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -7.1, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.786, y: -0.50601}
+  m_AnchoredPosition: {x: 1.575, y: -0.491}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1543934863
@@ -12843,7 +12869,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Come toward me. \nPress when Green \nto raise steps and \ntake a dip."
+  m_text: "Robot, come toward me. \nPress when Green \nto raise steps and \ntake
+    a dip."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12852,8 +12879,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283754326
-  m_fontColor: {r: 0.33904362, g: 0.9056604, b: 0.32808825, a: 1}
+    rgba: 4287735441
+  m_fontColor: {r: 0.5686275, g: 0.6509804, b: 0.5686275, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12906,7 +12933,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -1.3614988, y: -0.22756004, z: 16.229664, w: 2.8499732}
+  m_margin: {x: -1.7081289, y: -0.22756004, z: 16.253908, w: 2.8499732}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -12962,6 +12989,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6150355512898510899, guid: 7a213391241401f469b51998f32d1861, type: 3}
   m_PrefabInstance: {fileID: 1891825812}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1555073046 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5542111180780342642, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+  m_PrefabInstance: {fileID: 2095143393}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1555073051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555073046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!4 &1576391054 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3921957422626777972, guid: eecff9997e0980c4b87b90f121ff5aca, type: 3}
@@ -14523,7 +14571,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27342
+  m_Name: pb_Mesh27348
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -17123,14 +17171,13 @@ GameObject:
   - component: {fileID: 2068412736}
   - component: {fileID: 2068412735}
   - component: {fileID: 2068412734}
-  - component: {fileID: 2068412739}
   m_Layer: 0
   m_Name: SphereTouchTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2068412734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17215,40 +17262,11 @@ Transform:
   m_GameObject: {fileID: 2068412733}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 286.15, y: 3.93, z: -178.77}
-  m_LocalScale: {x: 3.0008159, y: 3.0008159, z: 3.0008159}
+  m_LocalScale: {x: 2.1695514, y: 2.1695514, z: 2.1695514}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2068412739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2068412733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2068412734}
-          m_TargetAssemblyTypeName: ActOnTouch, Assembly-CSharp
-          m_MethodName: ObjectTouched
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &2076436241 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4860276692040879403, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
