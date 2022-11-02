@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class AddRemoveChild : MonoBehaviour
 {
@@ -11,32 +12,39 @@ public class AddRemoveChild : MonoBehaviour
     public Transform originalParent;
     public Transform newParent;
 
+    Animator anim;
+
+    public CinemachineVirtualCamera thirdPersonFollowCam;
+    public CinemachineVirtualCamera freeLookCam;
     private void Start()
     {
-       // Transform originalParent = child.transform.parent;
+        // Transform originalParent = child.transform.parent;
+        anim = GetComponent<Animator>();
     }
     private void OnCollisionEnter(Collision collision)
     {
       //  if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Something  hit Carousel  " + collision.gameObject.name);
+            Debug.Log("Something  hit " + this.name +  collision.gameObject.name);
         }
     }
     private void OnCollisionExit(Collision collision)
     {
       //  if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Something  left Carousel  " + collision.gameObject.name);
+            Debug.Log("Something  left " + this.name + collision.gameObject.name);
             // Debug.Log("Player Left Carousel");
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)   //the triggers control 
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Something  entered Carousel trigger  " + other.gameObject.name);
+            Debug.Log("Something  entered " + this.name + " trigger  " + other.gameObject.name);
             child.transform.SetParent(newParent);
+          if (anim)  anim.SetBool("runSwitch", true);
+            thirdPersonFollowCam.Priority=9;
         }
 
     }
@@ -44,9 +52,12 @@ public class AddRemoveChild : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Something  exited Carousel trigger  " + other.gameObject.name);
+            Debug.Log("Something  exited " + this.name + " trigger  " + other.gameObject.name);
             child.transform.SetParent(originalParent);
-          //  child.transform.SetParent(null);
+         if (anim)   anim.SetBool("runSwitch", false);
+            // thirdPersonFollowCam.MoveToTopOfPrioritySubqueue();
+            thirdPersonFollowCam.Priority=11;
+            //  child.transform.SetParent(null);
         }
 
     }
