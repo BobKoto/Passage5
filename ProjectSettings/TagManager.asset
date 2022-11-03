@@ -8,6 +8,7 @@ TagManager:
   - ObstacleType01
   - DirectionCollider
   - DirectionalVCam
+  - FloorOfBubbles
   layers:
   - Default
   - TransparentFX

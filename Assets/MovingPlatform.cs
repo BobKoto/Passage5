@@ -6,8 +6,8 @@ public class MovingPlatform : MonoBehaviour
 {
     [SerializeField]
     Vector3[] points = { };
-    [SerializeField]
-    float speed = 10f;
+
+    public float speed = 10f;
 
     int nextPoint = 0;
     Vector3 startPosition;
@@ -64,7 +64,7 @@ public class MovingPlatform : MonoBehaviour
         {
             offsetPosition = startPosition;
         }
-        Gizmos.color = Color.blue;
+        Gizmos.color = Color.yellow;
         for (int p = 0; p < points.Length; p++)
         {
             var p1 = points[p];

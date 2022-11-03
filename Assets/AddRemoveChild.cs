@@ -6,8 +6,7 @@ using Cinemachine;
 public class AddRemoveChild : MonoBehaviour
 {
     public GameObject child;
-    public GameObject newParentGameObject;
-
+   // public GameObject newParentGameObject;
 
     public Transform originalParent;
     public Transform newParent;
@@ -16,10 +15,15 @@ public class AddRemoveChild : MonoBehaviour
 
     public CinemachineVirtualCamera thirdPersonFollowCam;
     public CinemachineVirtualCamera freeLookCam;
+
+    MovingPlatform movingPlatform;
     private void Start()
     {
         // Transform originalParent = child.transform.parent;
-        anim = GetComponent<Animator>();
+       anim = GetComponent<Animator>();
+       movingPlatform = GameObject.Find("MovingPlatform").GetComponent<MovingPlatform>();
+       movingPlatform.speed = 0;
+
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -43,8 +47,9 @@ public class AddRemoveChild : MonoBehaviour
         {
             Debug.Log("Something  entered " + this.name + " trigger  " + other.gameObject.name);
             child.transform.SetParent(newParent);
-          if (anim)  anim.SetBool("runSwitch", true);
-            thirdPersonFollowCam.Priority=9;
+            HandleTriggerEnterPerGameObject(this.name);
+      //    if (anim)  anim.SetBool("runSwitch", true);
+            thirdPersonFollowCam.Priority=9; //Kludge to make freeLook cam ON
         }
 
     }
@@ -54,12 +59,47 @@ public class AddRemoveChild : MonoBehaviour
         {
             Debug.Log("Something  exited " + this.name + " trigger  " + other.gameObject.name);
             child.transform.SetParent(originalParent);
-         if (anim)   anim.SetBool("runSwitch", false);
+            HandleTriggerExitPerGameObject(this.name);
+            //if (anim)   anim.SetBool("runSwitch", false);
             // thirdPersonFollowCam.MoveToTopOfPrioritySubqueue();
-            thirdPersonFollowCam.Priority=11;
+            thirdPersonFollowCam.Priority=11;  //Kludge to make followPlayer cam ON
             //  child.transform.SetParent(null);
         }
 
+    }
+    void HandleTriggerEnterPerGameObject(string thisName)
+    {
+       switch (thisName)
+        {
+            case "MovingPlatform":
+                {
+                    movingPlatform.speed = 5;  //This is not an animation - its an Update() method
+                    break;
+                }
+            case "CarouselTest":
+                {
+                    if (anim) anim.SetBool("runSwitch", true);
+                    break;
+                }
+
+        }
+    }
+    void HandleTriggerExitPerGameObject(string thisName)
+    {
+        switch (thisName)
+        {
+            case "MovingPlatform":
+                {
+                    movingPlatform.speed = 0;  //This is not an animation - its an Update() method
+                    break;
+                }
+            case "CarouselTest":
+                {
+                    if (anim) anim.SetBool("runSwitch", false);
+                    break;
+                }
+
+        }
     }
 
     ////Invoked when a button is clicked.

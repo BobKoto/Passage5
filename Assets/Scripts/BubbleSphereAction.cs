@@ -14,8 +14,9 @@ public class BubbleSphereAction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            this.gameObject.SetActive(false);
-            audioManager.PlayAudio(audioManager.clipapert);
+            if (!gameObject.CompareTag("FloorOfBubbles"))  this.gameObject.SetActive(false);
+
+            audioManager.PlayAudio(audioManager.clipSplash);
         }
     }
 
