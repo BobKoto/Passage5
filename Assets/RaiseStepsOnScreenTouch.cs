@@ -7,6 +7,7 @@ public class RaiseStepsOnScreenTouch : MonoBehaviour, IPointerClickHandler
 {
     Animator anim;
     public string operateButton = "Steps1Raise";
+    public GameObject stepsRaiser;
     AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
@@ -19,5 +20,6 @@ public class RaiseStepsOnScreenTouch : MonoBehaviour, IPointerClickHandler
         audioManager.PlayAudio(audioManager.clipapert);
         Debug.Log("Raise Steps touched");
         anim.SetTrigger(operateButton);
+        stepsRaiser.SetActive(false);
     }
 }

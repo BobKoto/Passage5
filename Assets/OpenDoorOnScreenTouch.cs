@@ -7,6 +7,7 @@ public class OpenDoorOnScreenTouch : MonoBehaviour, IPointerClickHandler
 {
     Animator anim;
     public string operateButton = "DoorSlideDown";
+    public GameObject doorOpener;
     AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
@@ -17,8 +18,9 @@ public class OpenDoorOnScreenTouch : MonoBehaviour, IPointerClickHandler
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
         audioManager.PlayAudio(audioManager.clipapert);
-        Debug.Log("Open Door touched");
+        Debug.Log("Open Door pressed");
         anim.SetTrigger(operateButton);
+        doorOpener.SetActive(false);
     }
     //void Update()
     //    {

@@ -10,6 +10,8 @@ public class OpenDoor : MonoBehaviour
     public AudioManager audioManager;
     public Transform target;
     public Transform player;
+    public GameObject doorOpener;  //the button and text prompts 
+    public GameObject stepsRaiser; //the button and text prompts 
     public float maxDistance = 1.5f;
     [Range(0f, 360f)]
     public float angle = 45f;
@@ -174,12 +176,28 @@ public class OpenDoor : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(transformSphereCheck, sphereRadius);
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)   //robot touched the collider so do the animation and deactivate the button and text
     {
         print("Collided with " + collision.collider);
         mat.color = Color.green;
         audioManager.PlayAudio(audioManager.clipapert);
         anim.SetTrigger(operateButton);
+        string myName = this.name;
+        switch (myName)
+        {
+            case "DoorOpener":
+                {
+                    doorOpener.SetActive(false);
+                    pressToOpenButton.SetActive(false);
+                    break;
+                }
+            case "StepsRaise":
+                {
+                    stepsRaiser.SetActive(false);
+                    pressToOpenButton.SetActive(false);
+                    break;   // for now and just a little while until we 
+                }
+        }
     }
 }
 #if UNITY_EDITOR
