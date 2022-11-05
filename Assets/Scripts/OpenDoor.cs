@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -35,6 +36,7 @@ public class OpenDoor : MonoBehaviour
     public bool targetIsVisible { get; private set; }
     [SerializeField]
     bool visualize = true;
+    public MyIntEvent m_MyEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -76,7 +78,11 @@ public class OpenDoor : MonoBehaviour
         // playerRotationY = player.rotation.y;
         //Debug.Log("player y = " + playerRotationY + " transform.rotation = " + player.rotation + " and Transform.Rotation = " + player.T );
         playerRotationY = player.transform.eulerAngles;
-      //  Debug.Log(" playerY rotation = " + playerRotationY);
+        //  Debug.Log(" playerY rotation = " + playerRotationY);
+        if (m_MyEvent == null)
+            m_MyEvent = new MyIntEvent();
+
+      //  m_MyEvent.AddListener(EnableTheTextCloud);
 
     }
 
@@ -189,6 +195,7 @@ public class OpenDoor : MonoBehaviour
                 {
                     doorOpener.SetActive(false);
                     pressToOpenButton.SetActive(false);
+                    TellTextCloud();
                     break;
                 }
             case "StepsRaise":
@@ -199,7 +206,12 @@ public class OpenDoor : MonoBehaviour
                 }
         }
     }
+    public void TellTextCloud()
+    {
+        m_MyEvent.Invoke(5, 4, 3);
+    }
 }
+
 #if UNITY_EDITOR
 // do some custom Editor stuff 
 [CustomEditor(typeof(OpenDoor))]
