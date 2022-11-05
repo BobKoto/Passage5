@@ -37,7 +37,8 @@ public class OpenDoor : MonoBehaviour
     [SerializeField]
     bool visualize = true;
     public MyIntEvent m_MyEvent;
-
+    const string firstDoor = "#Good Robot.";
+    const string firstSteps = "Take a dip!";
     // Start is called before the first frame update
     void Start()
     {
@@ -195,20 +196,21 @@ public class OpenDoor : MonoBehaviour
                 {
                     doorOpener.SetActive(false);
                     pressToOpenButton.SetActive(false);
-                    TellTextCloud();
+                    TellTextCloud(firstDoor);
                     break;
                 }
             case "StepsRaise":
                 {
                     stepsRaiser.SetActive(false);
                     pressToOpenButton.SetActive(false);
-                    break;   // for now and just a little while until we 
+                    TellTextCloud(firstSteps);
+                    break;  
                 }
         }
     }
-    public void TellTextCloud()
+    public void TellTextCloud(string caption)
     {
-        m_MyEvent.Invoke(5, 4, 3);
+        m_MyEvent.Invoke(5, 4, caption);
     }
 }
 
