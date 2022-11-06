@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BubbleSphereAction : MonoBehaviour
+public class PlayerEnterBubbleRoom : MonoBehaviour
 {
 
     AudioManager audioManager;
@@ -15,12 +15,9 @@ public class BubbleSphereAction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!gameObject.CompareTag("FloorOfBubbles"))  this.gameObject.SetActive(false);
-
             audioManager.PlayAudio(audioManager.clipSplash);
         }
     }
-
     // Update is called once per frame
     //void Update()
     //{
