@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 //using UnityEngine.InputSystem.EnhancedTouch;
 
-public class ActOnTouch : MonoBehaviour, IPointerClickHandler  //, IPointerDownHandler, IPointerUpHandler
+public class ActOnTouch : MonoBehaviour, IPointerClickHandler  // Touch Testing only for now 
 {
     AudioManager audioManager;
     // Start is called before the first frame update

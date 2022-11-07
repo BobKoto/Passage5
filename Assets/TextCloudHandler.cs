@@ -26,8 +26,9 @@ public class TextCloudHandler : MonoBehaviour
 
     public void EnableTheTextCloud(int x, int y, string _caption)
     {
+       
+        Vector3 newCloudPosition = new Vector3 (playerTransform.position.x + 4f, playerTransform.position.y + 5f, playerTransform.position.z - 2f);
         Debug.Log("textCloud pos = " + textCloud.transform.position + " Player pos = " + playerTransform.position);
-        Vector3 newCloudPosition = new Vector3 (playerTransform.position.x + 4f, playerTransform.position.y + 5f, playerTransform.position.z - 6f);
         textCloud.transform.position = newCloudPosition;
         cloudTextString.text = _caption;
         Debug.Log(this.name + "  Set caption string to " + _caption);
