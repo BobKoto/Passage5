@@ -13,7 +13,7 @@ public class TextCloudHandler : MonoBehaviour
 {
     public Transform  playerTransform;
     public GameObject textCloud;
-    public TextMeshPro cloudTextString;
+    public GameObject cloudText;
     public MyIntEvent m_MyEvent;
     // Start is called before the first frame update
     void Start()
@@ -27,10 +27,10 @@ public class TextCloudHandler : MonoBehaviour
     public void EnableTheTextCloud(int x, int y, string _caption)
     {
        
-        Vector3 newCloudPosition = new Vector3 (playerTransform.position.x + 4f, playerTransform.position.y + 5f, playerTransform.position.z - 2f);
-        Debug.Log("textCloud pos = " + textCloud.transform.position + " Player pos = " + playerTransform.position);
-        textCloud.transform.position = newCloudPosition;
-        cloudTextString.text = _caption;
+        //Vector3 newCloudPosition = new Vector3 (playerTransform.position.x + 4f, playerTransform.position.y + 5f, playerTransform.position.z - 2f);
+        //Debug.Log("textCloud pos = " + textCloud.transform.position + " Player pos = " + playerTransform.position);
+        //textCloud.transform.position = newCloudPosition;
+        cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
         Debug.Log(this.name + "  Set caption string to " + _caption);
         textCloud.SetActive(true);
         StartCoroutine(RemoveCloudAfterXSeconds(6));
