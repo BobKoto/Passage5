@@ -11,12 +11,17 @@ public class FlapArms : StateMachineBehaviour
     //  OnStateEnter is called before OnStateEnter is called on any state inside this state machine
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        const int avatarScene = 2;
+        const int mirrorRoutineScene = 3;
         Scene activeScene;
-        int flapArmsHash = Animator.StringToHash(animator.parameters[5].name);
+        int flapArmsHash = Animator.StringToHash(animator.parameters[5].name);  //flapArmsTF
+        int avatarSceneWaveHash = Animator.StringToHash(animator.parameters[7].name);
         bool waveArms = animator.GetBool(flapArmsHash);
+        bool avatarSceneWave = animator.GetBool(avatarSceneWaveHash);
         activeScene = SceneManager.GetActiveScene();   
         {
-            if (activeScene.buildIndex == 3 && waveArms)   //here we try to only start and stop waving in sceneIndex 3 //the mirror routine/scene 
+            if ((activeScene.buildIndex == mirrorRoutineScene && waveArms)   //here we try to only start and stop waving in sceneIndex 3 //the mirror routine/scene 
+              || (activeScene.buildIndex == avatarScene && avatarSceneWave)) 
             {
                 int baseLayerSpeedHash = Animator.StringToHash(animator.parameters[0].name);  // get the speed name 
                 float speedBaseLayer;

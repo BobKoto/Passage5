@@ -38,7 +38,7 @@ public class OpenDoor : MonoBehaviour
     bool visualize = true;
     public MyIntEvent m_MyEvent;
     const string firstDoor = "#Good Robot.";
-    const string firstSteps = "Take a dip!";
+    const string firstSteps = "#Take a dip!";
     // Start is called before the first frame update
     void Start()
     {

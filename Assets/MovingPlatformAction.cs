@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarouselTestAction : MonoBehaviour
+public class MovingPlatformAction : MonoBehaviour
 {
 
     public MyIntEvent m_MyEvent;
 
-    const string onCarousel = "#Wheee";
-    const string offCarousel = "#Dizzy";
+    const string onPlatform = "#Free ride";
+    const string offPlatform = "#Now walk";
 
     AudioManager audioManager;
     // Start is called before the first frame update
@@ -20,16 +20,16 @@ public class CarouselTestAction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            audioManager.PlayAudio(audioManager.clipfalling);
-            TellTextCloud(onCarousel);
+          //  audioManager.PlayAudio(audioManager.clipfalling);
+            TellTextCloud(onPlatform);
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            audioManager.PlayAudio(audioManager.clipBeamB);
-            TellTextCloud(offCarousel);
+          //  audioManager.PlayAudio(audioManager.clipBeamB);
+            TellTextCloud(offPlatform);
         }
     }
     public void TellTextCloud(string caption)

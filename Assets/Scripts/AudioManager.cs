@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip clipapert;
     public AudioClip clipSplash;
     public AudioClip clipfalling;
+    public AudioClip clipBeamB;
 
     public AudioSource audioSource;
   //  [Header("END Audio Stuff")]
