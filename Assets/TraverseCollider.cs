@@ -15,18 +15,23 @@ public class TraverseCollider : MonoBehaviour  // find on CubeFacingCameraOnGree
     {
         if (other.CompareTag("Player"))
         {
+            if (MovingPlatformAction.playerIsOnPlatform)
+            {
+              Debug.Log("Player entered collider and is on the platform");
+              anim.SetBool("avatarSceneWave", true);
+            }
 
-            Debug.Log("Player entered");
-            anim.SetBool("avatarSceneWave", true);
         }
     }
     public void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player exited");
-            anim.SetBool("avatarSceneWave", false);
-
+            if (MovingPlatformAction.playerIsOnPlatform)
+            {
+                Debug.Log("Player exited collider and is on the platform");
+                anim.SetBool("avatarSceneWave", false);
+            }
         }
     }
 

@@ -10,6 +10,8 @@ public class MovingPlatformAction : MonoBehaviour
     const string onPlatform = "#Free ride";
     const string offPlatform = "#Now walk";
 
+    public static bool playerIsOnPlatform { get; set; }
+
     AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,7 @@ public class MovingPlatformAction : MonoBehaviour
         {
           //  audioManager.PlayAudio(audioManager.clipfalling);
             TellTextCloud(onPlatform);
+            playerIsOnPlatform = true;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -30,6 +33,7 @@ public class MovingPlatformAction : MonoBehaviour
         {
           //  audioManager.PlayAudio(audioManager.clipBeamB);
             TellTextCloud(offPlatform);
+            playerIsOnPlatform = false;
         }
     }
     public void TellTextCloud(string caption)
