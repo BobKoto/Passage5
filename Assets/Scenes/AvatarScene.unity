@@ -806,7 +806,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1306
+  m_Name: pb_Mesh-100414
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3712,7 +3712,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26958
+  m_Name: pb_Mesh115236
   serializedVersion: 10
   m_SubMeshes: []
   m_Shapes:
@@ -4329,7 +4329,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1280
+  m_Name: pb_Mesh-100388
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5577,7 +5577,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2590
+  m_Name: pb_Mesh-101698
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5837,7 +5837,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2618
+  m_Name: pb_Mesh-101726
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6698,12 +6698,12 @@ GameObject:
   - component: {fileID: 578853957}
   - component: {fileID: 578853956}
   m_Layer: 0
-  m_Name: CM vcam1 (1)
+  m_Name: CM vcamBackLeft
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &578853955
 Transform:
   m_ObjectHideFlags: 0
@@ -6712,7 +6712,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578853954}
   m_LocalRotation: {x: 0.17826292, y: 0.13770917, z: -0.025204437, w: 0.9739729}
-  m_LocalPosition: {x: 5.8, y: 19.77, z: 21.4}
+  m_LocalPosition: {x: 5.8, y: 19.77, z: 23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 732370831}
@@ -6770,9 +6770,9 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 15
     OrthographicSize: 10
-    NearClipPlane: 5.65
+    NearClipPlane: 3
     FarClipPlane: 500
     Dutch: 0
     ModeOverride: 0
@@ -8092,12 +8092,12 @@ GameObject:
   - component: {fileID: 625143762}
   - component: {fileID: 625143761}
   m_Layer: 0
-  m_Name: CM vcam1 (2)
+  m_Name: CM vcamFrontRight
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &625143760
 Transform:
   m_ObjectHideFlags: 0
@@ -8105,7 +8105,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 625143759}
-  m_LocalRotation: {x: 0.17826237, y: 0.13770871, z: -0.025204273, w: 0.9739731}
+  m_LocalRotation: {x: 0.17826256, y: 0.13770886, z: -0.025204329, w: 0.97397304}
   m_LocalPosition: {x: -6.38, y: 19.77, z: 34.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -8164,9 +8164,9 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 15
     OrthographicSize: 10
-    NearClipPlane: 5.65
+    NearClipPlane: 3
     FarClipPlane: 500
     Dutch: 0
     ModeOverride: 0
@@ -8187,7 +8187,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27154
+  m_Name: pb_Mesh115440
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8820,12 +8820,12 @@ GameObject:
   - component: {fileID: 713081669}
   - component: {fileID: 713081668}
   m_Layer: 0
-  m_Name: CM vcam1 (4)
+  m_Name: CM vcamEntrance
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &713081667
 Transform:
   m_ObjectHideFlags: 0
@@ -8833,8 +8833,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713081666}
-  m_LocalRotation: {x: 0.21283409, y: 0.15372135, z: -0.03392755, w: 0.96432376}
-  m_LocalPosition: {x: -0.17, y: 17.91, z: 41.46}
+  m_LocalRotation: {x: 0.12940274, y: 0.16293442, z: -0.02156117, w: 0.9778765}
+  m_LocalPosition: {x: 0.3999939, y: 17.91, z: 40.800003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1436615530}
@@ -8890,11 +8890,11 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_Follow: {fileID: 2076436242}
   m_Lens:
-    FieldOfView: 30
+    FieldOfView: 42.8
     OrthographicSize: 10
-    NearClipPlane: 5.65
+    NearClipPlane: 3
     FarClipPlane: 500
     Dutch: 0
     ModeOverride: 0
@@ -10797,7 +10797,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2740
+  m_Name: pb_Mesh-101848
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11023,7 +11023,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26816
+  m_Name: pb_Mesh115082
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12699,12 +12699,12 @@ GameObject:
   - component: {fileID: 1105988392}
   - component: {fileID: 1105988391}
   m_Layer: 0
-  m_Name: CM vcam1
+  m_Name: CM vcamBackRight
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1105988390
 Transform:
   m_ObjectHideFlags: 0
@@ -12712,8 +12712,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1105988389}
-  m_LocalRotation: {x: 0.17826292, y: 0.13770917, z: -0.025204437, w: 0.9739729}
-  m_LocalPosition: {x: -6.38, y: 19.77, z: 21.3}
+  m_LocalRotation: {x: 0.17826274, y: 0.13770902, z: -0.025204381, w: 0.973973}
+  m_LocalPosition: {x: -6.38, y: 19.77, z: 23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1090759989}
@@ -12771,9 +12771,9 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 15
     OrthographicSize: 10
-    NearClipPlane: 5.65
+    NearClipPlane: 3
     FarClipPlane: 500
     Dutch: 0
     ModeOverride: 0
@@ -14725,7 +14725,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1254
+  m_Name: pb_Mesh-100362
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -15758,7 +15758,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2546
+  m_Name: pb_Mesh-101654
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -18280,7 +18280,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2604
+  m_Name: pb_Mesh-101712
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -18670,12 +18670,12 @@ GameObject:
   - component: {fileID: 1646117154}
   - component: {fileID: 1646117153}
   m_Layer: 0
-  m_Name: CM vcam1 (3)
+  m_Name: CM vcamFrontLeft
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1646117152
 Transform:
   m_ObjectHideFlags: 0
@@ -18742,9 +18742,9 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 15
     OrthographicSize: 10
-    NearClipPlane: 5.65
+    NearClipPlane: 3
     FarClipPlane: 500
     Dutch: 0
     ModeOverride: 0
@@ -19618,7 +19618,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1332
+  m_Name: pb_Mesh-100440
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -19955,7 +19955,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27728
+  m_Name: pb_Mesh116078
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -20399,7 +20399,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930008033}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 269.22, y: -13.1, z: -223}
+  m_LocalPosition: {x: 269.22, y: -13.1, z: -223.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1105988390}
@@ -20436,7 +20436,7 @@ MonoBehaviour:
   m_MinDuration: 0
   m_RandomizeChoice: 0
   m_DefaultBlend:
-    m_Style: 1
+    m_Style: 0
     m_Time: 0
     m_CustomCurve:
       serializedVersion: 2
