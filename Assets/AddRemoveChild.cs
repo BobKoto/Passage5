@@ -17,13 +17,27 @@ public class AddRemoveChild : MonoBehaviour
     public CinemachineVirtualCamera freeLookCam;
 
     MovingPlatform movingPlatform;
+   // MovingPlatformGreen movingPlatformGreen;
     private void Start()
     {
+        Debug.Log("AddRemoveChild reports this.name is " + this.name);
         // Transform originalParent = child.transform.parent;
        anim = GetComponent<Animator>();
-       movingPlatform = GameObject.Find("MovingPlatform").GetComponent<MovingPlatform>();
-       movingPlatform.speed = 0;
-
+        switch (this.name)
+        {
+            case "MovingPlatform":
+                {
+                    movingPlatform = GameObject.Find("MovingPlatform").GetComponent<MovingPlatform>();
+                    movingPlatform.speed = 0;
+                    break;
+                }
+            case "MovingPlatformGreen":
+                {
+                    movingPlatform = GameObject.Find("MovingPlatformGreen").GetComponent<MovingPlatform>();
+                    movingPlatform.speed = 0;
+                    break;
+                }
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -76,6 +90,11 @@ public class AddRemoveChild : MonoBehaviour
                     movingPlatform.speed = 5;  //This is not an animation - its an Update() method
                     break;
                 }
+            case "MovingPlatformGreen":
+                {
+                    movingPlatform.speed = 5;  //This is not an animation - its an Update() method
+                    break;
+                }
             case "CarouselTest":
                 {
                     if (anim) anim.SetBool("runSwitch", true);
@@ -89,6 +108,11 @@ public class AddRemoveChild : MonoBehaviour
         switch (thisName)
         {
             case "MovingPlatform":
+                {
+                    movingPlatform.speed = 0;  //This is not an animation - its an Update() method
+                    break;
+                }
+            case "MovingPlatformGreen":
                 {
                     movingPlatform.speed = 0;  //This is not an animation - its an Update() method
                     break;
