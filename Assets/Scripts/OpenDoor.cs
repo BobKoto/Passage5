@@ -64,9 +64,12 @@ public class OpenDoor : MonoBehaviour
         mat = GetComponent<Renderer>().material;
         if (!target)  // we didn't set a target in the editor 
         {
-           //   target = GameObject.Find("Right_Hand").GetComponent<Transform>(); //10/22 try looking at the collider - see next line 
-            target = GameObject.Find("Right_Hand").GetComponent<SphereCollider>().transform;
+              target = GameObject.Find
+                ("/NestedParentArmature_Unpack/PlayerArmature/Skeleton/Hips/Spine/Chest/UpperChest/Right_Shoulder/Right_UpperArm/Right_LowerArm/Right_Hand")
+                .GetComponent<SphereCollider>().transform; //10/22 try looking at the collider - see next line 
+          //  target = GameObject.Find("Right_Hand").GetComponent<SphereCollider>().transform;  //Original working line 
             //tooFarToPress = true; // IF and ONLY IF we start too far from a pressable object
+
         }
         //transformRightAdjusted = new Vector3(transform.position.x - transformRightXAdjust, transform.position.y, transform.position.z);
         transformSphereCheck = new Vector3(
