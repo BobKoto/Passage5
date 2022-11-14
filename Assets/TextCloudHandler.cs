@@ -32,7 +32,7 @@ public class TextCloudHandler : MonoBehaviour
         //Debug.Log("textCloud pos = " + textCloud.transform.position + " Player pos = " + playerTransform.position);
         //textCloud.transform.position = newCloudPosition;
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
-        Debug.Log(this.name + "  Set caption string to " + _caption);
+    //    Debug.Log(this.name + "  Set caption string to " + _caption);
         textCloud.SetActive(true);
         StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));
         //Debug.Log(this.name + "  EnableTheTextCloud called via event x = " + x + " y = " + y + " z = " + z);
