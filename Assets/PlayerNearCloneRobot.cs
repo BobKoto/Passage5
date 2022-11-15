@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerNearCloneRobot : MonoBehaviour
 {
     public float stopWavingAfterXSeconds = 10f;
+    public float stopWalkingAfterXSeconds = 10f;
     public MyIntEvent m_MyEvent;
     const string noMoney = "#No money.";
     Animator anim;
@@ -19,6 +20,7 @@ public class PlayerNearCloneRobot : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             anim.SetBool("WaveArmsTF", true);
+            anim.SetFloat("Speed", 2f);
             TellTextCloud(noMoney);
         }
 
@@ -29,13 +31,24 @@ public class PlayerNearCloneRobot : MonoBehaviour
         {
             // anim.SetBool("WaveArmsTF", false);
             StartCoroutine(StopWavingAfterXSeconds(stopWavingAfterXSeconds));
+            StartCoroutine(StopWalkingAfterXSeconds(stopWalkingAfterXSeconds));
         }
-
+    }
+    private void OnFootstep(AnimationEvent animationEvent)
+    {
+        Debug.Log("PlayerClone recvd a Footstep Event " + transform.position);
+        var newPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z -  .1f);
+        transform.position = newPosition;
     }
     IEnumerator StopWavingAfterXSeconds(float x)
     {
         yield return new WaitForSeconds (x);
         anim.SetBool("WaveArmsTF", false);
+    }
+    IEnumerator StopWalkingAfterXSeconds(float x)
+    {
+        yield return new WaitForSeconds(x);
+        anim.SetFloat("Speed", 0f);
     }
     public void TellTextCloud(string caption)
     {
