@@ -36,7 +36,8 @@ public class PlayerNearCloneRobot : MonoBehaviour
     }
     private void OnFootstep(AnimationEvent animationEvent)
     {
-        Debug.Log("PlayerClone recvd a Footstep Event " + transform.position);
+       
+       // Debug.Log("PlayerClone recvd a Footstep Event " + transform.position + "  event clip info  " +  animationEvent.animatorClipInfo.clip);
         var newPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z -  .1f);
         transform.position = newPosition;
     }
