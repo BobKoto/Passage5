@@ -495,7 +495,7 @@ MonoBehaviour:
   - {fileID: 1467429170}
   - {fileID: 1012415087}
   - {fileID: 1508431898}
-  agentUpdatePosition: 1
+  agentUpdatePosition: 0
   mode: 1
   forwardSpeedParmeterName: Speed
 --- !u!195 &25882702
