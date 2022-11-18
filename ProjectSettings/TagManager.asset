@@ -9,7 +9,6 @@ TagManager:
   - DirectionCollider
   - DirectionalVCam
   - FloorOfBubbles
-  - NavDest1
   layers:
   - Default
   - TransparentFX
