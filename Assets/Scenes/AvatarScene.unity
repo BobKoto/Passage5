@@ -488,15 +488,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 25882688}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0e0e84bc9bde984db5a3c227218dba8, type: 3}
+  m_Script: {fileID: 11500000, guid: 2357ae3ff608e4948ae5c949d122df1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agentGoals:
   - {fileID: 1467429170}
   - {fileID: 1012415087}
   - {fileID: 1508431898}
-  agentUpdatePosition: 0
-  mode: 0
+  agentUpdatePosition: 1
+  mode: 1
   forwardSpeedParmeterName: Speed
 --- !u!195 &25882702
 NavMeshAgent:
@@ -11306,7 +11306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agentGoals: []
-  agentUpdatePosition: 0
+  agentUpdatePosition: 1
   mode: 1
   forwardSpeedParmeterName: Speed
 --- !u!195 &904696412
