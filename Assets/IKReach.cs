@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
+//using UnityEditor.Animations;
 using UnityEngine;
 //using UnityEngine.Animations;
 
@@ -15,7 +15,7 @@ public class IKReach : MonoBehaviour
     [Range(0, 1)]
     float weight = 0.5f;
     Animator anim;
-    AnimatorControllerLayer ACLayer;
+ //   AnimatorControllerLayer ACLayer;
     // Vector3 distanceToTarget;
     bool tooFarAway;
     public float distanceFromGoal = 9;
@@ -25,9 +25,9 @@ public class IKReach : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         int baseLayer = anim.GetLayerIndex("Base Layer");
-        ACLayer = new AnimatorControllerLayer();
+    //    ACLayer = new AnimatorControllerLayer();
 
-        ACLayer.iKPass = false;
+  //      ACLayer.iKPass = false;
       //  anim.SetIKPositionWeight
       //  var iBool = AnimatorControllerLayer.iKPass;
         
