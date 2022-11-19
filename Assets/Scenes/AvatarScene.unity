@@ -495,12 +495,17 @@ MonoBehaviour:
   - {fileID: 1467429170}
   - {fileID: 1012415087}
   - {fileID: 1508431898}
+<<<<<<< HEAD
   agentUpdatePosition: 1
 <<<<<<< Updated upstream
   mode: 1
 =======
   mode: 0
 >>>>>>> Stashed changes
+=======
+  agentUpdatePosition: 0
+  mode: 1
+>>>>>>> Work-on-scene-with-3rd-person-input
   forwardSpeedParmeterName: Speed
 --- !u!195 &25882702
 NavMeshAgent:
