@@ -20,7 +20,7 @@ public class AddRemoveChild : MonoBehaviour
    // MovingPlatformGreen movingPlatformGreen;
     private void Start()
     {
-        Debug.Log("AddRemoveChild reports this.name is " + this.name);
+       // Debug.Log("AddRemoveChild reports this.name is " + this.name);
         // Transform originalParent = child.transform.parent;
        anim = GetComponent<Animator>();
         switch (this.name)
