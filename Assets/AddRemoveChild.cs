@@ -6,7 +6,10 @@ using Cinemachine;
 public class AddRemoveChild : MonoBehaviour
 {
     public GameObject child;
-   // public GameObject newParentGameObject;
+    public GameObject stopButton;
+    public GameObject goButton;
+
+    public bool platformStopped { get; set; }
 
     public Transform originalParent;
     public Transform newParent;
@@ -88,6 +91,10 @@ public class AddRemoveChild : MonoBehaviour
             case "MovingPlatform":
                 {
                     movingPlatform.speed = 5;  //This is not an animation - its an Update() method
+                    //if (!stopButton.activeSelf) stopButton.SetActive(true);
+                    //if (goButton) goButton.SetActive(false);
+                    stopButton.SetActive(true);
+                    goButton.SetActive(false);
                     break;
                 }
             case "MovingPlatformGreen":
@@ -110,6 +117,8 @@ public class AddRemoveChild : MonoBehaviour
             case "MovingPlatform":
                 {
                     movingPlatform.speed = 0;  //This is not an animation - its an Update() method
+                    if (stopButton)  stopButton.SetActive(false);
+                    if (goButton) goButton.SetActive(false);
                     break;
                 }
             case "MovingPlatformGreen":
@@ -125,7 +134,18 @@ public class AddRemoveChild : MonoBehaviour
 
         }
     }
-
+    public void OnPlatformStopButtonPressed()
+    {
+        movingPlatform.speed = 0;
+        stopButton.SetActive(false);
+        goButton.SetActive(true);
+    }
+    public void OnPlatformGoButtonPressed()
+    {
+        movingPlatform.speed = 5;
+        stopButton.SetActive(true);
+        goButton.SetActive(false);
+    }
     ////Invoked when a button is clicked.
     //public void Example(Transform newParent)
     //{

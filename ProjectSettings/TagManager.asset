@@ -10,6 +10,7 @@ TagManager:
   - DirectionalVCam
   - FloorOfBubbles
   - NavDest1
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX
