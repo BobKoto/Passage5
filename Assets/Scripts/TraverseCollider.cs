@@ -17,7 +17,7 @@ public class TraverseCollider : MonoBehaviour  // find on CubeFacingCameraOnGree
         {
             if (MovingPlatformAction.playerIsOnPlatform)
             {
-              Debug.Log("Player entered collider and is on the platform");
+              Debug.Log("Player entered collider and is on the platform - Start Waving");
               anim.SetBool("avatarSceneWave", true);
             }
 
@@ -29,7 +29,7 @@ public class TraverseCollider : MonoBehaviour  // find on CubeFacingCameraOnGree
         {
             if (MovingPlatformAction.playerIsOnPlatform)
             {
-                Debug.Log("Player exited collider and is on the platform");
+                Debug.Log("Player exited collider and is on the platform - Stop Waving");
                 anim.SetBool("avatarSceneWave", false);
             }
         }
