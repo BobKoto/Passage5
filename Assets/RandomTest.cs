@@ -12,34 +12,12 @@ namespace randomize_array
     {
         int[] doors = { 1, 2, 3 };
         public GameObject[] montyGameObject;
+        public static int winningDoor;
+
         private void Start()
         {
-            DoGetRandom();
-            //for (int i = 0; i <= montyGameObject.Length; i++)
-            //{
-            //    switch (i)
-            //    {
-            //        case 0:
-            //           // var x = arr[0] -1;
-            //          //  Debug.Log("x = " + x);
+            SetRandomWinningDoor();
 
-            //            Instantiate(montyGameObject[arr[0] - 1], new Vector3(276f, 3f, -228), Quaternion.Euler(0f, 180f, 0f));
-            //            break;
-            //        case 1:
-
-            //          //  var y = arr[1] -1;
-            //          //  Debug.Log("y = " + y);
-            //            Instantiate(montyGameObject[arr[1] - 1], new Vector3(269f, 3f, -228), Quaternion.Euler(0f, 180f, 0f));
-            //            break;
-            //        case 2:
-
-            //          //  var z = arr[2]-1;
-            //          //  Debug.Log("z = " + z);
-            //            Instantiate(montyGameObject[arr[2] - 1], new Vector3(262f, 3f, -228), Quaternion.Euler(0f, 180f, 0f));
-            //            break;
-            //    }
-
-            //}
             // arr[0] actually holds a 1,2 or 3 so we need to subtract 1 for the index of montyGameObject array, and so on
             // otherwise Monty Hall would ask us to pick door 0, 1, or 2... :|
             Instantiate(montyGameObject[doors[0] - 1], new Vector3(276f, 3f, -228), Quaternion.Euler(0f, 180f, 0f));
@@ -51,10 +29,20 @@ namespace randomize_array
             {
                 if (montyGameObject[doors[i] -1].name == "MontyGoal")
                 {
-                    var goalDoor = i + 1;
-                    Debug.Log("GOAL is door " + goalDoor + "  " + montyGameObject[doors[i] - 1].name);
+                    winningDoor = i + 1;
+                    Debug.Log("Winning door is " + winningDoor + "  " + montyGameObject[doors[i] - 1].name);
                     break;
                 }
+            }
+        }
+        public void SetRandomWinningDoor()
+        {
+
+            System.Random random = new System.Random();
+            doors = doors.OrderBy(x => random.Next()).ToArray();
+           // foreach (var i in arr)
+            {
+                Debug.Log(" The random sequence is " + doors[0] + " " + doors[1] + " " + doors[2]);
             }
         }
         //IEnumerator RandomizeEveryXSeconds(float x)
@@ -66,16 +54,7 @@ namespace randomize_array
         //    }
         //    yield return null;
         //}
-        public void DoGetRandom()
-        {
-
-            System.Random random = new System.Random();
-            doors = doors.OrderBy(x => random.Next()).ToArray();
-           // foreach (var i in arr)
-            {
-                Debug.Log(" The random sequence is " + doors[0] + " " + doors[1] + " " + doors[2]);
-            }
-        }
+        ///
         //private void OnDisable()
         //{
         //    StopAllCoroutines();
