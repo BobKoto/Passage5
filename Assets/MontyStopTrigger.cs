@@ -201,11 +201,7 @@ public class MontyStopTrigger : MonoBehaviour
         {
             case 1:
                 {
-<<<<<<< Updated upstream
-                   // if (door1Button) door1Button.SetActive(true);
-=======
                                                                               // if (door1Button) door1Button.SetActive(true);
->>>>>>> Stashed changes
                     if (door2Button) door2Button.SetActive(true);
                     if (door3Button) door3Button.SetActive(true);
                     break;
@@ -213,11 +209,7 @@ public class MontyStopTrigger : MonoBehaviour
             case 2:
                 {
                     if (door1Button) door1Button.SetActive(true);
-<<<<<<< Updated upstream
-                   // if (door2Button) door2Button.SetActive(true);
-=======
                                                                               // if (door2Button) door2Button.SetActive(true);
->>>>>>> Stashed changes
                     if (door3Button) door3Button.SetActive(true);
                     break;
 
@@ -226,11 +218,7 @@ public class MontyStopTrigger : MonoBehaviour
                 {
                     if (door1Button) door1Button.SetActive(true);
                     if (door2Button) door2Button.SetActive(true);
-<<<<<<< Updated upstream
-                 //   if (door3Button) door3Button.SetActive(true);
-=======
                                                                                //   if (door3Button) door3Button.SetActive(true);
->>>>>>> Stashed changes
                     break;
                 }
         }
