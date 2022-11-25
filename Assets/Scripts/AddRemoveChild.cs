@@ -9,7 +9,8 @@ public class AddRemoveChild : MonoBehaviour
     public GameObject stopButton;
     public GameObject goButton;
 
-    public bool platformStopped { get; set; }
+    //public bool platformStopped { get; set; }
+    public static bool playerIsOnYellowPlatform;
 
     public Transform originalParent;
     public Transform newParent;
@@ -93,6 +94,7 @@ public class AddRemoveChild : MonoBehaviour
                     movingPlatform.speed = 5;  //This is not an animation - its an Update() method
                     //if (!stopButton.activeSelf) stopButton.SetActive(true);
                     //if (goButton) goButton.SetActive(false);
+                    playerIsOnYellowPlatform = true;
                     stopButton.SetActive(true);
                     goButton.SetActive(false);
                     break;
@@ -119,6 +121,7 @@ public class AddRemoveChild : MonoBehaviour
                     movingPlatform.speed = 0;  //This is not an animation - its an Update() method
                     if (stopButton)  stopButton.SetActive(false);
                     if (goButton) goButton.SetActive(false);
+                    playerIsOnYellowPlatform = false;
                     break;
                 }
             case "MovingPlatformGreen":
