@@ -17,11 +17,14 @@ public class MontyStopTrigger : MonoBehaviour
     public GameObject montyDoor2;
     public GameObject montyDoor3;
 
-    bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
-    bool secondPickInEffect;
+    [Header("Text Above the Doors")]
+    public GameObject montyGameText;
+
+    bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down, montyGameEnded;
+    bool awaitingFinalDoorPick;
 
     bool montyGamePlayed;
-    int doorNumberPicked, doorNumberDown;
+    int doorNumberPicked, doorNumberDown, theWinningDoor;
 
     Animator animDoor1, animDoor2, animDoor3;
     // Start is called before the first frame update
@@ -61,6 +64,15 @@ public class MontyStopTrigger : MonoBehaviour
     }
     public void OnDoor1ButtonPressed()
     {
+        if (awaitingFinalDoorPick)
+        {
+            animDoor1.SetTrigger("MontyDoor1Down");
+            montyGameEnded = true;
+            if (theWinningDoor == 1) Debug.Log("Door 1 is a Winner");
+            DisableTheDoorButtons();
+            CloseTheFirstOpenedDoor();
+            return;
+        }
         DisableTheDoorButtons();
         playerPickedDoor1 = true;
         doorNumberPicked = 1;
@@ -69,6 +81,15 @@ public class MontyStopTrigger : MonoBehaviour
     }
     public void OnDoor2ButtonPressed()
     {
+        if (awaitingFinalDoorPick)
+        {
+            animDoor2.SetTrigger("MontyDoor2Down");
+            montyGameEnded = true;
+            if (theWinningDoor == 2) Debug.Log("Door 2 is a Winner");
+            CloseTheFirstOpenedDoor();
+            DisableTheDoorButtons();
+            return;
+        }
         DisableTheDoorButtons();
         playerPickedDoor2 = true;
         doorNumberPicked = 2;
@@ -77,6 +98,15 @@ public class MontyStopTrigger : MonoBehaviour
     }
     public void OnDoor3ButtonPressed()
     {
+        if (awaitingFinalDoorPick)
+        {
+            animDoor3.SetTrigger("MontyDoor3Down");
+            montyGameEnded = true;
+            if (theWinningDoor == 3) Debug.Log("Door 3 is a Winner");
+            DisableTheDoorButtons();
+            CloseTheFirstOpenedDoor();
+            return;
+        }
         DisableTheDoorButtons();
         playerPickedDoor3 = true;
         doorNumberPicked = 3;
@@ -85,10 +115,10 @@ public class MontyStopTrigger : MonoBehaviour
     }
     private void ShowAlternativeDoors()
     {
-        switch (randomize_array.RandomTest.winningDoor)
+        theWinningDoor = randomize_array.RandomTest.winningDoor;
+        switch (theWinningDoor)
         {
             case 1:  //AND door 1 is the winner
-
                 if (playerPickedDoor1)   //AND door 1 is the winner so show door 2 or 3 
                 {
                     //Randomize(2,3); or maybe just right/left?
@@ -104,21 +134,18 @@ public class MontyStopTrigger : MonoBehaviour
                             door3Down = true;
                             break;
                     }
-
                     break;
                 }
                 if (playerPickedDoor2)
                 {
                     animDoor3.SetTrigger("MontyDoor3Down"); //now player has to choose between doors 3 & 1
                     door3Down = true;
-
                     break;
                 }
                 if (playerPickedDoor3)
                 {
                     animDoor2.SetTrigger("MontyDoor2Down");  //no player has to choose between doors 2 & 1 
                     door2Down = true;
-
                     break;
                 }
                 break;
@@ -127,10 +154,10 @@ public class MontyStopTrigger : MonoBehaviour
                 if (playerPickedDoor2)   //AND door 2 is the winner so show door 1 or 3 
                 {
                     //Randomize(1,3); or maybe just right/left?
-                    int x = 3;
+                    int x = 3;  
                     switch (x)
                     {
-                        case 2:
+                        case 1:
                             animDoor1.SetTrigger("MontyDoor1Down");// here we need to really pick 1 or 3 //more later!
                             door1Down = true;
                             break;
@@ -189,15 +216,29 @@ public class MontyStopTrigger : MonoBehaviour
                     break;
                 }
                 break;
-
-
         }
 
-        if (door1Down) Debug.Log("door 1 is down so our pick is 2 or 3");
-        if (door2Down) Debug.Log("door 2 is down so our pick is 1 or 3");
-        if (door3Down) Debug.Log("door 3 is down so our pick is 1 or 2");
-        secondPickInEffect = true;
-        switch (doorNumberPicked)
+        if (door1Down)
+        {
+            Debug.Log("door 1 is down so our pick is 2 or 3");
+            doorNumberDown = 1;
+        }
+
+        if (door2Down)
+        {
+            Debug.Log("door 2 is down so our pick is 1 or 3");
+            doorNumberDown = 2;
+        }
+
+        if (door3Down)
+        {
+            Debug.Log("door 3 is down so our pick is 1 or 2");
+            doorNumberDown = 3;
+        }
+
+
+        awaitingFinalDoorPick = true;
+        switch (doorNumberDown)
         {
             case 1:
                 {
@@ -219,6 +260,28 @@ public class MontyStopTrigger : MonoBehaviour
                     if (door1Button) door1Button.SetActive(true);
                     if (door2Button) door2Button.SetActive(true);
                                                                                //   if (door3Button) door3Button.SetActive(true);
+                    break;
+                }
+        }
+    }
+    private void CloseTheFirstOpenedDoor()
+    {
+        switch (doorNumberDown)
+        {
+            case 1:
+                {
+                    animDoor1.SetTrigger("MontyDoor1Up");
+                    break;
+                }
+            case 2:
+                {
+                    animDoor2.SetTrigger("MontyDoor2Up");
+                    break;
+
+                }
+            case 3:
+                {
+                    animDoor3.SetTrigger("MontyDoor3Up");
                     break;
                 }
         }
