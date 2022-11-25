@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MontyStopTrigger : MonoBehaviour
 {
@@ -18,12 +19,12 @@ public class MontyStopTrigger : MonoBehaviour
     public GameObject montyDoor3;
 
     [Header("Text Above the Doors")]
-    public GameObject montyGameText;
+    public TMP_Text montyGameSignText;
 
-    bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down, montyGameEnded;
+    bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick;
 
-    bool montyGamePlayed;
+    bool montyGamePlayed, montyGameEnded ;
     int doorNumberPicked, doorNumberDown, theWinningDoor;
 
     Animator animDoor1, animDoor2, animDoor3;
@@ -40,10 +41,19 @@ public class MontyStopTrigger : MonoBehaviour
         if (other.CompareTag("Player") || other.CompareTag("MovingPlatform"))
         {
             Debug.Log(other.gameObject.name + " Entered montyPStop.. ");
-            movingPlatform.speed = 0;
-            if (stopButton) stopButton.SetActive(false);
+            if (!montyGameEnded)
+            {
+                movingPlatform.speed = 0;
+                if (stopButton) stopButton.SetActive(false);
+                if (goButton)
+                {
+                    if (AddRemoveChild.playerIsOnYellowPlatform)  goButton.SetActive(true);          
+                }
+
+            }
+
             //  goButton.SetActive(true);
-            if (!montyGamePlayed)    PlayTheMontyGame();
+            if (!montyGameEnded)    PlayTheMontyGame();
         }
 
     }
@@ -52,6 +62,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (other.CompareTag("Player") || other.CompareTag("MovingPlatform"))
         {
             Debug.Log(other.gameObject.name + " Exited montyPlayArea... ");
+            DisableTheDoorButtons();
         }
 
     }
@@ -68,7 +79,18 @@ public class MontyStopTrigger : MonoBehaviour
         {
             animDoor1.SetTrigger("MontyDoor1Down");
             montyGameEnded = true;
-            if (theWinningDoor == 1) Debug.Log("Door 1 is a Winner");
+            if (theWinningDoor == 1) 
+            {
+               Debug.Log("Door 1 is a Winner");
+                montyGameSignText.text = "Door 1 is a winner!"; 
+            }
+            else
+            {
+                Debug.Log("Door 1 is a Loser");
+                montyGameSignText.text = "Door 1 is a loser... awww";
+            }
+
+
             DisableTheDoorButtons();
             CloseTheFirstOpenedDoor();
             return;
@@ -85,9 +107,18 @@ public class MontyStopTrigger : MonoBehaviour
         {
             animDoor2.SetTrigger("MontyDoor2Down");
             montyGameEnded = true;
-            if (theWinningDoor == 2) Debug.Log("Door 2 is a Winner");
-            CloseTheFirstOpenedDoor();
+            if (theWinningDoor == 2)
+            {
+                Debug.Log("Door 2 is a Winner");
+                montyGameSignText.text = "Door 2 is a winner!";
+            }
+            else
+            {
+                Debug.Log("Door 2 is a Loser");
+                montyGameSignText.text = "Door 2 is a loser... awww";
+            }
             DisableTheDoorButtons();
+            CloseTheFirstOpenedDoor();
             return;
         }
         DisableTheDoorButtons();
@@ -102,7 +133,16 @@ public class MontyStopTrigger : MonoBehaviour
         {
             animDoor3.SetTrigger("MontyDoor3Down");
             montyGameEnded = true;
-            if (theWinningDoor == 3) Debug.Log("Door 3 is a Winner");
+            if (theWinningDoor == 3)
+            {
+                Debug.Log("Door 3 is a Winner");
+                montyGameSignText.text = "Door 3 is a winner!";
+            }
+            else
+            {
+                Debug.Log("Door 3 is a Loser");
+                montyGameSignText.text = "Door 3 is a loser... awww";
+            }
             DisableTheDoorButtons();
             CloseTheFirstOpenedDoor();
             return;

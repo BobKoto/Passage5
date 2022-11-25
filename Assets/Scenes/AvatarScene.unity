@@ -11362,7 +11362,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713081666}
-  m_LocalRotation: {x: -0.02156182, y: 0.97682965, z: -0.17621943, w: -0.119522706}
+  m_LocalRotation: {x: -0.021561822, y: 0.97682965, z: -0.17621942, w: -0.119522735}
   m_LocalPosition: {x: 0.33999634, y: 19.98, z: 44.119995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -13130,6 +13130,7 @@ MonoBehaviour:
   montyDoor1: {fileID: 1845353303}
   montyDoor2: {fileID: 203559125}
   montyDoor3: {fileID: 2134227462}
+  montyGameSignText: {fileID: 1393485626}
 --- !u!1 &926551757
 GameObject:
   m_ObjectHideFlags: 0
