@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using StarterAssets;
 using UnityEngine;
 using TMPro;
 
@@ -21,13 +22,22 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("Text Above the Doors")]
     public TMP_Text montyGameSignText;
 
+    [Header("The Player")]
+    public GameObject playerArmature;
+
+    [Header("The Input System canvas")]
+    public GameObject inputControls;
+
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick;
 
     bool montyGamePlayed, montyGameEnded ;
     int doorNumberPicked, doorNumberDown, theWinningDoor;
 
-    Animator animDoor1, animDoor2, animDoor3;
+    ThirdPersonController thirdPersonController;
+    float originalMoveSpeed;
+
+    Animator animDoor1, animDoor2, animDoor3, animPlayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +45,10 @@ public class MontyStopTrigger : MonoBehaviour
         animDoor1 = montyDoor1.GetComponent<Animator>();
         animDoor2 = montyDoor2.GetComponent<Animator>();
         animDoor3 = montyDoor3.GetComponent<Animator>();
+        animPlayer = playerArmature.GetComponent<Animator>();
+        thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
+        originalMoveSpeed = thirdPersonController.MoveSpeed;
+
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -43,12 +57,11 @@ public class MontyStopTrigger : MonoBehaviour
             Debug.Log(other.gameObject.name + " Entered montyPStop.. ");
             if (!montyGameEnded)
             {
-                movingPlatform.speed = 0;
-                if (stopButton) stopButton.SetActive(false);
-                if (goButton)
-                {
-                    if (AddRemoveChild.playerIsOnYellowPlatform)  goButton.SetActive(true);          
-                }
+                LockPlayerInTheGameTriggerArea();
+
+                //{
+                //    if (AddRemoveChild.playerIsOnYellowPlatform)  goButton.SetActive(true);          
+                //}
 
             }
 
@@ -56,6 +69,30 @@ public class MontyStopTrigger : MonoBehaviour
             if (!montyGameEnded)    PlayTheMontyGame();
         }
 
+    }
+    private void LockPlayerInTheGameTriggerArea()
+    {
+        movingPlatform.speed = 0;
+        if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
+        if (goButton) goButton.SetActive(false);
+        thirdPersonController.MoveSpeed = 0f;
+      //  inputControls.SetActive(false);  //does not stop the player walk animation :{
+      //  animPlayer.speed = 0;
+      //  animPlayer.SetFloat("Speed", 0f);
+        // Here we need to rotate player to face doors
+       // playerArmature.transform.rotation.y = 
+    }
+    private void UnlockPlayerFromTheGameTriggerArea()
+    {
+        if (AddRemoveChild.playerIsOnYellowPlatform)
+        {
+            if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
+            if (goButton) goButton.SetActive(true);
+
+        }
+        thirdPersonController.MoveSpeed = originalMoveSpeed;
+
+        //inputControls.SetActive(true);
     }
     private void OnTriggerExit(Collider other)
     {
@@ -91,8 +128,7 @@ public class MontyStopTrigger : MonoBehaviour
             }
 
 
-            DisableTheDoorButtons();
-            CloseTheFirstOpenedDoor();
+            CleanUpTheGameAndUnlockThePlayer();
             return;
         }
         DisableTheDoorButtons();
@@ -117,8 +153,7 @@ public class MontyStopTrigger : MonoBehaviour
                 Debug.Log("Door 2 is a Loser");
                 montyGameSignText.text = "Door 2 is a loser... awww";
             }
-            DisableTheDoorButtons();
-            CloseTheFirstOpenedDoor();
+            CleanUpTheGameAndUnlockThePlayer();
             return;
         }
         DisableTheDoorButtons();
@@ -143,8 +178,7 @@ public class MontyStopTrigger : MonoBehaviour
                 Debug.Log("Door 3 is a Loser");
                 montyGameSignText.text = "Door 3 is a loser... awww";
             }
-            DisableTheDoorButtons();
-            CloseTheFirstOpenedDoor();
+            CleanUpTheGameAndUnlockThePlayer();
             return;
         }
         DisableTheDoorButtons();
@@ -332,7 +366,12 @@ public class MontyStopTrigger : MonoBehaviour
         if (door2Button) door2Button.SetActive(false);
         if (door3Button) door3Button.SetActive(false);
     }
-
+    private void CleanUpTheGameAndUnlockThePlayer()
+    {
+        DisableTheDoorButtons();
+        CloseTheFirstOpenedDoor();
+        UnlockPlayerFromTheGameTriggerArea();
+    }
     //IEnumerator ShowNextStepAfterAnimation()
     //{
     //    if (animDoor1.clip.isPlaying)
