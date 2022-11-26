@@ -31,8 +31,8 @@ public class MontyStopTrigger : MonoBehaviour
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick;
 
-    bool montyGamePlayed, montyGameEnded ;
-    int doorNumberPicked, doorNumberDown, theWinningDoor;
+    public static bool montyGameEnded ;
+    int doorNumberDown, theWinningDoor;
 
     ThirdPersonController thirdPersonController;
     float originalMoveSpeed;
@@ -57,30 +57,20 @@ public class MontyStopTrigger : MonoBehaviour
             Debug.Log(other.gameObject.name + " Entered montyPStop.. ");
             if (!montyGameEnded)
             {
-                LockPlayerInTheGameTriggerArea();
-
-                //{
-                //    if (AddRemoveChild.playerIsOnYellowPlatform)  goButton.SetActive(true);          
-                //}
-
+                LockPlayerInTheMontyGameTriggerArea();
+                PlayTheMontyGame();
             }
-
-            //  goButton.SetActive(true);
-            if (!montyGameEnded)    PlayTheMontyGame();
         }
 
     }
-    private void LockPlayerInTheGameTriggerArea()
+    private void LockPlayerInTheMontyGameTriggerArea()
     {
         movingPlatform.speed = 0;
         if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
         if (goButton) goButton.SetActive(false);
         thirdPersonController.MoveSpeed = 0f;
-      //  inputControls.SetActive(false);  //does not stop the player walk animation :{
-      //  animPlayer.speed = 0;
-      //  animPlayer.SetFloat("Speed", 0f);
-        // Here we need to rotate player to face doors
-       // playerArmature.transform.rotation.y = 
+        // Here we may need to rotate player to face doors  OR the play can do it 
+       // playerArmature.transform.rotation.y = //a bad start 
     }
     private void UnlockPlayerFromTheGameTriggerArea()
     {
@@ -91,8 +81,6 @@ public class MontyStopTrigger : MonoBehaviour
 
         }
         thirdPersonController.MoveSpeed = originalMoveSpeed;
-
-        //inputControls.SetActive(true);
     }
     private void OnTriggerExit(Collider other)
     {
@@ -101,11 +89,10 @@ public class MontyStopTrigger : MonoBehaviour
             Debug.Log(other.gameObject.name + " Exited montyPlayArea... ");
             DisableTheDoorButtons();
         }
-
     }
     private void PlayTheMontyGame()
     {
-        montyGamePlayed = true;
+      //  montyGamePlayed = true;
         if (door1Button) door1Button.SetActive(true);
         if (door2Button) door2Button.SetActive(true);
         if (door3Button) door3Button.SetActive(true);
@@ -126,14 +113,12 @@ public class MontyStopTrigger : MonoBehaviour
                 Debug.Log("Door 1 is a Loser");
                 montyGameSignText.text = "Door 1 is a loser... awww";
             }
-
-
-            CleanUpTheGameAndUnlockThePlayer();
+            CleanUpTheMontyGameAndUnlockThePlayer();
             return;
         }
         DisableTheDoorButtons();
         playerPickedDoor1 = true;
-        doorNumberPicked = 1;
+        //doorNumberPicked = 1;
         Debug.Log("player picked door 1" + playerPickedDoor1);
         ShowAlternativeDoors();
     }
@@ -153,12 +138,12 @@ public class MontyStopTrigger : MonoBehaviour
                 Debug.Log("Door 2 is a Loser");
                 montyGameSignText.text = "Door 2 is a loser... awww";
             }
-            CleanUpTheGameAndUnlockThePlayer();
+            CleanUpTheMontyGameAndUnlockThePlayer();
             return;
         }
         DisableTheDoorButtons();
         playerPickedDoor2 = true;
-        doorNumberPicked = 2;
+        //doorNumberPicked = 2;
         Debug.Log("player picked door 2" + playerPickedDoor2);
         ShowAlternativeDoors();
     }
@@ -178,14 +163,87 @@ public class MontyStopTrigger : MonoBehaviour
                 Debug.Log("Door 3 is a Loser");
                 montyGameSignText.text = "Door 3 is a loser... awww";
             }
-            CleanUpTheGameAndUnlockThePlayer();
+            CleanUpTheMontyGameAndUnlockThePlayer();
             return;
         }
         DisableTheDoorButtons();
         playerPickedDoor3 = true;
-        doorNumberPicked = 3;
+        //doorNumberPicked = 3;
         Debug.Log("player picked door 3" + playerPickedDoor3);
         ShowAlternativeDoors();
+    }
+    private void ProcessTheDoorButton(int doorPressed)
+    {
+        if (awaitingFinalDoorPick)
+        {
+            switch (doorPressed)
+            {
+                case 1:
+                    animDoor1.SetTrigger("MontyDoor1Down");
+                    montyGameEnded = true;
+                    if (theWinningDoor == 1)
+                    {
+                        Debug.Log("Door 1 is a Winner");
+                        montyGameSignText.text = "Door 1 is a winner!";
+                    }
+                    else
+                    {
+                        Debug.Log("Door 1 is a Loser");
+                        montyGameSignText.text = "Door 1 is a loser... awww";
+                    }
+                    CleanUpTheMontyGameAndUnlockThePlayer();
+                    break;
+
+                case 2:
+                    animDoor2.SetTrigger("MontyDoor2Down");
+                    montyGameEnded = true;
+                    if (theWinningDoor == 2)
+                    {
+                        Debug.Log("Door 2 is a Winner");
+                        montyGameSignText.text = "Door 2 is a winner!";
+                    }
+                    else
+                    {
+                        Debug.Log("Door 2 is a Loser");
+                        montyGameSignText.text = "Door 2 is a loser... awww";
+                    }
+                    CleanUpTheMontyGameAndUnlockThePlayer();
+                    break;
+                case 3:
+                    animDoor3.SetTrigger("MontyDoor3Down");
+                    montyGameEnded = true;
+                    if (theWinningDoor == 3)
+                    {
+                        Debug.Log("Door 3 is a Winner");
+                        montyGameSignText.text = "Door 3 is a winner!";
+                    }
+                    else
+                    {
+                        Debug.Log("Door 3 is a Loser");
+                        montyGameSignText.text = "Door 3 is a loser... awww";
+                    }
+                    CleanUpTheMontyGameAndUnlockThePlayer();
+                    break;
+            }
+        }
+        DisableTheDoorButtons();
+        switch (doorPressed)
+        {
+            case 1: playerPickedDoor1 = true;
+                break;
+            case 2:
+                playerPickedDoor2 = true;
+                break;
+            case 3:
+                playerPickedDoor3 = true;
+                break;
+
+        }
+
+
+        Debug.Log("player picked door " + doorPressed);
+        ShowAlternativeDoors();
+
     }
     private void ShowAlternativeDoors()
     {
@@ -338,26 +396,19 @@ public class MontyStopTrigger : MonoBehaviour
                 }
         }
     }
-    private void CloseTheFirstOpenedDoor()
+    private void CloseTheFirstOpenedDoor()  //do we really want to do this?
     {
         switch (doorNumberDown)
         {
             case 1:
-                {
                     animDoor1.SetTrigger("MontyDoor1Up");
                     break;
-                }
             case 2:
-                {
                     animDoor2.SetTrigger("MontyDoor2Up");
                     break;
-
-                }
             case 3:
-                {
                     animDoor3.SetTrigger("MontyDoor3Up");
                     break;
-                }
         }
     }
     private void DisableTheDoorButtons()
@@ -366,7 +417,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (door2Button) door2Button.SetActive(false);
         if (door3Button) door3Button.SetActive(false);
     }
-    private void CleanUpTheGameAndUnlockThePlayer()
+    private void CleanUpTheMontyGameAndUnlockThePlayer()
     {
         DisableTheDoorButtons();
         CloseTheFirstOpenedDoor();
