@@ -277,7 +277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6429311
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4084,6 +4084,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8553fcb7775ab44ebdc5cacfc34ac28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainSign: {fileID: 1347404614}
+  rearSign: {fileID: 420806543}
+  leftSign: {fileID: 778109820}
+  rightSign: {fileID: 6429310}
 --- !u!1 &250767589
 GameObject:
   m_ObjectHideFlags: 0
@@ -6520,7 +6524,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &420806544
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11844,7 +11848,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &778109821
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21348,7 +21352,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1347404615
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28219,12 +28223,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 2076436242}
   m_Follow: {fileID: 0}
   m_ShowDebugText: 0
-  m_ChildCameras:
-  - {fileID: 1105988392}
-  - {fileID: 578853957}
-  - {fileID: 625143762}
-  - {fileID: 1646117154}
-  - {fileID: 713081669}
+  m_ChildCameras: []
   m_ActivateAfter: 0
   m_MinDuration: 0
   m_RandomizeChoice: 0
