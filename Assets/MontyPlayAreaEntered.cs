@@ -40,7 +40,7 @@ public class MontyPlayAreaEntered : MonoBehaviour
             leftSign.SetActive(false);
             rightSign.SetActive(false);
             mainSign.SetActive(false);
-            Debug.Log(other.gameObject.name + " Exited montyPlayArea... ");
+            Debug.Log(other.gameObject.name + " Exited montyPlayArea... from " + this.name);
         }
 
     }
