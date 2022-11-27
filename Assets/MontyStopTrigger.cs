@@ -29,7 +29,7 @@ public class MontyStopTrigger : MonoBehaviour
     public GameObject inputControls;
 
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
-    bool awaitingFinalDoorPick;
+    bool awaitingFinalDoorPick, playerPickedWinner;
 
     public static bool montyGameEnded ;
     int doorNumberDown, theWinningDoor;
@@ -39,8 +39,10 @@ public class MontyStopTrigger : MonoBehaviour
 
     Animator animDoor1, animDoor2, animDoor3, animPlayer;
     // Start is called before the first frame update
+    AudioManager audioManager;
     void Start()
     {
+        audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         movingPlatform = GameObject.Find("MovingPlatform").GetComponent<MovingPlatform>();
         animDoor1 = montyDoor1.GetComponent<Animator>();
         animDoor2 = montyDoor2.GetComponent<Animator>();
@@ -59,6 +61,7 @@ public class MontyStopTrigger : MonoBehaviour
             {
                 LockPlayerInTheMontyGameTriggerArea();
                 PlayTheMontyGame();
+                audioManager.PlayAudio(audioManager.clipDRUMROLL);
             }
         }
 
@@ -86,7 +89,7 @@ public class MontyStopTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.CompareTag("MovingPlatform"))
         {
-            Debug.Log(other.gameObject.name + " Exited montyPlayArea... ");
+            Debug.Log(other.gameObject.name + " Exited montyPlay(STOP)Trigger... from MontyStopTrigger");
             DisableTheDoorButtons();
         }
     }
@@ -179,14 +182,15 @@ public class MontyStopTrigger : MonoBehaviour
     {
         if (awaitingFinalDoorPick)   // //////////////////// This IS the SECOND door pick!! /////////////////////////////////
         {
-            switch (doorPressed)
+            switch (doorPressed)     // //////////////////// This IS the SECOND door pick!! /////////////////////////////////
             {
                 case 1:
-                    animDoor1.SetTrigger("MontyDoor1Down");
+                    animDoor1.SetTrigger("MontyDoor1Down");  //show the Final Door player picked, & set sign to Result
                     montyGameEnded = true;
                     if (theWinningDoor == 1)
                     {
                         Debug.Log("Door 1 is a Winner");
+                        playerPickedWinner = true;
                         montyGameSignText.text = "Door 1 is a winner!";
                     }
                     else
@@ -194,7 +198,7 @@ public class MontyStopTrigger : MonoBehaviour
                         Debug.Log("Door 1 is a Loser");
                         montyGameSignText.text = "Door 1 is a loser... awww";
                     }
-                    CleanUpTheMontyGameAndUnlockThePlayer();
+                //    CleanUpTheMontyGameAndUnlockThePlayer();
                     break;
 
                 case 2:
@@ -203,6 +207,7 @@ public class MontyStopTrigger : MonoBehaviour
                     if (theWinningDoor == 2)
                     {
                         Debug.Log("Door 2 is a Winner");
+                        playerPickedWinner = true;
                         montyGameSignText.text = "Door 2 is a winner!";
                     }
                     else
@@ -210,7 +215,7 @@ public class MontyStopTrigger : MonoBehaviour
                         Debug.Log("Door 2 is a Loser");
                         montyGameSignText.text = "Door 2 is a loser... awww";
                     }
-                    CleanUpTheMontyGameAndUnlockThePlayer();
+               //     CleanUpTheMontyGameAndUnlockThePlayer();
                     break;
                 case 3:
                     animDoor3.SetTrigger("MontyDoor3Down");
@@ -218,6 +223,8 @@ public class MontyStopTrigger : MonoBehaviour
                     if (theWinningDoor == 3)
                     {
                         Debug.Log("Door 3 is a Winner");
+                        playerPickedWinner = true;
+
                         montyGameSignText.text = "Door 3 is a winner!";
                     }
                     else
@@ -225,10 +232,12 @@ public class MontyStopTrigger : MonoBehaviour
                         Debug.Log("Door 3 is a Loser");
                         montyGameSignText.text = "Door 3 is a loser... awww";
                     }
-                    CleanUpTheMontyGameAndUnlockThePlayer();
+                  //  CleanUpTheMontyGameAndUnlockThePlayer();
                     break;
             }
-        }  // END Second Door Pick
+            CleanUpTheMontyGameAndUnlockThePlayer();
+
+        }  // END Final/Second Door Pick
         DisableTheDoorButtons();
         switch (doorPressed)
         {
@@ -248,8 +257,17 @@ public class MontyStopTrigger : MonoBehaviour
 
         if (!montyGameEnded)
         {
-           montyGameSignText.text = "A chance to change door pick...";         
+            audioManager.PlayAudio(audioManager.clipding);
+            StartCoroutine(WaitSeconds(2f, audioManager.clipdrama));
+          //  montyGameSignText.text = "A chance to change door pick...";         
            ShowAlternativeDoors();
+        } else  // the Monty Game IS Ended
+        {
+            if (playerPickedWinner)
+            {
+                StartCoroutine(WaitSeconds(2f, audioManager.clipApplause));
+             //   audioManager.PlayAudio(audioManager.clipApplause);
+            }
         }
 
 
@@ -379,6 +397,7 @@ public class MontyStopTrigger : MonoBehaviour
 
 
         awaitingFinalDoorPick = true;
+       // audioManager.PlayAudio(audioManager.clipding);
         switch (doorNumberDown)
         {
             case 1:
@@ -431,6 +450,12 @@ public class MontyStopTrigger : MonoBehaviour
         DisableTheDoorButtons();
         CloseTheFirstOpenedDoor();
         UnlockPlayerFromTheGameTriggerArea();
+    }
+    IEnumerator WaitSeconds(float timeToWait, AudioClip audioClip)
+    {
+        yield return new WaitForSeconds(timeToWait);
+        audioManager.PlayAudio(audioClip);
+        if (!playerPickedWinner) montyGameSignText.text = "A chance to change door pick...";
     }
     //IEnumerator ShowNextStepAfterAnimation()
     //{

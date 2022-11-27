@@ -11366,7 +11366,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713081666}
-  m_LocalRotation: {x: -0.021561822, y: 0.97682965, z: -0.17621942, w: -0.119522735}
+  m_LocalRotation: {x: -0.02156182, y: 0.97682965, z: -0.17621943, w: -0.119522706}
   m_LocalPosition: {x: 0.33999634, y: 19.98, z: 44.119995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -14179,6 +14179,9 @@ MonoBehaviour:
   clipSplash: {fileID: 8300000, guid: 0bfdb8135a03d594d868181f0fd4c9aa, type: 3}
   clipfalling: {fileID: 8300000, guid: 4daf841223704994fb89840c74b92cd3, type: 3}
   clipBeamB: {fileID: 8300000, guid: 8e76acc726b98bd4da74459660a06b1e, type: 3}
+  clipdrama: {fileID: 8300000, guid: 4dd03ae16943216488ae0354d47f58f7, type: 3}
+  clipDRUMROLL: {fileID: 8300000, guid: f535ef3c2c7a9d948add15af65a3f3b5, type: 3}
+  clipding: {fileID: 8300000, guid: a91b72ac2ddcd204f82d7fae6a34646e, type: 3}
   audioSource: {fileID: 935131225}
 --- !u!4 &935131224
 Transform:
@@ -31528,7 +31531,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1976187937556739898, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1976187937556739898, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -31892,7 +31895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3989581215203315308, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3989581215203315308, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -32720,7 +32723,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7933126932972846844, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7933126932972846844, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
