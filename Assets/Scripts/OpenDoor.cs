@@ -42,7 +42,7 @@ public class OpenDoor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("hello from " + this.name);
+        //Debug.Log("hello from " + this.name);
         string myName = this.name;
         switch (myName)
         {
