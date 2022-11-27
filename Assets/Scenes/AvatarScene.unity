@@ -11366,7 +11366,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713081666}
-  m_LocalRotation: {x: -0.021561822, y: 0.97682965, z: -0.17621942, w: -0.119522735}
+  m_LocalRotation: {x: -0.02156182, y: 0.97682965, z: -0.17621943, w: -0.119522706}
   m_LocalPosition: {x: 0.33999634, y: 19.98, z: 44.119995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -14415,7 +14415,7 @@ MonoBehaviour:
 
     ----->'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 73dbd82c98041f74f9aa868c3c1ad8e8, type: 2}
   m_sharedMaterial: {fileID: -8333250609966275279, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -14482,7 +14482,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 950308377}
   m_maskType: 0
 --- !u!23 &950308377
@@ -17672,7 +17672,7 @@ MonoBehaviour:
 
     <-----'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 73dbd82c98041f74f9aa868c3c1ad8e8, type: 2}
   m_sharedMaterial: {fileID: -8333250609966275279, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -17739,7 +17739,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 1116673076}
   m_maskType: 0
 --- !u!23 &1116673076
@@ -18866,7 +18866,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Look behind You.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 73dbd82c98041f74f9aa868c3c1ad8e8, type: 2}
   m_sharedMaterial: {fileID: -8333250609966275279, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -18933,7 +18933,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 1161911308}
   m_maskType: 0
 --- !u!23 &1161911308
@@ -21846,7 +21846,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: One door is a winner. Choose!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 73dbd82c98041f74f9aa868c3c1ad8e8, type: 2}
   m_sharedMaterial: {fileID: -8333250609966275279, guid: 6a3c84bb65062de4b8e6e330a6a0a73c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -21913,7 +21913,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 1393485627}
   m_maskType: 0
 --- !u!23 &1393485627
@@ -31531,7 +31531,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1976187937556739898, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.00000047683716
       objectReference: {fileID: 0}
     - target: {fileID: 1976187937556739898, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -31895,7 +31895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3989581215203315308, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.00000047683716
       objectReference: {fileID: 0}
     - target: {fileID: 3989581215203315308, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -32723,7 +32723,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7933126932972846844, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.00000047683716
       objectReference: {fileID: 0}
     - target: {fileID: 7933126932972846844, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z

@@ -35,7 +35,7 @@ public class MontyStopTrigger : MonoBehaviour
     int doorNumberDown, theWinningDoor;
 
     ThirdPersonController thirdPersonController;
-    float originalMoveSpeed;
+    float originalMoveSpeed, originalSprintSpeed;
 
     Animator animDoor1, animDoor2, animDoor3, animPlayer;
     // Start is called before the first frame update
@@ -50,7 +50,7 @@ public class MontyStopTrigger : MonoBehaviour
         animPlayer = playerArmature.GetComponent<Animator>();
         thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
         originalMoveSpeed = thirdPersonController.MoveSpeed;
-
+        originalSprintSpeed = thirdPersonController.SprintSpeed;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -80,6 +80,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
         if (goButton) goButton.SetActive(false);
         thirdPersonController.MoveSpeed = 0f;
+        thirdPersonController.SprintSpeed = 0f;
         // Here we may need to rotate player to face doors  OR the play can do it 
        // playerArmature.transform.rotation.y = //a bad start 
     }
@@ -92,6 +93,7 @@ public class MontyStopTrigger : MonoBehaviour
 
         }
         thirdPersonController.MoveSpeed = originalMoveSpeed;
+        thirdPersonController.SprintSpeed = originalSprintSpeed;
     }
 
     private void PlayTheMontyGame()
@@ -460,6 +462,12 @@ public class MontyStopTrigger : MonoBehaviour
         yield return new WaitForSeconds(timeToWait);
         audioManager.PlayAudio(audioClip);
         if (!playerPickedWinner && !montyGameEnded) montyGameSignText.text = "A chance to change door pick...";
+    }
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        thirdPersonController.MoveSpeed = originalMoveSpeed;   //just to be sure?
+        thirdPersonController.SprintSpeed = originalSprintSpeed;
     }
     //IEnumerator ShowNextStepAfterAnimation()
     //{
