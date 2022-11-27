@@ -37,28 +37,9 @@ namespace randomize_array
         }
         public void SetRandomWinningDoor()
         {
-
             System.Random random = new System.Random();
             doors = doors.OrderBy(x => random.Next()).ToArray();
-           // foreach (var i in arr)
-            {
-                Debug.Log(" The random sequence is " + doors[0] + " " + doors[1] + " " + doors[2]);
-            }
+            //Debug.Log(" The random sequence is " + doors[0] + " " + doors[1] + " " + doors[2]);
         }
-        //IEnumerator RandomizeEveryXSeconds(float x)
-        //{
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        DoGetRandom();
-        //        yield return new WaitForSeconds(x);
-        //    }
-        //    yield return null;
-        //}
-        ///
-        //private void OnDisable()
-        //{
-        //    StopAllCoroutines();
-        //}
-
     }
 }

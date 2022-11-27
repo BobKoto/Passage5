@@ -56,7 +56,7 @@ public class MontyStopTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.CompareTag("MovingPlatform"))
         {
-            Debug.Log(other.gameObject.name + " Entered montyPStop.. ");
+         //  Debug.Log(other.gameObject.name + " Entered montyPStop.. ");
             if (!montyGameEnded)
             {
                 LockPlayerInTheMontyGameTriggerArea();
@@ -65,6 +65,14 @@ public class MontyStopTrigger : MonoBehaviour
             }
         }
 
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") || other.CompareTag("MovingPlatform"))
+        {
+         //   Debug.Log(other.gameObject.name + " Exited montyPlay(STOP)Trigger... from MontyStopTrigger");
+            DisableTheDoorButtons();
+        }
     }
     private void LockPlayerInTheMontyGameTriggerArea()
     {
@@ -85,14 +93,7 @@ public class MontyStopTrigger : MonoBehaviour
         }
         thirdPersonController.MoveSpeed = originalMoveSpeed;
     }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player") || other.CompareTag("MovingPlatform"))
-        {
-            Debug.Log(other.gameObject.name + " Exited montyPlay(STOP)Trigger... from MontyStopTrigger");
-            DisableTheDoorButtons();
-        }
-    }
+
     private void PlayTheMontyGame()
     {
       //  montyGamePlayed = true;
@@ -267,6 +268,9 @@ public class MontyStopTrigger : MonoBehaviour
             {
                 StartCoroutine(WaitSeconds(2f, audioManager.clipApplause));
              //   audioManager.PlayAudio(audioManager.clipApplause);
+            } else
+            {
+                StartCoroutine(WaitSeconds(.5f, audioManager.clipfalling));
             }
         }
 
@@ -455,7 +459,7 @@ public class MontyStopTrigger : MonoBehaviour
     {
         yield return new WaitForSeconds(timeToWait);
         audioManager.PlayAudio(audioClip);
-        if (!playerPickedWinner) montyGameSignText.text = "A chance to change door pick...";
+        if (!playerPickedWinner && !montyGameEnded) montyGameSignText.text = "A chance to change door pick...";
     }
     //IEnumerator ShowNextStepAfterAnimation()
     //{
