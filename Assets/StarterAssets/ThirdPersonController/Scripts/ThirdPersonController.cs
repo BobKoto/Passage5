@@ -152,6 +152,8 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+            _characterTargetYaw = transform.eulerAngles.y;  //added 11/27/22 to prevent snap to rot y 0    - seems ok 
+            //Debug.Log("ON START _characterTargetYaw = " + _characterTargetYaw + "   tform rot = " + transform.rotation);
         }
 
         private void Update()
@@ -160,7 +162,7 @@ namespace StarterAssets
 
             JumpAndGravity();
             GroundedCheck();
-            PlayerLookRotation(); // added on 9/20/22
+            PlayerLookRotation(); // added on 9/20/22 
 
             Move();
 
@@ -201,11 +203,16 @@ namespace StarterAssets
 
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
+                //Debug.Log("_characterTargetYaw = " + _characterTargetYaw +
+                //    "   Before _characterTargetYaw += _input.look.x * deltaTimeMultiplier;");
                 float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;   //IsCurrentDeviceMouse = False on Touch/GamePad 
                 _characterTargetYaw += _input.look.x * deltaTimeMultiplier;
+                //Debug.Log("_characterTargetYaw = " + _characterTargetYaw +
+                //    "after _characterTargetYaw += _input.look.x * deltaTimeMultiplier;");
                 // clamp our rotations so our values are limited 360 degrees
                 _characterTargetYaw = ClampAngle(_characterTargetYaw, float.MinValue, float.MaxValue);
                 transform.rotation = Quaternion.Euler(0.0f,_characterTargetYaw, 0.0f);
+               // Debug.Log("_characterTargetYaw = " + _characterTargetYaw);
             }
         }  //END Add Method on 9/20/22 
         private void CameraRotation()
@@ -265,7 +272,7 @@ namespace StarterAssets
 
             _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
-
+           // Debug.Log("before move " + transform.rotation  + "   and rot.y = " + transform.rotation.y);
             // normalise input direction
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
@@ -281,8 +288,8 @@ namespace StarterAssets
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
                 _characterTargetYaw = rotation;   // 9/20/22 to maintain rotation when in PlayerLookRotation()
+               // Debug.Log("rotation = " + rotation);
             }
-
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 

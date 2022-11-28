@@ -18,7 +18,7 @@ public class AddRemoveChild : MonoBehaviour
     Animator anim;
 
     public CinemachineVirtualCamera thirdPersonFollowCam;
-    public CinemachineVirtualCamera freeLookCam;
+    public CinemachineFreeLook freeLookCam;
 
     MovingPlatform movingPlatform;
    // MovingPlatformGreen movingPlatformGreen;
@@ -67,7 +67,7 @@ public class AddRemoveChild : MonoBehaviour
             child.transform.SetParent(newParent);
             HandleTriggerEnterPerGameObject(this.name);
       //    if (anim)  anim.SetBool("runSwitch", true);
-            thirdPersonFollowCam.Priority=9; //Kludge to make freeLook cam ON
+          //  thirdPersonFollowCam.Priority=9; //Kludge to make freeLook cam ON
         }
 
     }
@@ -80,7 +80,7 @@ public class AddRemoveChild : MonoBehaviour
             HandleTriggerExitPerGameObject(this.name);
             //if (anim)   anim.SetBool("runSwitch", false);
             // thirdPersonFollowCam.MoveToTopOfPrioritySubqueue();
-            thirdPersonFollowCam.Priority=11;  //Kludge to make followPlayer cam ON
+          //  thirdPersonFollowCam.Priority=11;  //Kludge to make followPlayer cam ON
             //  child.transform.SetParent(null);
         }
 
