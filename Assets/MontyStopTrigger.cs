@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using StarterAssets;
 using UnityEngine;
 using TMPro;
+using Cinemachine;
 
 public class MontyStopTrigger : MonoBehaviour
 {
@@ -25,6 +26,12 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("The Player")]
     public GameObject playerArmature;
 
+    [Header("Cinemachine Cameras")]
+    public CinemachineVirtualCamera thirdPersonFollowCam;
+    public CinemachineFreeLook freeLookCam;
+
+    int thirdPersonFollowCamOriginalPriority, freeLookCamOriginalPriority;
+
     [Header("The Input System canvas")]
     public GameObject inputControls;
 
@@ -42,6 +49,7 @@ public class MontyStopTrigger : MonoBehaviour
     AudioManager audioManager;
     void Start()
     {
+        //Debug.Log(" 3pf cam priority = " + thirdPersonFollowCam.Priority + "    freeLook cam priority = " + freeLookCam.Priority);
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         movingPlatform = GameObject.Find("MovingPlatform").GetComponent<MovingPlatform>();
         animDoor1 = montyDoor1.GetComponent<Animator>();
@@ -82,7 +90,9 @@ public class MontyStopTrigger : MonoBehaviour
         thirdPersonController.MoveSpeed = 0f;
         thirdPersonController.SprintSpeed = 0f;
         // Here we may need to rotate player to face doors  OR the play can do it 
-       // playerArmature.transform.rotation.y = //a bad start 
+        // playerArmature.transform.rotation.y = //a bad start 
+        //freeLookCam.MoveToTopOfPrioritySubqueue();   //moves on rotation AND Look   but the call doesn't work?
+        //freeLookCam.Priority = 12;
     }
     private void UnlockPlayerFromTheGameTriggerArea()
     {
@@ -94,6 +104,8 @@ public class MontyStopTrigger : MonoBehaviour
         }
         thirdPersonController.MoveSpeed = originalMoveSpeed;
         thirdPersonController.SprintSpeed = originalSprintSpeed;
+        //thirdPersonFollowCam.MoveToTopOfPrioritySubqueue();  //only moves on Look    call doesn't work?
+        //freeLookCam.Priority = 10;   //spins back too soon 
     }
 
     private void PlayTheMontyGame()

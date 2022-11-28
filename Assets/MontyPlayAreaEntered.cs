@@ -1,3 +1,4 @@
+using Cinemachine;
 using randomize_array;   //because RandomTest.cs is in the namespace
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,11 @@ public class MontyPlayAreaEntered : MonoBehaviour
     public GameObject rearSign;
     public GameObject leftSign;
     public GameObject rightSign;
+    [Header("Cinemachine Cameras")]
+    public CinemachineVirtualCamera thirdPersonFollowCam;
+    public CinemachineFreeLook freeLookCam;
+
+    int thirdPersonFollowCamOriginalPriority, freeLookCamOriginalPriority;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +34,7 @@ public class MontyPlayAreaEntered : MonoBehaviour
             leftSign.SetActive(true);
             rightSign.SetActive(true);
             mainSign.SetActive(true);
-
+          //  freeLookCam.Priority = 12;  // make it Live   - cam transition not good - probably something i don't know 
         }
 
     }
@@ -40,6 +46,7 @@ public class MontyPlayAreaEntered : MonoBehaviour
             leftSign.SetActive(false);
             rightSign.SetActive(false);
             mainSign.SetActive(false);
+          //  freeLookCam.Priority = 10;  // make it Standby  - cam transition not good - probably something i don't know
             Debug.Log(other.gameObject.name + " Exited montyPlayArea... from " + this.name);
         }
 
