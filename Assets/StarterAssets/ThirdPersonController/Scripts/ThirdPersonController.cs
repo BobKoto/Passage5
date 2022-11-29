@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -12,6 +13,10 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
     [RequireComponent(typeof(PlayerInput))]
 #endif
+    [System.Serializable]
+    public class PlayerEnteredRelevantTrigger : UnityEvent<int>   //this declaration i guess is needed to accept
+    {                                                             //other scripts Invokes
+    }
     public class ThirdPersonController : MonoBehaviour
     {
         [Header("Player")]
@@ -153,9 +158,22 @@ namespace StarterAssets
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
             _characterTargetYaw = transform.eulerAngles.y;  //added 11/27/22 to prevent snap to rot y 0    - seems ok 
-            //Debug.Log("ON START _characterTargetYaw = " + _characterTargetYaw + "   tform rot = " + transform.rotation);
-        }
+                                                            //Debug.Log("ON START _characterTargetYaw = " + _characterTargetYaw + "   tform rot = " + transform.rotation);
 
+            triggerEvent.AddListener(PlayerEnteredTrigger);
+        }
+        public void PlayerEnteredTrigger(int theTrigger)   //event Invoked by some other script 
+        {
+            Debug.Log("player entered MontyTrigger , even tho we commented 162&163");
+            switch (theTrigger)
+            {
+                case 1:
+                    Debug.Log("player entered MontyTrigger , can we rotate it");
+                    transform.rotation = Quaternion.Euler(0f, 180f, 0.0f);  //rotate the player
+                    _cinemachineTargetYaw = 180f;                           // rotate the Cam
+                    break;
+            }
+        }
         private void Update()
         {
             _hasAnimator = TryGetComponent(out _animator);
