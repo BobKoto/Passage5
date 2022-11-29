@@ -4,6 +4,7 @@ using StarterAssets;
 using UnityEngine;
 using TMPro;
 using Cinemachine;
+using UnityEngine.Events;
 
 public class MontyStopTrigger : MonoBehaviour
 {
@@ -44,6 +45,8 @@ public class MontyStopTrigger : MonoBehaviour
     ThirdPersonController thirdPersonController;
     float originalMoveSpeed, originalSprintSpeed;
 
+    public PlayerEnteredRelevantTrigger triggerEvent;
+
     Animator animDoor1, animDoor2, animDoor3, animPlayer;
     // Start is called before the first frame update
     AudioManager audioManager;
@@ -59,6 +62,10 @@ public class MontyStopTrigger : MonoBehaviour
         thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
         originalMoveSpeed = thirdPersonController.MoveSpeed;
         originalSprintSpeed = thirdPersonController.SprintSpeed;
+        if (triggerEvent == null)
+        {
+            triggerEvent = new PlayerEnteredRelevantTrigger();
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -67,6 +74,7 @@ public class MontyStopTrigger : MonoBehaviour
          //  Debug.Log(other.gameObject.name + " Entered montyPStop.. ");
             if (!montyGameEnded)
             {
+                triggerEvent.Invoke(1);
                 LockPlayerInTheMontyGameTriggerArea();
                 PlayTheMontyGame();
                 audioManager.PlayAudio(audioManager.clipDRUMROLL);
