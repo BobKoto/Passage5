@@ -128,7 +128,7 @@ namespace StarterAssets
 #endif
             }
         }
-
+        public PlayerEnteredRelevantTrigger triggerEvent;  //empty class declared above - before this class 
 
         private void Awake()
         {
