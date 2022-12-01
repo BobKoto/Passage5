@@ -64,18 +64,24 @@ public class OpenDoor : MonoBehaviour
         mat = GetComponent<Renderer>().material;
         if (!target)  // we didn't set a target in the editor 
         {
-              target = GameObject.Find
-                ("/NestedParentArmature_Unpack/PlayerArmature/Skeleton/Hips/Spine/Chest/UpperChest/Right_Shoulder/Right_UpperArm/Right_LowerArm/Right_Hand")
-                .GetComponent<SphereCollider>().transform; //10/22 try looking at the collider - see next line 
-          //  target = GameObject.Find("Right_Hand").GetComponent<SphereCollider>().transform;  //Original working line 
+            target = GameObject.Find
+            ("/NestedParentArmature_Unpack/PlayerArmature/Skeleton/Hips/Spine/Chest").GetComponent<SphereCollider>().transform;
+
+          //   ("/NestedParentArmature_Unpack/PlayerArmature").GetComponent<CharacterController>().transform;  //maybe charctrllr
+
+
+
+            //("/NestedParentArmature_Unpack/PlayerArmature/Skeleton/Hips/Spine/Chest/UpperChest/Right_Shoulder/Right_UpperArm/Right_LowerArm/Right_Hand")
+            //.GetComponent<SphereCollider>().transform; //10/22 try looking at the collider - see next line 
+            //  target = GameObject.Find("Right_Hand").GetComponent<SphereCollider>().transform;  //Original working line 
             //tooFarToPress = true; // IF and ONLY IF we start too far from a pressable object
 
         }
         //transformRightAdjusted = new Vector3(transform.position.x - transformRightXAdjust, transform.position.y, transform.position.z);
-        transformSphereCheck = new Vector3(
-            transform.position.x + transformXOffset,
-            transform.position.y,
-            transform.position.z + transformZOffset);
+        //transformSphereCheck = new Vector3(
+        //    transform.position.x + transformXOffset,
+        //    transform.position.y,
+        //    transform.position.z + transformZOffset);
 
         pressToOpenButton.SetActive(false);
 
@@ -153,9 +159,10 @@ public class OpenDoor : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance))
         {
             playerRotationY = player.transform.eulerAngles; 
-            float playerRotation = playerRotationY.y - 360f;  // fuck if I know why we gotta do this - but I know
+           // float playerRotation = playerRotationY.y - 360f;  // fuck if I know why we gotta do this - but I know
 
-            if (hit.collider.transform == target  && (playerRotation > yAngleMin && playerRotation < yAngleMax))  //10/23/22 added 2 && conditions
+            if (hit.collider.transform == target )
+                //&& (playerRotation > yAngleMin && playerRotation < yAngleMax))  //10/23/22 added 2 && conditions
             {
               //  Debug.Log(this.name + " canSee is True and playerRotationY = " + playerRotationY);
                 canSee = true;
