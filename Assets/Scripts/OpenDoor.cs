@@ -158,15 +158,14 @@ public class OpenDoor : MonoBehaviour
         bool canSee = false;
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance))
         {
-            playerRotationY = player.transform.eulerAngles; 
-           // float playerRotation = playerRotationY.y - 360f;  // fuck if I know why we gotta do this - but I know
+            float playerRotation = player.transform.eulerAngles.y - 360f;  // fuck if I know why we gotta subtract 360 - but I know
 
-            if (hit.collider.transform == target )
-                //&& (playerRotation > yAngleMin && playerRotation < yAngleMax))  //10/23/22 added 2 && conditions
-            {
-              //  Debug.Log(this.name + " canSee is True and playerRotationY = " + playerRotationY);
-                canSee = true;
-            }
+            canSee = (hit.collider.transform == target
+                && (playerRotation > yAngleMin && playerRotation < yAngleMax)) ;  //10/23/22 added 2 && conditions
+            //{
+            //  //  Debug.Log(this.name + " canSee is True and playerRotationY = " + playerRotationY);
+            //    canSee = true;
+            //}
             Debug.DrawLine(transform.position, hit.point);
         }
         else
