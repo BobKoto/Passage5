@@ -739,13 +739,13 @@ MonoBehaviour:
   doorOpener: {fileID: 33981045}
   stepsRaiser: {fileID: 0}
   maxDistance: 0.7
-  angle: 200
+  angle: 119
   sphereRadius: 0.3
   transformRightXAdjust: 0
   transformXOffset: 1
   transformZOffset: -0.7
-  yAngleMin: -120.2
-  yAngleMax: -74
+  yAngleMin: -149
+  yAngleMax: -80
   pressToOpenButton: {fileID: 1211312009}
   operateButton: DoorSlideDown
   visualize: 1
@@ -2977,7 +2977,7 @@ Transform:
   m_LocalScale: {x: 0.99932593, y: 1, z: 2.4919698}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: -86.3, z: 0}
 --- !u!95 &150357446
 Animator:
@@ -16316,7 +16316,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598392790016982640, guid: 6fe71e25ea55dde408415d5ddb2bf6aa, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6598392790016982640, guid: 6fe71e25ea55dde408415d5ddb2bf6aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18725,13 +18725,13 @@ MonoBehaviour:
   doorOpener: {fileID: 0}
   stepsRaiser: {fileID: 1157211156}
   maxDistance: 0.7
-  angle: 200
+  angle: 100
   sphereRadius: 0.3
   transformRightXAdjust: 0
   transformXOffset: 1
   transformZOffset: -0.7
-  yAngleMin: -120.5
-  yAngleMax: -74
+  yAngleMin: -149
+  yAngleMax: -80
   pressToOpenButton: {fileID: 113739307}
   operateButton: Steps1Raise
   visualize: 1
@@ -28335,7 +28335,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1957184117 stripped
 GameObject:
