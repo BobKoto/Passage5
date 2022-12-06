@@ -31,7 +31,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler
         zPositionLeftLimit = cubeGameLeftWall.transform.position.z;//
         zPositionRightLimit = cubeGameRightWall.transform.position.z;// 
         movingCubeSizeX = transform.localScale.x;
-        Debug.Log(this.name + " position is " + transform.position + " movingCubeSizeX = " + movingCubeSizeX);// yes as expected 
+      //  Debug.Log(this.name + " position is " + transform.position + " movingCubeSizeX = " + movingCubeSizeX);// yes as expected 
     }
     //void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     //{

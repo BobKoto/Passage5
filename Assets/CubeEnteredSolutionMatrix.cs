@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+//using UnityEngine.Events;
 
 public class CubeEnteredSolutionMatrix : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
     GameObject bottomText;
     TMP_Text topRowText;
     TMP_Text bottomRowText;
+
+    // public CubeGameBoardEvent cubeGameBoardEvent;
+    public CubeGameBoardEvent cubeGameBoardEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +27,9 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         bottomText = GameObject.Find("BottomRow");
         //topRowText.text = "start top";
         //bottomRowText.text = "start bottom";
+     //   if (cubeGameBoardEvent == null) cubeGameBoardEvent = new CubeGameBoardEvent();
+     //   Debug.Log("debug.log Invoke cubeGameBoardEvent here......." );
+      //  cubeGameBoardEvent.Invoke(this.name, "string2", 10, 20);
 
     }
     private void OnTriggerEnter(Collider other)
@@ -30,16 +37,20 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         switch (this.name)
         {
             case "CubePlacement1":
-                Debug.Log(this.name + " entered by " + other);
-               break;
+            //    Debug.Log(this.name + " entered by " + other);
+                cubeGameBoardEvent.Invoke(other.name, " Entered   ", this.name, 20);
+                break;
             case "CubePlacement2":
-                Debug.Log(this.name + " entered by " + other);
+            //    Debug.Log(this.name + " entered by " + other);
+                cubeGameBoardEvent.Invoke(other.name, " Entered   ", this.name, 20);
                 break;
             case "CubePlacement3":
-                Debug.Log(this.name + " entered by " + other);
+            //    Debug.Log(this.name + " entered by " + other);
+                cubeGameBoardEvent.Invoke(other.name, " Entered   ", this.name, 20);
                 break;
             case "CubePlacement4":
-                Debug.Log(this.name + " entered by " + other);
+            //    Debug.Log(this.name + " entered by " + other);
+                cubeGameBoardEvent.Invoke(other.name, " Entered   ", this.name, 20);
                 break;
 
         }
@@ -49,16 +60,20 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         switch (this.name)
         {
             case "CubePlacement1":
-                Debug.Log(this.name + " exited by " + other);
+             //   Debug.Log(this.name + " exited by " + other);
+                cubeGameBoardEvent.Invoke(other.name, "  Exited     ", this.name, 20);
                 break;
             case "CubePlacement2":
-                Debug.Log(this.name + " exited by " + other);
+            //   Debug.Log(this.name + " exited by " + other);
+                cubeGameBoardEvent.Invoke(other.name, "  Exited     ", this.name, 20);
                 break;
             case "CubePlacement3":
-                Debug.Log(this.name + " exited by " + other);
+            //   Debug.Log(this.name + " exited by " + other);
+                cubeGameBoardEvent.Invoke(other.name, "  Exited     ", this.name, 20);
                 break;
             case "CubePlacement4":
-                Debug.Log(this.name + " exited by " + other);
+            //    Debug.Log(this.name + " exited by " + other);
+                cubeGameBoardEvent.Invoke(other.name, "  Exited     ", this.name, 20);
                 break;
 
         }
