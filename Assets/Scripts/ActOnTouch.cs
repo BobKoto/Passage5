@@ -10,7 +10,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler
     AudioManager audioManager;
     Camera cam;
     Vector3 point, newPoint;
-    GameObject cubeGameLeftWall, cubeGameRightWall;
+    GameObject cubeGameLeftWall, cubeGameRightWall, cubeGameTopWall;
 
     float yPositionFixed, zPositionFixed, xPositionFixed, camCubeXDelta, yPositionTopLimit,
         zPositionRightLimit, zPositionLeftLimit, movingCubeSizeX ;
@@ -19,17 +19,19 @@ public class ActOnTouch : MonoBehaviour, IDragHandler
     {
         cubeGameLeftWall = GameObject.Find("CubeGameLeftWall");
         cubeGameRightWall = GameObject.Find("CubeGameRightWall");
-        cam = Camera.main;
+        cubeGameTopWall = GameObject.Find("CubeGameTopWall");
+        cam = Camera.main;  //thankfully this finds the Cinemachine VCam
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         xPositionFixed = transform.position.x;  //we apparently need one of these fixed positions depending on cam/*cube orientation
         yPositionFixed = transform.position.y;  // *cube as in the thing(s) we want to drag 
         zPositionFixed = transform.position.z;
         camCubeXDelta = cam.transform.position.x - transform.position.x; //for ScreenToWorldPoint on drag - why? who knows
-        yPositionTopLimit = 16f;//hard coded for now - should eventually be a graphic 
+        //yPositionTopLimit = 22f;//hard coded for now - should eventually be a graphic -- DONE on next line 
+        yPositionTopLimit = cubeGameTopWall.transform.position.y - transform.localScale.y /2;
         zPositionLeftLimit = cubeGameLeftWall.transform.position.z;//
         zPositionRightLimit = cubeGameRightWall.transform.position.z;// 
         movingCubeSizeX = transform.localScale.x;
-        Debug.Log(this.name + " position is " + transform.position + " movingCubeSizeX = " + movingCubeSizeX);// yes as expected 
+      //  Debug.Log(this.name + " position is " + transform.position + " movingCubeSizeX = " + movingCubeSizeX);// yes as expected 
     }
     //void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     //{
