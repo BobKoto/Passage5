@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 //using UnityEngine.InputSystem.EnhancedTouch;
 
-public class ActOnTouch : MonoBehaviour, IDragHandler
-   //  , IPointerClickHandler  , IInitializePotentialDragHandler // Touch Testing only for now 
+public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IPointerEnterHandler
+//  , IPointerClickHandler  , IInitializePotentialDragHandler, IPointerUpHandler, // Touch Testing only for now 
 {
     AudioManager audioManager;
     Camera cam;
@@ -33,6 +33,31 @@ public class ActOnTouch : MonoBehaviour, IDragHandler
         movingCubeSizeX = transform.localScale.x;
       //  Debug.Log(this.name + " position is " + transform.position + " movingCubeSizeX = " + movingCubeSizeX);// yes as expected 
     }
+
+    void IDragHandler.OnDrag(PointerEventData eventData)  //Note: movement depends on camera orientation (affects transform.positions) 
+    {
+        point = cam.ScreenToWorldPoint
+            (new Vector3(eventData.position.x, eventData.position.y, cam.nearClipPlane +camCubeXDelta));//
+
+        newPoint =                                       // here we remap so Y is up/down & Z is left/right (don't try this at home)
+            new Vector3(xPositionFixed, Mathf.Clamp( point.y, yPositionFixed, yPositionTopLimit),
+                                        Mathf.Clamp( point.z, zPositionLeftLimit + movingCubeSizeX / 2,
+                                                              zPositionRightLimit - movingCubeSizeX / 2)); //movingCubeSizeX / 2?
+        transform.position = newPoint;
+    }
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+    {
+      //  Debug.Log("Pointer ENTERED!!!! this.name = " + this.name); // + " dragging? " + eventData.dragging);
+    }
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)   //player took finger off cube
+    {
+        Debug.Log("Pointer EXITED!!!! this.name = " + this.name);   // send an event to CubeGameHandler? to lock cube?
+    }
+    //void IPointerUpHandler.OnPointerUp(PointerEventData eventData)  //doesn't register 
+    //{
+    //    Debug.Log("Pointer went up!!!!");
+    //}
+
     //void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     //{
     //    audioManager.PlayAudio(audioManager.clipapert);
@@ -43,24 +68,6 @@ public class ActOnTouch : MonoBehaviour, IDragHandler
     //{
     //    Debug.Log("eData " + eventData.dragging);
     //}
-    void IDragHandler.OnDrag(PointerEventData eventData)
-    {
-
-        point = cam.ScreenToWorldPoint
-            (new Vector3(eventData.position.x, eventData.position.y, cam.nearClipPlane +camCubeXDelta));//
-
-        newPoint = 
-            new Vector3(xPositionFixed, Mathf.Clamp( point.y, yPositionFixed, yPositionTopLimit),
-                                        Mathf.Clamp( point.z, zPositionLeftLimit + movingCubeSizeX / 2,
-                                                              zPositionRightLimit - movingCubeSizeX / 2)); //movingCubeSizeX / 2?
-        transform.position = newPoint;
-        //if (newPoint.y >= yPositionFixed && newPoint.y <= yPositionTopLimit)
-        //{
-        //   transform.position = newPoint;
-        //}
-
-        //   Debug.Log("TPos = " + transform.position + "  newPoint.z = " + newPoint.z + " CamNCP = " + cam.nearClipPlane);
-    }
     //void IDragHandler.OnDrag(PointerEventData eventData)  //this doohickey was for movables FLAT on the floor (bad idea)
     //{
     //    point = cam.ScreenToWorldPoint

@@ -13,6 +13,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour    // invokes Events on E
     //TMP_Text bottomRowText;
 
     // public CubeGameBoardEvent cubeGameBoardEvent;
+    public AudioManager audioManager;
 
     public CubeGameBoardEvent cubeGameBoardEvent;
     bool alreadyOccupied;
@@ -38,16 +39,20 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour    // invokes Events on E
 
         //   Debug.Log("debug.log Invoke cubeGameBoardEvent here......." );
         //  cubeGameBoardEvent.Invoke(this.name, "string2", 10, 20);
-
+        if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
     private void OnTriggerEnter(Collider other)
     {
         if (!alreadyOccupied)  //then set the value moved into this - otherwise do nothing 
         {
             int valueToSend = CubeValue(other.name);
+            audioManager.PlayAudio(audioManager.TYPE);
+            LockTheCubeDown(other.name);
+
             switch (this.name)
             {
                 case "CubePlacement1":
+
                     cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
                     break;
                 case "CubePlacement2":
@@ -95,6 +100,12 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour    // invokes Events on E
             }
         }
 
+    }
+    void LockTheCubeDown(string objectToLock)
+    {
+        Debug.Log("Object to lock is " + objectToLock);
+        var rb = GameObject.Find(objectToLock).GetComponent<Rigidbody>();
+ //       rb.free
     }
     public int CubeValue(string cubeMovedInOrOut)
     {

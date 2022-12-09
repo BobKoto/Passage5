@@ -60,7 +60,7 @@ public class OpenDoor : MonoBehaviour
 
  
 
-        audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         mat = GetComponent<Renderer>().material;
         if (!target)  // we didn't set a target in the editor 
         {

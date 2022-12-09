@@ -16,12 +16,13 @@ public class CubeGameHandler : MonoBehaviour
     TMP_Text row1SumText,row2SumText, col1SumText, col2SumText ;
  
     public GameObject[] cubePlaceHolder;
+    public AudioManager audioManager;
     bool cubePlaceHolder1Taken, cubePlaceHolder2Taken, cubePlaceHolder3Taken, cubePlaceHolder4Taken;
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
+       // Debug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
      if (cubeGameBoardEvent == null) cubeGameBoardEvent = new CubeGameBoardEvent();  //not sure but it stopped the null reference 
         cubeGameBoardEvent.AddListener(CubeEnteredOrLeft);
         row1SumText = GameObject.Find("Row1Sum").GetComponent<TMP_Text>();
@@ -33,6 +34,8 @@ public class CubeGameHandler : MonoBehaviour
         row2SumText.text = "Row 2";
         col1SumText.text = "Col 1";
         col2SumText.text = "Col 2";
+
+        if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
     public void CubeEnteredOrLeft(string cubeName, bool _entered, string placeName, int cubeValue)   //event Invoked by CubeEnteredSolutionMatrix
     {
@@ -61,34 +64,19 @@ public class CubeGameHandler : MonoBehaviour
     }
     void CalculateTheMatrix(string placeName)  //can use params here?? yes but how?
     {
-       // Debug.Log("Now calculate the Matrix ....");
-       // if (cubePlaceHolder1Taken && cubePlaceHolder2Taken)    //add 1st row across
-        {
             int topRowTotal = place1CubeValue + place2CubeValue;
-         //   Debug.Log("the first row is " + topRowTotal);
             row1SumText.text = topRowTotal.ToString();
-        }
-       // if (cubePlaceHolder1Taken && cubePlaceHolder3Taken) //add 1st column down
-        {
+
             int col1Total = place1CubeValue + place3CubeValue;
-         //   Debug.Log("the first column is " + col1Total);
             col1SumText.text = col1Total.ToString();
-        }
-      //  if (cubePlaceHolder3Taken && cubePlaceHolder4Taken) //add 2nd row across 
-        {
+
             int secondRowTotal = place3CubeValue + place4CubeValue;
-        //    Debug.Log("2nd row = " + secondRowTotal + " place3 " + place3CubeValue + " place4 " + place4CubeValue);
             row2SumText.text = secondRowTotal.ToString();
-        }
-       // if (cubePlaceHolder2Taken && cubePlaceHolder4Taken) //add 2nd column down 
-        {
+
             int col2Total = place2CubeValue + place4CubeValue;
-      //      Debug.Log("the 2nd column is " + col2Total);
             col2SumText.text = col2Total.ToString();
-        }
-       // Debug.Log("");
     }
-}
+}  // end class 
 
 //switch (cubeName)  //redundant code removed from CubeEnteredOrLeft(...) we had a case for each place
 //{
@@ -129,3 +117,32 @@ public class CubeGameHandler : MonoBehaviour
 //    }
 //    Debug.Log("AssignValue says cubename " + cubeName + " placeCubeValue  " + placeCubeValue);
 //}
+// original     void CalculateTheMatrix()  quaddruple slashes are original comment-outs 
+// Debug.Log("Now calculate the Matrix ....");
+//// if (cubePlaceHolder1Taken && cubePlaceHolder2Taken)    //add 1st row across
+//{
+//    int topRowTotal = place1CubeValue + place2CubeValue;
+//    //   Debug.Log("the first row is " + topRowTotal);
+//    row1SumText.text = topRowTotal.ToString();
+//}
+//// if (cubePlaceHolder1Taken && cubePlaceHolder3Taken) //add 1st column down
+//{
+//    int col1Total = place1CubeValue + place3CubeValue;
+//    //   Debug.Log("the first column is " + col1Total);
+//    col1SumText.text = col1Total.ToString();
+//}
+////  if (cubePlaceHolder3Taken && cubePlaceHolder4Taken) //add 2nd row across 
+//{
+//    int secondRowTotal = place3CubeValue + place4CubeValue;
+//    //    Debug.Log("2nd row = " + secondRowTotal + " place3 " + place3CubeValue + " place4 " + place4CubeValue);
+//    row2SumText.text = secondRowTotal.ToString();
+//}
+//// if (cubePlaceHolder2Taken && cubePlaceHolder4Taken) //add 2nd column down 
+//{
+//    int col2Total = place2CubeValue + place4CubeValue;
+//    //      Debug.Log("the 2nd column is " + col2Total);
+//    col2SumText.text = col2Total.ToString();
+//}
+//       // Debug.Log("");
+//    }
+
