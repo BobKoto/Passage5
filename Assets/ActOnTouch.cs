@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IPointerEnterHandler
 //  , IPointerClickHandler  , IInitializePotentialDragHandler, IPointerUpHandler, // Touch Testing only for now 
+// Component of CubeNN objects 
 {
     AudioManager audioManager;
     Camera cam;
