@@ -12778,6 +12778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e8a7c8e29b07e49bdd63c0b432fe8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -14867,6 +14868,7 @@ MonoBehaviour:
   - {fileID: 453397699}
   - {fileID: 1175061770}
   - {fileID: 1671186869}
+  audioManager: {fileID: 0}
 --- !u!1 &927705480
 GameObject:
   m_ObjectHideFlags: 0
@@ -15084,6 +15086,8 @@ MonoBehaviour:
   clipdrama: {fileID: 8300000, guid: 4dd03ae16943216488ae0354d47f58f7, type: 3}
   clipDRUMROLL: {fileID: 8300000, guid: f535ef3c2c7a9d948add15af65a3f3b5, type: 3}
   clipding: {fileID: 8300000, guid: a91b72ac2ddcd204f82d7fae6a34646e, type: 3}
+  TYPE: {fileID: 8300000, guid: 88b1fbcea0d1d5f48bca00fd69547065, type: 3}
+  WHOOSH: {fileID: 8300000, guid: d9d388283dfd4534f9e66307dd04d67f, type: 3}
   audioSource: {fileID: 935131225}
 --- !u!4 &935131224
 Transform:
@@ -17442,6 +17446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e8a7c8e29b07e49bdd63c0b432fe8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -18013,6 +18018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e8a7c8e29b07e49bdd63c0b432fe8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -24974,7 +24980,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28410
+  m_Name: pb_Mesh28418
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -29597,6 +29603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e8a7c8e29b07e49bdd63c0b432fe8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -30462,7 +30469,12 @@ MonoBehaviour:
   m_LookAt: {fileID: 2076436242}
   m_Follow: {fileID: 0}
   m_ShowDebugText: 0
-  m_ChildCameras: []
+  m_ChildCameras:
+  - {fileID: 1105988392}
+  - {fileID: 578853957}
+  - {fileID: 625143762}
+  - {fileID: 1646117154}
+  - {fileID: 713081669}
   m_ActivateAfter: 0
   m_MinDuration: 0
   m_RandomizeChoice: 0
@@ -32829,7 +32841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1976187937556739898, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.00000047683716
       objectReference: {fileID: 0}
     - target: {fileID: 1976187937556739898, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -33193,7 +33205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3989581215203315308, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.00000047683716
       objectReference: {fileID: 0}
     - target: {fileID: 3989581215203315308, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -34029,7 +34041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7933126932972846844, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.00000047683716
       objectReference: {fileID: 0}
     - target: {fileID: 7933126932972846844, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z

@@ -5,7 +5,7 @@ using UnityEngine;
 //Use me like this : audioManager.PlayAudio(audioManager.clipApplause); // where clipApplause can be any clip declared below 
 public class AudioManager : MonoBehaviour
 {
-    [Header("Audio Stuff")]
+    [Header("Audio Stuff")]   //should have been an array or list -- but...
 
 
     public AudioClip clipApplause;
@@ -18,6 +18,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip clipdrama;
     public AudioClip clipDRUMROLL;
     public AudioClip clipding;
+    public AudioClip TYPE;
+    public AudioClip WHOOSH;
 
     public AudioSource audioSource;
   //  [Header("END Audio Stuff")]
