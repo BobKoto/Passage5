@@ -9,6 +9,11 @@ public class CubeGameBoardEvent : UnityEvent<string, bool, string, int>   //this
 {                                                                            //other scripts Invokes - unsure about params we need
 }
 public class CubeGameHandler : MonoBehaviour
+//Component of CubeGame -- receives events from CubeEnteredSolutionMatrix.cs  -- calculates row/column totals
+//Here we need to figure if game is lost or won 
+//How we do this is to seed the row/column with target sums that can or cannot be achieved to = 100
+//So we need to add Texts(numeric values) to serve as targets 
+//Some (randomly set) targets CAN be achieved while others cannot 
 {
     public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class 
     GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
