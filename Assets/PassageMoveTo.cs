@@ -34,7 +34,7 @@ namespace PassageMoveToNameSpace
             //    agentGoals = new Transform[3];
             agent.destination = agentGoals[0].position;
             var dest = agent.pathEndPosition;
-            Debug.Log("the dest is " + dest + "  The Goal is " + agentGoals[agentGoalIndex].position);
+          //  Debug.Log("the dest is " + dest + "  The Goal is " + agentGoals[agentGoalIndex].position);
         }
         //private void OnTriggerEnter(Collider other)
         //{

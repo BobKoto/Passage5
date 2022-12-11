@@ -23,7 +23,8 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         {
             int valueToSend = CubeValue(other.name);
             audioManager.PlayAudio(audioManager.TYPE);
-            LockTheCubeDown(other.name,  other.gameObject);  //other.GetComponent<Transform>(),not needed cause we set the cubes to Kinematic  -- but keep for now 
+            // LockTheCubeDown(other.name,  other.gameObject);  //other.GetComponent<Transform>(),not needed cause we set the cubes to Kinematic  -- but keep for now 
+            StartCoroutine(WaitBeforeLockingCube(other.name, other.gameObject));
           // NOTE: Kinematic cubes mean our Robot avatar can no longer "push" them
             switch (this.name)
             {
@@ -75,6 +76,12 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
                 default: break;
             }
         }
+    }
+    IEnumerator WaitBeforeLockingCube(string othername, GameObject othergameObject)
+    {
+        yield return new WaitForSeconds ( .5f);
+        LockTheCubeDown(othername, othergameObject);
+        yield return null;
     }
     void LockTheCubeDown(string objectToLock,  GameObject _other)  //Transform xForm,not needed cause we set the cubes to Kinematic  -- but keep for now 
     {
