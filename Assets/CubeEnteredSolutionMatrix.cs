@@ -2,29 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-//using UnityEngine.Events;
+using UnityEngine.Events;
+[System.Serializable]
+public class FingerPointerEvent : UnityEvent<string, string>
+{
+}
+
 
 public class CubeEnteredSolutionMatrix : MonoBehaviour   
 // Component of CubePlacement objects -- sends Cube enter/exit events to CubeGameHandler.cs
 {
     public AudioManager audioManager;
-
-    public CubeGameBoardEvent cubeGameBoardEvent;
-    bool alreadyOccupied;
+    FingerPointerEvent fingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+    public CubeGameBoardEvent cubeGameBoardEvent;  //event we invoke in here 
+    bool placeOccupied;
+    bool fingerPointerExitReceived;
     string placeOccupant;
     // Start is called before the first frame update
     void Start()
     {
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
+        fingerPointerEvent.AddListener(FingerPointerHappened);   // in paren is the method in here that gets invoked 
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (!alreadyOccupied)  //then set the value moved into this - otherwise do nothing 
+        if (!placeOccupied)  //then set the value moved into this - otherwise do nothing 
         {
             int valueToSend = CubeValue(other.name);
             audioManager.PlayAudio(audioManager.TYPE);
-            // LockTheCubeDown(other.name,  other.gameObject);  //other.GetComponent<Transform>(),not needed cause we set the cubes to Kinematic  -- but keep for now 
-            StartCoroutine(WaitBeforeLockingCube(other.name, other.gameObject));
+            placeOccupant = other.name;
+            placeOccupied = true;
+            //  LockTheCubeDown(other.name,  other.gameObject, this.name);  //other.GetComponent<Transform>(),not needed cause we set the cubes to Kinematic  -- but keep for now 
+            StartCoroutine(WaitBeforeLockingCube(other.name, other.gameObject, this.name));
           // NOTE: Kinematic cubes mean our Robot avatar can no longer "push" them
             switch (this.name)
             {
@@ -44,8 +54,8 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
                 default: break;
             }
             // Debug.Log(this.name + " entered by " + other);
-            alreadyOccupied = true;
-            placeOccupant = other.name;
+           // placeOccupied = true;
+           // placeOccupant = other.name;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -53,7 +63,8 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
        // Debug.Log(this.name + " exited by " + other + " the occupant is " + placeOccupant);
         if (other.name == placeOccupant) //original cube intentionally dragged out or (physically pushed out by another?) 
         {
-            alreadyOccupied = false;
+            placeOccupant = null;
+            placeOccupied = false;
             int valueToSend = CubeValue(other.name);
             switch (this.name)
             {
@@ -77,22 +88,37 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
             }
         }
     }
-    IEnumerator WaitBeforeLockingCube(string othername, GameObject othergameObject)
+    IEnumerator WaitBeforeLockingCube(string othername, GameObject othergameObject, string placeName)
     {
-        yield return new WaitForSeconds ( .5f);
-        LockTheCubeDown(othername, othergameObject);
+        Debug.Log("Coroutine WaitBeforeLockingCube is Waiting on finger up event");
+        yield return new WaitUntil(() => fingerPointerExitReceived == true);
+        Debug.Log("fingerPointerExitReceived == true");
+        LockTheCubeDown(othername, othergameObject, placeName);
+        fingerPointerExitReceived = false;
         yield return null;
     }
-    void LockTheCubeDown(string objectToLock,  GameObject _other)  //Transform xForm,not needed cause we set the cubes to Kinematic  -- but keep for now 
+    void LockTheCubeDown(string objectToLock,GameObject _other, string placeName)  //Transform xForm, unneeded as we set the cubes to Kinematic  -- but keep for now 
     {
-        Debug.Log("Object to lock is " + objectToLock + " Game object = " + _other.name);
-        Vector3 targetPos;
-        //float posY, posZ; //, posOtherX, posOtherZ; 
-        //posY = this.transform.position.y;
-        //posZ = this.transform.position.z;
-        targetPos = new Vector3(_other.transform.position.x, this.transform.position.y, this.transform.position.z);
+        Debug.Log("LockTheCubeDown says Object to lock is " + objectToLock + " Game object = " + _other.name + " Place = " + placeName);
+        if (placeOccupied)
+        {
+            Vector3 targetPos;
+            targetPos = new Vector3(_other.transform.position.x, this.transform.position.y, this.transform.position.z);
+            _other.transform.position = targetPos;
+            Debug.Log("LockTheCubeDown says Object " + _other.name + " Lock attempted, MAYBE OK");
+        }
+        else Debug.Log("LockTheCubeDown says Lock failed because placeOccupied is FALSE");
 
-        _other.transform.position = targetPos;
+    }
+    public void FingerPointerHappened(string cubeName, string fingerAction)
+    {
+        fingerPointerExitReceived = false;  // 'cause we only want if we're ON a placement 
+        Debug.Log("Received event from ActOnTouch!!!  cubeName = " + cubeName + "  Action = " + fingerAction);
+        if (cubeName == placeOccupant)
+        {
+            fingerPointerExitReceived = true;
+        }
+        else Debug.Log("MISMATCH on PlaceOccupant  placeOccupant = " + placeOccupant);
     }
     public int CubeValue(string cubeMovedInOrOut)
     {

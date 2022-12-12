@@ -15,12 +15,12 @@ public class CubeGameHandler : MonoBehaviour
 //So we need to add Texts(numeric values) to serve as targets 
 //Some (randomly set) targets CAN be achieved while others cannot - therein lies our puzzle?
 {
-    public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class 
+    CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public see line 31 
     GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
 
     TMP_Text row1SumText,row2SumText, col1SumText, col2SumText ;
  
-    public GameObject[] cubePlaceHolder;
+//    public GameObject[] cubePlaceHolder;  //this array of gameObjects did nothng 
     public AudioManager audioManager;
     bool cubePlaceHolder1Taken, cubePlaceHolder2Taken, cubePlaceHolder3Taken, cubePlaceHolder4Taken;
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;

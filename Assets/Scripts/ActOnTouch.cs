@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-//using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.Events;
 
 public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IPointerEnterHandler
 //  , IPointerClickHandler  , IInitializePotentialDragHandler, IPointerUpHandler, // Touch Testing only for now 
@@ -15,6 +15,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IP
 
     float yPositionFixed, zPositionFixed, xPositionFixed, camCubeXDelta, yPositionTopLimit,
         zPositionRightLimit, zPositionLeftLimit, movingCubeSizeX ;
+    public FingerPointerEvent fingerPointerEvent;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IP
         zPositionRightLimit = cubeGameRightWall.transform.position.z;// 
         movingCubeSizeX = transform.localScale.x;
       //  Debug.Log(this.name + " position is " + transform.position + " movingCubeSizeX = " + movingCubeSizeX);// yes as expected 
+
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)  //Note: movement depends on camera orientation (affects transform.positions) 
@@ -52,7 +54,8 @@ public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IP
     }
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)   //player took finger off cube
     {
-        Debug.Log("Pointer EXITED!!!! this.name = " + this.name);   // send an event to CubeGameHandler? to lock cube?
+        Debug.Log("Pointer EXITED!!!! this.name = " + this.name + "  Invoke event now");   // send an event to CubeGameHandler? to lock cube?
+        fingerPointerEvent.Invoke(this.name, "finger UP");
     }
     //void IPointerUpHandler.OnPointerUp(PointerEventData eventData)  //doesn't register 
     //{
