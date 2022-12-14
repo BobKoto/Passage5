@@ -4,12 +4,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 [System.Serializable]
-public class FingerPointerEvent : UnityEvent<string, string>
+public class FingerPointerUpEvent : UnityEvent<string, string>
 {
 }
 
 
-public class CubeEnteredSolutionMatrix : MonoBehaviour   
+public class CubePlacementHandler : MonoBehaviour
 // Component of CubePlacement objects -- sends Cube enter/exit events to CubeGameHandler.cs
 {
     public AudioManager audioManager;
@@ -31,7 +31,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         {
             int valueToSend = CubeValue(other.name);
 
-          // NOTE: Kinematic cubes mean our Robot avatar can no longer "push" them
+            // NOTE: Kinematic cubes mean our Robot avatar can no longer "push" them
             switch (this.name)
             {
                 case "CubePlacement1":
@@ -73,7 +73,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
             switch (this.name)
             {
                 case "CubePlacement1":
-                  //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
+                    //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
                     cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
                     break;
                 case "CubePlacement2":
@@ -101,7 +101,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         fingerPointerExitReceived = false;
         yield return null;
     }
-    void LockTheCubeDown(string objectToLock,GameObject _other, string placeName)  //Transform xForm, unneeded as we set the cubes to Kinematic  -- but keep for now 
+    void LockTheCubeDown(string objectToLock, GameObject _other, string placeName)  //Transform xForm, unneeded as we set the cubes to Kinematic  -- but keep for now 
     {
         Debug.Log("LockTheCubeDown says Object to lock is " + objectToLock + " Game object = " + _other.name + " Place = " + placeName);
         if (placeOccupied)
@@ -122,7 +122,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         {
             fingerPointerExitReceived = true;
         }
-        else 
+        else
             Debug.Log("MISMATCH on PlaceOccupant Occupant = " + placeOccupant + " cubeName = " + cubeName + " This is " + this.name);
     }
     public int CubeValue(string cubeMovedInOrOut)
@@ -138,30 +138,4 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         };
     }
 }
-// Old class declarations 
-//GameObject cube10, cube20, cube30, cube40; //don't need because we obtain name IDs from OnTriggers
-//GameObject topText;c
-//GameObject bottomText;
-//TMP_Text topRowText;
-//TMP_Text bottomRowText;
 
-// public CubeGameBoardEvent cubeGameBoardEvent;
-// Old Start() stuff 
-//cube10 = GameObject.Find("Cube10");//don't need because we obtain name IDs from OnTriggers
-//cube20 = GameObject.Find("Cube20");
-//cube30 = GameObject.Find("Cube30");
-//cube30 = GameObject.Find("Cube40");
-
-//topText = GameObject.Find("TopRow");don't need because
-//bottomText = GameObject.Find("BottomRow");
-//topRowText.text = "start top";
-//bottomRowText.text = "start bottom";
-
-//if (cubeGameBoardEvent == null) //syntaxes on other.name (duh) - triggers work so figure it out some other time :|
-//   {   
-//    cubeGameBoardEvent = new CubeGameBoardEvent().Invoke(other.name, " Entered   ", this.name, 20); 
-//    cubeGameBoardEvent => CubeGameHandler.
-//    }
-
-//   Debug.Log("debug.log Invoke cubeGameBoardEvent here......." );
-//  cubeGameBoardEvent.Invoke(this.name, "string2", 10, 20);

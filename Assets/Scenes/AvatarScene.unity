@@ -7143,6 +7143,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
+--- !u!1 &445714904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 445714905}
+  m_Layer: 0
+  m_Name: CubePlacements
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &445714905
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445714904}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 914838946}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &447263768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12208,7 +12238,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 914838946}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -12779,7 +12809,7 @@ Transform:
   m_Children:
   - {fileID: 463610837}
   m_Father: {fileID: 914838946}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
 --- !u!114 &735357894
 MonoBehaviour:
@@ -12794,9 +12824,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
-  fingerPointerEvent:
-    m_PersistentCalls:
-      m_Calls: []
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -14855,6 +14882,7 @@ Transform:
   - {fileID: 1671186870}
   - {fileID: 569036751}
   - {fileID: 608335349}
+  - {fileID: 445714905}
   - {fileID: 735357893}
   - {fileID: 1104822903}
   - {fileID: 1082593330}
@@ -14878,14 +14906,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c8babf013b62f241b79afdb82a535bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeGameBoardEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  cubePlaceHolder:
-  - {fileID: 1876292873}
-  - {fileID: 453397699}
-  - {fileID: 1175061770}
-  - {fileID: 1671186869}
   audioManager: {fileID: 0}
 --- !u!1 &927705480
 GameObject:
@@ -17450,7 +17470,7 @@ Transform:
   m_Children:
   - {fileID: 1256764174}
   m_Father: {fileID: 914838946}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
 --- !u!114 &1082593331
 MonoBehaviour:
@@ -17465,9 +17485,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
-  fingerPointerEvent:
-    m_PersistentCalls:
-      m_Calls: []
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -18025,7 +18042,7 @@ Transform:
   m_Children:
   - {fileID: 1853709441}
   m_Father: {fileID: 914838946}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
 --- !u!114 &1104822904
 MonoBehaviour:
@@ -18040,9 +18057,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
-  fingerPointerEvent:
-    m_PersistentCalls:
-      m_Calls: []
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -22509,7 +22523,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 914838946}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -28197,7 +28211,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 914838946}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -29643,7 +29657,7 @@ Transform:
   m_Children:
   - {fileID: 1624563765}
   m_Father: {fileID: 914838946}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
 --- !u!114 &1860607784
 MonoBehaviour:
@@ -29658,9 +29672,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
-  fingerPointerEvent:
-    m_PersistentCalls:
-      m_Calls: []
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -34377,7 +34388,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 914838946}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
