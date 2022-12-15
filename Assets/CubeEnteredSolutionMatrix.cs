@@ -4,16 +4,27 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 [System.Serializable]
-public class FingerPointerEvent : UnityEvent<string, string>
-{
-}
-
-
+public class FingerPointerEvent : UnityEvent<string, string> { }
+[System.Serializable]
+public class Cube10FingerPointerEvent : UnityEvent<string, string> { }
+[System.Serializable]
+public class Cube20FingerPointerEvent : UnityEvent<string, string> { }
+[System.Serializable]
+public class Cube30FingerPointerEvent : UnityEvent<string, string> { }
+[System.Serializable]
+public class Cube40FingerPointerEvent : UnityEvent<string, string> { }
 public class CubeEnteredSolutionMatrix : MonoBehaviour   
 // Component of CubePlacement objects -- sends Cube enter/exit events to CubeGameHandler.cs
 {
     public AudioManager audioManager;
     FingerPointerEvent fingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+    Cube10FingerPointerEvent cube10FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+    Cube20FingerPointerEvent cube20FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+    Cube30FingerPointerEvent cube30FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+    Cube40FingerPointerEvent cube40FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+
+    public CubeTriggerEnterExitEvent cubeTriggerEnterExitEvent;
+
     public CubeGameBoardEvent cubeGameBoardEvent;  //event we invoke in here 
     bool placeOccupied;
     bool fingerPointerExitReceived;
@@ -24,72 +35,101 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
         fingerPointerEvent.AddListener(FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+
+        if (cube10FingerPointerEvent == null) cube10FingerPointerEvent = new Cube10FingerPointerEvent();  //not sure but it stopped the null reference 
+        cube10FingerPointerEvent.AddListener(Cube10FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+        if (cube20FingerPointerEvent == null) cube20FingerPointerEvent = new Cube20FingerPointerEvent();  //not sure but it stopped the null reference 
+        cube10FingerPointerEvent.AddListener(Cube20FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+        if (cube30FingerPointerEvent == null) cube30FingerPointerEvent = new Cube30FingerPointerEvent();  //not sure but it stopped the null reference 
+        cube30FingerPointerEvent.AddListener(Cube30FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+        if (cube40FingerPointerEvent == null) cube40FingerPointerEvent = new Cube40FingerPointerEvent();  //not sure but it stopped the null reference 
+        cube10FingerPointerEvent.AddListener(Cube10FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+
+    }
+    public void Cube10FingerPointerHappened(string cubeName, string fingerAction)   //CHECK PARAMETERS!
+    {
+        Debug.Log("Cube 10 finger up");
+    }
+    public void Cube20FingerPointerHappened(string cubeName, string fingerAction)   //CHECK PARAMETERS!
+    {
+        Debug.Log("Cube 20 finger up");
+    }
+    public void Cube30FingerPointerHappened(string cubeName, string fingerAction)   //CHECK PARAMETERS!
+    {
+        Debug.Log("Cube 30 finger up");
+    }
+    public void Cube40FingerPointerHappened(string cubeName, string fingerAction)   //CHECK PARAMETERS!
+    {
+        Debug.Log("Cube 40 finger up");
     }
     private void OnTriggerEnter(Collider other)
     {
         if (!placeOccupied)  //then set the value moved into this - otherwise do nothing 
         {
             int valueToSend = CubeValue(other.name);
-
+            
           // NOTE: Kinematic cubes mean our Robot avatar can no longer "push" them
-            switch (this.name)
-            {
-                case "CubePlacement1":
-                    Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
-                    cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
-                    break;
-                case "CubePlacement2":
-                    Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
-                    cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
-                    break;
-                case "CubePlacement3":
-                    Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
-                    cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
-                    break;
-                case "CubePlacement4":
-                    Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
-                    cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
-                    break;
-                default: break;
-            }
+            cubeTriggerEnterExitEvent.Invoke(other.name, this.name, 0, true);
+            cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
+            //switch (this.name)
+            //{
+            //    case "CubePlacement1":
+            //        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
+            //        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
+
+            //        break;
+            //    case "CubePlacement2":
+            //        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
+            //        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
+            //        break;
+            //    case "CubePlacement3":
+            //        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
+            //        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
+            //        break;
+            //    case "CubePlacement4":
+            //        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
+            //        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
+            //        break;
+            //    default: break;
+            //}
             audioManager.PlayAudio(audioManager.TYPE);
             placeOccupant = other.name;
             placeOccupied = true;
-            //  LockTheCubeDown(other.name,  other.gameObject, this.name);  //other.GetComponent<Transform>(),not needed cause we set the cubes to Kinematic  -- but keep for now 
             Debug.Log(this.name + " entered by " + other + " placeOccupant = " + placeOccupant);
             StartCoroutine(WaitBeforeLockingCube(other.name, other.gameObject, this.name));
-            // placeOccupied = true;
-            // placeOccupant = other.name;
+
         }
     }
     private void OnTriggerExit(Collider other)
     {
         Debug.Log(this.name + " exited by " + other + " the occupant is " + placeOccupant);
+        cubeTriggerEnterExitEvent.Invoke(other.name, this.name, 0, false);
         if (other.name == placeOccupant) //original cube intentionally dragged out or (physically pushed out by another?) 
         {
             placeOccupant = null;
             placeOccupied = false;
             int valueToSend = CubeValue(other.name);
-            switch (this.name)
-            {
-                case "CubePlacement1":
-                  //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
-                    cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
-                    break;
-                case "CubePlacement2":
-                    //    Debug.Log(this.name + " ONTriggerExit exited by " + other);
-                    cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
-                    break;
-                case "CubePlacement3":
-                    //    Debug.Log(this.name + " ONTriggerExit exited by " + other);
-                    cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
-                    break;
-                case "CubePlacement4":
-                    //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
-                    cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
-                    break;
-                default: break;
-            }
+            cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
+            //switch (this.name)
+            //{
+            //    case "CubePlacement1":
+            //      //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
+            //        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
+            //        break;
+            //    case "CubePlacement2":
+            //        //    Debug.Log(this.name + " ONTriggerExit exited by " + other);
+            //        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
+            //        break;
+            //    case "CubePlacement3":
+            //        //    Debug.Log(this.name + " ONTriggerExit exited by " + other);
+            //        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
+            //        break;
+            //    case "CubePlacement4":
+            //        //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
+            //        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
+            //        break;
+            //    default: break;
+            //}
         }
     }
     IEnumerator WaitBeforeLockingCube(string othername, GameObject othergameObject, string placeName)
