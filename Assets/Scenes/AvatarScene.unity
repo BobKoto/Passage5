@@ -7152,6 +7152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 445714905}
+  - component: {fileID: 445714906}
   m_Layer: 0
   m_Name: CubePlacements
   m_TagString: Untagged
@@ -7173,6 +7174,34 @@ Transform:
   m_Father: {fileID: 914838946}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &445714906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445714904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9fca0bed798ec14397de44c1abecc3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
+  fingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: ReceivedFingerUpEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &447263768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12824,6 +12853,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
+  cubeTriggerEnterExitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: CubeEneteredOrExitedPlacement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -17485,6 +17529,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
+  cubeTriggerEnterExitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: CubeEneteredOrExitedPlacement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -18057,6 +18116,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
+  cubeTriggerEnterExitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: CubeEneteredOrExitedPlacement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -29672,6 +29746,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
+  cubeTriggerEnterExitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: CubeEneteredOrExitedPlacement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls:
@@ -32927,7 +33016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1976187937556739898, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1976187937556739898, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -33291,7 +33380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3989581215203315308, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3989581215203315308, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -34127,7 +34216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7933126932972846844, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7933126932972846844, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
       propertyPath: m_LocalPosition.z
