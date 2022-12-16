@@ -7202,6 +7202,69 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  cubeTriggerEnterExitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube10FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 735357894}
+        m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
+        m_MethodName: Cube10FingerPointerHappened
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  cube20FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1104822904}
+        m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
+        m_MethodName: Cube20FingerPointerHappened
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  cube30FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1082593331}
+        m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
+        m_MethodName: Cube30FingerPointerHappened
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  cube40FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1860607784}
+        m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
+        m_MethodName: Cube40FingerPointerHappened
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &447263768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7492,6 +7555,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1104822904}
         m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
         m_MethodName: FingerPointerHappened
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: ReceivedFingerUpEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8438,7 +8513,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26792
+  m_Name: pb_Mesh26796
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12853,12 +12928,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
+  cube10FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube20FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube30FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube40FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
   cubeTriggerEnterExitEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
-        m_MethodName: CubeEneteredOrExitedPlacement
+        m_MethodName: CubeEnterExitPlacement
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14304,7 +14391,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27360
+  m_Name: pb_Mesh27370
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -17529,12 +17616,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
+  cube10FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube20FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube30FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube40FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
   cubeTriggerEnterExitEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
-        m_MethodName: CubeEneteredOrExitedPlacement
+        m_MethodName: CubeEnterExitPlacement
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18116,12 +18215,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
+  cube10FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube20FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube30FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube40FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
   cubeTriggerEnterExitEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
-        m_MethodName: CubeEneteredOrExitedPlacement
+        m_MethodName: CubeEnterExitPlacement
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18963,7 +19074,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27050
+  m_Name: pb_Mesh27054
   serializedVersion: 10
   m_SubMeshes: []
   m_Shapes:
@@ -20257,6 +20368,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1082593331}
         m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
         m_MethodName: FingerPointerHappened
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: ReceivedFingerUpEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25107,7 +25230,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28422
+  m_Name: pb_Mesh28432
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -27762,6 +27885,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: ReceivedFingerUpEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &1671186873
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29746,12 +29881,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
+  cube10FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  cube20FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube30FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cube40FingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
   cubeTriggerEnterExitEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
-        m_MethodName: CubeEneteredOrExitedPlacement
+        m_MethodName: CubeEnterExitPlacement
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30133,6 +30292,18 @@ MonoBehaviour:
       - m_Target: {fileID: 735357894}
         m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
         m_MethodName: FingerPointerHappened
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: ReceivedFingerUpEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

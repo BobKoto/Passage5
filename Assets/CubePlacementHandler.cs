@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
-[System.Serializable]
-public class HandlerFingerPointerUpEvent : UnityEvent<string, string, int> { }
+//[System.Serializable]
+//public class HandlerFingerPointerUpEvent : UnityEvent<string, string, int> { }
 [System.Serializable]
 public class CubeTriggerEnterExitEvent : UnityEvent<string, string, int, bool> { }
 //[System.Serializable]
@@ -14,14 +14,14 @@ public class CubePlacementHandler : MonoBehaviour
 {
     public AudioManager audioManager;
     public FingerPointerEvent fingerPointerEvent; //CubeEnteredSolutionMatrix waits for us to send these 
-    HandlerFingerPointerUpEvent handlerFingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+  //  HandlerFingerPointerUpEvent handlerFingerPointerEvent;  //empty class declared above - before this class -- we receive these 
 
     bool cube10WaitingForFingerUp, cube20WaitingForFingerUp, cube30WaitingForFingerUp, cube40WaitingForFingerUp;
-    CubeTriggerEnterExitEvent cubeTriggerEnterExitEvent;
-    Cube10FingerPointerEvent cube10FingerPointerEvent;  // we send these 
-    Cube20FingerPointerEvent cube20FingerPointerEvent;  //
-    Cube30FingerPointerEvent cube30FingerPointerEvent;  // 
-    Cube40FingerPointerEvent cube40FingerPointerEvent;  // 
+    public CubeTriggerEnterExitEvent cubeTriggerEnterExitEvent;
+    public Cube10FingerPointerEvent cube10FingerPointerEvent;  // we send these 
+    public Cube20FingerPointerEvent cube20FingerPointerEvent;  //
+    public Cube30FingerPointerEvent cube30FingerPointerEvent;  // 
+    public Cube40FingerPointerEvent cube40FingerPointerEvent;  // 
     // Start is called before the first frame update
     void Start()
     {
@@ -31,15 +31,16 @@ public class CubePlacementHandler : MonoBehaviour
         //handlerFingerPointerEvent.AddListener(ReceivedFingerUpEvent);   // in paren is the method in this script that gets invoked 
 
         if (cubeTriggerEnterExitEvent == null) cubeTriggerEnterExitEvent = new CubeTriggerEnterExitEvent();
-        cubeTriggerEnterExitEvent.AddListener(CubeEneteredOrExitedPlacement);
+        cubeTriggerEnterExitEvent.AddListener(CubeEnterExitPlacement); //u change the listener (and method) name u must change Editor too!  
 
-        fingerPointerEvent.AddListener(ReceivedFingerUpEvent);
+        if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
+        fingerPointerEvent.AddListener(ReceivedFingerUpEvent);  //this line and one above needed to receive events
     }
 
-    public void CubeEneteredOrExitedPlacement(string cubeName, string placementName, int extraInt, bool cubeEntered)
+    public void CubeEnterExitPlacement(string cubeName, string placementName, int extraInt, bool cubeEntered)  //Method name in Editor!
     {
-        Debug.LogFormat("CUBEENETEREDOREXITEDPLACEMENT cubeName= " + cubeName + " cubeEntered = " + cubeEntered +
-             " placement = " + placementName );
+        Debug.LogFormat("CPHandler CubeEnterExitPlacement cubeName= " + cubeName + ", cubeEntered? = " + cubeEntered +
+             ", placement = " + placementName );
 
         switch (cubeName)
         {
@@ -65,7 +66,7 @@ public class CubePlacementHandler : MonoBehaviour
     {
         // Here is where we get a fingerUp event from ActOnTouch
         //and if it is flagged as being awaited we send an Up event to CubeEnteredSolutionMatrix
-        Debug.Log("ReceivedFingerUpEvent.................cubeNmae = " + cubeName + " action " + action);
+        Debug.Log("CPHandler ReceivedFingerUpEvent.......cubeNmae = " + cubeName + " action " + action);
         switch (cubeName)
         {
             case "Cube10":
