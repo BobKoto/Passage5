@@ -6,7 +6,7 @@ using UnityEngine.Events;
 //[System.Serializable]
 //public class HandlerFingerPointerUpEvent : UnityEvent<string, string, int> { }
 [System.Serializable]
-public class CubeTriggerEnterExitEvent : UnityEvent<string, string, int, bool> { }
+public class CubeTriggerEnterExitEvent : UnityEvent<GameObject, string, GameObject, bool> { }
 //[System.Serializable]
 //public class FingerPointerEvent : UnityEvent<string, string> { }
 public class CubePlacementHandler : MonoBehaviour
@@ -22,6 +22,13 @@ public class CubePlacementHandler : MonoBehaviour
     public Cube20FingerPointerEvent cube20FingerPointerEvent;  //
     public Cube30FingerPointerEvent cube30FingerPointerEvent;  // 
     public Cube40FingerPointerEvent cube40FingerPointerEvent;  // 
+
+    GameObject cube10, cube20, cube30, cube40;
+    GameObject placement1, placement2, placement3, placement4;
+
+
+
+    GameObject currentCube;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,14 +42,29 @@ public class CubePlacementHandler : MonoBehaviour
 
         if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
         fingerPointerEvent.AddListener(ReceivedFingerUpEvent);  //this line and one above needed to receive events
+
+        //Find the Cube GameObjects (Cube10, Cube20, etc.)  we could do an array - maybe later 
+        cube10 = GameObject.Find("Cube10");
+        cube20 = GameObject.Find("Cube20");
+        cube30 = GameObject.Find("Cube30");
+        cube40 = GameObject.Find("Cube40");
+        //Find the Placement GameObjects (CubePlacement1, CubePlacemrnt2, etc.)  we could do an array - maybe later 
+        placement1 = GameObject.Find("CubePlacement1");
+        placement2 = GameObject.Find("CubePlacement2");
+        placement3 = GameObject.Find("CubePlacement3");
+        placement4 = GameObject.Find("CubePlacement4");
     }
 
-    public void CubeEnterExitPlacement(string cubeName, string placementName, int extraInt, bool cubeEntered)  //Method name in Editor!
-    {
-        Debug.LogFormat("CPHandler CubeEnterExitPlacement cubeName= " + cubeName + ", cubeEntered? = " + cubeEntered +
-             ", placement = " + placementName );
 
-        switch (cubeName)
+    public void CubeEnterExitPlacement(GameObject _place, string placementName, GameObject _cube, bool cubeEntered)  //Method name in Editor!
+    {
+        Debug.Log("CPHandler CubeEnterExitPlacement placeName= " + _place.name + ", cubeEntered? = " + cubeEntered +
+             ", placement = " + placementName + " GOName = " + _cube.name );
+        if (cubeEntered)
+        {
+            currentCube = _cube;
+        }
+        switch (_cube.name)
         {
             case "Cube10":
                 cube10WaitingForFingerUp = cubeEntered;
@@ -60,8 +82,6 @@ public class CubePlacementHandler : MonoBehaviour
                 break;
         }
     }
-
-    //  public void ReceivedFingerUpEvent(string cubeName, string extraOne, int cubeValue)
     public void ReceivedFingerUpEvent(string cubeName, string action)
     {
         // Here is where we get a fingerUp event from ActOnTouch
@@ -72,8 +92,9 @@ public class CubePlacementHandler : MonoBehaviour
             case "Cube10":
                 if (cube10WaitingForFingerUp)
                 {
+                    Debug.Log("CPHandler cube10 fingerUp  cube = " + currentCube.name);
                     // fingerPointerEvent.Invoke(this.name, "finger UP");  //here we need to send a unique event????
-                     cube10FingerPointerEvent.Invoke(cubeName, "fingerUp");
+                    cube10FingerPointerEvent.Invoke(cubeName, "fingerUp", currentCube);
                      cube10WaitingForFingerUp = false;
                 }
 
@@ -81,8 +102,9 @@ public class CubePlacementHandler : MonoBehaviour
             case "Cube20":
                 if (cube20WaitingForFingerUp)
                 {
+                    Debug.Log("CPHandler cube20 fingerUp  cube = " + currentCube.name);
                     // fingerPointerEvent.Invoke(this.name, "finger UP");  //here we need to send a unique event????
-                    cube20FingerPointerEvent.Invoke(cubeName, "fingerUp");
+                    cube20FingerPointerEvent.Invoke(cubeName, "fingerUp", currentCube);
                     cube20WaitingForFingerUp = false;
                 }
 
@@ -90,8 +112,9 @@ public class CubePlacementHandler : MonoBehaviour
             case "Cube30":
                 if (cube30WaitingForFingerUp)
                 {
+                    Debug.Log("CPHandler cube30 fingerUp  cube = " + currentCube.name);
                     //fingerPointerEvent.Invoke(this.name, "finger UP");  //here we need to send a unique event????
-                    cube30FingerPointerEvent.Invoke(cubeName, "fingerUp");
+                    cube30FingerPointerEvent.Invoke(cubeName, "fingerUp", currentCube);
                     cube30WaitingForFingerUp = false;
                 }
 
@@ -99,8 +122,9 @@ public class CubePlacementHandler : MonoBehaviour
             case "Cube40":
                 if (cube40WaitingForFingerUp)
                 {
+                    Debug.Log("CPHandler cube40 fingerUp  cube = " + currentCube.name);
                     //fingerPointerEvent.Invoke(this.name, "finger UP");  //here we need to send a unique event????
-                    cube40FingerPointerEvent.Invoke(cubeName, "fingerUp");
+                    cube40FingerPointerEvent.Invoke(cubeName, "fingerUp", currentCube);
                     cube40WaitingForFingerUp = false;
                 }
                 break;

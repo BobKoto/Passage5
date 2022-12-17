@@ -6,13 +6,15 @@ using UnityEngine.Events;
 [System.Serializable]
 public class FingerPointerEvent : UnityEvent<string, string> { }
 [System.Serializable]
-public class Cube10FingerPointerEvent : UnityEvent<string, string> { }
+public class Cube10FingerPointerEvent : UnityEvent<string, string, GameObject> { }
 [System.Serializable]
-public class Cube20FingerPointerEvent : UnityEvent<string, string> { }
+public class Cube20FingerPointerEvent : UnityEvent<string, string, GameObject> { }
 [System.Serializable]
-public class Cube30FingerPointerEvent : UnityEvent<string, string> { }
+public class Cube30FingerPointerEvent : UnityEvent<string, string, GameObject> { }
 [System.Serializable]
-public class Cube40FingerPointerEvent : UnityEvent<string, string> { }
+public class Cube40FingerPointerEvent : UnityEvent<string, string, GameObject> { }
+
+
 public class CubeEnteredSolutionMatrix : MonoBehaviour   
 // Component of CubePlacement objects -- sends Cube enter/exit events to CubeGameHandler.cs
 {
@@ -26,7 +28,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
     public CubeTriggerEnterExitEvent cubeTriggerEnterExitEvent;
 
     public CubeGameBoardEvent cubeGameBoardEvent;  //event we invoke in here 
-    GameObject cube10, cube20, cube30, cube40;
+
     bool placeOccupied;
     bool fingerPointerExitReceived;
     string placeOccupant;
@@ -35,8 +37,10 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
     {
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         //Set up received events
-        if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
-        fingerPointerEvent.AddListener(FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+        //if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
+        //fingerPointerEvent.AddListener(FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+        //ABOVE 2 Lines Commented so only CubePlacementHandler reacts to fingerUp from ActOnTouch 
+        //ABOVE comment-outs does NOT stop FingerPointerHappened from running! (learn) not until ActOnTouch event is deleted
 
         if (cube10FingerPointerEvent == null) cube10FingerPointerEvent = new Cube10FingerPointerEvent();  //not sure but it stopped the null reference 
         if (cube20FingerPointerEvent == null) cube20FingerPointerEvent = new Cube20FingerPointerEvent();  //not sure but it stopped the null reference 
@@ -48,31 +52,23 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         cube30FingerPointerEvent.AddListener(Cube30FingerPointerHappened);   // in paren is the method in this script that gets invoked       
         cube40FingerPointerEvent.AddListener(Cube40FingerPointerHappened);   // in paren is the method in this script that gets invoked 
         //End set up received events
-
-        //Find the Cube GameObjects (Cube10, Cube20, etc.)  we could do an array - maybe later 
-        cube10 = GameObject.Find("Cube10");
-        cube20 = GameObject.Find("Cube20");
-        cube30 = GameObject.Find("Cube30");
-        cube40 = GameObject.Find("Cube40");
-
-
     }
     //These CubeXXFingerPointerHappened methods tells us to Lock a cube in place that is in a trigger 
-    public void Cube10FingerPointerHappened(string cubeName, string fingerAction)   //CHECK PARAMETERS!
+    public void Cube10FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
     {
-        Debug.Log("CESMatrix Cube10FingerPointerHappened Cube 10 finger up");
+        Debug.Log("CESMatrix Cube10FingerPointerHappened Cube 10 finger up on " + _cube.name + " MyName =" + this.name);
     }
-    public void Cube20FingerPointerHappened(string cubeName, string fingerAction)   //CHECK PARAMETERS!
+    public void Cube20FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
     {
-        Debug.Log("CESMatrix Cube20FingerPointerHappened Cube 20 finger up");
+        Debug.Log("CESMatrix Cube20FingerPointerHappened Cube 20 finger up on " + _cube.name + " MyName =" + this.name);
     }
-    public void Cube30FingerPointerHappened(string cubeName, string fingerAction)   //CHECK PARAMETERS!
+    public void Cube30FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
     {
-        Debug.Log("CESMatrix Cube30FingerPointerHappened Cube 30 finger up");
+        Debug.Log("CESMatrix Cube30FingerPointerHappened Cube 30 finger up on " + _cube.name + " MyName =" + this.name);
     }
-    public void Cube40FingerPointerHappened(string cubeName, string fingerAction)   //CHECK PARAMETERS!
+    public void Cube40FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
     {
-        Debug.Log("CESMatrix Cube40FingerPointerHappened Cube 40 finger up");
+        Debug.Log("CESMatrix Cube40FingerPointerHappened Cube 40 finger up on " + _cube.name + " MyName =" + this.name);
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -81,7 +77,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
             int valueToSend = CubeValue(other.name);
             
           // NOTE: Kinematic cubes mean our Robot avatar can no longer "push" them
-            cubeTriggerEnterExitEvent.Invoke(other.name, this.name, 0, true);  //Send event to CubePlacementHandler
+            cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, other.gameObject, true);  //Send event to CubePlacementHandler
             cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend); //Send event to CubeGameHandler
             //switch (this.name)
             //{
@@ -122,7 +118,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
             placeOccupant = null;
             placeOccupied = false;
             int valueToSend = CubeValue(other.name);
-            cubeTriggerEnterExitEvent.Invoke(other.name, this.name, 0, false);  //Send event to CubePlacementHandler
+            cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, other.gameObject, false);  //Send event to CubePlacementHandler
             cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);  //Send event to CubeGameHandler
             //switch (this.name)
             //{
@@ -194,6 +190,10 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
             "Cube40" => 40,
             _ => 0,
         };
+    }
+    void OnDisable()
+    {
+        StopAllCoroutines(); // just to be safe/sure/clean whatever
     }
 }
 // Old class declarations 
