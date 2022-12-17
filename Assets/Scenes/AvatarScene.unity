@@ -7552,18 +7552,6 @@ MonoBehaviour:
   fingerPointerEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1104822904}
-        m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
-        m_MethodName: FingerPointerHappened
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
         m_MethodName: ReceivedFingerUpEvent
@@ -20365,18 +20353,6 @@ MonoBehaviour:
   fingerPointerEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1082593331}
-        m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
-        m_MethodName: FingerPointerHappened
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
         m_MethodName: ReceivedFingerUpEvent
@@ -27873,18 +27849,6 @@ MonoBehaviour:
   fingerPointerEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1860607784}
-        m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
-        m_MethodName: FingerPointerHappened
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
         m_MethodName: ReceivedFingerUpEvent
@@ -30289,18 +30253,6 @@ MonoBehaviour:
   fingerPointerEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 735357894}
-        m_TargetAssemblyTypeName: CubeEnteredSolutionMatrix, Assembly-CSharp
-        m_MethodName: FingerPointerHappened
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
         m_MethodName: ReceivedFingerUpEvent
@@ -30812,12 +30764,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 2076436242}
   m_Follow: {fileID: 0}
   m_ShowDebugText: 0
-  m_ChildCameras:
-  - {fileID: 1105988392}
-  - {fileID: 578853957}
-  - {fileID: 625143762}
-  - {fileID: 1646117154}
-  - {fileID: 713081669}
+  m_ChildCameras: []
   m_ActivateAfter: 0
   m_MinDuration: 0
   m_RandomizeChoice: 0
