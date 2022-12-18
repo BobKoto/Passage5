@@ -72,11 +72,11 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (!placeOccupied)  //then set the value moved into this - otherwise do nothing 
+        if (!placeOccupied)  //then set the value moved into this - otherwise do nothing? maybe we should send the Cube back home?
         {
+            // NOTE: Kinematic cubes mean our Robot avatar can no longer "push" them - nor can other Cubes - so overlap can exist
+
             int valueToSend = CubeValue(other.name);
-            
-          // NOTE: Kinematic cubes mean our Robot avatar can no longer "push" them
             cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, other.gameObject, true);  //Send event to CubePlacementHandler
             cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend); //Send event to CubeGameHandler
             //switch (this.name)
@@ -104,16 +104,17 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
             placeOccupied = true;
 
             placeOccupant = other.name;
-            Debug.Log("CESMatrix Start Coroutine "+ this.name + " entered by " + other.name + " placeOccupant = " + placeOccupant);
-            StartCoroutine(WaitBeforeLockingCube(other.name, other.gameObject, this.name));
+            //Debug.Log("CESMatrix Start Coroutine "+ this.name + " entered by " + other.name + " placeOccupant = " + placeOccupant);
+            //StartCoroutine(WaitBeforeLockingCube(other.name, other.gameObject, this.name)); 
+            //now with StartCoroutine commented WaitBeforeLockingCube   and  LockTheCubeDown  won't be called
 
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log(this.name + " exited by " + other + " the occupant is " + placeOccupant);
+        Debug.Log("CESMatrix " + this.name + " exited by " + other + " the occupant is " + placeOccupant);
 
-        if (other.name == placeOccupant) //original cube intentionally dragged out 
+        if (other.name == placeOccupant) //original cube intentionally dragged out - an overlapping cube is ignored for now
         {
             placeOccupant = null;
             placeOccupied = false;

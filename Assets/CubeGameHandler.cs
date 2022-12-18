@@ -35,10 +35,10 @@ public class CubeGameHandler : MonoBehaviour
         col1SumText = GameObject.Find("Col1Sum").GetComponent<TMP_Text>();
         col2SumText = GameObject.Find("Col2Sum").GetComponent<TMP_Text>();
 
-        row1SumText.text = "Row 1";
-        row2SumText.text = "Row 2";
-        col1SumText.text = "Col 1";
-        col2SumText.text = "Col 2";
+        row1SumText.text = "0";
+        row2SumText.text = "0";
+        col1SumText.text = "0";
+        col2SumText.text = "0";
 
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
