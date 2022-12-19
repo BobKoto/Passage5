@@ -3,72 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
-[System.Serializable]
-public class FingerPointerEvent : UnityEvent<string, string> { }
-[System.Serializable]
-public class Cube10FingerPointerEvent : UnityEvent<string, string, GameObject> { }
-[System.Serializable]
-public class Cube20FingerPointerEvent : UnityEvent<string, string, GameObject> { }
-[System.Serializable]
-public class Cube30FingerPointerEvent : UnityEvent<string, string, GameObject> { }
-[System.Serializable]
-public class Cube40FingerPointerEvent : UnityEvent<string, string, GameObject> { }
-
-
 public class CubeEnteredSolutionMatrix : MonoBehaviour   
 // Component of CubePlacement objects -- sends Cube enter/exit events to CubeGameHandler.cs
 {
-    public AudioManager audioManager;
-    FingerPointerEvent fingerPointerEvent;  //empty class declared above - before this class -- we receive these 
-    public Cube10FingerPointerEvent cube10FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
-    public Cube20FingerPointerEvent cube20FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
-    public Cube30FingerPointerEvent cube30FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
-    public Cube40FingerPointerEvent cube40FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
-
+   // public AudioManager audioManager;
     public CubeTriggerEnterExitEvent cubeTriggerEnterExitEvent;
-
     public CubeGameBoardEvent cubeGameBoardEvent;  //event we invoke in here 
 
     bool placeOccupied;
-    bool fingerPointerExitReceived;
     string placeOccupant;
     // Start is called before the first frame update
     void Start()
     {
-        if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
-        //Set up received events
-        //if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
-        //fingerPointerEvent.AddListener(FingerPointerHappened);   // in paren is the method in this script that gets invoked 
-        //ABOVE 2 Lines Commented so only CubePlacementHandler reacts to fingerUp from ActOnTouch 
-        //ABOVE comment-outs does NOT stop FingerPointerHappened from running! (learn) not until ActOnTouch event is deleted in Editor?
-
-        if (cube10FingerPointerEvent == null) cube10FingerPointerEvent = new Cube10FingerPointerEvent();  //not sure but it stopped the null reference 
-        if (cube20FingerPointerEvent == null) cube20FingerPointerEvent = new Cube20FingerPointerEvent();  //not sure but it stopped the null reference 
-        if (cube30FingerPointerEvent == null) cube30FingerPointerEvent = new Cube30FingerPointerEvent();  //not sure but it stopped the null reference 
-        if (cube40FingerPointerEvent == null) cube40FingerPointerEvent = new Cube40FingerPointerEvent();  //not sure but it stopped the null reference 
-  
-        cube10FingerPointerEvent.AddListener(Cube10FingerPointerHappened);   // in paren is the method in this script that gets invoked 
-        cube20FingerPointerEvent.AddListener(Cube20FingerPointerHappened);   // in paren is the method in this script that gets invoked 
-        cube30FingerPointerEvent.AddListener(Cube30FingerPointerHappened);   // in paren is the method in this script that gets invoked       
-        cube40FingerPointerEvent.AddListener(Cube40FingerPointerHappened);   // in paren is the method in this script that gets invoked 
-        //End set up received events
-    }
-    //These CubeXXFingerPointerHappened methods tells us to Lock a cube in place that is in a trigger 
-    public void Cube10FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
-    {
-        Debug.Log("CESMatrix Cube10FingerPointerHappened Cube 10 finger up on " + _cube.name + " MyName =" + this.name);
-    }
-    public void Cube20FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
-    {
-        Debug.Log("CESMatrix Cube20FingerPointerHappened Cube 20 finger up on " + _cube.name + " MyName =" + this.name);
-    }
-    public void Cube30FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
-    {
-        Debug.Log("CESMatrix Cube30FingerPointerHappened Cube 30 finger up on " + _cube.name + " MyName =" + this.name);
-    }
-    public void Cube40FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
-    {
-        Debug.Log("CESMatrix Cube40FingerPointerHappened Cube 40 finger up on " + _cube.name + " MyName =" + this.name);
+        //if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -78,19 +25,14 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
             int valueToSend = CubeValue(other.name);
             cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, other.gameObject, true);  //Send event to CubePlacementHandler
             cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend); //Send event to CubeGameHandler
-            audioManager.PlayAudio(audioManager.TYPE);
+        //    audioManager.PlayAudio(audioManager.TYPE);
             placeOccupied = true;
             placeOccupant = other.name;
-            //Debug.Log("CESMatrix Start Coroutine "+ this.name + " entered by " + other.name + " placeOccupant = " + placeOccupant);
-            //StartCoroutine(WaitBeforeLockingCube(other.name, other.gameObject, this.name)); 
-            //now with StartCoroutine commented WaitBeforeLockingCube   and  LockTheCubeDown  won't be called
-
         }
     }
     private void OnTriggerExit(Collider other)
     {
      //   Debug.Log("CESMatrix " + this.name + " EXITED by " + other + " the occupant is " + placeOccupant);
-
         if (other.name == placeOccupant) //original cube intentionally dragged out - an overlapping cube is ignored for now
         {
             placeOccupant = null;
@@ -112,17 +54,25 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
             _ => 0,
         };
     }
-    void OnDisable()
-    {
-        StopAllCoroutines(); // just to be safe/sure/clean whatever
-    }
-}
-// Old class declarations 
-//GameObject cube10, cube20, cube30, cube40; //don't need because we obtain name IDs from OnTriggers
-//GameObject topText;c
-//GameObject bottomText;
-//TMP_Text topRowText;
-//TMP_Text bottomRowText;
+} // end class 
+  //old Now unused Event declarations
+  //[System.Serializable]
+  //public class FingerPointerEvent : UnityEvent<string, string> { }
+  //[System.Serializable]
+  //public class Cube10FingerPointerEvent : UnityEvent<string, string, GameObject> { }
+  //[System.Serializable]
+  //public class Cube20FingerPointerEvent : UnityEvent<string, string, GameObject> { }
+  //[System.Serializable]
+  //public class Cube30FingerPointerEvent : UnityEvent<string, string, GameObject> { }
+  //[System.Serializable]
+  //public class Cube40FingerPointerEvent : UnityEvent<string, string, GameObject> { }
+  // Old class declarations 
+  //GameObject cube10, cube20, cube30, cube40; //don't need because we obtain name IDs from OnTriggers
+  //GameObject topText;c
+  //GameObject bottomText;
+  //TMP_Text topRowText;
+  //TMP_Text bottomRowText;
+  // bool fingerPointerExitReceived;
 
 // public CubeGameBoardEvent cubeGameBoardEvent;
 // Old Start() stuff 
@@ -222,4 +172,48 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
 //        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
 //        break;
 //    default: break;
+//}
+//Unused stuff 
+//These CubeXXFingerPointerHappened methods tells us to Lock a cube in place that is in a trigger //12/18/22 no longer used I hope 
+//public void Cube10FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
+//{
+//    Debug.Log("CESMatrix Cube10FingerPointerHappened Cube 10 finger up on " + _cube.name + " MyName =" + this.name);
+//}
+//public void Cube20FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
+//{
+//    Debug.Log("CESMatrix Cube20FingerPointerHappened Cube 20 finger up on " + _cube.name + " MyName =" + this.name);
+//}
+//public void Cube30FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
+//{
+//    Debug.Log("CESMatrix Cube30FingerPointerHappened Cube 30 finger up on " + _cube.name + " MyName =" + this.name);
+//}
+//public void Cube40FingerPointerHappened(string cubeName, string fingerAction, GameObject _cube)   //CHECK PARAMETERS!
+//{
+//    Debug.Log("CESMatrix Cube40FingerPointerHappened Cube 40 finger up on " + _cube.name + " MyName =" + this.name);
+//}
+//FingerPointerEvent fingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+//public Cube10FingerPointerEvent cube10FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+//public Cube20FingerPointerEvent cube20FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+//public Cube30FingerPointerEvent cube30FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+//public Cube40FingerPointerEvent cube40FingerPointerEvent;  //empty class declared above - before this class -- we receive these 
+//Set up received events BUT - as of 12/17/22 this script receives NO Events
+//if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
+//fingerPointerEvent.AddListener(FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+//ABOVE 2 Lines Commented so only CubePlacementHandler reacts to fingerUp from ActOnTouch 
+//ABOVE comment-outs does NOT stop FingerPointerHappened from running! (learn) not until ActOnTouch event is deleted in Editor?
+
+//if (cube10FingerPointerEvent == null) cube10FingerPointerEvent = new Cube10FingerPointerEvent();  //not sure but it stopped the null reference 
+//if (cube20FingerPointerEvent == null) cube20FingerPointerEvent = new Cube20FingerPointerEvent();  //not sure but it stopped the null reference 
+//if (cube30FingerPointerEvent == null) cube30FingerPointerEvent = new Cube30FingerPointerEvent();  //not sure but it stopped the null reference 
+//if (cube40FingerPointerEvent == null) cube40FingerPointerEvent = new Cube40FingerPointerEvent();  //not sure but it stopped the null reference 
+
+//cube10FingerPointerEvent.AddListener(Cube10FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+//cube20FingerPointerEvent.AddListener(Cube20FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+//cube30FingerPointerEvent.AddListener(Cube30FingerPointerHappened);   // in paren is the method in this script that gets invoked       
+//cube40FingerPointerEvent.AddListener(Cube40FingerPointerHappened);   // in paren is the method in this script that gets invoked 
+//End set up received events
+//Not using Coroutines 
+//void OnDisable()
+//{
+//    StopAllCoroutines(); // just to be safe/sure/clean whatever
 //}
