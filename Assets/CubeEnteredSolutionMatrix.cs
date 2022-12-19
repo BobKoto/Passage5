@@ -40,7 +40,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         //if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
         //fingerPointerEvent.AddListener(FingerPointerHappened);   // in paren is the method in this script that gets invoked 
         //ABOVE 2 Lines Commented so only CubePlacementHandler reacts to fingerUp from ActOnTouch 
-        //ABOVE comment-outs does NOT stop FingerPointerHappened from running! (learn) not until ActOnTouch event is deleted
+        //ABOVE comment-outs does NOT stop FingerPointerHappened from running! (learn) not until ActOnTouch event is deleted in Editor?
 
         if (cube10FingerPointerEvent == null) cube10FingerPointerEvent = new Cube10FingerPointerEvent();  //not sure but it stopped the null reference 
         if (cube20FingerPointerEvent == null) cube20FingerPointerEvent = new Cube20FingerPointerEvent();  //not sure but it stopped the null reference 
@@ -75,34 +75,11 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
         if (!placeOccupied)  //then set the value moved into this - otherwise do nothing? maybe we should send the Cube back home?
         {
             // NOTE: Kinematic cubes mean our Robot avatar can no longer "push" them - nor can other Cubes - so overlap can exist
-
             int valueToSend = CubeValue(other.name);
             cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, other.gameObject, true);  //Send event to CubePlacementHandler
             cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend); //Send event to CubeGameHandler
-            //switch (this.name)
-            //{
-            //    case "CubePlacement1":
-            //        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
-            //        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
-
-            //        break;
-            //    case "CubePlacement2":
-            //        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
-            //        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
-            //        break;
-            //    case "CubePlacement3":
-            //        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
-            //        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
-            //        break;
-            //    case "CubePlacement4":
-            //        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
-            //        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
-            //        break;
-            //    default: break;
-            //}
             audioManager.PlayAudio(audioManager.TYPE);
             placeOccupied = true;
-
             placeOccupant = other.name;
             //Debug.Log("CESMatrix Start Coroutine "+ this.name + " entered by " + other.name + " placeOccupant = " + placeOccupant);
             //StartCoroutine(WaitBeforeLockingCube(other.name, other.gameObject, this.name)); 
@@ -112,7 +89,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("CESMatrix " + this.name + " exited by " + other + " the occupant is " + placeOccupant);
+     //   Debug.Log("CESMatrix " + this.name + " EXITED by " + other + " the occupant is " + placeOccupant);
 
         if (other.name == placeOccupant) //original cube intentionally dragged out - an overlapping cube is ignored for now
         {
@@ -121,65 +98,8 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
             int valueToSend = CubeValue(other.name);
             cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, other.gameObject, false);  //Send event to CubePlacementHandler
             cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);  //Send event to CubeGameHandler
-            //switch (this.name)
-            //{
-            //    case "CubePlacement1":
-            //      //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
-            //        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
-            //        break;
-            //    case "CubePlacement2":
-            //        //    Debug.Log(this.name + " ONTriggerExit exited by " + other);
-            //        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
-            //        break;
-            //    case "CubePlacement3":
-            //        //    Debug.Log(this.name + " ONTriggerExit exited by " + other);
-            //        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
-            //        break;
-            //    case "CubePlacement4":
-            //        //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
-            //        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
-            //        break;
-            //    default: break;
-            //}
         }
     }
-    IEnumerator WaitBeforeLockingCube(string othername, GameObject othergameObject, string placeName)
-    {
-        Debug.Log("CESMatrix Coroutine WaitBeforeLockingCube is Waiting on finger up event" + " This is " + this.name);
-        yield return new WaitUntil(() => fingerPointerExitReceived == true);
-        Debug.Log("CESMatrix fingerPointerExitReceived == true");
-        LockTheCubeDown(othername, othergameObject, placeName);
-        fingerPointerExitReceived = false;
-        yield return null;
-    }
-    public void FingerPointerHappened(string cubeName, string fingerAction)
-    {
-        fingerPointerExitReceived = false;  // 'cause we only want if we're ON a placement 
-        Debug.Log("CESMatrix Recvd from ActOnTouch cubeName = " + cubeName + "  Action = " + fingerAction + " This is " + this.name);
-        if (cubeName == placeOccupant)
-        {
-            fingerPointerExitReceived = true;
-        }
-        else
-        {
-            Debug.Log("CESMatrix MISMATCH on PlaceOccupant Occupant = " + placeOccupant + " cubeName = " + cubeName + " This is " + this.name);
-            if (placeOccupant == null) Debug.Log("CESMatrix place occupant is null!!");
-        }
-    }
-    void LockTheCubeDown(string objectToLock,GameObject _other, string placeName)  //Transform xForm, unneeded as we set the cubes to Kinematic  -- but keep for now 
-    {
-        Debug.Log("LockTheCubeDown says Object to lock is " + objectToLock + " Game object = " + _other.name + " Place = " + placeName);
-        if (placeOccupied)
-        {
-            Vector3 targetPos;
-            targetPos = new Vector3(_other.transform.position.x, this.transform.position.y, this.transform.position.z);
-            _other.transform.position = targetPos;
-            Debug.Log("CESMatrix LockTheCubeDown says Object " + _other.name + " Lock attempted, MAYBE OK");
-        }
-        else Debug.Log("CESMatrix LockTheCubeDown says Lock failed because placeOccupied is FALSE");
-
-    }
-
     public int CubeValue(string cubeMovedInOrOut)
     {
         //int valueToSend = CubeValue(cubeMovedInOrOut); caused a stackOverFlow? btw it's wrong anyway
@@ -224,3 +144,82 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
 
 //   Debug.Log("debug.log Invoke cubeGameBoardEvent here......." );
 //  cubeGameBoardEvent.Invoke(this.name, "string2", 10, 20);
+//IEnumerator WaitBeforeLockingCube(string othername, GameObject othergameObject, string placeName)
+//{
+//    Debug.Log("CESMatrix Coroutine WaitBeforeLockingCube is Waiting on finger up event" + " This is " + this.name);
+//    yield return new WaitUntil(() => fingerPointerExitReceived == true);
+//    Debug.Log("CESMatrix fingerPointerExitReceived == true");
+//    LockTheCubeDown(othername, othergameObject, placeName);
+//    fingerPointerExitReceived = false;
+//    yield return null;
+//}
+//public void FingerPointerHappened(string cubeName, string fingerAction)
+//{
+//    fingerPointerExitReceived = false;  // 'cause we only want if we're ON a placement 
+//    Debug.Log("CESMatrix Recvd from ActOnTouch cubeName = " + cubeName + "  Action = " + fingerAction + " This is " + this.name);
+//    if (cubeName == placeOccupant)
+//    {
+//        fingerPointerExitReceived = true;
+//    }
+//    else
+//    {
+//        Debug.Log("CESMatrix MISMATCH on PlaceOccupant Occupant = " + placeOccupant + " cubeName = " + cubeName + " This is " + this.name);
+//        if (placeOccupant == null) Debug.Log("CESMatrix place occupant is null!!");
+//    }
+//}
+//void LockTheCubeDown(string objectToLock,GameObject _other, string placeName)  //Transform xForm, unneeded as we set the cubes to Kinematic  -- but keep for now 
+//{
+//    Debug.Log("LockTheCubeDown says Object to lock is " + objectToLock + " Game object = " + _other.name + " Place = " + placeName);
+//    if (placeOccupied)
+//    {
+//        Vector3 targetPos;
+//        targetPos = new Vector3(_other.transform.position.x, this.transform.position.y, this.transform.position.z);
+//        _other.transform.position = targetPos;
+//        Debug.Log("CESMatrix LockTheCubeDown says Object " + _other.name + " Lock attempted, MAYBE OK");
+//    }
+//    else Debug.Log("CESMatrix LockTheCubeDown says Lock failed because placeOccupied is FALSE");
+
+//}
+// Stripped out of OnTriggerExit -- redundant 
+//switch (this.name)
+//{
+//    case "CubePlacement1":
+//      //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
+//        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
+//        break;
+//    case "CubePlacement2":
+//        //    Debug.Log(this.name + " ONTriggerExit exited by " + other);
+//        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
+//        break;
+//    case "CubePlacement3":
+//        //    Debug.Log(this.name + " ONTriggerExit exited by " + other);
+//        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
+//        break;
+//    case "CubePlacement4":
+//        //     Debug.Log(this.name + " ONTriggerExit exited by " + other);
+//        cubeGameBoardEvent.Invoke(other.name, false, this.name, valueToSend);
+//        break;
+//    default: break;
+//}
+// Stripped out of OnTriggerEnter -- redundant 
+//switch (this.name)
+//{
+//    case "CubePlacement1":
+//        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
+//        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
+
+//        break;
+//    case "CubePlacement2":
+//        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
+//        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
+//        break;
+//    case "CubePlacement3":
+//        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
+//        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
+//        break;
+//    case "CubePlacement4":
+//        Debug.Log(this.name + " ONTriggerEnter Entered by " + other);
+//        cubeGameBoardEvent.Invoke(other.name, true, this.name, valueToSend);
+//        break;
+//    default: break;
+//}
