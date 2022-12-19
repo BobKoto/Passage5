@@ -55,8 +55,8 @@ public class CubePlacementHandler : MonoBehaviour
     }
     public void CubeEnterExitPlacement(GameObject _place, string placementName, GameObject _cube, bool cubeEntered)  //Method name in Editor!
     {
-        Debug.Log("CPHandler CubeEnterExitPlacement,  placeGOName= " + _place.name + ",  CubeGOName = " + _cube.name
-            + ",  cubeEntered? = " + cubeEntered);
+        //Debug.Log("CPHandler CubeEnterExitPlacement,  placeGOName= " + _place.name + ",  CubeGOName = " + _cube.name
+        //    + ",  cubeEntered? = " + cubeEntered);
         waitingFingerPointerExit = false;
         currentCube = null;
         currentPlace = null;
@@ -70,7 +70,8 @@ public class CubePlacementHandler : MonoBehaviour
     public void ReceivedFingerUpEvent(string cubeName, string action)
     {
         // Here is where we get a fingerUp event from ActOnTouch
-        Debug.Log("CPHandler ReceivedFingerUpEvent...cubeNmae = " + cubeName + ", action " + action + ", waitingFinger = " + waitingFingerPointerExit);
+        //Debug.Log("CPHandler ReceivedFingerUpEvent...cubeNmae = " + cubeName + 
+        //    ", action " + action + ", waitingFinger = " + waitingFingerPointerExit);
 
         if (waitingFingerPointerExit)
         {
@@ -82,16 +83,16 @@ public class CubePlacementHandler : MonoBehaviour
     // Move WaitBeforeLockingCube AND LockTheCubeDown methods out of CESMatrix and into here 
     IEnumerator WaitBeforeLockingCube()
     {
-        Debug.Log("Coroutine WaitBeforeLockingCube is Waiting on finger up event" + " This is " + this.name);
+       // Debug.Log("Coroutine WaitBeforeLockingCube is Waiting on finger up event" + " This is " + this.name);
         yield return new WaitUntil(() => fingerPointerExitReceived == true);
-        Debug.Log("fingerPointerExitReceived = true");
+      //  Debug.Log("fingerPointerExitReceived = true");
         LockTheCubeDown();
         fingerPointerExitReceived = false;
         yield return null;
     }
     void LockTheCubeDown()  //Transform xForm, unneeded as we set the cubes to Kinematic  -- but keep for now 
     {
-        Debug.Log("CPHandler LockTheCubeDown says CUBE to lock is " + currentCube.name +  ",  Place = " + currentPlace.name);
+      //  Debug.Log("CPHandler LockTheCubeDown says CUBE to lock is " + currentCube.name +  ",  Place = " + currentPlace.name);
 
         Vector3 targetPos;
         targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
