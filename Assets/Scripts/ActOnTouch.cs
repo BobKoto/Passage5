@@ -54,8 +54,11 @@ public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IP
     }
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)   //player took finger off cube
     {
-       // Debug.Log("AOTouch Pointer EXITED!!!! this.name = " + this.name + " Invoke event now");   // send an event to CubeGameHandler? to lock cube?
-        fingerPointerEvent.Invoke(this.name, "finger UP");
+        //Debug.Log
+        //    ("AOTouch Pointer EXITED!! this.name = " + this.name + " Invoke event AND isPointerMoving = " + eventData.IsPointerMoving());
+        // send an event to CubeGameHandler? to lock cube?
+        var fingerMoving = eventData.IsPointerMoving();
+        if (!fingerMoving) fingerPointerEvent.Invoke(this.name, "finger UP");
     }
     //void IPointerUpHandler.OnPointerUp(PointerEventData eventData)  //doesn't register 
     //{

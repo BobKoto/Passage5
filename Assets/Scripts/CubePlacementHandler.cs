@@ -5,9 +5,9 @@ using TMPro;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class FingerPointerEvent : UnityEvent<string, string> { }
+public class FingerPointerEvent : UnityEvent<string, string> { }  // we receive these from ActOnTouch 
 [System.Serializable]
-public class CubeTriggerEnterExitEvent : UnityEvent<GameObject, string, GameObject, bool> { }
+public class CubeTriggerEnterExitEvent : UnityEvent<GameObject, string, GameObject, bool> { }  // we receive these from CESMatrix
 
 public class CubePlacementHandler : MonoBehaviour
 // Component of CubePlacements  // objects -- receives Cube enter Trigger events   /exit events to CubeGameHandler.cs
@@ -32,11 +32,11 @@ public class CubePlacementHandler : MonoBehaviour
     }
     public void CubeEnterExitPlacement(GameObject _place, string placementName, GameObject _cube, bool cubeEntered)  //Method name in Editor!
     {
-        //Debug.Log("CPHandler CubeEnterExitPlacement,  placeGOName= " + _place.name + ",  CubeGOName = " + _cube.name
-        //    + ",  cubeEntered? = " + cubeEntered);
+        string _exitedORentered;
+        _exitedORentered = cubeEntered ? "  ENTERED" : "  EXITED";
+        Debug.Log("CPHandler CubeEnterExitPlacement,  placeGOName= " + _place.name + ",  CubeGOName = " + _cube.name + _exitedORentered);
+                                         //  currentCube = null;   //  currentPlace = null;
         waitingFingerPointerExit = false;
-      //  currentCube = null;
-      //  currentPlace = null;
         if (cubeEntered)
         {
             currentCube = _cube;
@@ -47,33 +47,31 @@ public class CubePlacementHandler : MonoBehaviour
     public void ReceivedFingerUpEvent(string cubeName, string action)
     {
         // Here is where we get a fingerUp event from ActOnTouch
-       //if (waitingFingerPointerExit) Debug.Log("CPHandler/AOTouch ReceivedFingerUpEvent...cubeNmae = " + cubeName +
-       //     ", action " + action + ", waitingFinger = " + waitingFingerPointerExit);
+        Debug.Log("CPHandler/AOTouch ReceivedFingerUpEvent...cubeNmae = " + cubeName +
+            ", action " + action + ", waitingFinger = " + waitingFingerPointerExit);
 
-        if (waitingFingerPointerExit)
+        if (waitingFingerPointerExit)   // A cube enetered and stayed -- the finger stopped on placement
         {
             fingerPointerExitReceived = true;
             StartCoroutine(WaitBeforeLockingCube());
+            waitingFingerPointerExit = false;
         }
-        waitingFingerPointerExit = false;
     }
     // Move WaitBeforeLockingCube AND LockTheCubeDown methods out of CESMatrix and into here 
     IEnumerator WaitBeforeLockingCube()
     {
        // Debug.Log("Coroutine WaitBeforeLockingCube is Waiting on finger up event" + " This is " + this.name);
-        yield return new WaitUntil(() => fingerPointerExitReceived == true);
+        yield return new WaitUntil(() => fingerPointerExitReceived);
       //  Debug.Log("fingerPointerExitReceived = true");
         LockTheCubeDown();
         fingerPointerExitReceived = false;
         yield return null;
     }
-    void LockTheCubeDown()  //Transform xForm, unneeded as we set the cubes to Kinematic  -- but keep for now 
+    void LockTheCubeDown()  // Aligns cube to placement 
     {
       //  Debug.Log("CPHandler LockTheCubeDown says CUBE to lock is " + currentCube.name + ",  Place = " + currentPlace.name);
         //Debug.Log("CPHandler LockTheCubeDown says CUBE to lock is " + currentCube.name);
         //Debug.Log("CPHandler LockTheCubeDown says PLACE to lock is "  + currentPlace.name);
-
-
         Vector3 targetPos;
         targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
         currentCube.transform.position = targetPos;
