@@ -8277,7 +8277,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26794
+  m_Name: pb_Mesh26798
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12167,7 +12167,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -12196,7 +12196,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.15776062, y: 0, z: 16.156647, w: 1.3343277}
+  m_margin: {x: 0.15776062, y: 0, z: 2.3477173, w: 1.3343277}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -14062,12 +14062,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816385752}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 219.34, y: 12.02, z: -171.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 36
+  m_Father: {fileID: 914838946}
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &824859301 stripped
 MonoBehaviour:
@@ -14258,7 +14258,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27368
+  m_Name: pb_Mesh27372
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -14890,6 +14890,7 @@ Transform:
   - {fileID: 1329417693}
   - {fileID: 2147005070}
   - {fileID: 1679919422}
+  - {fileID: 816385756}
   m_Father: {fileID: 0}
   m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18916,7 +18917,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27052
+  m_Name: pb_Mesh27056
   serializedVersion: 10
   m_SubMeshes: []
   m_Shapes:
@@ -22546,7 +22547,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1329417692}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -177.22}
+  m_LocalPosition: {x: 0, y: 0, z: -177.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 914838946}
@@ -22577,7 +22578,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ??
+  m_text: ?? added down
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -22612,7 +22613,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -22640,7 +22641,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 7.4315186, y: 0, z: 8.796371, w: 1.9667792}
+  m_margin: {x: 7.4315186, y: 0, z: 6.7169495, w: -1.8561983}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -25060,7 +25061,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28430
+  m_Name: pb_Mesh28444
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -28408,7 +28409,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -28437,7 +28438,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 16.209457, w: 1.3343277}
+  m_margin: {x: 0, y: 0, z: 3.3123927, w: 1.3343277}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -30700,12 +30701,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 2076436242}
   m_Follow: {fileID: 0}
   m_ShowDebugText: 0
-  m_ChildCameras:
-  - {fileID: 1105988392}
-  - {fileID: 578853957}
-  - {fileID: 625143762}
-  - {fileID: 1646117154}
-  - {fileID: 713081669}
+  m_ChildCameras: []
   m_ActivateAfter: 0
   m_MinDuration: 0
   m_RandomizeChoice: 0
@@ -34696,7 +34692,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2147005069}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -167.4}
+  m_LocalPosition: {x: 0, y: 0, z: -168.68}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 914838946}
@@ -34764,7 +34760,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -34792,7 +34788,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 6.10965, y: 0, z: 9.652695, w: 1.9647999}
+  m_margin: {x: 6.10965, y: 0, z: 7.8269806, w: -1.5769882}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0

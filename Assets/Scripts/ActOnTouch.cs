@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IPointerEnterHandler
-//  , IPointerClickHandler  , IInitializePotentialDragHandler, IPointerUpHandler, // Touch Testing only for now 
+public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler
+//IPointerClickHandler, IInitializePotentialDragHandler, IPointerUpHandler,IPointerExitHandler, IPointerEnterHandler, IDropHandler
+// Touch Testing only for now 
 // Component of CubeNN objects 
 {
     AudioManager audioManager;
@@ -33,8 +34,8 @@ public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IP
         zPositionLeftLimit = cubeGameLeftWall.transform.position.z;//
         zPositionRightLimit = cubeGameRightWall.transform.position.z;// 
         movingCubeSizeX = transform.localScale.x;
-      //  Debug.Log(this.name + " position is " + transform.position + " movingCubeSizeX = " + movingCubeSizeX);// yes as expected 
-
+        // Debug.Log(this.name + " position is " + transform.position + " movingCubeSizeX = " + movingCubeSizeX);// yes as expected 
+        //Debug.Log("hello from AOTOUCH");  //starts well before any issues
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)  //Note: movement depends on camera orientation (affects transform.positions) 
@@ -48,21 +49,37 @@ public class ActOnTouch : MonoBehaviour, IDragHandler ,  IPointerExitHandler, IP
                                                               zPositionRightLimit - movingCubeSizeX / 2)); //movingCubeSizeX / 2?
         transform.position = newPoint;
     }
-    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-      //  Debug.Log("Pointer ENTERED!!!! this.name = " + this.name); // + " dragging? " + eventData.dragging);
+       // Debug.Log("AOTouch END Drag detected !!!! ");
+        fingerPointerEvent.Invoke(this.gameObject, "finger UP  Drag ENDED");
     }
-    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)   //player took finger off cube
-    {
-        //Debug.Log
-        //    ("AOTouch Pointer EXITED!! this.name = " + this.name + " Invoke event AND isPointerMoving = " + eventData.IsPointerMoving());
-        // send an event to CubeGameHandler? to lock cube?
-        var fingerMoving = eventData.IsPointerMoving();
-        if (!fingerMoving) fingerPointerEvent.Invoke(this.name, "finger UP");
-    }
-    //void IPointerUpHandler.OnPointerUp(PointerEventData eventData)  //doesn't register 
+    //void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     //{
-    //    Debug.Log("Pointer went up!!!!");
+    //  //  Debug.Log("Pointer ENTERED!!!! this.name = " + this.name); // + " dragging? " + eventData.dragging);
+    //}
+    //void IPointerExitHandler.OnPointerExit(PointerEventData eventData)   //player took finger off cube
+    //{
+    //    //Debug.Log
+    //    //    ("AOTouch Pointer EXITED!! this.name = " + this.name + " Invoke event AND isPointerMoving = " + eventData.IsPointerMoving());
+    //    // send an event to CubeGameHandler? to lock cube?
+    //    var fingerMoving = eventData.IsPointerMoving();
+    //    if (!fingerMoving) fingerPointerEvent.Invoke(this.name, "finger UP");
+    //}
+
+    //void IDropHandler.OnDrop(PointerEventData eventData)
+    //{
+    //    Debug.Log("AOTouch Object DROPPED !!!! at " +newPoint+ " cube= " + this.name);  // inconsistent??
+    //    fingerPointerEvent.Invoke(this.name, "finger UP  DROPPED"); //another FingerUp for when fingerMoving true on exit in IPointerExitHandler
+    //}
+
+    //void IDeselectHandler.OnDeselect(BaseEventData eventData)
+    //{
+    //    Debug.Log("AOTouch Object Deselected !!!!");
+    //}
+    //void IPointerUpHandler.OnPointerUp(PointerEventData eventData)  //doesn't register -- tried again on 12/22 still no
+    //{
+    //    Debug.Log("AOTouch Pointer went up!!!!");
     //}
 
     //void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
