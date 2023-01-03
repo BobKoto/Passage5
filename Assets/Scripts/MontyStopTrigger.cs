@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using Cinemachine;
 using UnityEngine.Events;
+using CarouselAndMovingPlatforms;
 
 public class MontyStopTrigger : MonoBehaviour
 {
