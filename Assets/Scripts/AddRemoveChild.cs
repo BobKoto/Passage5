@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-
+namespace CarouselAndMovingPlatforms 
+{ 
 public class AddRemoveChild : MonoBehaviour
-{
+{   //Component of Carousel AND MovingPlatforms
     public GameObject child;
     public GameObject stopButton;
     public GameObject goButton;
@@ -16,17 +17,13 @@ public class AddRemoveChild : MonoBehaviour
     public Transform newParent;
 
     Animator anim;
-
-    public CinemachineVirtualCamera thirdPersonFollowCam;
-    public CinemachineFreeLook freeLookCam;
-
     MovingPlatform movingPlatform;
-   // MovingPlatformGreen movingPlatformGreen;
+
     private void Start()
     {
-       // Debug.Log("AddRemoveChild reports this.name is " + this.name);
+        // Debug.Log("AddRemoveChild reports this.name is " + this.name);
         // Transform originalParent = child.transform.parent;
-       anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         switch (this.name)
         {
             case "MovingPlatform":
@@ -45,20 +42,19 @@ public class AddRemoveChild : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-      //  if (collision.gameObject.CompareTag("Player"))
+        //  if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Something  hit " + this.name +  collision.gameObject.name);
+            Debug.Log("Something  hit " + this.name + collision.gameObject.name);
         }
     }
     private void OnCollisionExit(Collision collision)
     {
-      //  if (collision.gameObject.CompareTag("Player"))
+        //  if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Something  left " + this.name + collision.gameObject.name);
             // Debug.Log("Player Left Carousel");
         }
     }
-
     private void OnTriggerEnter(Collider other)   //the triggers control 
     {
         if (other.gameObject.CompareTag("Player"))
@@ -66,10 +62,7 @@ public class AddRemoveChild : MonoBehaviour
             Debug.Log("Something  entered " + this.name + " trigger  " + other.gameObject.name);
             child.transform.SetParent(newParent);
             HandleTriggerEnterPerGameObject(this.name);
-      //    if (anim)  anim.SetBool("runSwitch", true);
-          //  thirdPersonFollowCam.Priority=9; //Kludge to make freeLook cam ON
         }
-
     }
     private void OnTriggerExit(Collider other)
     {
@@ -78,22 +71,15 @@ public class AddRemoveChild : MonoBehaviour
             Debug.Log("Something  exited " + this.name + " trigger  " + other.gameObject.name);
             child.transform.SetParent(originalParent);
             HandleTriggerExitPerGameObject(this.name);
-            //if (anim)   anim.SetBool("runSwitch", false);
-            // thirdPersonFollowCam.MoveToTopOfPrioritySubqueue();
-          //  thirdPersonFollowCam.Priority=11;  //Kludge to make followPlayer cam ON
-            //  child.transform.SetParent(null);
         }
-
     }
     void HandleTriggerEnterPerGameObject(string thisName)
     {
-       switch (thisName)
+        switch (thisName)
         {
             case "MovingPlatform":
                 {
                     movingPlatform.speed = 5;  //This is not an animation - its an Update() method
-                    //if (!stopButton.activeSelf) stopButton.SetActive(true);
-                    //if (goButton) goButton.SetActive(false);
                     playerIsOnYellowPlatform = true;
                     stopButton.SetActive(true);
                     goButton.SetActive(false);
@@ -102,6 +88,8 @@ public class AddRemoveChild : MonoBehaviour
             case "MovingPlatformGreen":
                 {
                     movingPlatform.speed = 5;  //This is not an animation - its an Update() method
+                    stopButton.SetActive(true);
+                    goButton.SetActive(false);
                     break;
                 }
             case "CarouselTest":
@@ -109,7 +97,6 @@ public class AddRemoveChild : MonoBehaviour
                     if (anim) anim.SetBool("runSwitch", true);
                     break;
                 }
-
         }
     }
     void HandleTriggerExitPerGameObject(string thisName)
@@ -119,7 +106,7 @@ public class AddRemoveChild : MonoBehaviour
             case "MovingPlatform":
                 {
                     movingPlatform.speed = 0;  //This is not an animation - its an Update() method
-                    if (stopButton)  stopButton.SetActive(false);
+                    if (stopButton) stopButton.SetActive(false);
                     if (goButton) goButton.SetActive(false);
                     playerIsOnYellowPlatform = false;
                     break;
@@ -127,6 +114,8 @@ public class AddRemoveChild : MonoBehaviour
             case "MovingPlatformGreen":
                 {
                     movingPlatform.speed = 0;  //This is not an animation - its an Update() method
+                    if (stopButton) stopButton.SetActive(false);
+                    if (goButton) goButton.SetActive(false);
                     break;
                 }
             case "CarouselTest":
@@ -134,7 +123,6 @@ public class AddRemoveChild : MonoBehaviour
                     if (anim) anim.SetBool("runSwitch", false);
                     break;
                 }
-
         }
     }
     public void OnPlatformStopButtonPressed()
@@ -149,19 +137,18 @@ public class AddRemoveChild : MonoBehaviour
         stopButton.SetActive(true);
         goButton.SetActive(false);
     }
-    ////Invoked when a button is clicked.
-    //public void Example(Transform newParent)
-    //{
-    //    // Sets "newParent" as the new parent of the child GameObject.
-    //    child.transform.SetParent(newParent);
+    public void OnPlatformGreenStopButtonPressed()
+    {
+        movingPlatform.speed = 0;
+        stopButton.SetActive(false);
+        goButton.SetActive(true);
+    }
+    public void OnPlatformGreenGoButtonPressed()
+    {
+        movingPlatform.speed = 5;
+        stopButton.SetActive(true);
+        goButton.SetActive(false);
+    }
+} //end class
+} //end namespace CarouselAndMovingPlatforms
 
-    //    // Same as above, except worldPositionStays set to false
-    //    // makes the child keep its local orientation rather than
-    //    // its global orientation.
-    //    child.transform.SetParent(newParent, false);
-
-    //    // Setting the parent to ‘null’ unparents the GameObject
-    //    // and turns child into a top-level object in the hierarchy
-    //    child.transform.SetParent(null);
-    //}
-}

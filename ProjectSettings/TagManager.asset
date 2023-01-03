@@ -11,6 +11,7 @@ TagManager:
   - FloorOfBubbles
   - NavDest1
   - MovingPlatform
+  - CubeGameCube
   layers:
   - Default
   - TransparentFX
