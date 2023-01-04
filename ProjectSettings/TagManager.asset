@@ -12,6 +12,7 @@ TagManager:
   - NavDest1
   - MovingPlatform
   - CubeGameCube
+  - CubeGamePlacement
   layers:
   - Default
   - TransparentFX
