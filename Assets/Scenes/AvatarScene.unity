@@ -12728,7 +12728,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713081666}
-  m_LocalRotation: {x: 0.027168475, y: -0.6674826, z: 0.02438316, w: 0.74373}
+  m_LocalRotation: {x: 0.027168477, y: -0.6674826, z: 0.02438316, w: 0.74373}
   m_LocalPosition: {x: 0.33999634, y: 19.98, z: 44.119995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -12924,7 +12924,7 @@ GameObject:
   - component: {fileID: 735357894}
   m_Layer: 0
   m_Name: CubePlacement1
-  m_TagString: Untagged
+  m_TagString: CubeGamePlacement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14523,7 +14523,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27376
+  m_Name: pb_Mesh27394
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -17720,7 +17720,7 @@ GameObject:
   - component: {fileID: 1082593331}
   m_Layer: 0
   m_Name: CubePlacement3
-  m_TagString: Untagged
+  m_TagString: CubeGamePlacement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18306,7 +18306,7 @@ GameObject:
   - component: {fileID: 1104822904}
   m_Layer: 0
   m_Name: CubePlacement2
-  m_TagString: Untagged
+  m_TagString: CubeGamePlacement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19185,7 +19185,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27060
+  m_Name: pb_Mesh27078
   serializedVersion: 10
   m_SubMeshes: []
   m_Shapes:
@@ -20922,7 +20922,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28448
+  m_Name: pb_Mesh28474
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -30182,7 +30182,7 @@ GameObject:
   - component: {fileID: 1860607784}
   m_Layer: 0
   m_Name: CubePlacement4
-  m_TagString: Untagged
+  m_TagString: CubeGamePlacement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
