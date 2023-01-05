@@ -69,13 +69,13 @@ public class CubeGameHandler : MonoBehaviour
     }
     void CalculateTheMatrix(string placeName)  //can use params here?? yes but how?
     {
-        row1SumText.text = (place1CubeValue + place2CubeValue).ToString() + " added across";
+        row1SumText.text = (place1CubeValue + place2CubeValue).ToString(); // + " added across";
 
-        col1SumText.text = (place1CubeValue + place3CubeValue).ToString() + " added down";
+        col1SumText.text = (place1CubeValue + place3CubeValue).ToString(); // + " added down";
 
-        row2SumText.text = (place3CubeValue + place4CubeValue).ToString() + " added across" ;
+        row2SumText.text = (place3CubeValue + place4CubeValue).ToString(); // + " added across" ;
 
-        col2SumText.text = (place2CubeValue + place4CubeValue).ToString() + " added down"; 
+        col2SumText.text = (place2CubeValue + place4CubeValue).ToString(); // + " added down"; 
     }
 }  // end class 
 

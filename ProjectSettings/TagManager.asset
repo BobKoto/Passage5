@@ -13,6 +13,7 @@ TagManager:
   - MovingPlatform
   - CubeGameCube
   - CubeGamePlacement
+  - TargetSum
   layers:
   - Default
   - TransparentFX
