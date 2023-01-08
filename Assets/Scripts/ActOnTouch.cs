@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler
+public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointerUpHandler, IPointerExitHandler
 //IPointerClickHandler, IInitializePotentialDragHandler, IPointerUpHandler,IPointerExitHandler, IPointerEnterHandler, IDropHandler
 // Touch Testing only for now 
 // Component of CubeNN objects 
@@ -49,7 +49,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler
                                                               zPositionRightLimit - movingCubeSizeX / 2)); //movingCubeSizeX / 2?
         transform.position = newPoint;
     }
-    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)   //We don't consistently get this?, so try PointerUp/PointerExit
     {
        // Debug.Log("AOTouch END Drag detected !!!! ");
         fingerPointerEvent.Invoke(this.gameObject, "finger UP  Drag ENDED");
@@ -58,15 +58,17 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler
     //{
     //  //  Debug.Log("Pointer ENTERED!!!! this.name = " + this.name); // + " dragging? " + eventData.dragging);
     //}
-    //void IPointerExitHandler.OnPointerExit(PointerEventData eventData)   //player took finger off cube
-    //{
-    //    //Debug.Log
-    //    //    ("AOTouch Pointer EXITED!! this.name = " + this.name + " Invoke event AND isPointerMoving = " + eventData.IsPointerMoving());
-    //    // send an event to CubeGameHandler? to lock cube?
-    //    var fingerMoving = eventData.IsPointerMoving();
-    //    if (!fingerMoving) fingerPointerEvent.Invoke(this.name, "finger UP");
-    //}
-
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)   //player took finger off cube
+    {
+        //fingerPointerEvent.Invoke(this.gameObject, "finger UP  Pointer EXITED");
+        //Debug.Log
+        //    ("AOTouch IPointerExitHandler.OnPointerExit(PointerEventData eventData) this.name = " + this.name);
+    }
+    void IPointerUpHandler.OnPointerUp(PointerEventData eventData)   //player took finger off cube, bad IF we did ALSO get EndDrag
+    {
+        Debug.Log
+            ("AOTouch IPointerUpHandler.OnPointerUp(PointerEventData eventData)  this.name = " + this.name);
+    }
     //void IDropHandler.OnDrop(PointerEventData eventData)
     //{
     //    Debug.Log("AOTouch Object DROPPED !!!! at " +newPoint+ " cube= " + this.name);  // inconsistent??
