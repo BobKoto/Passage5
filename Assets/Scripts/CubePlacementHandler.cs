@@ -17,11 +17,15 @@ public class CubePlacementHandler : MonoBehaviour
     public FingerPointerEvent fingerPointerEvent; //12/18/22 we receive these from ActOnTouch 
     public CubeTriggerEnterExitEvent cubeTriggerEnterExitEvent;  // we receive these from CESMatrix
 
+    GameObject[] cubeGameCubes;
+    Vector3[] cubeTransformStartPosition;  // so we can put cubes back to their original positions
     GameObject currentCube, currentPlace;
     bool[] cubeLockStatus = new bool[4];
     GameObject[] cubeInThisPlacement = new GameObject[4];//set by SetPlacementLockStatus which may be removed 
     GameObject[] cubeLockPlacementObject = new GameObject[4];
+    int cubeTransformStartPositionIndex;
     bool waitingFingerPointerExit, fingerPointerExitReceived;
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +38,15 @@ public class CubePlacementHandler : MonoBehaviour
 
         if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
         fingerPointerEvent.AddListener(ReceivedFingerUpEvent);  //this line and one above needed to receive events
+
+        cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
+        cubeTransformStartPosition = new Vector3[cubeGameCubes.Length];
+        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)
+        {
+            cubeTransformStartPosition[i] = cubeGameCubes[i].transform.position;
+        }
+
+        StartCoroutine(WaitForFingerUpToLockCube());
     }
     public void CubeEnterExitPlacement(GameObject _place, string placementName, GameObject _cube, bool cubeEntered)  //Method name in Editor!
     {// OnTriggerEnters/Exits in CESMatrix sent here via this event 
@@ -42,48 +55,73 @@ public class CubePlacementHandler : MonoBehaviour
         waitingFingerPointerExit = false;
         if (cubeEntered)  // here we don't want to lock a cube to an occupied "place" 
         {
+            Debug.Log(" CubePlacementHandler cubeEntered " + currentPlace.name + " " + currentCube.name);
             waitingFingerPointerExit = true;
-
-            StartCoroutine(WaitBeforeLockingCube());
+            return; //added 1/8/23 
         }
-        else  //the cube exited so we want to undo things 
+        else  //the cube EXITED so we want to undo things IF the PLACE is not occupied already 
         {
-           SetCubeLockStatus(false);
-           SetPlacementLockStatus(null, false);
+            if (cubeInThisPlacement[PlacementLockIndex()] != null)                //check currentPlace 
+            {
+                //Here we need to ONLY unlock if it IS locked 
+                Debug.Log(" CubePlacementHandler cubeEXITED " + currentPlace.name + " " + currentCube.name);
+                SetCubeLockStatus(false);
+                SetPlacementLockStatus(null, false);
+            }
         }
     }
     public void ReceivedFingerUpEvent(GameObject _cube, string action)
     {
-        // Here we get fingerUp event from ActOnTouch -- either fingerUp or object dropped or both -- or worse, nothing
-        currentCube = _cube; //this is a KEY
-        if (waitingFingerPointerExit || cubeLockStatus[CubeLockIndex()]) //cube enetered & stayed -- or moved within & needs relocking
+        // Here we get fingerUp(OnEndDrag) event from ActOnTouch -- either fingerUp or object dropped or both -- or worse, nothing
+        currentCube = _cube;
+        fingerPointerExitReceived = true;
+        //currentCube = _cube; //this is a KEY
+        //if (waitingFingerPointerExit || cubeLockStatus[CubeLockIndex()]) //cube enetered & stayed -- or moved within & needs relocking
+        //{
+        //    if (cubeLockStatus[CubeLockIndex()])  //is FingerUp on a locked cube?
+        //    {
+        //        currentPlace = cubeLockPlacementObject[CubeLockIndex()];  // just relock it to original Placement
+        //        LockTheCubeDown(); //Relocking a drifter - moved by finger but not exited
+        //    }
+        //    else  fingerPointerExitReceived = true; // a new one is waiting 
+        //}
+    }
+    IEnumerator WaitForFingerUpToLockCube()
+    {
+        while (true)
         {
-            if (cubeLockStatus[CubeLockIndex()])  //is FingerUp on a locked cube?
+            if (waitingFingerPointerExit && fingerPointerExitReceived)
             {
-                currentPlace = cubeLockPlacementObject[CubeLockIndex()];  // just relock it to original Placement
-                LockTheCubeDown();
+                LockTheCubeDownOrSendItHome();
+                fingerPointerExitReceived = false;
             }
-            else  fingerPointerExitReceived = true; // a new one is waiting 
-            //LockTheCubeDown();
-            //waitingFingerPointerExit = false;
+            yield return null;
         }
-    }
 
-    IEnumerator WaitBeforeLockingCube()
-    {
-        yield return new WaitUntil(() => fingerPointerExitReceived );
-        LockTheCubeDown();
-        fingerPointerExitReceived = false;
-        yield return null;
+        //yield return new WaitUntil(() => fingerPointerExitReceived );
+        //LockTheCubeDown();
+        //fingerPointerExitReceived = false;
+        //yield return null;
     }
-    void LockTheCubeDown()  // Aligns cube to placement 
+    void LockTheCubeDownOrSendItHome()  // Aligns cube to placement 
     {
-        Vector3 targetPos;
-        targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
-        currentCube.transform.position = targetPos;
-        SetCubeLockStatus(true);
-        SetPlacementLockStatus(currentCube, true);
-        audioManager.PlayAudio(audioManager.TYPE);
+        if (cubeInThisPlacement[PlacementLockIndex()] == null)   //check currentPlace if null Align/Lock 
+        {
+            Vector3 targetPos;
+            targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
+            currentCube.transform.position = targetPos;
+            SetCubeLockStatus(true);
+            SetPlacementLockStatus(currentCube, true);
+            audioManager.PlayAudio(audioManager.TYPE);
+            return;
+        }
+        SendCubeHome(); // (.5f);
+    }
+    void SendCubeHome() //(float timeInSeconds)
+    {
+      //  yield return new WaitForSeconds(timeInSeconds);// was an IEnumerator 
+        currentCube.transform.position = cubeTransformStartPosition[CubeTransformStartPositionIndex(currentCube.name)];
+        Debug.Log("CPHandler SendCubeHome ");
     }
     void SetCubeLockStatus(bool lockStatus)
     {// here currentPlace and currentCube come from global context
@@ -132,14 +170,18 @@ public class CubePlacementHandler : MonoBehaviour
                 cubeInThisPlacement[3] = cubeToLock;
                 break;
             default:
-                Debug.Log("SetPlacementLockStatus(GameObject cubeToLock) got " + cubeToLock.name + " into  " + currentPlace.name);
+                Debug.Log("CASE DEFAULT SetPlacementLockStatus(GameObject cubeToLock) got " + cubeToLock.name + " into  " + currentPlace.name);
                 break;
         }
       // s1 = lockStatus ? "locked" : "UNLOCKED";
       if (cubeLocked)
         Debug.Log("SPLS we just locked " + currentCube.name + "  into " + currentPlace.name);
-      else Debug.Log("SPLS we just UNlocked " + currentCube.name + "  from " + currentPlace.name);
-        // Debug.Log("lock array " + cubeLockStatus[0] + " " + cubeLockStatus[1] + " " + cubeLockStatus[2] + " " + cubeLockStatus[3]);
+      else Debug.Log("SPLS we just UNlocked " + currentCube.name + "  from " + currentPlace.name);  //bullshit
+      //Debug.Log
+      //      ("lock Place " + cubeInThisPlacement[0].name +
+      //      " " + cubeInThisPlacement[1].name +
+      //      " " + cubeInThisPlacement[2].name +
+      //      " " + cubeInThisPlacement[3].name);
     }
     int CubeLockIndex()
     {
@@ -163,6 +205,18 @@ public class CubePlacementHandler : MonoBehaviour
             _ => 0
         };
     }
+    public int CubeTransformStartPositionIndex(string thisCubeName)
+    {
+        return thisCubeName switch         //NEW FANGLED CODE courtesy of Visual Studio
+        {
+            "Cube10" => 0,
+            "Cube20" => 1,
+            "Cube30" => 2,
+            "Cube40" => 3,
+            _ => 0,
+        };
+    }
+        private void OnDisable() => StopAllCoroutines();
 } //end class
 
 //IEnumerator WaitBeforeLockingCube(string othername, GameObject othergameObject, string placeName)

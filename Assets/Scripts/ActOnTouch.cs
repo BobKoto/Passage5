@@ -51,7 +51,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
     }
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)   //We don't consistently get this?, so try PointerUp/PointerExit
     {
-       // Debug.Log("AOTouch END Drag detected !!!! ");
+        Debug.Log("AOTouch END Drag detected !!!! " + this.name);
         fingerPointerEvent.Invoke(this.gameObject, "finger UP  Drag ENDED");
     }
     //void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
