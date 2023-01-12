@@ -7632,6 +7632,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
+  cubeGameBoardEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 914838947}
+        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
+        m_MethodName: CubeEnteredOrLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   fingerPointerEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -12056,7 +12071,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 4.0995526, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -13231,7 +13246,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713081666}
-  m_LocalRotation: {x: 0.027168477, y: -0.6674826, z: 0.02438316, w: 0.74373}
+  m_LocalRotation: {x: 0.027168475, y: -0.6674826, z: 0.02438316, w: 0.74373}
   m_LocalPosition: {x: 0.33999634, y: 19.98, z: 44.119995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -13298,7 +13313,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 4.0995526, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -13465,21 +13480,6 @@ MonoBehaviour:
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
         m_MethodName: CubeEnterExitPlacement
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  cubeGameBoardEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 914838947}
-        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
-        m_MethodName: CubeEnteredOrLeft
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16031,6 +16031,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c8babf013b62f241b79afdb82a535bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubeGameBoardEvent:
+    m_PersistentCalls:
+      m_Calls: []
   audioManager: {fileID: 0}
 --- !u!1 &927705480
 GameObject:
@@ -18624,21 +18627,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  cubeGameBoardEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 914838947}
-        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
-        m_MethodName: CubeEnteredOrLeft
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!65 &1082593333
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19365,21 +19353,6 @@ MonoBehaviour:
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
         m_MethodName: CubeEnterExitPlacement
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  cubeGameBoardEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 914838947}
-        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
-        m_MethodName: CubeEnteredOrLeft
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -31414,21 +31387,6 @@ MonoBehaviour:
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
         m_MethodName: CubeEnterExitPlacement
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  cubeGameBoardEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 914838947}
-        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
-        m_MethodName: CubeEnteredOrLeft
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
