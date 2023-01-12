@@ -5,17 +5,16 @@ using UnityEngine.Events;
 using TMPro;
 
 [System.Serializable]
-public class CubeGameBoardEvent : UnityEvent<string, bool, string, int>   //this declaration i guess is needed to accept
-{                                                                            //other scripts Invokes - unsure about params we need
-}
+public class CubeGameBoardEvent : UnityEvent<string, bool, string, int> { }  //this declaration i guess is needed to accept
+
 public class CubeGameHandler : MonoBehaviour
-//Component of CubeGame -- receives events from CubeEnteredSolutionMatrix.cs  -- calculates row/column totals
+//Component of CubeGame -- receives events from CubeEnteredSolutionMatrix.cs(was)/is now PlacementHandler  -- calculates row/column totals
 //Here we need to figure if game is lost or won 
 //How we do this is to seed the row/column with target sums that can or cannot be achieved to = 100
 //So we need to add Texts(numeric values) to serve as targets 
 //Some (randomly set) targets CAN be achieved while others cannot - therein lies our puzzle?
 {
-    CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public see line 31 
+    public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public see line 31 
     GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
 
     TMP_Text row1SumText,row2SumText, col1SumText, col2SumText ;
@@ -28,7 +27,7 @@ public class CubeGameHandler : MonoBehaviour
     void Start()
     {
        // Debug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
-     if (cubeGameBoardEvent == null) cubeGameBoardEvent = new CubeGameBoardEvent();  //not sure but it stopped the null reference 
+        if (cubeGameBoardEvent == null) cubeGameBoardEvent = new CubeGameBoardEvent();  //not sure but it stopped the null reference 
         cubeGameBoardEvent.AddListener(CubeEnteredOrLeft);
         row1SumText = GameObject.Find("Row1Sum").GetComponent<TMP_Text>();
         row2SumText = GameObject.Find("Row2Sum").GetComponent<TMP_Text>();
@@ -42,28 +41,30 @@ public class CubeGameHandler : MonoBehaviour
 
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
-    public void CubeEnteredOrLeft(string cubeName, bool _entered, string placeName, int cubeValue)   //event Invoked by CubeEnteredSolutionMatrix
+    public void CubeEnteredOrLeft(string cubeName, bool _entered, string placeName, int cubeValue)
+        //event was Invoked Sucessfully by CubeEnteredSolutionMatrix - now ? 
     {
-        // Debug.Log("event recvd: " + cubeName + " " + _entered + " " + placeName + " cubeValue = " + cubeValue);
+       //  Debug.Log("CGH event recvd: " + cubeName + " " + _entered + " " + placeName + " cubeValue = " + cubeValue);
         switch (placeName)
         {
             case "CubePlacement1":
-                cubePlaceHolder1Taken = _entered;
-                place1CubeValue = cubePlaceHolder1Taken ? cubeValue : 0;
+               // cubePlaceHolder1Taken = _entered;
+                place1CubeValue = _entered ? cubeValue : 0;
                 break;
             case "CubePlacement2":
-                cubePlaceHolder2Taken = _entered;
-                place2CubeValue = cubePlaceHolder2Taken ? cubeValue : 0;
+               // cubePlaceHolder2Taken = _entered;
+                place2CubeValue = _entered ? cubeValue : 0;
                 break;
             case "CubePlacement3":
-                cubePlaceHolder3Taken = _entered;
-                place3CubeValue = cubePlaceHolder3Taken ? cubeValue : 0;
+              //  cubePlaceHolder3Taken = _entered;
+                place3CubeValue = _entered ? cubeValue : 0;
                 break;
             case "CubePlacement4":
-                cubePlaceHolder4Taken = _entered;
-                place4CubeValue = cubePlaceHolder4Taken ? cubeValue : 0;
+               // cubePlaceHolder4Taken = _entered;
+                place4CubeValue = _entered ? cubeValue : 0;
                 break;
-            default: break;
+            default: Debug.Log("CGHandler case got a default");
+                break;
         }
         CalculateTheMatrix(placeName);
     }
