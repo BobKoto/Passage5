@@ -15,14 +15,14 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
     private void OnTriggerEnter(Collider cube)
     {
         // NOTE: Kinematic cubes means our Robot avatar can no longer "push" them - nor can other Cubes - so overlap can exist
-        Debug.Log("CESMatrix " + this.name + " ENTERED by " + cube.name );
+    //    Debug.Log("CESMatrix " + this.name + " ENTERED by " + cube.name );
     //    int valueToSend = CubeValue(cube.name);
         cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, cube.gameObject, true);  //Send event to CubePlacementHandler
       //  cubeGameBoardEvent.Invoke(cube.name, true, this.name, valueToSend); //Send event to CubeGameHandler
     }
     private void OnTriggerExit(Collider cube)
     {
-        Debug.Log("CESMatrix " + this.name + " EXITED by " + cube.name );
+    //    Debug.Log("CESMatrix " + this.name + " EXITED by " + cube.name );
     //    int valueToSend = CubeValue(cube.name);
         cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, cube.gameObject, false);  //Send event to CubePlacementHandler
     //    cubeGameBoardEvent.Invoke(cube.name, false, this.name, valueToSend);  //Send event to CubeGameHandler

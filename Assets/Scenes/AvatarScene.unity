@@ -1831,7 +1831,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 7.358209, y: -0.35369778, z: 11.875589, w: 4.7250466}
+  m_margin: {x: 7.358209, y: -0.35369778, z: 11.941328, w: 4.8990707}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -5892,7 +5892,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 334911385}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 146.8, y: 4.6, z: -203}
+  m_LocalPosition: {x: 146.8, y: 4.6, z: -191.9}
   m_LocalScale: {x: 1.4696393, y: 1, z: 82.670204}
   m_Children: []
   m_Father: {fileID: 569036751}
@@ -7855,7 +7855,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 453397699}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 144.5, y: 3, z: -186.1}
+  m_LocalPosition: {x: 144.5, y: 3, z: -177.3}
   m_LocalScale: {x: 4, y: 0.11717889, z: 4.5}
   m_Children:
   - {fileID: 610970728}
@@ -8187,7 +8187,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 464861126}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 146.8, y: 4.6, z: -140}
+  m_LocalPosition: {x: 146.8, y: 4.6, z: -151.8}
   m_LocalScale: {x: 1.3783453, y: 1, z: 82.670204}
   m_Children: []
   m_Father: {fileID: 569036751}
@@ -12035,7 +12035,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623122444}
   m_LocalRotation: {x: 0.059784085, y: -0.704575, z: 0.059784085, w: 0.704575}
-  m_LocalPosition: {x: 202.1, y: 15, z: -171.2}
+  m_LocalPosition: {x: 189, y: 17.2, z: -171.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 693125903}
@@ -12066,12 +12066,12 @@ MonoBehaviour:
     FieldOfView: 42.03
     OrthographicSize: 10
     NearClipPlane: 0.001
-    FarClipPlane: 119.3
+    FarClipPlane: 51.1
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 4.0995526, y: 1}
+    m_SensorSize: {x: 1.7821331, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -13313,7 +13313,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 4.0995526, y: 1}
+    m_SensorSize: {x: 1.7821331, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -13500,8 +13500,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.41, y: 1.45, z: 0.31}
-  m_Center: {x: 0, y: 0.5, z: -0.04}
+  m_Size: {x: 0.3, y: 1, z: 0.2}
+  m_Center: {x: -0.02029177, y: 0.5, z: 0.017751973}
 --- !u!23 &735357897
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14304,7 +14304,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 7.358209, y: -0.35369778, z: 11.875589, w: 4.7250466}
+  m_margin: {x: 7.358209, y: -0.35369778, z: 12.046396, w: 4.855253}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -18638,7 +18638,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.41, y: 1.45, z: 0.31}
+  m_Size: {x: 0.3, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!23 &1082593334
 MeshRenderer:
@@ -19041,7 +19041,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28524
+  m_Name: pb_Mesh28522
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -19373,7 +19373,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.41, y: 1.45, z: 0.31}
+  m_Size: {x: 0.3, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!23 &1104822907
 MeshRenderer:
@@ -21231,7 +21231,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175061770}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 144.5, y: 3, z: -157.7}
+  m_LocalPosition: {x: 144.5, y: 3, z: -169.1}
   m_LocalScale: {x: 4, y: 0.11717889, z: 4.5}
   m_Children:
   - {fileID: 103149609}
@@ -29087,7 +29087,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1671186869}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 144.5, y: 3, z: -147.4}
+  m_LocalPosition: {x: 144.5, y: 3, z: -160.5}
   m_LocalScale: {x: 4, y: 0.11717889, z: 4.5}
   m_Children:
   - {fileID: 777053817}
@@ -31407,7 +31407,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.41, y: 1.45, z: 0.31}
+  m_Size: {x: 0.3, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!23 &1860607787
 MeshRenderer:
@@ -31728,7 +31728,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876292873}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 144.5, y: 3, z: -196.2}
+  m_LocalPosition: {x: 144.5, y: 3, z: -185.6}
   m_LocalScale: {x: 4, y: 0.11717889, z: 4.5}
   m_Children:
   - {fileID: 1524882370}
@@ -32098,7 +32098,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Move cubes so rows and columns match targets
+  m_text: 'Drag cubes to match row and column targets
 
 '
   m_isRightToLeft: 0
