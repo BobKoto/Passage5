@@ -60,7 +60,6 @@ public class CubePlacementHandler : MonoBehaviour
     }
     public void CubeEnterExitPlacement(GameObject _place, string placementName, GameObject _cube, bool cubeEntered)  //Method name in Editor!
     {// OnTriggerEnters/Exits in CESMatrix sent here via this event 
-
         currentCube = _cube;
         currentPlace = _place;
         if (cubeEntered) 
@@ -72,15 +71,18 @@ public class CubePlacementHandler : MonoBehaviour
         else  //the cube EXITED 
         {
             waitingFingerPointerExit = false;
-            if (cubeInThisPlacement[PlacementLockIndex()] != nullGO && !ignoreThisExit) 
+            if (cubeInThisPlacement[PlacementLockIndex()] != nullGO && !ignoreThisExit) //we have an issue here 1/12/23
             {
                 //Here we need to ONLY unlock if it IS locked 
-                Debug.Log(" CubePlHandler: " + currentCube.name + " EXITED" + currentPlace.name + "  IgnoreExit = "+ignoreThisExit);
-                SetCubeLockStatus(false);
-                SetPlacementLockStatus(nullGO, false);
-                int valueToSend = CubeValue(currentCube.name);
-                cubeGameBoardEvent.Invoke(currentCube.name, false, currentPlace.name, valueToSend);  //Send event to CubeGameHandler
+                Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = "+ignoreThisExit);
 
+                if (currentCube == cubeInThisPlacement[PlacementLockIndex()])   
+                {
+                    SetCubeLockStatus(false);
+                    SetPlacementLockStatus(nullGO, false);
+                    int valueToSend = CubeValue(currentCube.name);
+                    cubeGameBoardEvent.Invoke(currentCube.name, false, currentPlace.name, valueToSend);  //Send event to CubeGameHandler
+                }
             }
             ignoreThisExit = false;
         }
@@ -90,6 +92,18 @@ public class CubePlacementHandler : MonoBehaviour
         // Here we get fingerUp(OnEndDrag) event from ActOnTouch -- either fingerUp or object dropped or both -- or worse, nothing
         currentCube = _cube;
         fingerPointerExitReceived = true;
+        if (!waitingFingerPointerExit && cubeLockStatus[CubeLockIndex()])  //cube only moved WITHIN locked position so need to relock
+        {
+            currentPlace = cubeLockPlacementObject[CubeLockIndex()];
+            Debug.Log("RecFingerUpEvnt: currentCube = " + currentCube.name + " IS LOCKED  currentPlace = " + currentPlace);
+            Debug.Log(currentCube.name + " is in " + cubeLockPlacementObject[CubeLockIndex()].name);
+
+            Vector3 targetPos;
+            targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
+            currentCube.transform.position = targetPos;
+            //audioManager.PlayAudio(audioManager.TYPE); //don't play audio on a relock 
+        }
+
     }
     IEnumerator WaitForFingerUpToLockCube()
     {
@@ -103,11 +117,6 @@ public class CubePlacementHandler : MonoBehaviour
             }
             yield return null;
         }
-
-        //yield return new WaitUntil(() => fingerPointerExitReceived );
-        //LockTheCubeDown();
-        //fingerPointerExitReceived = false;
-        //yield return null;
     }
     void LockTheCubeDownOrSendItHome()  // Aligns cube to placement 
     {
@@ -125,7 +134,7 @@ public class CubePlacementHandler : MonoBehaviour
             int valueToSend = CubeValue(currentCube.name);
             //Debug.Log("send event " +currentCube.name  + " " + currentPlace.name+" value = " + valueToSend);
             cubeGameBoardEvent.Invoke(currentCube.name, true, currentPlace.name, valueToSend); //Send event to CubeGameHandler
-            return;
+            return;  //OR fall thru to SendCubeHome()
         }
         Debug.Log("SendCubeHome because " + cubeInThisPlacement[CubeLockIndex()] + " is not nullGO?");
         Debug.Log("ARRAY by SetPlacementLockStatus: "                                //tells us what cube is in relative/what place 
@@ -134,10 +143,10 @@ public class CubePlacementHandler : MonoBehaviour
     }
     void SendCubeHome() //(float timeInSeconds)
     {
-      //  yield return new WaitForSeconds(timeInSeconds);// was an IEnumerator 
         // I think the following generates an erroneous "Exit" we need to ignore/bybass  
+        ignoreThisExit = true; //moved from under to above next line 1/12/23
         currentCube.transform.position = cubeTransformStartPosition[CubeTransformStartPositionIndex(currentCube.name)];
-        ignoreThisExit = true;
+        audioManager.PlayAudio(audioManager.WHOOSH);
         Debug.Log("CPHandler SendCubeHome ");
     }
     void SetCubeLockStatus(bool lockStatus)
