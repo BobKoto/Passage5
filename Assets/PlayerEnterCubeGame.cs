@@ -12,6 +12,7 @@ using randomize_array;
 public class PlayerEnterCubeGame : MonoBehaviour
 {
     //Componenet of PlayerEnterCubeTrigger (the collider in front of the cube game  
+    public AudioManager audioManager;
     public CinemachineVirtualCamera cubeGameCam;
     int originalCamPriority;
     readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };
@@ -24,6 +25,7 @@ public class PlayerEnterCubeGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
         cubeGamePlacement = GameObject.FindGameObjectsWithTag("CubeGamePlacement");
         cubeGameTargetSum = GameObject.FindGameObjectsWithTag("TargetSum");
@@ -64,7 +66,7 @@ public class PlayerEnterCubeGame : MonoBehaviour
         Debug.Log(gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
         for (int i = 0; i <= cubeGameTargetSum.Length-1; i++)
         {
-           // cubeGameTargetSumText[i].text = gameSums[i].ToString();  //temporarily suppress to avoid confusion - restore later 
+            cubeGameTargetSumText[i].text = gameSums[i].ToString();  
         }
         //int Random.Range (0,10) will return a random value 0 thru "9" - beware
         /* TEMPORARILY DON'T SEED AN INITIAL CUBE - JUST SEED THE SUMS 
@@ -83,6 +85,7 @@ public class PlayerEnterCubeGame : MonoBehaviour
         {
             cubeGameCam.Priority = 12;
             SeedCubePuzzle();
+            audioManager.PlayAudio(audioManager.clipDRUMROLL);
         }
     }
     private void OnTriggerExit(Collider other)
