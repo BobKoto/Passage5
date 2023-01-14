@@ -64,17 +64,18 @@ public class CubePlacementHandler : MonoBehaviour
         currentPlace = _place;
         if (cubeEntered) 
         {
-            Debug.Log(" CubePlHandler: " + currentCube.name + " ENTERED " + currentPlace.name + "       Waiting 4 fingerUp");
             waitingFingerPointerExit = true;
+            Debug.Log(" CubePlHandler: " + currentCube.name + " ENTERED " + currentPlace.name + "       waitingFingerPointerExit");
             return; //added 1/8/23 
         }
         else  //the cube EXITED 
         {
             waitingFingerPointerExit = false;
+            Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = " + ignoreThisExit);
             if (cubeInThisPlacement[PlacementLockIndex()] != nullGO && !ignoreThisExit) //we have an issue here 1/12/23
             {
                 //Here we need to ONLY unlock if it IS locked 
-                Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = "+ignoreThisExit);
+               // Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = "+ignoreThisExit);
 
                 if (currentCube == cubeInThisPlacement[PlacementLockIndex()])   
                 {
@@ -91,13 +92,13 @@ public class CubePlacementHandler : MonoBehaviour
     {
         // Here we get fingerUp(OnEndDrag) event from ActOnTouch -- either fingerUp or object dropped or both -- or worse, nothing
         currentCube = _cube;
-        fingerPointerExitReceived = true;
+        if(waitingFingerPointerExit) fingerPointerExitReceived = true;// added  if(waitingFingerPointerExit) on 1/13/23 seems ok
         if (!waitingFingerPointerExit && cubeLockStatus[CubeLockIndex()])  //cube only moved WITHIN locked position so need to relock
         {
             currentPlace = cubeLockPlacementObject[CubeLockIndex()];
             Debug.Log("RecFingerUpEvnt: currentCube = " + currentCube.name + " IS LOCKED  currentPlace = " + currentPlace);
             Debug.Log(currentCube.name + " is in " + cubeLockPlacementObject[CubeLockIndex()].name);
-
+            // Just align the Cube
             Vector3 targetPos;
             targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
             currentCube.transform.position = targetPos;
@@ -122,8 +123,7 @@ public class CubePlacementHandler : MonoBehaviour
     {
         if (cubeInThisPlacement[PlacementLockIndex()] == nullGO)   //check currentPlace if null Align/Lock 
         {
-        // Debug.Log("Lock or sendhome says cubeInThisPlacement[CubeLockIndex()] IS " + cubeInThisPlacement[CubeLockIndex()]); issue here
-            // Align the cube and give audio feedback 
+            // Lock the cube and give audio feedback 
             Vector3 targetPos;
             targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
             currentCube.transform.position = targetPos;
@@ -136,7 +136,7 @@ public class CubePlacementHandler : MonoBehaviour
             cubeGameBoardEvent.Invoke(currentCube.name, true, currentPlace.name, valueToSend); //Send event to CubeGameHandler
             return;  //OR fall thru to SendCubeHome()
         }
-        Debug.Log("SendCubeHome because " + cubeInThisPlacement[CubeLockIndex()] + " is not nullGO?");
+        Debug.Log("SendCubeHome because " + cubeInThisPlacement[PlacementLockIndex()].name + " is not nullGO?");
         Debug.Log("ARRAY by SetPlacementLockStatus: "                                //tells us what cube is in relative/what place 
       + cubeInThisPlacement[0].name + " " + cubeInThisPlacement[1].name + " " + cubeInThisPlacement[2].name + " " + cubeInThisPlacement[3].name);
         SendCubeHome(); // (.5f);
