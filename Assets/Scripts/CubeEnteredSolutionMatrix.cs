@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 public class CubeEnteredSolutionMatrix : MonoBehaviour   
-// Component of each CubePlacement object -NOT the Cubes- -- sends Cube enter/exit events to CubeGameHandler.cs
+// Component of each CubePlacement Game Object -NOT the Cubes- -- sends Cube enter/exit events to CubeGameHandler.cs
 {
     public CubeTriggerEnterExitEvent cubeTriggerEnterExitEvent;
 
@@ -26,6 +26,10 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
     //    int valueToSend = CubeValue(cube.name);
         cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, cube.gameObject, false);  //Send event to CubePlacementHandler
     //    cubeGameBoardEvent.Invoke(cube.name, false, this.name, valueToSend);  //Send event to CubeGameHandler
+    }
+    private void OnDisable()
+    {
+        
     }
 } // end class 
     //public int CubeValue(string cubeMovedInOrOut)

@@ -12,6 +12,9 @@ using randomize_array;
 public class PlayerEnterCubeGame : MonoBehaviour
 {
     //Componenet of PlayerEnterCubeTrigger (the collider in front of the cube game  
+    public MyIntEvent m_MyEvent;
+    const string helpNeedHI = "#Need human assist!";
+   // const string offPlatform = "#Now walk";
     public AudioManager audioManager;
     public CinemachineVirtualCamera cubeGameCam;
     int originalCamPriority;
@@ -19,6 +22,7 @@ public class PlayerEnterCubeGame : MonoBehaviour
     GameObject[] cubeGameCubes;
     GameObject[] cubeGamePlacement;
     GameObject[] cubeGameTargetSum;
+    GameObject inputControls;
     TMP_Text[] cubeGameTargetSumText;
     Vector3[] cubeTransformStartPosition;  // so we can put cubes back to their original positions
     Vector3[] cubePlacementPosition; // where to automatically place/start a Cube 
@@ -29,6 +33,8 @@ public class PlayerEnterCubeGame : MonoBehaviour
         cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
         cubeGamePlacement = GameObject.FindGameObjectsWithTag("CubeGamePlacement");
         cubeGameTargetSum = GameObject.FindGameObjectsWithTag("TargetSum");
+        inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");
+
 
         cubePlacementPosition = new Vector3[cubeGamePlacement.Length];
         cubeTransformStartPosition = new Vector3[cubeGameCubes.Length];
@@ -79,14 +85,24 @@ public class PlayerEnterCubeGame : MonoBehaviour
         cubeGameCubes[randomCubePosition].transform.position = cubePlacementPosition[randomCubePlacement] + xForward;
         */
     }
+    void DisableInputControls() //joystick etc.
+    {
+        if (inputControls) inputControls.SetActive(false);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             cubeGameCam.Priority = 12;
+            DisableInputControls();
             SeedCubePuzzle();
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
+            TellTextCloud(helpNeedHI);
         }
+    }
+    void TellTextCloud(string caption)
+    {
+        m_MyEvent.Invoke(5, 4, caption);
     }
     private void OnTriggerExit(Collider other)
     {
