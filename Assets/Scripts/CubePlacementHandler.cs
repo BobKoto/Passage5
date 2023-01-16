@@ -46,7 +46,6 @@ public class CubePlacementHandler : MonoBehaviour
         cubeTransformStartPosition = new Vector3[cubeGameCubes.Length];
         nullGO =  GameObject.CreatePrimitive(PrimitiveType.Cube);
         nullGO.name = "nullGO";
-        Debug.Log(nullGO.name);//for crissakes it is Cube
         cubeLockPlacementObject = new GameObject[cubeGameCubes.Length];
         cubeInThisPlacement = new GameObject[cubeGameCubes.Length];
         for (int i = 0; i <= cubeGameCubes.Length - 1; i++)
@@ -65,18 +64,16 @@ public class CubePlacementHandler : MonoBehaviour
         if (cubeEntered) 
         {
             waitingFingerPointerExit = true;
-            Debug.Log(" CubePlHandler: " + currentCube.name + " ENTERED " + currentPlace.name + "       waitingFingerPointerExit");
+            //Debug.Log(" CubePlHandler: " + currentCube.name + " ENTERED " + currentPlace.name + "       waitingFingerPointerExit");
             return; //added 1/8/23 
         }
         else  //the cube EXITED 
         {
             waitingFingerPointerExit = false;
-            Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = " + ignoreThisExit);
+            //Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = " + ignoreThisExit);
             if (cubeInThisPlacement[PlacementLockIndex()] != nullGO && !ignoreThisExit) //we have an issue here 1/12/23
             {
                 //Here we need to ONLY unlock if it IS locked 
-               // Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = "+ignoreThisExit);
-
                 if (currentCube == cubeInThisPlacement[PlacementLockIndex()])   
                 {
                     SetCubeLockStatus(false);
@@ -96,8 +93,8 @@ public class CubePlacementHandler : MonoBehaviour
         if (!waitingFingerPointerExit && cubeLockStatus[CubeLockIndex()])  //cube only moved WITHIN locked position so need to relock
         {
             currentPlace = cubeLockPlacementObject[CubeLockIndex()];
-            Debug.Log("RecFingerUpEvnt: currentCube = " + currentCube.name + " IS LOCKED  currentPlace = " + currentPlace);
-            Debug.Log(currentCube.name + " is in " + cubeLockPlacementObject[CubeLockIndex()].name);
+            //Debug.Log("RecFingerUpEvnt: currentCube = " + currentCube.name + " IS LOCKED  currentPlace = " + currentPlace);
+            //Debug.Log(currentCube.name + " is in " + cubeLockPlacementObject[CubeLockIndex()].name);
             // Just align the Cube
             Vector3 targetPos;
             targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
@@ -132,13 +129,12 @@ public class CubePlacementHandler : MonoBehaviour
             SetCubeLockStatus(true);
             SetPlacementLockStatus(currentCube, true);  //e.g. case "CubePlacement1": cubeInThisPlacement[0] = cubeToLock;
             int valueToSend = CubeValue(currentCube.name);
-            //Debug.Log("send event " +currentCube.name  + " " + currentPlace.name+" value = " + valueToSend);
             cubeGameBoardEvent.Invoke(currentCube.name, true, currentPlace.name, valueToSend); //Send event to CubeGameHandler
             return;  //OR fall thru to SendCubeHome()
         }
-        Debug.Log("SendCubeHome because " + cubeInThisPlacement[PlacementLockIndex()].name + " is not nullGO?");
-        Debug.Log("ARRAY by SetPlacementLockStatus: "                                //tells us what cube is in relative/what place 
-      + cubeInThisPlacement[0].name + " " + cubeInThisPlacement[1].name + " " + cubeInThisPlacement[2].name + " " + cubeInThisPlacement[3].name);
+      //  Debug.Log("SendCubeHome because " + cubeInThisPlacement[PlacementLockIndex()].name + " is not nullGO?");
+      //  Debug.Log("ARRAY by SetPlacementLockStatus: "                                //tells us what cube is in relative/what place 
+      //+ cubeInThisPlacement[0].name + " " + cubeInThisPlacement[1].name + " " + cubeInThisPlacement[2].name + " " + cubeInThisPlacement[3].name);
         SendCubeHome(); // (.5f);
     }
     void SendCubeHome() //(float timeInSeconds)
@@ -147,7 +143,7 @@ public class CubePlacementHandler : MonoBehaviour
         ignoreThisExit = true; //moved from under to above next line 1/12/23
         currentCube.transform.position = cubeTransformStartPosition[CubeTransformStartPositionIndex(currentCube.name)];
         audioManager.PlayAudio(audioManager.WHOOSH);
-        Debug.Log("CPHandler SendCubeHome ");
+       // Debug.Log("CPHandler SendCubeHome ");
     }
     void SetCubeLockStatus(bool lockStatus)
     {// here currentPlace and currentCube come from global context
@@ -175,13 +171,13 @@ public class CubePlacementHandler : MonoBehaviour
                 break;
         }
         s1 = lockStatus ? "locked" : "UNLOCKED";
-        //Debug.Log("SCLS we just " + s1 + " " + currentCube.name + "  into/from " + currentPlace.name);
-        //Debug.Log("lock array " + cubeLockStatus[0] + " " + cubeLockStatus[1] + " " + cubeLockStatus[2] + " " + cubeLockStatus[3]);
-        Debug.Log(" ARRAY by SetCubeLockStatus: "        //this is a null ref. :{
-            + cubeLockPlacementObject[0].name + " "
-            + cubeLockPlacementObject[1].name + " "
-            + cubeLockPlacementObject[2].name + " "
-            + cubeLockPlacementObject[3].name);
+        ////Debug.Log("SCLS we just " + s1 + " " + currentCube.name + "  into/from " + currentPlace.name);
+        ////Debug.Log("lock array " + cubeLockStatus[0] + " " + cubeLockStatus[1] + " " + cubeLockStatus[2] + " " + cubeLockStatus[3]);
+        //Debug.Log(" ARRAY by SetCubeLockStatus: "        //this is a null ref. :{
+        //    + cubeLockPlacementObject[0].name + " "
+        //    + cubeLockPlacementObject[1].name + " "
+        //    + cubeLockPlacementObject[2].name + " "
+        //    + cubeLockPlacementObject[3].name);
     }
     void SetPlacementLockStatus(GameObject cubeToLock, bool cubeLocked)
     {
@@ -204,16 +200,16 @@ public class CubePlacementHandler : MonoBehaviour
                 Debug.Log("CASE DEFAULT SetPlacementLockStatus(GameObject cubeToLock) got " + cubeToLock.name + " into  " + currentPlace.name);
                 break;
         }
-      // s1 = lockStatus ? "locked" : "UNLOCKED";
-      if (cubeLocked)
-        Debug.Log("SPLS we just locked " + currentCube.name + "  into " + currentPlace.name);
-      else Debug.Log("SPLS we just UNlocked " + currentCube.name + "  from " + currentPlace.name);  //bullshit
-        Debug.Log                                 //tells us what cube is in relative/what place 
-              ("ARRAY by SetPlacementLockStatus: " 
-                  + cubeInThisPlacement[0].name +
-              " " + cubeInThisPlacement[1].name +
-              " " + cubeInThisPlacement[2].name +
-              " " + cubeInThisPlacement[3].name);
+      //// s1 = lockStatus ? "locked" : "UNLOCKED";
+      //if (cubeLocked)
+      //  Debug.Log("SPLS we just locked " + currentCube.name + "  into " + currentPlace.name);
+      //else Debug.Log("SPLS we just UNlocked " + currentCube.name + "  from " + currentPlace.name);  //bullshit
+      //  Debug.Log                                 //tells us what cube is in relative/what place 
+      //        ("ARRAY by SetPlacementLockStatus: " 
+      //            + cubeInThisPlacement[0].name +
+      //        " " + cubeInThisPlacement[1].name +
+      //        " " + cubeInThisPlacement[2].name +
+      //        " " + cubeInThisPlacement[3].name);
     }
     int CubeLockIndex()
     {
@@ -260,7 +256,12 @@ public class CubePlacementHandler : MonoBehaviour
             _ => 0,
         };
     }
-    private void OnDisable() => StopAllCoroutines();
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        cubeTriggerEnterExitEvent.RemoveListener(CubeEnterExitPlacement);
+        fingerPointerEvent.RemoveListener(ReceivedFingerUpEvent);
+    }
 } //end class
 
 /*

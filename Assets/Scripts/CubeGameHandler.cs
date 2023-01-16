@@ -18,15 +18,17 @@ public class CubeGameHandler : MonoBehaviour
     GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
 
     TMP_Text row1SumText,row2SumText, col1SumText, col2SumText ;
- 
-//    public GameObject[] cubePlaceHolder;  //this array of gameObjects did nothng 
+
+    GameObject inputControls;
     public AudioManager audioManager;
     bool cubePlaceHolder1Taken, cubePlaceHolder2Taken, cubePlaceHolder3Taken, cubePlaceHolder4Taken;
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
+    int cubesOccupied;
     // Start is called before the first frame update
     void Start()
     {
-       // Debug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
+        inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");
+        // Debug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
         if (cubeGameBoardEvent == null) cubeGameBoardEvent = new CubeGameBoardEvent();  //not sure but it stopped the null reference 
         cubeGameBoardEvent.AddListener(CubeEnteredOrLeft);
         row1SumText = GameObject.Find("Row1Sum").GetComponent<TMP_Text>();
@@ -39,36 +41,35 @@ public class CubeGameHandler : MonoBehaviour
         col1SumText.text = "0";
         col2SumText.text = "0";
 
+
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
     public void CubeEnteredOrLeft(string cubeName, bool _entered, string placeName, int cubeValue)
         //event was Invoked Sucessfully by CubeEnteredSolutionMatrix - now ? 
     {
-       //  Debug.Log("CGH event recvd: " + cubeName + " " + _entered + " " + placeName + " cubeValue = " + cubeValue);
+        cubesOccupied = _entered? cubesOccupied+=1 : cubesOccupied-=1;
+        //Debug.Log("WE Have " + cubesOccupied);
+        //  Debug.Log("CGH event recvd: " + cubeName + " " + _entered + " " + placeName + " cubeValue = " + cubeValue);
         switch (placeName)
         {
             case "CubePlacement1":
-               // cubePlaceHolder1Taken = _entered;
                 place1CubeValue = _entered ? cubeValue : 0;
                 break;
             case "CubePlacement2":
-               // cubePlaceHolder2Taken = _entered;
                 place2CubeValue = _entered ? cubeValue : 0;
                 break;
             case "CubePlacement3":
-              //  cubePlaceHolder3Taken = _entered;
                 place3CubeValue = _entered ? cubeValue : 0;
                 break;
             case "CubePlacement4":
-               // cubePlaceHolder4Taken = _entered;
                 place4CubeValue = _entered ? cubeValue : 0;
                 break;
             default: Debug.Log("CGHandler case got a default");
                 break;
         }
-        CalculateTheMatrix(placeName);
+        CalculateTheMatrix();
     }
-    void CalculateTheMatrix(string placeName)  //can use params here?? yes but how?
+    void CalculateTheMatrix()  //can use params here?? yes but how?
     {
         row1SumText.text = (place1CubeValue + place2CubeValue).ToString(); // + " added across";
 
@@ -77,6 +78,15 @@ public class CubeGameHandler : MonoBehaviour
         row2SumText.text = (place3CubeValue + place4CubeValue).ToString(); // + " added across" ;
 
         col2SumText.text = (place2CubeValue + place4CubeValue).ToString(); // + " added down"; 
+        if (cubesOccupied == 4)  // the game is finished as player filled 4th placement 
+        {
+           // Debug.Log("WE Have 4, Should enable inputControls...");
+            if (inputControls) inputControls.SetActive(true);
+        }
+    }
+    private void OnDisable()
+    {
+        cubeGameBoardEvent.RemoveListener(CubeEnteredOrLeft);
     }
 }  // end class 
 

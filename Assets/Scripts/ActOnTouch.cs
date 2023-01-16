@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using Cinemachine;
 
 public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointerUpHandler, IPointerExitHandler
 //IPointerClickHandler, IInitializePotentialDragHandler, IPointerUpHandler,IPointerExitHandler, IPointerEnterHandler, IDropHandler
@@ -11,6 +12,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
 {
     AudioManager audioManager;
     Camera cam;
+    public CinemachineVirtualCamera cVCam;
     Vector3 point, newPoint;
     GameObject cubeGameLeftWall, cubeGameRightWall, cubeGameTopWall;
 
@@ -23,21 +25,23 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
         cubeGameLeftWall = GameObject.Find("CubeGameLeftWall");
         cubeGameRightWall = GameObject.Find("CubeGameRightWall");
         cubeGameTopWall = GameObject.Find("CubeGameTopWall");
-        cam = Camera.main;  //thankfully this finds the Cinemachine VCam
+        AlignCam(); //with the on-standby vcam which will "become" cam/Camera.main when it goes Live
+        //Debug.Log("hello from AOTOUCH");  //starts well before any issues
+    }
+    void AlignCam()  //moved from Start in prep to align ONLY when player enters CubeGame - else where the player starts is an issue 
+    {
+        cam = Camera.main;  //
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         xPositionFixed = transform.position.x;  //we apparently need one of these fixed positions depending on cam/*cube orientation
         yPositionFixed = transform.position.y;  // *cube as in the thing(s) we want to drag 
         zPositionFixed = transform.position.z;
-        camCubeXDelta = cam.transform.position.x - transform.position.x; //for ScreenToWorldPoint on drag - why? who knows
-        //yPositionTopLimit = 22f;//hard coded for now - should eventually be a graphic -- DONE on next line 
+        camCubeXDelta = cVCam.transform.position.x - transform.position.x; //for ScreenToWorldPoint - use pos X of cVCam which will "become" cam when Live
+        //Debug.Log("camCubeXDelta = " + camCubeXDelta);
         yPositionTopLimit = cubeGameTopWall.transform.position.y - transform.localScale.y /2;
         zPositionLeftLimit = cubeGameLeftWall.transform.position.z;//
         zPositionRightLimit = cubeGameRightWall.transform.position.z;// 
         movingCubeSizeX = transform.localScale.x;
-        // Debug.Log(this.name + " position is " + transform.position + " movingCubeSizeX = " + movingCubeSizeX);// yes as expected 
-        //Debug.Log("hello from AOTOUCH");  //starts well before any issues
     }
-
     void IDragHandler.OnDrag(PointerEventData eventData)  //Note: movement depends on camera orientation (affects transform.positions) 
     {
         point = cam.ScreenToWorldPoint
@@ -51,7 +55,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
     }
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)   //We don't consistently get this?, so try PointerUp/PointerExit
     {
-        Debug.Log("AOTouch END Drag detected !!!! " + this.name);
+        //Debug.Log("AOTouch END Drag detected !!!! " + this.name);
         fingerPointerEvent.Invoke(this.gameObject, "finger UP  Drag ENDED");
     }
     //void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
@@ -67,7 +71,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
     void IPointerUpHandler.OnPointerUp(PointerEventData eventData)   //player took finger off cube, bad IF we did ALSO get EndDrag
     {
         Debug.Log
-            ("AOTouch IPointerUpHandler.OnPointerUp(PointerEventData eventData)  this.name = " + this.name);
+            ("AOTouch IPointerUpHandler.OnPointerUp(PointerEventData eventData)  this.name = " + this.name);  //1/15/23 never see/get this
     }
     //void IDropHandler.OnDrop(PointerEventData eventData)
     //{
