@@ -19,6 +19,9 @@ public class PlayerEnterCubeGame : MonoBehaviour
     public CinemachineVirtualCamera cubeGameCam;
     int originalCamPriority;
     readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };
+    public GameObject player;
+    Animator animator;
+    GameObject cubeGameButtons;
     GameObject[] cubeGameCubes;
     GameObject[] cubeGamePlacement;
     GameObject[] cubeGameTargetSum;
@@ -30,6 +33,9 @@ public class PlayerEnterCubeGame : MonoBehaviour
     void Start()
     {
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        cubeGameButtons = GameObject.Find("CubeGameButtons");  //won't find if it's disabled 
+        //if (cubeGameButtons) Debug.Log("CGButtons found...."); else Debug.Log("CGButtons NOT found...."); //guess we must deactivate 
+        if (cubeGameButtons) cubeGameButtons.SetActive(false);
         cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
         cubeGamePlacement = GameObject.FindGameObjectsWithTag("CubeGamePlacement");
         cubeGameTargetSum = GameObject.FindGameObjectsWithTag("TargetSum");
@@ -53,6 +59,7 @@ public class PlayerEnterCubeGame : MonoBehaviour
         }
 
         originalCamPriority = cubeGameCam.Priority;
+        animator = player.GetComponent<Animator>();
 
     }
     void Shuffle(int[] intArr)
@@ -69,10 +76,15 @@ public class PlayerEnterCubeGame : MonoBehaviour
     void SeedCubePuzzle()
     {
         Shuffle(gameSums);
-        Debug.Log(gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
+        Debug.Log("SeedCubePuzzle() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
+
         for (int i = 0; i <= cubeGameTargetSum.Length-1; i++)
         {
             cubeGameTargetSumText[i].text = gameSums[i].ToString();  
+        }
+        if (GameCanBeSolved())
+        {
+
         }
         //int Random.Range (0,10) will return a random value 0 thru "9" - beware
         /* TEMPORARILY DON'T SEED AN INITIAL CUBE - JUST SEED THE SUMS 
@@ -84,6 +96,23 @@ public class PlayerEnterCubeGame : MonoBehaviour
         Vector3 xForward = new Vector3(1.5f, 0f, 0f);//pull cube out toward cam
         cubeGameCubes[randomCubePosition].transform.position = cubePlacementPosition[randomCubePlacement] + xForward;
         */
+    }
+    bool GameCanBeSolved()
+    {
+        int x, y, theSum;
+        x = gameSums[0] + gameSums[2] ;
+        y = gameSums[1] + gameSums[3]; // + gameSums[4];
+        theSum = x + y;
+        if (theSum == 200)
+        {
+            Debug.Log("Game CAN be solved... theSum = " + theSum);
+            return true;
+        }
+        else
+        {
+            Debug.Log("Game CANNOT be solved... theSum = " + theSum);
+            return false;
+        }
     }
     void DisableInputControls() //joystick etc.
     {
@@ -98,6 +127,9 @@ public class PlayerEnterCubeGame : MonoBehaviour
             SeedCubePuzzle();
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
             TellTextCloud(helpNeedHI);
+            cubeGameButtons.SetActive(true);
+            //animator.SetFloat("Speed", 0);
+            animator.speed = 0;
         }
     }
     void TellTextCloud(string caption)
@@ -106,14 +138,43 @@ public class PlayerEnterCubeGame : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player")) ExitTheCubeGame();
+        //{
+        //    cubeGameCam.Priority = originalCamPriority;
+        //    for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  //Restore the cubes to home/original positions 
+        //    {
+        //        cubeGameCubes[i].transform.position = cubeTransformStartPosition[i];
+        //    }
+        //}
+        //cubeGameButtons.SetActive(false);
+        //animator.speed = 1;
+    }
+    void ExitTheCubeGame()
+    {
+        cubeGameCam.Priority = originalCamPriority;
+        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  //Restore the cubes to home/original positions 
         {
-            cubeGameCam.Priority = originalCamPriority;
-            for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  //Restore the cubes to home/original positions 
-            {
-                cubeGameCubes[i].transform.position = cubeTransformStartPosition[i];
-            }
+            cubeGameCubes[i].transform.position = cubeTransformStartPosition[i];
         }
+        cubeGameButtons.SetActive(false);
+        animator.speed = 1;
+        if (inputControls) inputControls.SetActive(true);
+    }
+    public void OnCannotSolvePressed()
+    {
+        Debug.Log("player pressed Can't Solve ");
+        if (GameCanBeSolved())
+        {
+            Debug.Log("Wrong --- Game CAN be solved!");
+        }
+        else
+        {
+            Debug.Log("Right --- Game CANNOT be solved!");
+        }
+    }
+    public void OnCubeGameExitPressed()
+    {
+        ExitTheCubeGame();
     }
 }  //end class 
    //} //end namespace
