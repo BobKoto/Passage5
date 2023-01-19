@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using System.Linq;
+//using System.Linq;
 using TMPro;
-using randomize_array;
+//using randomize_array;
 
 //using System.Security.Cryptography;
 //namespace randomize_array
@@ -18,7 +18,7 @@ public class PlayerEnterCubeGame : MonoBehaviour
     public AudioManager audioManager;
     public CinemachineVirtualCamera cubeGameCam;
     int originalCamPriority;
-    readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };
+    readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };  //cubes = 10, 20, 30, 40
     public GameObject player;
     Animator animator;
     GameObject cubeGameButtons;
@@ -44,7 +44,7 @@ public class PlayerEnterCubeGame : MonoBehaviour
 
         cubePlacementPosition = new Vector3[cubeGamePlacement.Length];
         cubeTransformStartPosition = new Vector3[cubeGameCubes.Length];
-        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)
+        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)   //these 3 for loops can be consolidated...
         {
             cubeTransformStartPosition[i] = cubeGameCubes[i].transform.position;
         }
@@ -65,10 +65,12 @@ public class PlayerEnterCubeGame : MonoBehaviour
     void Shuffle(int[] intArr)
     {
         // Knuth shuffle algorithm :: courtesy of Wikipedia :)
-        for (int t = 0; t < intArr.Length; t++)
+        for (int t = 0; t < intArr.Length; t++)  //30, 40, 50, 60, 70 
         {
-            int tmp = intArr[t];
-            int r = Random.Range(t, intArr.Length);
+            int tmp = intArr[t];  //3 --
+                                                   //t0  t1  t2  t3  t4  
+            int r = Random.Range(t, intArr.Length);//3, 4, 5, 6, 7 
+
             intArr[t] = intArr[r];
             intArr[r] = tmp;
         }
@@ -76,41 +78,43 @@ public class PlayerEnterCubeGame : MonoBehaviour
     void SeedCubePuzzle()
     {
         Shuffle(gameSums);
-        Debug.Log("SeedCubePuzzle() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
+        //Debug.Log("SeedCubePuzzle() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
 
         for (int i = 0; i <= cubeGameTargetSum.Length-1; i++)
         {
             cubeGameTargetSumText[i].text = gameSums[i].ToString();  
         }
-        if (GameCanBeSolved())
-        {
+        if (GameCanBeSolved())  { }  //do nothing yet
+        //BEWARE int Random.Range (0,10) will return a random value 0 thru "9" 
 
-        }
-        //int Random.Range (0,10) will return a random value 0 thru "9" - beware
-        /* TEMPORARILY DON'T SEED AN INITIAL CUBE - JUST SEED THE SUMS 
-        int randomCubePosition = Random.Range(0, cubeGamePlacement.Length);  //higher val was  hardcoded to 3 but u never know...
-        int randomCubePlacement = Random.Range(0, cubeGamePlacement.Length);  //higher val was  hardcoded to 3 but u never know...
-                                                                              //Debug.Log("randCubeRAW = " + randomCubePosition +        "  randCubePlacRAW = "  + randomCubePlacement );
-                                                                              //Debug.Log("randCube =      " + (randomCubePosition+1)*10 + "  randCubePlac =        " + (randomCubePlacement+1));
-
-        Vector3 xForward = new Vector3(1.5f, 0f, 0f);//pull cube out toward cam
-        cubeGameCubes[randomCubePosition].transform.position = cubePlacementPosition[randomCubePlacement] + xForward;
-        */
     }
     bool GameCanBeSolved()
     {
-        int x, y, theSum;
-        x = gameSums[0] + gameSums[2] ;
-        y = gameSums[1] + gameSums[3]; // + gameSums[4];
-        theSum = x + y;
-        if (theSum == 200)
-        {
-            Debug.Log("Game CAN be solved... theSum = " + theSum);
+       // int col1, col2, colSum, row1, row2, rowSum, theSum, firstSeed, secondSeed, thirdSeed, fourthSeed, firstPlusSecond, thirdPlusFourth;
+        int firstPlusSecond, thirdPlusFourth;
+        //as an example we got a seeding of 50 50 60 40 // which is solvable by 40 10 //50 
+        //col1 = gameSums[0] + gameSums[2]; //110                                 20 30 //50
+        //col2 = gameSums[1] + gameSums[3]; //90                                  60 40  100->each way - a winner 
+        //colSum = col1 + col2;
+
+        //row1 = gameSums[0] + gameSums[1]; //100  //ok row 1 
+        //row2 = gameSums[2] + gameSums[3]; //100
+        //rowSum = row1 + row2;
+
+        //theSum = colSum + rowSum;  // col1 + col2 + row1 + row2;
+        firstPlusSecond = gameSums[0] + gameSums[1];
+        thirdPlusFourth = gameSums[2] + gameSums[3];
+       // if (theSum == 400 && colSum == 200 && rowSum == 200)//can solve is not true yet - there is more to it 
+       if (firstPlusSecond == 100 && thirdPlusFourth == 100)
+       {
+            // Debug.Log("Game CAN be solved... theSum = " + theSum + " colSum = " + colSum + " rowSum = " + rowSum); 
+            Debug.Log("Game CAN be solved... firstPlusSecond = " + firstPlusSecond + " and thirdPlusFourth = " + thirdPlusFourth);
             return true;
-        }
+       }
         else
         {
-            Debug.Log("Game CANNOT be solved... theSum = " + theSum);
+            // Debug.Log("Game CANNOT be solved... theSum = " + theSum + " colSum = " + colSum + " rowSum = " + rowSum);
+            Debug.Log("Game CANNOT be solved... firstPlusSecond = " + firstPlusSecond + " and thirdPlusFourth = " + thirdPlusFourth);
             return false;
         }
     }
@@ -174,10 +178,20 @@ public class PlayerEnterCubeGame : MonoBehaviour
     }
     public void OnCubeGameExitPressed()
     {
-        ExitTheCubeGame();
+        // ExitTheCubeGame();
+        SeedCubePuzzle();
     }
 }  //end class 
    //} //end namespace
+/* TEMPORARILY DON'T SEED AN INITIAL CUBE - JUST SEED THE SUMS 
+int randomCubePosition = Random.Range(0, cubeGamePlacement.Length);  //higher val was  hardcoded to 3 but u never know...
+int randomCubePlacement = Random.Range(0, cubeGamePlacement.Length);  //higher val was  hardcoded to 3 but u never know...
+                                                                   //Debug.Log("randCubeRAW = " + randomCubePosition +        "  randCubePlacRAW = "  + randomCubePlacement );
+                                                                   //Debug.Log("randCube =      " + (randomCubePosition+1)*10 + "  randCubePlac =        " + (randomCubePlacement+1));
+
+Vector3 xForward = new Vector3(1.5f, 0f, 0f);//pull cube out toward cam
+cubeGameCubes[randomCubePosition].transform.position = cubePlacementPosition[randomCubePlacement] + xForward;
+*/
 /*
 using System;
 using System.Linq;
