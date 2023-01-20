@@ -21,11 +21,14 @@ public class PlayerEnterCubeGame : MonoBehaviour
     readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };  //cubes = 10, 20, 30, 40
     public GameObject player;
     Animator animator;
-    GameObject cubeGameButtons;
+    //GameObject cubeGameButtons;
     GameObject[] cubeGameCubes;
     GameObject[] cubeGamePlacement;
     GameObject[] cubeGameTargetSum;
     GameObject inputControls;
+    public GameObject menuButton, lightButton, cubeGameStartButton, cubeGameIsUnsolvableButton, cubeGameExitButton; //Buttons to toggle 
+    public GameObject cubeGameResultText;
+    TMP_Text cubeGameWonOrLostText;
     TMP_Text[] cubeGameTargetSumText;
     Vector3[] cubeTransformStartPosition;  // so we can put cubes back to their original positions
     Vector3[] cubePlacementPosition; // where to automatically place/start a Cube 
@@ -33,9 +36,10 @@ public class PlayerEnterCubeGame : MonoBehaviour
     void Start()
     {
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
-        cubeGameButtons = GameObject.Find("CubeGameButtons");  //won't find if it's disabled 
-        //if (cubeGameButtons) Debug.Log("CGButtons found...."); else Debug.Log("CGButtons NOT found...."); //guess we must deactivate 
-        if (cubeGameButtons) cubeGameButtons.SetActive(false);
+        //cubeGameButtons = GameObject.Find("CubeGameButtons");  //won't find if it's disabled 
+        ////if (cubeGameButtons) Debug.Log("CGButtons found...."); else Debug.Log("CGButtons NOT found...."); //guess we must deactivate 
+        //if (cubeGameButtons) cubeGameButtons.SetActive(false);
+        cubeGameWonOrLostText = cubeGameResultText.GetComponent<TMP_Text>();
         cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
         cubeGamePlacement = GameObject.FindGameObjectsWithTag("CubeGamePlacement");
         cubeGameTargetSum = GameObject.FindGameObjectsWithTag("TargetSum");
@@ -90,21 +94,9 @@ public class PlayerEnterCubeGame : MonoBehaviour
     }
     bool GameCanBeSolved()
     {
-       // int col1, col2, colSum, row1, row2, rowSum, theSum, firstSeed, secondSeed, thirdSeed, fourthSeed, firstPlusSecond, thirdPlusFourth;
         int firstPlusSecond, thirdPlusFourth;
-        //as an example we got a seeding of 50 50 60 40 // which is solvable by 40 10 //50 
-        //col1 = gameSums[0] + gameSums[2]; //110                                 20 30 //50
-        //col2 = gameSums[1] + gameSums[3]; //90                                  60 40  100->each way - a winner 
-        //colSum = col1 + col2;
-
-        //row1 = gameSums[0] + gameSums[1]; //100  //ok row 1 
-        //row2 = gameSums[2] + gameSums[3]; //100
-        //rowSum = row1 + row2;
-
-        //theSum = colSum + rowSum;  // col1 + col2 + row1 + row2;
         firstPlusSecond = gameSums[0] + gameSums[1];
         thirdPlusFourth = gameSums[2] + gameSums[3];
-       // if (theSum == 400 && colSum == 200 && rowSum == 200)//can solve is not true yet - there is more to it 
        if (firstPlusSecond == 100 && thirdPlusFourth == 100)
        {
             // Debug.Log("Game CAN be solved... theSum = " + theSum + " colSum = " + colSum + " rowSum = " + rowSum); 
@@ -128,10 +120,13 @@ public class PlayerEnterCubeGame : MonoBehaviour
         {
             cubeGameCam.Priority = 12;
             DisableInputControls();
-            SeedCubePuzzle();
+            if (menuButton) menuButton.SetActive(false);
+            if (lightButton) lightButton.SetActive(false);
+            cubeGameStartButton.SetActive(true);
+           //SeedCubePuzzle();
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
             TellTextCloud(helpNeedHI);
-            cubeGameButtons.SetActive(true);
+
             //animator.SetFloat("Speed", 0);
             animator.speed = 0;
         }
@@ -143,6 +138,7 @@ public class PlayerEnterCubeGame : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) ExitTheCubeGame();
+
         //{
         //    cubeGameCam.Priority = originalCamPriority;
         //    for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  //Restore the cubes to home/original positions 
@@ -160,26 +156,43 @@ public class PlayerEnterCubeGame : MonoBehaviour
         {
             cubeGameCubes[i].transform.position = cubeTransformStartPosition[i];
         }
-        cubeGameButtons.SetActive(false);
+        if (menuButton) menuButton.SetActive(true);
+        if (lightButton) lightButton.SetActive(true);
+        if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
+        //cubeGameButtons.SetActive(false); //no longer used 
         animator.speed = 1;
         if (inputControls) inputControls.SetActive(true);
     }
-    public void OnCannotSolvePressed()
+    public void OnCubeGameIsUnsolvableButtonPressed()
     {
         Debug.Log("player pressed Can't Solve ");
         if (GameCanBeSolved())
         {
             Debug.Log("Wrong --- Game CAN be solved!");
+            cubeGameWonOrLostText.text = "Nope can be solved...";
+            cubeGameResultText.SetActive(true);
         }
         else
         {
             Debug.Log("Right --- Game CANNOT be solved!");
+            cubeGameWonOrLostText.text = "Right! You Win";
+            cubeGameResultText.SetActive(true);
         }
     }
-    public void OnCubeGameExitPressed()
+    public void OnCubeGameExitButtonPressed()
+    {
+        // ExitTheCubeGame();
+        if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
+        SeedCubePuzzle();
+    }
+    public void OnCubeGameStartButtonPressed()
     {
         // ExitTheCubeGame();
         SeedCubePuzzle();
+        if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
+         cubeGameIsUnsolvableButton.SetActive(true);
+
+
     }
 }  //end class 
    //} //end namespace
