@@ -2,26 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-//using System.Linq;
 using TMPro;
-//using randomize_array;
 
-//using System.Security.Cryptography;
-//namespace randomize_array
-//{ 
-public class PlayerEnterCubeGame : MonoBehaviour
+public class PlayerEnterCubeGame : MonoBehaviour      //Componenet of PlayerEnterCubeTrigger (the collider in front of the cube game  
 {
-    //Componenet of PlayerEnterCubeTrigger (the collider in front of the cube game  
     public MyIntEvent m_MyEvent;
     const string helpNeedHI = "#Need human assist!";
-   // const string offPlatform = "#Now walk";
     public AudioManager audioManager;
     public CinemachineVirtualCamera cubeGameCam;
     int originalCamPriority;
     readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };  //cubes = 10, 20, 30, 40
     public GameObject player;
     Animator animator;
-    //GameObject cubeGameButtons;
     GameObject[] cubeGameCubes;
     GameObject[] cubeGamePlacement;
     GameObject[] cubeGameTargetSum;
@@ -32,49 +24,32 @@ public class PlayerEnterCubeGame : MonoBehaviour
     TMP_Text[] cubeGameTargetSumText;
     Vector3[] cubeTransformStartPosition;  // so we can put cubes back to their original positions
     Vector3[] cubePlacementPosition; // where to automatically place/start a Cube 
-    // Start is called before the first frame update
     void Start()
     {
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
-        //cubeGameButtons = GameObject.Find("CubeGameButtons");  //won't find if it's disabled 
-        ////if (cubeGameButtons) Debug.Log("CGButtons found...."); else Debug.Log("CGButtons NOT found...."); //guess we must deactivate 
-        //if (cubeGameButtons) cubeGameButtons.SetActive(false);
         cubeGameWonOrLostText = cubeGameResultText.GetComponent<TMP_Text>();
         cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
         cubeGamePlacement = GameObject.FindGameObjectsWithTag("CubeGamePlacement");
         cubeGameTargetSum = GameObject.FindGameObjectsWithTag("TargetSum");
         inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");
-
-
         cubePlacementPosition = new Vector3[cubeGamePlacement.Length];
         cubeTransformStartPosition = new Vector3[cubeGameCubes.Length];
+        cubeGameTargetSumText = new TMP_Text[4];
         for (int i = 0; i <= cubeGameCubes.Length - 1; i++)   //these 3 for loops can be consolidated...
         {
             cubeTransformStartPosition[i] = cubeGameCubes[i].transform.position;
-        }
-        for (int x = 0; x <= cubeGamePlacement.Length - 1; x++)
-        {
-            cubePlacementPosition[x] = cubeGamePlacement[x].transform.position;
-        }
-        cubeGameTargetSumText = new TMP_Text[4];
-        for (int i= 0; i <= cubeGameTargetSum.Length-1; i++)
-        {
+            cubePlacementPosition[i] = cubeGamePlacement[i].transform.position;
             cubeGameTargetSumText[i] = cubeGameTargetSum[i].GetComponent<TMP_Text>();
         }
-
         originalCamPriority = cubeGameCam.Priority;
         animator = player.GetComponent<Animator>();
-
     }
-    void Shuffle(int[] intArr)
+    void Shuffle(int[] intArr)           // Knuth shuffle algorithm :: courtesy of Wikipedia :)
     {
-        // Knuth shuffle algorithm :: courtesy of Wikipedia :)
         for (int t = 0; t < intArr.Length; t++)  //30, 40, 50, 60, 70 
         {
-            int tmp = intArr[t];  //3 --
-                                                   //t0  t1  t2  t3  t4  
+            int tmp = intArr[t];  //3 --           //t0  t1  t2  t3  t4  
             int r = Random.Range(t, intArr.Length);//3, 4, 5, 6, 7 
-
             intArr[t] = intArr[r];
             intArr[r] = tmp;
         }
@@ -83,14 +58,12 @@ public class PlayerEnterCubeGame : MonoBehaviour
     {
         Shuffle(gameSums);
         //Debug.Log("SeedCubePuzzle() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
-
         for (int i = 0; i <= cubeGameTargetSum.Length-1; i++)
         {
             cubeGameTargetSumText[i].text = gameSums[i].ToString();  
         }
         if (GameCanBeSolved())  { }  //do nothing yet
         //BEWARE int Random.Range (0,10) will return a random value 0 thru "9" 
-
     }
     bool GameCanBeSolved()
     {
@@ -123,11 +96,8 @@ public class PlayerEnterCubeGame : MonoBehaviour
             if (menuButton) menuButton.SetActive(false);
             if (lightButton) lightButton.SetActive(false);
             cubeGameStartButton.SetActive(true);
-           //SeedCubePuzzle();
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
             TellTextCloud(helpNeedHI);
-
-            //animator.SetFloat("Speed", 0);
             animator.speed = 0;
         }
     }
@@ -138,16 +108,6 @@ public class PlayerEnterCubeGame : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) ExitTheCubeGame();
-
-        //{
-        //    cubeGameCam.Priority = originalCamPriority;
-        //    for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  //Restore the cubes to home/original positions 
-        //    {
-        //        cubeGameCubes[i].transform.position = cubeTransformStartPosition[i];
-        //    }
-        //}
-        //cubeGameButtons.SetActive(false);
-        //animator.speed = 1;
     }
     void ExitTheCubeGame()
     {
@@ -159,7 +119,6 @@ public class PlayerEnterCubeGame : MonoBehaviour
         if (menuButton) menuButton.SetActive(true);
         if (lightButton) lightButton.SetActive(true);
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
-        //cubeGameButtons.SetActive(false); //no longer used 
         animator.speed = 1;
         if (inputControls) inputControls.SetActive(true);
     }
@@ -191,11 +150,9 @@ public class PlayerEnterCubeGame : MonoBehaviour
         SeedCubePuzzle();
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
          cubeGameIsUnsolvableButton.SetActive(true);
-
-
     }
 }  //end class 
-   //} //end namespace
+
 /* TEMPORARILY DON'T SEED AN INITIAL CUBE - JUST SEED THE SUMS 
 int randomCubePosition = Random.Range(0, cubeGamePlacement.Length);  //higher val was  hardcoded to 3 but u never know...
 int randomCubePlacement = Random.Range(0, cubeGamePlacement.Length);  //higher val was  hardcoded to 3 but u never know...
