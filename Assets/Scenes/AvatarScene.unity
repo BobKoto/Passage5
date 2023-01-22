@@ -5744,7 +5744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &296571368
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5762,7 +5762,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 302, y: -14.999998}
+  m_AnchoredPosition: {x: 302, y: 100.3}
   m_SizeDelta: {x: 73.5733, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &296571369
@@ -8581,6 +8581,18 @@ MonoBehaviour:
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
         m_MethodName: ReceivedFingerUpEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1712951742}
+        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
+        m_MethodName: CheckCubeMovement
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12805,7 +12817,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7654986, y: 1}
+    m_SensorSize: {x: 0.44474393, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -14277,7 +14289,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7654986, y: 1}
+    m_SensorSize: {x: 0.44474393, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -22046,6 +22058,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1712951742}
+        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
+        m_MethodName: CheckCubeMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!54 &1175061776
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26761,7 +26785,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 302.0991, y: 56.675}
+  m_AnchoredPosition: {x: 302.0991, y: 35}
   m_SizeDelta: {x: 115.8263, y: 62.6502}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1449779819
@@ -30367,6 +30391,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1712951742}
+        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
+        m_MethodName: CheckCubeMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &1671186873
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31177,6 +31213,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c8babf013b62f241b79afdb82a535bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
   cubeGameBoardEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -31198,6 +31237,11 @@ MonoBehaviour:
         m_CallState: 2
   cubeGameCam: {fileID: 623122446}
   player: {fileID: 1228386539}
+  cubeGameCubes:
+  - {fileID: 1876292873}
+  - {fileID: 453397699}
+  - {fileID: 1175061770}
+  - {fileID: 1671186869}
   menuButton: {fileID: 1349875210}
   lightButton: {fileID: 28316890}
   cubeGameStartButton: {fileID: 1821989671}
@@ -32984,7 +33028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 303, y: 56.675}
+  m_AnchoredPosition: {x: 303, y: 36.2}
   m_SizeDelta: {x: 115.8263, y: 62.6502}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1824899267
@@ -33763,6 +33807,18 @@ MonoBehaviour:
       - m_Target: {fileID: 445714906}
         m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
         m_MethodName: ReceivedFingerUpEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1712951742}
+        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
+        m_MethodName: CheckCubeMovement
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

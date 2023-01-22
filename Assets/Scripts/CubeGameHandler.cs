@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
 using Cinemachine;
-
+//[System.Serializable]
+//public class FingerPointerEvent : UnityEvent<GameObject, string> { }  // we receive these from ActOnTouch 
 [System.Serializable]
 public class CubeGameBoardEvent : UnityEvent<string, bool, string, int> { }  //this declaration i guess is needed to accept
 
@@ -15,14 +16,16 @@ public class CubeGameHandler : MonoBehaviour
 //So we need to add Texts(numeric values) to serve as targets 
 //Some (randomly set) targets CAN be achieved while others cannot - therein lies our puzzle?
 {
+    public FingerPointerEvent fingerPointerEvent; //12/18/22 we receive these from ActOnTouch 
     public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public see line 31 
-    GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
+    //GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
 
     TMP_Text row1SumText,row2SumText, col1SumText, col2SumText ;
 
     GameObject inputControls;
     public AudioManager audioManager;
-    bool cubePlaceHolder1Taken, cubePlaceHolder2Taken, cubePlaceHolder3Taken, cubePlaceHolder4Taken;
+    //bool cubePlaceHolder1Taken, cubePlaceHolder2Taken, cubePlaceHolder3Taken, cubePlaceHolder4Taken;
+    bool cubeGameIsActive;
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
     int cubesOccupied;
     // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
@@ -33,7 +36,7 @@ public class CubeGameHandler : MonoBehaviour
     readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };  //cubes = 10, 20, 30, 40
     public GameObject player;
     Animator animator;
-    GameObject[] cubeGameCubes;
+    public GameObject[] cubeGameCubes;
     GameObject[] cubeGamePlacement;
     GameObject[] cubeGameTargetSum;
     public GameObject menuButton, lightButton, cubeGameStartButton, cubeGameIsUnsolvableButton, cubeGameExitButton; //Buttons to toggle 
@@ -50,20 +53,19 @@ public class CubeGameHandler : MonoBehaviour
         // Debug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
         if (cubeGameBoardEvent == null) cubeGameBoardEvent = new CubeGameBoardEvent();  //not sure but it stopped the null reference 
         cubeGameBoardEvent.AddListener(CubeEnteredOrLeft);
+        if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
+        fingerPointerEvent.AddListener(CheckCubeMovement);
         row1SumText = GameObject.Find("Row1Sum").GetComponent<TMP_Text>();
         row2SumText = GameObject.Find("Row2Sum").GetComponent<TMP_Text>();
         col1SumText = GameObject.Find("Col1Sum").GetComponent<TMP_Text>();
         col2SumText = GameObject.Find("Col2Sum").GetComponent<TMP_Text>();
+        ResetRowAndColumnSumsToZero();
 
-        row1SumText.text = "0";
-        row2SumText.text = "0";
-        col1SumText.text = "0";
-        col2SumText.text = "0";
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         cubeGameWonOrLostText = cubeGameResultText.GetComponent<TMP_Text>();
-        cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
+        //cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
         cubeGamePlacement = GameObject.FindGameObjectsWithTag("CubeGamePlacement");
         cubeGameTargetSum = GameObject.FindGameObjectsWithTag("TargetSum");
         inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");
@@ -80,30 +82,45 @@ public class CubeGameHandler : MonoBehaviour
         animator = player.GetComponent<Animator>();
         // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
     }
+    public void CheckCubeMovement(GameObject go, string cubeName)  //ActOnTouch sent a fingerUp event
+    {
+        if (!cubeGameIsActive) //Player should not be moving cubes while no game in progress - we take the easy way out 
+        {
+            //We may want a sound effect here 
+            SendCubesToHomePositions();
+        }
+    }
     public void CubeEnteredOrLeft(string cubeName, bool _entered, string placeName, int cubeValue)
         //event was Invoked Sucessfully by CubeEnteredSolutionMatrix - now ? 
     {
-        cubesOccupied = _entered? cubesOccupied+=1 : cubesOccupied-=1;
-        //Debug.Log("WE Have " + cubesOccupied);
-        //  Debug.Log("CGH event recvd: " + cubeName + " " + _entered + " " + placeName + " cubeValue = " + cubeValue);
-        switch (placeName)
+        if (cubeGameIsActive)
         {
-            case "CubePlacement1":
-                place1CubeValue = _entered ? cubeValue : 0;
-                break;
-            case "CubePlacement2":
-                place2CubeValue = _entered ? cubeValue : 0;
-                break;
-            case "CubePlacement3":
-                place3CubeValue = _entered ? cubeValue : 0;
-                break;
-            case "CubePlacement4":
-                place4CubeValue = _entered ? cubeValue : 0;
-                break;
-            default: Debug.Log("CGHandler case got a default");
-                break;
+            cubesOccupied = _entered ? cubesOccupied += 1 : cubesOccupied -= 1;
+            if (cubesOccupied == 1 && cubeGameIsUnsolvableButton.activeSelf) cubeGameIsUnsolvableButton.SetActive(false);
+            //  Debug.Log("CGH event recvd: " + cubeName + " " + _entered + " " + placeName + " cubeValue = " + cubeValue);
+            switch (placeName)
+            {
+                case "CubePlacement1":
+                    place1CubeValue = _entered ? cubeValue : 0;
+                    break;
+                case "CubePlacement2":
+                    place2CubeValue = _entered ? cubeValue : 0;
+                    break;
+                case "CubePlacement3":
+                    place3CubeValue = _entered ? cubeValue : 0;
+                    break;
+                case "CubePlacement4":
+                    place4CubeValue = _entered ? cubeValue : 0;
+                    break;
+                default:
+                    Debug.Log("CGHandler case got a default");
+                    break;
+            }
+            CalculateTheMatrix();
         }
-        CalculateTheMatrix();
+        else
+            SendCubesToHomePositions();
+
     }
     void CalculateTheMatrix()  //can use params here?? yes but how?
     {
@@ -178,6 +195,7 @@ public class CubeGameHandler : MonoBehaviour
             if (menuButton) menuButton.SetActive(false);
             if (lightButton) lightButton.SetActive(false);
             cubeGameStartButton.SetActive(true);
+            if (cubeGameExitButton) cubeGameExitButton.SetActive(true);
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
             TellTextCloud(helpNeedHI);
             animator.speed = 0;
@@ -194,15 +212,33 @@ public class CubeGameHandler : MonoBehaviour
     void ExitTheCubeGame()
     {
         cubeGameCam.Priority = originalCamPriority;
-        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  //Restore the cubes to home/original positions 
-        {
-            cubeGameCubes[i].transform.position = cubeTransformStartPosition[i];
-        }
+        SendCubesToHomePositions();
         if (menuButton) menuButton.SetActive(true);
         if (lightButton) lightButton.SetActive(true);
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         animator.speed = 1;
         if (inputControls) inputControls.SetActive(true);
+    }
+    void SendCubesToHomePositions()
+    {
+        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  //Restore the cubes to home/original positions 
+        {
+            cubeGameCubes[i].transform.position = cubeTransformStartPosition[i];
+        }
+    }
+    void ResetTargetTextsToZero()
+    {
+        for (int i = 0; i <= cubeGameTargetSum.Length - 1; i++)
+        {
+            cubeGameTargetSumText[i].text = 00.ToString();// or we could try "00"
+        }
+    }
+    void ResetRowAndColumnSumsToZero()
+    {
+        row1SumText.text = "0";
+        row2SumText.text = "0";
+        col1SumText.text = "0";
+        col2SumText.text = "0";
     }
     public void OnCubeGameIsUnsolvableButtonPressed()
     {
@@ -210,26 +246,34 @@ public class CubeGameHandler : MonoBehaviour
         if (GameCanBeSolved())
         {
             Debug.Log("Wrong --- Game CAN be solved!");
-            cubeGameWonOrLostText.text = "Nope can be solved...";
+            cubeGameWonOrLostText.text = "Nope can be solved... Awwwwww";
+            audioManager.PlayAudio(audioManager.clipfalling);
             cubeGameResultText.SetActive(true);
         }
         else
         {
             Debug.Log("Right --- Game CANNOT be solved!");
-            cubeGameWonOrLostText.text = "Right! You Win";
+            cubeGameWonOrLostText.text = "Right! You Win! Hooray";
+            audioManager.PlayAudio(audioManager.clipApplause);
             cubeGameResultText.SetActive(true);
         }
+        cubeGameIsActive = false;
     }
     public void OnCubeGameExitButtonPressed()
     {
         // ExitTheCubeGame();
-        if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
-        SeedCubePuzzle();
+        if (!cubeGameStartButton.activeSelf) cubeGameStartButton.SetActive(true);  //leave active for testing 
+        SendCubesToHomePositions();
+        ResetTargetTextsToZero();
+        ResetRowAndColumnSumsToZero();
+        cubeGameIsActive = false;
+       // SeedCubePuzzle();
     }
     public void OnCubeGameStartButtonPressed()
     {
         // ExitTheCubeGame();
         SeedCubePuzzle();
+        cubeGameIsActive = true;
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         cubeGameIsUnsolvableButton.SetActive(true);
     }
