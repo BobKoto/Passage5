@@ -24,7 +24,7 @@ public class CubeGameHandler : MonoBehaviour
 
     GameObject inputControls;
     public AudioManager audioManager;
-    //bool cubePlaceHolder1Taken, cubePlaceHolder2Taken, cubePlaceHolder3Taken, cubePlaceHolder4Taken;
+    //bool cubePlaceHolder1Taken, cubePlaceHolder2Taken, cubePlaceHolder3Taken, cubePlaceHolder4Taken; //never used 
     bool cubeGameIsActive;
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
     int cubesOccupied;
@@ -61,18 +61,18 @@ public class CubeGameHandler : MonoBehaviour
         col2SumText = GameObject.Find("Col2Sum").GetComponent<TMP_Text>();
         ResetRowAndColumnSumsToZero();
 
-        if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        // if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();  //Duplicated in merge
         // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         cubeGameWonOrLostText = cubeGameResultText.GetComponent<TMP_Text>();
-        //cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
+        //cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");  //no longer used 
         cubeGamePlacement = GameObject.FindGameObjectsWithTag("CubeGamePlacement");
         cubeGameTargetSum = GameObject.FindGameObjectsWithTag("TargetSum");
-        inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");
+       // inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");  //Duplicated in merge
         cubePlacementPosition = new Vector3[cubeGamePlacement.Length];
         cubeTransformStartPosition = new Vector3[cubeGameCubes.Length];
         cubeGameTargetSumText = new TMP_Text[4];
-        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)   //these 3 for loops can be consolidated...
+        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  
         {
             cubeTransformStartPosition[i] = cubeGameCubes[i].transform.position;
             cubePlacementPosition[i] = cubeGamePlacement[i].transform.position;
@@ -80,7 +80,7 @@ public class CubeGameHandler : MonoBehaviour
         }
         originalCamPriority = cubeGameCam.Priority;
         animator = player.GetComponent<Animator>();
-        // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
+        // ////////////////////END MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
     }
     public void CheckCubeMovement(GameObject go, string cubeName)  //ActOnTouch sent a fingerUp event
     {
@@ -125,19 +125,48 @@ public class CubeGameHandler : MonoBehaviour
     void CalculateTheMatrix()  //can use params here?? yes but how?
     {
         row1SumText.text = (place1CubeValue + place2CubeValue).ToString(); // + " added across";
-
         col1SumText.text = (place1CubeValue + place3CubeValue).ToString(); // + " added down";
-
         row2SumText.text = (place3CubeValue + place4CubeValue).ToString(); // + " added across" ;
-
         col2SumText.text = (place2CubeValue + place4CubeValue).ToString(); // + " added down"; 
-        if (cubesOccupied == 4)  // the game is finished as player filled 4th placement 
+        if (cubesOccupied == 4)  // the game cube placements are finished as player filled 4th placement -- now check for won/lost
         {
            // Debug.Log("WE Have 4, Should enable inputControls...");
-            if (inputControls) inputControls.SetActive(true);
+           // if (inputControls) inputControls.SetActive(true);
+            CheckCubePlacementResults(); //win or lose 
         }
     }
+    void CheckCubePlacementResults()
+    {
+        //Debug.Log("CheckCubePlacementResults() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
+        bool row1IsGood, row2IsGood, col1IsGood, col2IsGood;
+        int placeRow1 = 0, placeCol1 = 0, placeRow2 = 0, placeCol2 = 0;
+        placeRow1 += place1CubeValue + place2CubeValue;
+        placeCol1 += place1CubeValue + place3CubeValue;
+        placeRow2 += place3CubeValue + place4CubeValue;
+        placeCol2 += place2CubeValue + place4CubeValue;
+        //if (placeRow1 == gameSums[0]) Debug.Log(" Row 1 is Equal... placeRow1 = " + placeRow1 + " gameSums[0] = " + gameSums[0]);
+        // else                     Debug.Log(" Row 1 is NOT Equal... placeRow1 = " + placeRow1 + " gameSums[0] = " + gameSums[0]);
 
+        //if (placeCol1 == gameSums[2]) Debug.Log("Column 1 is Equal..."); else Debug.Log("Column1 is NOT Equal...");
+
+        //if (placeRow2 == gameSums[1]) Debug.Log(" Row 2 is Equal... placeRow2 = " + placeRow2 + " gameSums[1] = " + gameSums[1]);
+        //  else                    Debug.Log(" Row 2 is NOT Equal... placeRow2 = " + placeRow2 + " gameSums[1] = " + gameSums[1]);
+
+        //if (placeCol2 == gameSums[3]) Debug.Log("Column 2 is Equal...");  else Debug.Log("Column2 is NOT Equal...");
+        row1IsGood = placeRow1 == gameSums[0];
+        col1IsGood = placeCol1 == gameSums[2];
+        row2IsGood = placeRow2 == gameSums[1];
+        col2IsGood = placeCol2 == gameSums[3];
+        if (row1IsGood && row2IsGood && col1IsGood && col2IsGood)
+        {
+            cubeGameWonOrLostText.text = "Hooray you Won";
+
+        } else
+        {
+            cubeGameWonOrLostText.text = "Awwwww you lose";
+        }
+        cubeGameResultText.SetActive(true);
+    }
     private void OnDisable()
     {
         cubeGameBoardEvent.RemoveListener(CubeEnteredOrLeft);
@@ -182,16 +211,23 @@ public class CubeGameHandler : MonoBehaviour
             return false;
         }
     }
-    void DisableInputControls() //joystick etc.
+    void EnableDisableInputControls(bool _enable) //joystick etc.
     {
-        if (inputControls) inputControls.SetActive(false);
+        if (_enable)
+        {
+        if (inputControls) inputControls.SetActive(true);
+        }else
+        {
+            if (inputControls) inputControls.SetActive(false);
+        }
+
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             cubeGameCam.Priority = 12;
-            DisableInputControls();
+            EnableDisableInputControls(false); // disable the inputControls
             if (menuButton) menuButton.SetActive(false);
             if (lightButton) lightButton.SetActive(false);
             cubeGameStartButton.SetActive(true);
@@ -217,7 +253,7 @@ public class CubeGameHandler : MonoBehaviour
         if (lightButton) lightButton.SetActive(true);
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         animator.speed = 1;
-        if (inputControls) inputControls.SetActive(true);
+        EnableDisableInputControls(true); // if (inputControls) inputControls.SetActive(true);
     }
     void SendCubesToHomePositions()
     {
@@ -225,6 +261,7 @@ public class CubeGameHandler : MonoBehaviour
         {
             cubeGameCubes[i].transform.position = cubeTransformStartPosition[i];
         }
+        cubesOccupied = 0;
     }
     void ResetTargetTextsToZero()
     {
@@ -239,6 +276,13 @@ public class CubeGameHandler : MonoBehaviour
         row2SumText.text = "0";
         col1SumText.text = "0";
         col2SumText.text = "0";
+    }
+    void ResetPlaceCubeValuesToZero()
+    {
+        place1CubeValue = 0;
+        place2CubeValue = 0;
+        place3CubeValue = 0;
+        place4CubeValue = 0;
     }
     public void OnCubeGameIsUnsolvableButtonPressed()
     {
@@ -266,7 +310,10 @@ public class CubeGameHandler : MonoBehaviour
         SendCubesToHomePositions();
         ResetTargetTextsToZero();
         ResetRowAndColumnSumsToZero();
+        ResetPlaceCubeValuesToZero();
+        cubeGameResultText.SetActive(false);
         cubeGameIsActive = false;
+        EnableDisableInputControls(true);
        // SeedCubePuzzle();
     }
     public void OnCubeGameStartButtonPressed()
@@ -276,6 +323,7 @@ public class CubeGameHandler : MonoBehaviour
         cubeGameIsActive = true;
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         cubeGameIsUnsolvableButton.SetActive(true);
+        EnableDisableInputControls(false);
     }
     // ////////////////////END MERGE ///////////////////////
 }  // end class 
