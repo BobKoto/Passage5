@@ -16,6 +16,8 @@ public class CubeGameHandler : MonoBehaviour
 //So we need to add Texts(numeric values) to serve as targets 
 //Some (randomly set) targets CAN be achieved while others cannot - therein lies our puzzle?
 {
+    public CinemachineVirtualCamera cubeGameCam;
+    int originalCamPriority;
     public FingerPointerEvent fingerPointerEvent; //12/18/22 we receive these from ActOnTouch 
     public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public see line 31 
     //GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
@@ -28,11 +30,20 @@ public class CubeGameHandler : MonoBehaviour
     bool cubeGameIsActive;
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
     int cubesOccupied;
+    int cubeGameRoundNumber = 1, roundsWon, roundsLost;
+    public float cubeGameTimeLimit = 7;
+    Coroutine timeLimiter;
     // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
     public MyIntEvent m_MyEvent;
-    const string helpNeedHI = "#Need human assist!";
-    public CinemachineVirtualCamera cubeGameCam;
-    int originalCamPriority;
+
+    const string helpNeedHI = "#Need human assist!";  //for textcloud
+    const string cubeGameStartRound1Text = "Start Round 1"; //for the startButton text
+    const string cubeGameStartRound2Text = "Start Round 2";
+    const string cubeGameStartRound3Text = "Start Round 3";
+    const string cubeGameRound1of3 = "Round 1 of 3";  // should be simpler than messing with strings 
+    const string cubeGameRound2of3 = "Round 2 of 3";
+    const string cubeGameRound3of3 = "Round 3 of 3";
+
     readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };  //cubes = 10, 20, 30, 40
     public GameObject player;
     Animator animator;
@@ -41,7 +52,8 @@ public class CubeGameHandler : MonoBehaviour
     GameObject[] cubeGameTargetSum;
     public GameObject menuButton, lightButton, cubeGameStartButton, cubeGameIsUnsolvableButton, cubeGameExitButton; //Buttons to toggle 
     public GameObject cubeGameResultText;
-    TMP_Text cubeGameWonOrLostText;
+    TMP_Text cubeGameWonOrLostText, cubeGameRoundText;
+    public TMP_Text cubeGameStartButtonText, cubeGameTimeLeftText;
     TMP_Text[] cubeGameTargetSumText;
     Vector3[] cubeTransformStartPosition;  // so we can put cubes back to their original positions
     Vector3[] cubePlacementPosition; // where to automatically place/start a Cube 
@@ -65,7 +77,8 @@ public class CubeGameHandler : MonoBehaviour
         // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         cubeGameWonOrLostText = cubeGameResultText.GetComponent<TMP_Text>();
-        //cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");  //no longer used 
+        cubeGameRoundText = GameObject.Find("CubeGameRoundText").GetComponent<TMP_Text>();
+        cubeGameStartButtonText.text = cubeGameStartRound1Text;
         cubeGamePlacement = GameObject.FindGameObjectsWithTag("CubeGamePlacement");
         cubeGameTargetSum = GameObject.FindGameObjectsWithTag("TargetSum");
        // inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");  //Duplicated in merge
@@ -135,7 +148,7 @@ public class CubeGameHandler : MonoBehaviour
             CheckCubePlacementResults(); //win or lose 
         }
     }
-    void CheckCubePlacementResults()
+    void CheckCubePlacementResults()  //win or lose 
     {
         //Debug.Log("CheckCubePlacementResults() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
         bool row1IsGood, row2IsGood, col1IsGood, col2IsGood;
@@ -144,15 +157,7 @@ public class CubeGameHandler : MonoBehaviour
         placeCol1 += place1CubeValue + place3CubeValue;
         placeRow2 += place3CubeValue + place4CubeValue;
         placeCol2 += place2CubeValue + place4CubeValue;
-        //if (placeRow1 == gameSums[0]) Debug.Log(" Row 1 is Equal... placeRow1 = " + placeRow1 + " gameSums[0] = " + gameSums[0]);
-        // else                     Debug.Log(" Row 1 is NOT Equal... placeRow1 = " + placeRow1 + " gameSums[0] = " + gameSums[0]);
 
-        //if (placeCol1 == gameSums[2]) Debug.Log("Column 1 is Equal..."); else Debug.Log("Column1 is NOT Equal...");
-
-        //if (placeRow2 == gameSums[1]) Debug.Log(" Row 2 is Equal... placeRow2 = " + placeRow2 + " gameSums[1] = " + gameSums[1]);
-        //  else                    Debug.Log(" Row 2 is NOT Equal... placeRow2 = " + placeRow2 + " gameSums[1] = " + gameSums[1]);
-
-        //if (placeCol2 == gameSums[3]) Debug.Log("Column 2 is Equal...");  else Debug.Log("Column2 is NOT Equal...");
         row1IsGood = placeRow1 == gameSums[0];
         col1IsGood = placeCol1 == gameSums[2];
         row2IsGood = placeRow2 == gameSums[1];
@@ -160,12 +165,76 @@ public class CubeGameHandler : MonoBehaviour
         if (row1IsGood && row2IsGood && col1IsGood && col2IsGood)
         {
             cubeGameWonOrLostText.text = "Hooray you Won";
-
+            audioManager.PlayAudio(audioManager.clipApplause);
+            roundsWon += 1;
         } else
         {
             cubeGameWonOrLostText.text = "Awwwww you lose";
+            audioManager.PlayAudio(audioManager.clipfalling);
+            roundsLost += 1;
         }
         cubeGameResultText.SetActive(true);
+        //here we need to exit something 
+        cubeGameRoundNumber += 1;
+        SetRoundNumberHeadingAndStartButtonText();
+        //StopCoroutine(CubeGameTimer(cubeGameTimeLimit));
+        StopCoroutine(timeLimiter);
+    }
+    public void OnCubeGameIsUnsolvableButtonPressed()  //win or lose 
+    {
+        Debug.Log("player pressed Can't Solve ");
+        if (GameCanBeSolved())
+        {
+            Debug.Log("Wrong --- Game CAN be solved!");
+            cubeGameWonOrLostText.text = "Nope can be solved... Awwwwww";
+            audioManager.PlayAudio(audioManager.clipfalling);
+            cubeGameResultText.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("Right --- Game CANNOT be solved!");
+            cubeGameWonOrLostText.text = "Right! You Win! Hooray";
+            audioManager.PlayAudio(audioManager.clipApplause);
+            cubeGameResultText.SetActive(true);
+        }
+        cubeGameIsActive = false;
+        cubeGameRoundNumber += 1;
+        SetRoundNumberHeadingAndStartButtonText();
+        //StopCoroutine(CubeGameTimer(cubeGameTimeLimit));
+        StopCoroutine(timeLimiter);
+    }
+    // Here will be a timer and if it lapses the game is lost 
+    IEnumerator CubeGameTimer(float timeLimit) //win or lose 
+    {
+        //count limeLimit seconds and if exceeded we have a lost round 
+        float timeLeft = timeLimit;
+        while (timeLeft > 0)
+        {
+            yield return new WaitForSeconds(1);
+
+            cubeGameTimeLeftText.text = timeLeft.ToString();
+            timeLeft -= 1;
+            yield return null;
+        }
+        yield return null;
+    }
+    void SetRoundNumberHeadingAndStartButtonText()
+    {
+        switch (cubeGameRoundNumber)
+        {
+            case 1: cubeGameRoundText.text = cubeGameRound1of3;
+                    cubeGameStartButtonText.text = cubeGameStartRound1Text;
+                break;
+            case 2: cubeGameRoundText.text = cubeGameRound2of3;
+                    cubeGameStartButtonText.text = cubeGameStartRound2Text;
+                break;
+            case 3: cubeGameRoundText.text = cubeGameRound3of3;
+                    cubeGameStartButtonText.text = cubeGameStartRound3Text;
+                break;
+            default:
+                break;
+
+        }
     }
     private void OnDisable()
     {
@@ -235,6 +304,7 @@ public class CubeGameHandler : MonoBehaviour
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
             TellTextCloud(helpNeedHI);
             animator.speed = 0;
+            SetRoundNumberHeadingAndStartButtonText();
         }
     }
     void TellTextCloud(string caption)
@@ -284,25 +354,7 @@ public class CubeGameHandler : MonoBehaviour
         place3CubeValue = 0;
         place4CubeValue = 0;
     }
-    public void OnCubeGameIsUnsolvableButtonPressed()
-    {
-        Debug.Log("player pressed Can't Solve ");
-        if (GameCanBeSolved())
-        {
-            Debug.Log("Wrong --- Game CAN be solved!");
-            cubeGameWonOrLostText.text = "Nope can be solved... Awwwwww";
-            audioManager.PlayAudio(audioManager.clipfalling);
-            cubeGameResultText.SetActive(true);
-        }
-        else
-        {
-            Debug.Log("Right --- Game CANNOT be solved!");
-            cubeGameWonOrLostText.text = "Right! You Win! Hooray";
-            audioManager.PlayAudio(audioManager.clipApplause);
-            cubeGameResultText.SetActive(true);
-        }
-        cubeGameIsActive = false;
-    }
+
     public void OnCubeGameExitButtonPressed()
     {
         // ExitTheCubeGame();
@@ -324,6 +376,7 @@ public class CubeGameHandler : MonoBehaviour
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         cubeGameIsUnsolvableButton.SetActive(true);
         EnableDisableInputControls(false);
+        timeLimiter =  StartCoroutine(CubeGameTimer(cubeGameTimeLimit));
     }
     // ////////////////////END MERGE ///////////////////////
 }  // end class 
