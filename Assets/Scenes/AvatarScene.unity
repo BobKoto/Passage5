@@ -12817,7 +12817,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.8104223, y: 1}
+    m_SensorSize: {x: 0.91913736, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -14289,7 +14289,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.8104223, y: 1}
+    m_SensorSize: {x: 0.91913736, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -16927,7 +16927,6 @@ Transform:
   - {fileID: 1799745463}
   - {fileID: 1415562629}
   - {fileID: 1309127164}
-  - {fileID: 1046228401}
   m_Father: {fileID: 0}
   m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18477,16 +18476,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046228400}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -148.1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 914838946}
-  m_RootOrder: 33
+  m_Father: {fileID: 1309127164}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 144, y: 24.8}
+  m_AnchoredPosition: {x: -2.6000366, y: 0}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1046228402
@@ -18509,7 +18508,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '7
+  m_text: '15
 
 '
   m_isRightToLeft: 0
@@ -18545,7 +18544,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -18574,7 +18573,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 6.10965, y: 0, z: 11.99509, w: 2.34931}
+  m_margin: {x: 5.526932, y: 0, z: 11.99509, w: 2.34931}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -24901,7 +24900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1309127164
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24910,9 +24909,10 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309127163}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -157}
+  m_LocalPosition: {x: 0, y: 0, z: -152.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1046228401}
   m_Father: {fileID: 914838946}
   m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
@@ -24941,7 +24941,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Time left \n"
+  m_text: "Seconds left \n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -25004,7 +25004,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 6.10965, y: 0, z: 5.1888456, w: 2.34931}
+  m_margin: {x: 6.10965, y: 0, z: 2.2747064, w: 2.34931}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -26592,7 +26592,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415562628}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -175.5}
+  m_LocalPosition: {x: 0, y: 0, z: -174}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 914838946}
@@ -26601,7 +26601,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 144, y: 24.8}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 23, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1415562630
 MonoBehaviour:
@@ -31739,7 +31739,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   audioManager: {fileID: 0}
-  cubeGameTimeLimit: 7
+  cubeGameTimeLimit: 15
   m_MyEvent:
     m_PersistentCalls:
       m_Calls:
@@ -31767,6 +31767,7 @@ MonoBehaviour:
   cubeGameIsUnsolvableButton: {fileID: 1449779817}
   cubeGameExitButton: {fileID: 296571367}
   cubeGameResultText: {fileID: 1741404006}
+  cubeGameTimerText: {fileID: 1309127163}
   cubeGameStartButtonText: {fileID: 1310825607}
   cubeGameTimeLeftText: {fileID: 1046228402}
 --- !u!65 &1712951743
@@ -32138,7 +32139,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741404006}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -159.9}
+  m_LocalPosition: {x: 0, y: 0, z: -159}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 914838946}
@@ -32147,7 +32148,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 144, y: 8.1}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 25, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1741404008
 MonoBehaviour:
@@ -34686,7 +34687,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Drag cubes to match row and column targets\n\nPress \"START\" and you
-    have 7 seconds to solve \nOR\nIf you think the game can't be solved press \"Can't
+    have 15 seconds to solve \nOR\nIf you think the game can't be solved press \"Can't
     be Solved\"\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

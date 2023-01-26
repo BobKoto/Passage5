@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
 using Cinemachine;
+using StarterAssets; 
 //[System.Serializable]
 //public class FingerPointerEvent : UnityEvent<GameObject, string> { }  // we receive these from ActOnTouch 
 [System.Serializable]
@@ -31,27 +32,30 @@ public class CubeGameHandler : MonoBehaviour
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
     int cubesOccupied;
     int cubeGameRoundNumber = 1, roundsWon, roundsLost;
-    public float cubeGameTimeLimit = 7;
+    public float cubeGameTimeLimit;
     Coroutine timeLimiter;
     // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
-    public MyIntEvent m_MyEvent;
+    public MyIntEvent m_MyEvent;  //for TextCloud 
 
     const string helpNeedHI = "#Need human assist!";  //for textcloud
+    const string okLetsGo = "#Ok, let's go";
     const string cubeGameStartRound1Text = "Start Round 1"; //for the startButton text
     const string cubeGameStartRound2Text = "Start Round 2";
     const string cubeGameStartRound3Text = "Start Round 3";
+    const string cubeGameRoundsDoneText = "DONE";
     const string cubeGameRound1of3 = "Round 1 of 3";  // should be simpler than messing with strings 
-    const string cubeGameRound2of3 = "Round 2 of 3";
-    const string cubeGameRound3of3 = "Round 3 of 3";
-
+    const string cubeGameRound2of3 = "Round 2 of 3 Next";
+    const string cubeGameRound3of3 =     "Round 3 of 3 Next";
+    const string cubeGameRoundsFinished = " So4uku2 Done    ";
     readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };  //cubes = 10, 20, 30, 40
     public GameObject player;
     Animator animator;
+    ThirdPersonController thirdPersonController;
     public GameObject[] cubeGameCubes;
     GameObject[] cubeGamePlacement;
     GameObject[] cubeGameTargetSum;
     public GameObject menuButton, lightButton, cubeGameStartButton, cubeGameIsUnsolvableButton, cubeGameExitButton; //Buttons to toggle 
-    public GameObject cubeGameResultText;
+    public GameObject cubeGameResultText, cubeGameTimerText;
     TMP_Text cubeGameWonOrLostText, cubeGameRoundText;
     public TMP_Text cubeGameStartButtonText, cubeGameTimeLeftText;
     TMP_Text[] cubeGameTargetSumText;
@@ -93,9 +97,10 @@ public class CubeGameHandler : MonoBehaviour
         }
         originalCamPriority = cubeGameCam.Priority;
         animator = player.GetComponent<Animator>();
+        thirdPersonController = player.GetComponent<ThirdPersonController>();
         // ////////////////////END MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
     }
-    public void CheckCubeMovement(GameObject go, string cubeName)  //ActOnTouch sent a fingerUp event
+    public void CheckCubeMovement(GameObject go, string cubeName)  //ActOnTouch sent a fingerUp event - meaning player dragged a cube 
     {
         if (!cubeGameIsActive) //Player should not be moving cubes while no game in progress - we take the easy way out 
         {
@@ -135,7 +140,7 @@ public class CubeGameHandler : MonoBehaviour
             SendCubesToHomePositions();
 
     }
-    void CalculateTheMatrix()  //can use params here?? yes but how?
+    void CalculateTheMatrix()  
     {
         row1SumText.text = (place1CubeValue + place2CubeValue).ToString(); // + " added across";
         col1SumText.text = (place1CubeValue + place3CubeValue).ToString(); // + " added down";
@@ -143,15 +148,14 @@ public class CubeGameHandler : MonoBehaviour
         col2SumText.text = (place2CubeValue + place4CubeValue).ToString(); // + " added down"; 
         if (cubesOccupied == 4)  // the game cube placements are finished as player filled 4th placement -- now check for won/lost
         {
-           // Debug.Log("WE Have 4, Should enable inputControls...");
-           // if (inputControls) inputControls.SetActive(true);
             CheckCubePlacementResults(); //win or lose 
         }
     }
-    void CheckCubePlacementResults()  //win or lose 
+    // ///////////////////////Next 3 methods decide if round is lost or won //////////////////////////////
+    void CheckCubePlacementResults()  //win or lose - player placed cubes, are they correct?
     {
         //Debug.Log("CheckCubePlacementResults() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
-        bool row1IsGood, row2IsGood, col1IsGood, col2IsGood;
+        bool row1IsGood, row2IsGood, col1IsGood, col2IsGood, roundWonPlacingCubes;
         int placeRow1 = 0, placeCol1 = 0, placeRow2 = 0, placeCol2 = 0;
         placeRow1 += place1CubeValue + place2CubeValue;
         placeCol1 += place1CubeValue + place3CubeValue;
@@ -166,57 +170,120 @@ public class CubeGameHandler : MonoBehaviour
         {
             cubeGameWonOrLostText.text = "Hooray you Won";
             audioManager.PlayAudio(audioManager.clipApplause);
-            roundsWon += 1;
+            roundWonPlacingCubes = true;
         } else
         {
             cubeGameWonOrLostText.text = "Awwwww you lose";
             audioManager.PlayAudio(audioManager.clipfalling);
-            roundsLost += 1;
+            roundWonPlacingCubes = false;
         }
-        cubeGameResultText.SetActive(true);
-        //here we need to exit something 
-        cubeGameRoundNumber += 1;
-        SetRoundNumberHeadingAndStartButtonText();
-        //StopCoroutine(CubeGameTimer(cubeGameTimeLimit));
-        StopCoroutine(timeLimiter);
+        //here setting cubeGameIsActive = false; should be done - but it will?(if player drags one?) send cubes home making for an unsmooth transition
+        ProcessCubeGameRoundEnd(roundWonPlacingCubes);
+        //cubeGameResultText.SetActive(true); these 5 lines collapsed into ProcessCubeGameRoundEnd(bool)
+        //cubeGameIsActive = false;
+        //cubeGameRoundNumber += 1;
+        //SetRoundNumberHeadingAndStartButtonText();
+        //StopCoroutine(timeLimiter);
     }
-    public void OnCubeGameIsUnsolvableButtonPressed()  //win or lose 
+    public void OnCubeGameIsUnsolvableButtonPressed()  //win or lose - play pressed "Can't be Solved" button - is that correct?
     {
+        bool roundWonOnUnsolvablePress;
         Debug.Log("player pressed Can't Solve ");
+        if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
         if (GameCanBeSolved())
         {
             Debug.Log("Wrong --- Game CAN be solved!");
             cubeGameWonOrLostText.text = "Nope can be solved... Awwwwww";
             audioManager.PlayAudio(audioManager.clipfalling);
-            cubeGameResultText.SetActive(true);
+            roundWonOnUnsolvablePress = false;
+           // cubeGameResultText.SetActive(true);
         }
         else
         {
             Debug.Log("Right --- Game CANNOT be solved!");
             cubeGameWonOrLostText.text = "Right! You Win! Hooray";
             audioManager.PlayAudio(audioManager.clipApplause);
-            cubeGameResultText.SetActive(true);
+            roundWonOnUnsolvablePress = true;
+            // cubeGameResultText.SetActive(true);
         }
+        ProcessCubeGameRoundEnd(roundWonOnUnsolvablePress);
+        //cubeGameResultText.SetActive(true);
+        //cubeGameIsActive = false;
+        //cubeGameRoundNumber += 1;
+        //SetRoundNumberHeadingAndStartButtonText();
+        //StopCoroutine(timeLimiter);
+    }
+    // Here will be a timer and if it lapses the game is lost 
+    IEnumerator CubeGameTimer(float timeLimit) //win or lose(if Time limit exceeded) -or- timer stopped by other action (above 2 methods) 
+    {   //count limeLimit seconds and if exceeded we have a lost round 
+        float timeLeft = timeLimit;
+        bool timeLeftOnClock = false;//shouldn't ever be true can only determine a loss here when time elapses - others will stop this coroutine
+        while (timeLeft >= 0)
+        {
+            cubeGameTimeLeftText.text = timeLeft.ToString();
+            timeLeft -= 1;
+            yield return new WaitForSeconds(1);
+        }
+        audioManager.PlayAudio(audioManager.clipfalling);
+        cubeGameWonOrLostText.text = "Awwww Time ran out...";
+        ProcessCubeGameRoundEnd(timeLeftOnClock);
+
+        //cubeGameResultText.SetActive(true);
+        //cubeGameIsActive = false; //causes any cubes the player drags/moves to be sent back to their home position(s)
+        //cubeGameRoundNumber += 1;
+        //SetRoundNumberHeadingAndStartButtonText();
+        yield break;
+    }
+    // ///////////////////////Above 3 methods decide if round is lost or won //////////////////////////////
+    void ProcessCubeGameRoundEnd(bool aWin)
+    {
+        Debug.Log("ProcessCubeGameRoundEnd got a win? " + aWin);
+        cubeGameResultText.SetActive(true);
         cubeGameIsActive = false;
         cubeGameRoundNumber += 1;
         SetRoundNumberHeadingAndStartButtonText();
-        //StopCoroutine(CubeGameTimer(cubeGameTimeLimit));
-        StopCoroutine(timeLimiter);
-    }
-    // Here will be a timer and if it lapses the game is lost 
-    IEnumerator CubeGameTimer(float timeLimit) //win or lose 
-    {
-        //count limeLimit seconds and if exceeded we have a lost round 
-        float timeLeft = timeLimit;
-        while (timeLeft > 0)
-        {
-            yield return new WaitForSeconds(1);
+        if (timeLimiter != null) StopCoroutine(timeLimiter);
+        if (!cubeGameStartButton.activeSelf) cubeGameStartButton.SetActive(true);
+        // Originals here - all are commented out
+        // FROM CheckCubePlacementResults()  //win or lose 
 
-            cubeGameTimeLeftText.text = timeLeft.ToString();
-            timeLeft -= 1;
-            yield return null;
-        }
-        yield return null;
+        //cubeGameResultText.SetActive(true);
+        //cubeGameIsActive = false;
+        //cubeGameRoundNumber += 1;
+        //SetRoundNumberHeadingAndStartButtonText();
+        //if (timeLimiter != null) StopCoroutine(timeLimiter);
+
+        //// FROM OnCubeGameIsUnsolvableButtonPressed()  //win or lose 
+
+        //cubeGameResultText.SetActive(true);
+        //cubeGameIsActive = false;
+        //cubeGameRoundNumber += 1;
+        //SetRoundNumberHeadingAndStartButtonText();
+        //if (timeLimiter != null) StopCoroutine(timeLimiter);
+
+        //// FROM IEnumerator CubeGameTimer(float timeLimit) //win or lose 
+
+        //cubeGameResultText.SetActive(true);
+        //cubeGameIsActive = false; //causes any cubes the player drags/moves to be sent back to their home position(s)
+        //cubeGameRoundNumber += 1;
+        //SetRoundNumberHeadingAndStartButtonText();
+        //if (timeLimiter != null) StopCoroutine(timeLimiter); //here from the coroutine itself 
+    }
+    void SetupNewCubeGameRound()
+    {
+        SendCubesToHomePositions();
+        ResetTargetTextsToZero();
+        ResetRowAndColumnSumsToZero();
+        ResetPlaceCubeValuesToZero();
+        cubeGameResultText.SetActive(false);
+        cubeGameIsActive = true;  // allow cubes to be placed
+        if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
+        if (cubeGameTimerText) cubeGameTimerText.SetActive(true);
+        cubeGameIsUnsolvableButton.SetActive(true);
+        EnableDisableInputControls(false);
+
+        SeedCubePuzzle();
+
     }
     void SetRoundNumberHeadingAndStartButtonText()
     {
@@ -232,6 +299,8 @@ public class CubeGameHandler : MonoBehaviour
                     cubeGameStartButtonText.text = cubeGameStartRound3Text;
                 break;
             default:
+                cubeGameRoundText.text = cubeGameRoundsFinished;
+                cubeGameStartButtonText.text = cubeGameRoundsDoneText;
                 break;
 
         }
@@ -295,16 +364,18 @@ public class CubeGameHandler : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            cubeGameRoundNumber = 1;
             cubeGameCam.Priority = 12;
             EnableDisableInputControls(false); // disable the inputControls
             if (menuButton) menuButton.SetActive(false);
             if (lightButton) lightButton.SetActive(false);
             cubeGameStartButton.SetActive(true);
-            if (cubeGameExitButton) cubeGameExitButton.SetActive(true);
+            //if (cubeGameExitButton) cubeGameExitButton.SetActive(true); //We may not need an Exit Button at all 
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
             TellTextCloud(helpNeedHI);
             animator.speed = 0;
             SetRoundNumberHeadingAndStartButtonText();
+            if (thirdPersonController) thirdPersonController.enabled = false;
         }
     }
     void TellTextCloud(string caption)
@@ -322,6 +393,8 @@ public class CubeGameHandler : MonoBehaviour
         if (menuButton) menuButton.SetActive(true);
         if (lightButton) lightButton.SetActive(true);
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
+        if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
+        if (cubeGameExitButton) cubeGameExitButton.SetActive(false);
         animator.speed = 1;
         EnableDisableInputControls(true); // if (inputControls) inputControls.SetActive(true);
     }
@@ -358,25 +431,36 @@ public class CubeGameHandler : MonoBehaviour
     public void OnCubeGameExitButtonPressed()
     {
         // ExitTheCubeGame();
-        if (!cubeGameStartButton.activeSelf) cubeGameStartButton.SetActive(true);  //leave active for testing 
-        SendCubesToHomePositions();
-        ResetTargetTextsToZero();
-        ResetRowAndColumnSumsToZero();
-        ResetPlaceCubeValuesToZero();
-        cubeGameResultText.SetActive(false);
-        cubeGameIsActive = false;
+        // ///////Next 8 lines moved to SetupNewCubeGameRound()
+        //if (!cubeGameStartButton.activeSelf) cubeGameStartButton.SetActive(true);  
+        //SendCubesToHomePositions();
+        //ResetTargetTextsToZero();
+        //ResetRowAndColumnSumsToZero();
+        //ResetPlaceCubeValuesToZero();
+        //cubeGameResultText.SetActive(false);
+        //if (cubeGameTimerText) cubeGameTimerText.SetActive(false);
+        //cubeGameIsActive = false;
+
         EnableDisableInputControls(true);
-       // SeedCubePuzzle();
+
     }
     public void OnCubeGameStartButtonPressed()
     {
-        // ExitTheCubeGame();
-        SeedCubePuzzle();
-        cubeGameIsActive = true;
-        if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
-        cubeGameIsUnsolvableButton.SetActive(true);
-        EnableDisableInputControls(false);
-        timeLimiter =  StartCoroutine(CubeGameTimer(cubeGameTimeLimit));
+        if (cubeGameRoundNumber <= 3)
+        {
+            audioManager.PlayAudio(audioManager.clipding);
+            SetupNewCubeGameRound();
+            timeLimiter = StartCoroutine(CubeGameTimer(cubeGameTimeLimit));
+        }
+        if (cubeGameRoundNumber > 3)  //Let Player move robot out of game and cause OnTriggerExit
+        {
+            if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
+            TellTextCloud(okLetsGo);
+            cubeGameRoundNumber = 0;
+            animator.speed = 1;
+            if (thirdPersonController) thirdPersonController.enabled = true;
+            EnableDisableInputControls(true);
+        }
     }
     // ////////////////////END MERGE ///////////////////////
 }  // end class 
