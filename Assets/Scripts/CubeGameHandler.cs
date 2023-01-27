@@ -31,7 +31,7 @@ public class CubeGameHandler : MonoBehaviour
     bool cubeGameIsActive;
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
     int cubesOccupied;
-    int cubeGameRoundNumber = 1, roundsWon, roundsLost;
+    int cubeGameRoundNumber = 1, roundsWon, roundsLost, nonPluggedSeed;
     public float cubeGameTimeLimit;
     Coroutine timeLimiter;
     // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
@@ -47,7 +47,29 @@ public class CubeGameHandler : MonoBehaviour
     const string cubeGameRound2of3 = "Round 2 of 3 Next";
     const string cubeGameRound3of3 =     "Round 3 of 3 Next";
     const string cubeGameRoundsFinished = " So4uku2 Done    ";
-    readonly int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };  //cubes = 10, 20, 30, 40
+    readonly int [] startGameSums = new int [] { 30, 40, 50, 50, 60, 70 };  //cubes = 10, 20, 30, 40
+    int[] gameSums = new int[] { 30, 40, 50, 50, 60, 70 };  //cubes = 10, 20, 30, 40
+    readonly int[] winningGameSums = new int[]  //the odds of generating winnable game just from gameSums are too low, so enable plugged wins here
+        {
+         30, 70, 40, 60, //index 0
+         30, 70, 50, 50, //index 4
+         30, 70, 60, 40, //index 8
+         40, 60, 30, 70, //index 12
+         40, 60, 50, 50, //index 16
+         40, 60, 70, 30, //index 20
+         50, 50, 30, 70, //index 24
+         50, 50, 40, 60, //index 28
+         50, 50, 60, 40, //index 32
+         50, 50, 70, 30, //index 36
+         60, 40, 30, 70, //index 40
+         60, 40, 50, 50, //index 44
+         60, 40, 70, 30, //index 48
+         70, 30, 40, 60, //index 52
+         70, 30, 50, 50, //index 56
+         70, 30, 60, 40  //index 60
+         };
+    readonly int[] winningGameSumsIndex = new int[] { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 }; // so we have 16
+    int[] variableGameSums = new int[4];
     public GameObject player;
     Animator animator;
     ThirdPersonController thirdPersonController;
@@ -179,11 +201,6 @@ public class CubeGameHandler : MonoBehaviour
         }
         //here setting cubeGameIsActive = false; should be done - but it will?(if player drags one?) send cubes home making for an unsmooth transition
         ProcessCubeGameRoundEnd(roundWonPlacingCubes);
-        //cubeGameResultText.SetActive(true); these 5 lines collapsed into ProcessCubeGameRoundEnd(bool)
-        //cubeGameIsActive = false;
-        //cubeGameRoundNumber += 1;
-        //SetRoundNumberHeadingAndStartButtonText();
-        //StopCoroutine(timeLimiter);
     }
     public void OnCubeGameIsUnsolvableButtonPressed()  //win or lose - play pressed "Can't be Solved" button - is that correct?
     {
@@ -196,7 +213,6 @@ public class CubeGameHandler : MonoBehaviour
             cubeGameWonOrLostText.text = "Nope can be solved... Awwwwww";
             audioManager.PlayAudio(audioManager.clipfalling);
             roundWonOnUnsolvablePress = false;
-           // cubeGameResultText.SetActive(true);
         }
         else
         {
@@ -204,34 +220,25 @@ public class CubeGameHandler : MonoBehaviour
             cubeGameWonOrLostText.text = "Right! You Win! Hooray";
             audioManager.PlayAudio(audioManager.clipApplause);
             roundWonOnUnsolvablePress = true;
-            // cubeGameResultText.SetActive(true);
         }
         ProcessCubeGameRoundEnd(roundWonOnUnsolvablePress);
-        //cubeGameResultText.SetActive(true);
-        //cubeGameIsActive = false;
-        //cubeGameRoundNumber += 1;
-        //SetRoundNumberHeadingAndStartButtonText();
-        //StopCoroutine(timeLimiter);
     }
     // Here will be a timer and if it lapses the game is lost 
     IEnumerator CubeGameTimer(float timeLimit) //win or lose(if Time limit exceeded) -or- timer stopped by other action (above 2 methods) 
     {   //count limeLimit seconds and if exceeded we have a lost round 
         float timeLeft = timeLimit;
         bool timeLeftOnClock = false;//shouldn't ever be true can only determine a loss here when time elapses - others will stop this coroutine
-        while (timeLeft >= 0)
+        while (timeLeft >= -1)
         {
             cubeGameTimeLeftText.text = timeLeft.ToString();
             timeLeft -= 1;
+            if (timeLeft <= 0) cubeGameTimeLeftText.text = 0.ToString();
             yield return new WaitForSeconds(1);
         }
+
         audioManager.PlayAudio(audioManager.clipfalling);
         cubeGameWonOrLostText.text = "Awwww Time ran out...";
-        ProcessCubeGameRoundEnd(timeLeftOnClock);
-
-        //cubeGameResultText.SetActive(true);
-        //cubeGameIsActive = false; //causes any cubes the player drags/moves to be sent back to their home position(s)
-        //cubeGameRoundNumber += 1;
-        //SetRoundNumberHeadingAndStartButtonText();
+        ProcessCubeGameRoundEnd(timeLeftOnClock); 
         yield break;
     }
     // ///////////////////////Above 3 methods decide if round is lost or won //////////////////////////////
@@ -282,7 +289,9 @@ public class CubeGameHandler : MonoBehaviour
         cubeGameIsUnsolvableButton.SetActive(true);
         EnableDisableInputControls(false);
 
-        SeedCubePuzzle();
+        // nonPlugged is a random 1,2 or 3 thus ensuring 2 winnables and 1 maybe 
+        if  (cubeGameRoundNumber == nonPluggedSeed)
+        SeedCubePuzzle(); else SeedCubePuzzleWithWinner();
 
     }
     void SetRoundNumberHeadingAndStartButtonText()
@@ -308,6 +317,7 @@ public class CubeGameHandler : MonoBehaviour
     private void OnDisable()
     {
         cubeGameBoardEvent.RemoveListener(CubeEnteredOrLeft);
+        fingerPointerEvent.RemoveListener(CheckCubeMovement);
     }
     // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
     void Shuffle(int[] intArr)           // Knuth shuffle algorithm :: courtesy of Wikipedia :)
@@ -322,6 +332,7 @@ public class CubeGameHandler : MonoBehaviour
     }
     void SeedCubePuzzle()
     {
+        startGameSums.CopyTo(gameSums, 0);
         Shuffle(gameSums);
         //Debug.Log("SeedCubePuzzle() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
         for (int i = 0; i <= cubeGameTargetSum.Length - 1; i++)
@@ -329,7 +340,17 @@ public class CubeGameHandler : MonoBehaviour
             cubeGameTargetSumText[i].text = gameSums[i].ToString();
         }
         if (GameCanBeSolved()) { }  //do nothing yet
+    }
+    void SeedCubePuzzleWithWinner()
+    {
         //BEWARE int Random.Range (0,10) will return a random value 0 thru "9" 
+        int winnableIndex = winningGameSumsIndex[Random.Range(0, 16)];  // index to a random "row" of winning combo in winningGameSums array
+        for (int i = 0; i <= cubeGameTargetSum.Length - 1; i++)
+        {
+            cubeGameTargetSumText[i].text = winningGameSums[winnableIndex+i].ToString();
+            gameSums[i] = winningGameSums[winnableIndex + i];        // Plug the gameSums Array with our winner 
+        }
+        if (GameCanBeSolved()) { }  //do nothing yet
     }
     bool GameCanBeSolved()
     {
@@ -376,6 +397,8 @@ public class CubeGameHandler : MonoBehaviour
             animator.speed = 0;
             SetRoundNumberHeadingAndStartButtonText();
             if (thirdPersonController) thirdPersonController.enabled = false;
+            nonPluggedSeed = Random.Range(1, 4); //which round to call SeedCubePuzzle() - other rounds get a Winnable
+            Debug.Log("nonPluggedSeed = " + nonPluggedSeed);
         }
     }
     void TellTextCloud(string caption)
