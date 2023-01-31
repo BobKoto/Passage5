@@ -44,19 +44,27 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
     }
     void IDragHandler.OnDrag(PointerEventData eventData)  //Note: movement depends on camera orientation (affects transform.positions) 
     {
-        point = cam.ScreenToWorldPoint
-            (new Vector3(eventData.position.x, eventData.position.y, cam.nearClipPlane +camCubeXDelta));//
+        if (CubeGameHandler.cubeGameIsActive)  // added if clause 1/30/23 
+        {
+            point = cam.ScreenToWorldPoint
+                (new Vector3(eventData.position.x, eventData.position.y, cam.nearClipPlane + camCubeXDelta));//
 
-        newPoint =                                       // here we remap so Y is up/down & Z is left/right (don't try this at home)
-            new Vector3(xPositionFixed, Mathf.Clamp( point.y, yPositionFixed, yPositionTopLimit),
-                                        Mathf.Clamp( point.z, zPositionLeftLimit + movingCubeSizeX / 2,
-                                                              zPositionRightLimit - movingCubeSizeX / 2)); //movingCubeSizeX / 2?
-        transform.position = newPoint;
+            newPoint =                                       // here we remap so Y is up/down & Z is left/right (don't try this at home)
+                new Vector3(xPositionFixed, Mathf.Clamp(point.y, yPositionFixed, yPositionTopLimit),
+                                            Mathf.Clamp(point.z, zPositionLeftLimit + movingCubeSizeX / 2,
+                                                                  zPositionRightLimit - movingCubeSizeX / 2)); //movingCubeSizeX / 2?
+            transform.position = newPoint;
+        }
+
     }
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)   //We don't consistently get this?, so try PointerUp/PointerExit
     {
-        //Debug.Log("AOTouch END Drag detected !!!! " + this.name);
-        fingerPointerEvent.Invoke(this.gameObject, "finger UP  Drag ENDED");
+        if (CubeGameHandler.cubeGameIsActive)  // added if clause 1/30/23 
+        {
+            //Debug.Log("AOTouch END Drag detected !!!! " + this.name);
+            fingerPointerEvent.Invoke(this.gameObject, "finger UP  Drag ENDED");
+        }
+
     }
     //void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     //{

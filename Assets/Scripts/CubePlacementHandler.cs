@@ -124,7 +124,7 @@ public class CubePlacementHandler : MonoBehaviour
             Vector3 targetPos;
             targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
             currentCube.transform.position = targetPos;
-            audioManager.PlayAudio(audioManager.TYPE);
+            if (CubeGameHandler.cubeGameIsActive) audioManager.PlayAudio(audioManager.TYPE);
             // Update cube and place statuses (need to verify what we're doing, ensure we're not confusing things)                           
             SetCubeLockStatus(true);
             SetPlacementLockStatus(currentCube, true);  //e.g. case "CubePlacement1": cubeInThisPlacement[0] = cubeToLock;

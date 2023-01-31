@@ -4,33 +4,25 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 public class CubeEnteredSolutionMatrix : MonoBehaviour   
-// Component of each CubePlacement Game Object -NOT the Cubes- -- sends Cube enter/exit events to CubeGameHandler.cs
+// Component of each CubePlacement Game Object -NOT the Cubes- -- sends Cube enter/exit events to CubePlacementHandler.cs
 {
     public CubeTriggerEnterExitEvent cubeTriggerEnterExitEvent;
-
-    // Start is called before the first frame update
- //   void Start() { }
-
     // /////// On 1/9/23 redesign triggers to ONLY send events to CubePlacementHandler & not CubeGameHandler 
     private void OnTriggerEnter(Collider cube)
     {
-        // NOTE: Kinematic cubes means our Robot avatar can no longer "push" them - nor can other Cubes - so overlap can exist
-    //    Debug.Log("CESMatrix " + this.name + " ENTERED by " + cube.name );
-    //    int valueToSend = CubeValue(cube.name);
+        //if (CubeGameHandler.cubeGameIsActive)  //added if clause 1/30/23   //caused issue because CPHandler still gets FingerUp events
         cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, cube.gameObject, true);  //Send event to CubePlacementHandler
-      //  cubeGameBoardEvent.Invoke(cube.name, true, this.name, valueToSend); //Send event to CubeGameHandler
     }
     private void OnTriggerExit(Collider cube)
     {
-    //    Debug.Log("CESMatrix " + this.name + " EXITED by " + cube.name );
-    //    int valueToSend = CubeValue(cube.name);
-        cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, cube.gameObject, false);  //Send event to CubePlacementHandler
-    //    cubeGameBoardEvent.Invoke(cube.name, false, this.name, valueToSend);  //Send event to CubeGameHandler
+       // if (CubeGameHandler.cubeGameIsActive)  //added if clause 1/30/23  //caused issue because CPHandler still gets FingerUp events
+        {
+            Debug.Log("Send exit event to CubePlacementHandler because cubeGameIsActive IS TRUE");
+            cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, cube.gameObject, false);  //Send event to CubePlacementHandler
+        }
+
     }
-    private void OnDisable()
-    {
-        
-    }
+ //   private void OnDisable() { }
 } // end class 
     //public int CubeValue(string cubeMovedInOrOut)
     //{
