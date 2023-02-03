@@ -17,7 +17,7 @@ public class CubeEnteredSolutionMatrix : MonoBehaviour
     {
        // if (CubeGameHandler.cubeGameIsActive)  //added if clause 1/30/23  //caused issue because CPHandler still gets FingerUp events
         {
-            Debug.Log("Send exit event to CubePlacementHandler because cubeGameIsActive IS TRUE");
+            Debug.Log("CESMatrix Send exit event to CubePlacementHandler --- cubeGameIsActive IS " + CubeGameHandler.cubeGameIsActive);
             cubeTriggerEnterExitEvent.Invoke(this.gameObject, this.name, cube.gameObject, false);  //Send event to CubePlacementHandler
         }
 
