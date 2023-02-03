@@ -66,42 +66,35 @@ public class CubePlacementHandler : MonoBehaviour
             waitingFingerPointerExit = true;
             //Debug.Log(" CubePlHandler: " + currentCube.name + " ENTERED " + currentPlace.name + "       waitingFingerPointerExit");
             return; //added 1/8/23 
-        }
-        else  //the cube EXITED 
+        }        //else  //the cube EXITED  //since above does a return, else is not needed
+        waitingFingerPointerExit = false;
+        Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = " + ignoreThisExit);
+        if (cubeInThisPlacement[PlacementLockIndex()] != nullGO && !ignoreThisExit) //we have an issue here 1/12/23
         {
-            waitingFingerPointerExit = false;
-            //Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = " + ignoreThisExit);
-            if (cubeInThisPlacement[PlacementLockIndex()] != nullGO && !ignoreThisExit) //we have an issue here 1/12/23
+            //Here we need to ONLY unlock if it IS locked 
+            if (currentCube == cubeInThisPlacement[PlacementLockIndex()])
             {
-                //Here we need to ONLY unlock if it IS locked 
-                if (currentCube == cubeInThisPlacement[PlacementLockIndex()])   
-                {
-                    SetCubeLockStatus(false);
-                    SetPlacementLockStatus(nullGO, false);
-                    int valueToSend = CubeValue(currentCube.name);
-                    cubeGameBoardEvent.Invoke(currentCube.name, false, currentPlace.name, valueToSend);  //Send event to CubeGameHandler
-                }
+                SetCubeLockStatus(false);
+                SetPlacementLockStatus(nullGO, false);
+                int valueToSend = CubeValue(currentCube.name);
+                cubeGameBoardEvent.Invoke(currentCube.name, false, currentPlace.name, valueToSend);  //Send event to CubeGameHandler
             }
-            ignoreThisExit = false;
         }
+        ignoreThisExit = false;
     }
     public void ReceivedFingerUpEvent(GameObject _cube, string action)
     {
         // Here we get fingerUp(OnEndDrag) event from ActOnTouch -- either fingerUp or object dropped or both -- or worse, nothing
         currentCube = _cube;
         if(waitingFingerPointerExit) fingerPointerExitReceived = true;// added  if(waitingFingerPointerExit) on 1/13/23 seems ok
-        if (!waitingFingerPointerExit && cubeLockStatus[CubeLockIndex()])  //cube only moved WITHIN locked position so need to relock
+        if (!waitingFingerPointerExit && cubeLockStatus[CubeLockIndex()])  //cube moved WITHIN locked position (did not Exit) just need to relock
         {
             currentPlace = cubeLockPlacementObject[CubeLockIndex()];
-            //Debug.Log("RecFingerUpEvnt: currentCube = " + currentCube.name + " IS LOCKED  currentPlace = " + currentPlace);
-            //Debug.Log(currentCube.name + " is in " + cubeLockPlacementObject[CubeLockIndex()].name);
             // Just align the Cube
             Vector3 targetPos;
             targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
             currentCube.transform.position = targetPos;
-            //audioManager.PlayAudio(audioManager.TYPE); //don't play audio on a relock 
         }
-
     }
     IEnumerator WaitForFingerUpToLockCube()
     {
