@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Cinemachine;
 using TMPro;
 
 
@@ -16,6 +17,8 @@ public class TextCloudHandler : MonoBehaviour
     public GameObject cloudText;
     public MyIntEvent m_MyEvent;
     public int cloudTextDuration = 6;
+    public CinemachineVirtualCamera playerFacingCamera; //2/2/23 don't activate this Cam until we have a clean flow - if ever
+    int originalCamPriority;                            //2/2/23 don't activate this Cam until we have a clean flow - if ever
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +26,7 @@ public class TextCloudHandler : MonoBehaviour
             m_MyEvent = new MyIntEvent();
 
         m_MyEvent.AddListener(EnableTheTextCloud);
+        originalCamPriority = playerFacingCamera.Priority;
     }
 
     public void EnableTheTextCloud(int x, int y, string _caption)
@@ -34,12 +38,14 @@ public class TextCloudHandler : MonoBehaviour
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
     //    Debug.Log(this.name + "  Set caption string to " + _caption);
         textCloud.SetActive(true);
+     //   playerFacingCamera.Priority = 14;  //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));
         //Debug.Log(this.name + "  EnableTheTextCloud called via event x = " + x + " y = " + y + " z = " + z);
     }
     IEnumerator RemoveCloudAfterXSeconds(int x)
     {
         yield return new WaitForSeconds (x);
+        // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         textCloud.SetActive(false);
     }
     private void OnDisable()

@@ -69,7 +69,7 @@ public class CubeGameHandler : MonoBehaviour
          70, 30, 60, 40  //index 60
          };
     readonly int[] winningGameSumsIndex = new int[] { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 }; // so we have 16
-    int[] variableGameSums = new int[4];
+   // int[] variableGameSums = new int[4];
     public GameObject player;
     Animator animator;
     ThirdPersonController thirdPersonController;
@@ -448,7 +448,7 @@ public class CubeGameHandler : MonoBehaviour
             Debug.Log("ExitTheCubeGame() calling SendCubesToHomePositions() cubeGameIsActive = " + cubeGameIsActive + ", resetting = " + cubeGameIsResetting);
             SendCubesToHomePositions(); //acts as if cubeGameIsActive is already true!  the OnExitTriggers in CESMatrix.cs? yes but what do we do about it?
         }
-        cubeGameCam.Priority = originalCamPriority;
+        //cubeGameCam.Priority = originalCamPriority;// 2/3/23 try moving to 3rd round is over to when start(Done) is pressed 
        // Debug.Log("ExitTheCubeGame() calling SendCubesToHomePositions()");
        // SendCubesToHomePositions();
         if (menuButton) menuButton.SetActive(true);
@@ -506,16 +506,16 @@ public class CubeGameHandler : MonoBehaviour
             audioManager.PlayAudio(audioManager.clipding);
             SetupNewCubeGameRound();
             //timeLimiter = StartCoroutine(CubeGameTimer(cubeGameTimeLimit));  //moved into SetupNewCubeGameRound()
+            return;
         }
-        if (cubeGameRoundNumber > 3)  //Let Player move robot out of game and cause OnTriggerExit  //should just be an "else"
-        {
+       // if (cubeGameRoundNumber > 3)  //Here Start button is "DONE" - Let Player move robot out of game to OnTriggerExit  //should just be an "else"
             if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
             TellTextCloud(okLetsGo);
             cubeGameRoundNumber = 0;
-            animator.speed = 1;
+            cubeGameCam.Priority = originalCamPriority;// 2/3/23 try moving to 3rd round is over to when start(Done) is pressed 
+           // animator.speed = 1;
             if (thirdPersonController) thirdPersonController.enabled = true;
             EnableDisableInputControls(true);
-        }
     }
     // ////////////////////END MERGE ///////////////////////
 }  // end class 
