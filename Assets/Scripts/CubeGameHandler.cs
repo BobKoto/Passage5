@@ -79,6 +79,7 @@ public class CubeGameHandler : MonoBehaviour
     public GameObject menuButton, lightButton, cubeGameStartButton, cubeGameIsUnsolvableButton, cubeGameExitButton; //Buttons to toggle 
     public GameObject cubeGameResultText, cubeGameTimerText;
     public GameObject cubeGameTitleText, cubeGameInstructText;
+    public GameObject cubeGamesWonInteger, cubeGamesLostInteger;
     TMP_Text cubeGameWonOrLostText, cubeGameRoundText;
     public TMP_Text cubeGameStartButtonText, cubeGameTimeLeftText;
     TMP_Text[] cubeGameTargetSumText;
@@ -258,36 +259,14 @@ public class CubeGameHandler : MonoBehaviour
     void ProcessCubeGameRoundEnd(bool aWin)
     {
         //aDebug.Log("ProcessCubeGameRoundEnd got a win? " + aWin);
+        if (aWin) roundsWon += 1; else roundsLost += 1;
         cubeGameResultText.SetActive(true);
         cubeGameIsActive = false;
         cubeGameRoundNumber += 1;
+        SetCubeGameRoundsWonLostText();
         SetRoundNumberHeadingAndStartButtonText();
         if (timeLimiter != null) StopCoroutine(timeLimiter);
         if (!cubeGameStartButton.activeSelf) cubeGameStartButton.SetActive(true);
-        // Originals here - all are commented out
-        // FROM CheckCubePlacementResults()  //win or lose 
-
-        //cubeGameResultText.SetActive(true);
-        //cubeGameIsActive = false;
-        //cubeGameRoundNumber += 1;
-        //SetRoundNumberHeadingAndStartButtonText();
-        //if (timeLimiter != null) StopCoroutine(timeLimiter);
-
-        //// FROM OnCubeGameIsUnsolvableButtonPressed()  //win or lose 
-
-        //cubeGameResultText.SetActive(true);
-        //cubeGameIsActive = false;
-        //cubeGameRoundNumber += 1;
-        //SetRoundNumberHeadingAndStartButtonText();
-        //if (timeLimiter != null) StopCoroutine(timeLimiter);
-
-        //// FROM IEnumerator CubeGameTimer(float timeLimit) //win or lose 
-
-        //cubeGameResultText.SetActive(true);
-        //cubeGameIsActive = false; //causes any cubes the player drags/moves to be sent back to their home position(s)
-        //cubeGameRoundNumber += 1;
-        //SetRoundNumberHeadingAndStartButtonText();
-        //if (timeLimiter != null) StopCoroutine(timeLimiter); //here from the coroutine itself 
     }
     void SetupNewCubeGameRound()
     {
@@ -303,8 +282,9 @@ public class CubeGameHandler : MonoBehaviour
         ResetTargetTextsToZero();
         ResetRowAndColumnSumsToZero();
         ResetPlaceCubeValuesToZero();
+        SetCubeGameRoundsWonLostText();
         cubeGameResultText.SetActive(false);
-        StartCoroutine(SetCubeGameIsActiveAfterDelay(1f));  //seems to work ok -- but why oh why do we need it? needs to look at bools - not time
+        StartCoroutine(SetCubeGameIsActiveAfterCubesSentHome()); 
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         if (cubeGameTimerText) cubeGameTimerText.SetActive(true);
         cubeGameIsUnsolvableButton.SetActive(true);
@@ -314,13 +294,18 @@ public class CubeGameHandler : MonoBehaviour
         if  (cubeGameRoundNumber == nonPluggedSeed) SeedCubePuzzle(); else SeedCubePuzzleWithWinner();  //either one calls GameCanBeSolved()
         timeLimiter = StartCoroutine(CubeGameTimer(cubeGameTimeLimit));  //moved from OnCubeGameStartButtonPressed()
     }
-    IEnumerator SetCubeGameIsActiveAfterDelay(float _delay)
+    IEnumerator SetCubeGameIsActiveAfterCubesSentHome()
     {  //need to revamp this coroutine to look for something like cubesToBeSentHome == 0
         //yield return new WaitForSeconds(_delay);
         yield return new WaitUntil(() => cubesToBeSentHome == 0);
         cubeGameIsActive = true;
         cubeGameIsResetting = false;  //99% sure this is setting BEFORE SendCubesToHomePositions() triggers our exit events
         //aDebug.Log("SetCubeGameIsActiveAfterDelay set cubeGameIsActive = TRUE; ");
+    }
+    void SetCubeGameRoundsWonLostText()
+    {
+        cubeGamesLostInteger.GetComponent<TextMeshPro>().text = roundsLost.ToString();
+        cubeGamesWonInteger.GetComponent<TextMeshPro>().text = roundsWon.ToString();
     }
     void SetRoundNumberHeadingAndStartButtonText()
     {
@@ -430,6 +415,8 @@ public class CubeGameHandler : MonoBehaviour
             ResetTargetTextsToZero();
             ResetRowAndColumnSumsToZero();
             ResetPlaceCubeValuesToZero();
+            SetCubeGameRoundsWonLostText();
+            if (cubeGameTimerText) cubeGameTimerText.SetActive(false);
             if (thirdPersonController) thirdPersonController.enabled = false;
             nonPluggedSeed = Random.Range(1, 4); //which round to call SeedCubePuzzle() - other rounds get a Winnable
             //aDebug.Log("nonPluggedSeed = " + nonPluggedSeed);
@@ -453,8 +440,10 @@ public class CubeGameHandler : MonoBehaviour
             SendCubesToHomePositions(); //acts as if cubeGameIsActive is already true!  the OnExitTriggers in CESMatrix.cs? yes but what do we do about it?
         }
         //cubeGameCam.Priority = originalCamPriority;// 2/3/23 try moving to 3rd round is over to when start(Done) is pressed 
-       // //aDebug.Log("ExitTheCubeGame() calling SendCubesToHomePositions()");
-       // SendCubesToHomePositions();
+        // //aDebug.Log("ExitTheCubeGame() calling SendCubesToHomePositions()");
+        // SendCubesToHomePositions();
+        roundsLost = 0;
+        roundsWon = 0;
         if (menuButton) menuButton.SetActive(true);
         if (lightButton) lightButton.SetActive(true);
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);

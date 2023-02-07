@@ -54,7 +54,6 @@ public class CubePlacementHandler : MonoBehaviour
             cubeLockPlacementObject[i] = nullGO;
             cubeInThisPlacement[i] = nullGO;
         }
-
         StartCoroutine(WaitForFingerUpToLockCube());
     }
     public void CubeEnterExitPlacement(GameObject _place, string placementName, GameObject _cube, bool cubeEntered)  //Method name in Editor!
@@ -66,9 +65,9 @@ public class CubePlacementHandler : MonoBehaviour
             waitingFingerPointerExit = true;
             //Debug.Log(" CubePlHandler: " + currentCube.name + " ENTERED " + currentPlace.name + "       waitingFingerPointerExit");
             return; //added 1/8/23 
-        }        //else  //the cube EXITED  //since above does a return, else is not needed
+        }
         waitingFingerPointerExit = false;
-        Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = " + ignoreThisExit);
+     //   Debug.Log("CubePlHandler: " + currentCube.name + " EXITED " + currentPlace.name + "  IgnoreExit = " + ignoreThisExit);
         if (cubeInThisPlacement[PlacementLockIndex()] != nullGO && !ignoreThisExit) //we have an issue here 1/12/23
         {
             //Here we need to ONLY unlock if it IS locked 
@@ -117,30 +116,23 @@ public class CubePlacementHandler : MonoBehaviour
             Vector3 targetPos;
             targetPos = new Vector3(currentCube.transform.position.x, currentPlace.transform.position.y, currentPlace.transform.position.z);
             currentCube.transform.position = targetPos;
-            if (CubeGameHandler.cubeGameIsActive) audioManager.PlayAudio(audioManager.TYPE);
-            // Update cube and place statuses (need to verify what we're doing, ensure we're not confusing things)                           
+            if (CubeGameHandler.cubeGameIsActive) audioManager.PlayAudio(audioManager.TYPE);                       
             SetCubeLockStatus(true);
             SetPlacementLockStatus(currentCube, true);  //e.g. case "CubePlacement1": cubeInThisPlacement[0] = cubeToLock;
             int valueToSend = CubeValue(currentCube.name);
             cubeGameBoardEvent.Invoke(currentCube.name, true, currentPlace.name, valueToSend); //Send event to CubeGameHandler
             return;  //OR fall thru to SendCubeHome()
         }
-      //  Debug.Log("SendCubeHome because " + cubeInThisPlacement[PlacementLockIndex()].name + " is not nullGO?");
-      //  Debug.Log("ARRAY by SetPlacementLockStatus: "                                //tells us what cube is in relative/what place 
-      //+ cubeInThisPlacement[0].name + " " + cubeInThisPlacement[1].name + " " + cubeInThisPlacement[2].name + " " + cubeInThisPlacement[3].name);
-        SendCubeHome(); // (.5f);
+        SendCubeHome();
     }
     void SendCubeHome() //(float timeInSeconds)
     {
-        // I think the following generates an erroneous "Exit" we need to ignore/bybass  
         ignoreThisExit = true; //moved from under to above next line 1/12/23
         currentCube.transform.position = cubeTransformStartPosition[CubeTransformStartPositionIndex(currentCube.name)];
         audioManager.PlayAudio(audioManager.WHOOSH);
-       // Debug.Log("CPHandler SendCubeHome ");
     }
     void SetCubeLockStatus(bool lockStatus)
     {// here currentPlace and currentCube come from global context
-        string s1;
         switch (currentCube.name)
         {
             case "Cube10":
@@ -163,14 +155,6 @@ public class CubePlacementHandler : MonoBehaviour
                 Debug.Log("SetCubeLockStatus(bool lockStatus) got ??? ");
                 break;
         }
-        s1 = lockStatus ? "locked" : "UNLOCKED";
-        ////Debug.Log("SCLS we just " + s1 + " " + currentCube.name + "  into/from " + currentPlace.name);
-        ////Debug.Log("lock array " + cubeLockStatus[0] + " " + cubeLockStatus[1] + " " + cubeLockStatus[2] + " " + cubeLockStatus[3]);
-        //Debug.Log(" ARRAY by SetCubeLockStatus: "        //this is a null ref. :{
-        //    + cubeLockPlacementObject[0].name + " "
-        //    + cubeLockPlacementObject[1].name + " "
-        //    + cubeLockPlacementObject[2].name + " "
-        //    + cubeLockPlacementObject[3].name);
     }
     void SetPlacementLockStatus(GameObject cubeToLock, bool cubeLocked)
     {
@@ -193,16 +177,6 @@ public class CubePlacementHandler : MonoBehaviour
                 Debug.Log("CASE DEFAULT SetPlacementLockStatus(GameObject cubeToLock) got " + cubeToLock.name + " into  " + currentPlace.name);
                 break;
         }
-      //// s1 = lockStatus ? "locked" : "UNLOCKED";
-      //if (cubeLocked)
-      //  Debug.Log("SPLS we just locked " + currentCube.name + "  into " + currentPlace.name);
-      //else Debug.Log("SPLS we just UNlocked " + currentCube.name + "  from " + currentPlace.name);  //bullshit
-      //  Debug.Log                                 //tells us what cube is in relative/what place 
-      //        ("ARRAY by SetPlacementLockStatus: " 
-      //            + cubeInThisPlacement[0].name +
-      //        " " + cubeInThisPlacement[1].name +
-      //        " " + cubeInThisPlacement[2].name +
-      //        " " + cubeInThisPlacement[3].name);
     }
     int CubeLockIndex()
     {
@@ -256,145 +230,3 @@ public class CubePlacementHandler : MonoBehaviour
         fingerPointerEvent.RemoveListener(ReceivedFingerUpEvent);
     }
 } //end class
-
-/*
- *     public void ReceivedFingerUpEvent(GameObject _cube, string action)
-    {
-        // Here we get fingerUp(OnEndDrag) event from ActOnTouch -- either fingerUp or object dropped or both -- or worse, nothing
-        currentCube = _cube;
-        fingerPointerExitReceived = true;
-        //currentCube = _cube; //this is a KEY
-        //if (waitingFingerPointerExit || cubeLockStatus[CubeLockIndex()]) //cube enetered & stayed -- or moved within & needs relocking
-        //{
-        //    if (cubeLockStatus[CubeLockIndex()])  //is FingerUp on a locked cube?
-        //    {
-        //        currentPlace = cubeLockPlacementObject[CubeLockIndex()];  // just relock it to original Placement
-        //        LockTheCubeDown(); //Relocking a drifter - moved by finger but not exited
-        //    }
-        //    else  fingerPointerExitReceived = true; // a new one is waiting 
-        //}
-    }
- * */
-//IEnumerator WaitBeforeLockingCube(string othername, GameObject othergameObject, string placeName)
-//{
-//    Debug.Log("Coroutine WaitBeforeLockingCube is Waiting on finger up event" + " This is " + this.name);
-//    yield return new WaitUntil(() => fingerPointerExitReceived == true);
-//    Debug.Log("fingerPointerExitReceived == true");
-//    LockTheCubeDown(othername, othergameObject, placeName);
-//    fingerPointerExitReceived = false;
-//    yield return null;
-//}
-//void LockTheCubeDown(string objectToLock, GameObject _other, string placeName)  //Transform xForm, unneeded as we set the cubes to Kinematic  -- but keep for now 
-//{
-//    Debug.Log("LockTheCubeDown says Object to lock is " + objectToLock + " Game object = " + _other.name + " Place = " + placeName);
-//    if (placeOccupied)
-//    {
-//        Vector3 targetPos;
-//        targetPos = new Vector3(_other.transform.position.x, this.transform.position.y, this.transform.position.z);
-//        _other.transform.position = targetPos;
-//        Debug.Log("LockTheCubeDown says Object " + _other.name + " Lock attempted, MAYBE OK");
-//    }
-//    else Debug.Log("LockTheCubeDown says Lock failed because placeOccupied is FALSE");
-
-//}
-//public void FingerPointerHappened(string cubeName, string fingerAction)
-//{
-//    fingerPointerExitReceived = false;  // 'cause we only want if we're ON a placement 
-//    Debug.Log("Recvd from ActOnTouch cubeName = " + cubeName + "  Action = " + fingerAction + " This is " + this.name);
-//    if (cubeName == placeOccupant)
-//    {
-//        fingerPointerExitReceived = true;
-//    }
-//    else
-//        Debug.Log("MISMATCH on PlaceOccupant Occupant = " + placeOccupant + " cubeName = " + cubeName + " This is " + this.name);
-//}
-
-//}
-//Removed from ReceivedFingerUpEvent
-//switch (cubeName)
-//{
-//    case "Cube10":
-//        if (cube10WaitingForFingerUp)
-//        {
-//            Debug.Log("CPHandler cube10 fingerUp  cube = " + currentCube.name);
-//            cube10FingerPointerEvent.Invoke(cubeName, "fingerUp", currentCube);
-//            cube10WaitingForFingerUp = false;
-//        }
-//        break;
-//    case "Cube20":
-//        if (cube20WaitingForFingerUp)
-//        {
-//            Debug.Log("CPHandler cube20 fingerUp  cube = " + currentCube.name);
-//            cube20FingerPointerEvent.Invoke(cubeName, "fingerUp", currentCube);
-//            cube20WaitingForFingerUp = false;
-//        }
-//        break;
-//    case "Cube30":
-//        if (cube30WaitingForFingerUp)
-//        {
-//            Debug.Log("CPHandler cube30 fingerUp  cube = " + currentCube.name);
-//            cube30FingerPointerEvent.Invoke(cubeName, "fingerUp", currentCube);
-//            cube30WaitingForFingerUp = false;
-//        }
-//        break;
-//    case "Cube40":
-//        if (cube40WaitingForFingerUp)
-//        {
-//            Debug.Log("CPHandler cube40 fingerUp  cube = " + currentCube.name);
-//            cube40FingerPointerEvent.Invoke(cubeName, "fingerUp", currentCube);
-//            cube40WaitingForFingerUp = false;
-//        }
-//        break;
-//    default: Debug.Log("ReceivedFingerUpEvent sent UFO");
-//        break;
-//}
-
-//Removed from CubeEnterExitPlacement
-//    switch (_cube.name)
-//    {
-//        case "Cube10":
-//            cube10WaitingForFingerUp = cubeEntered;
-//            break;
-//        case "Cube20":
-//            cube20WaitingForFingerUp = cubeEntered;
-//            break;
-//        case "Cube30":
-//            cube30WaitingForFingerUp = cubeEntered;
-//            break;
-//        case "Cube40":
-//            cube40WaitingForFingerUp = cubeEntered;
-//            break;
-//        default:
-//            break;
-//    }
-// EVENT Stuff not needed 
-//[System.Serializable]
-//public class FingerPointerEvent : UnityEvent<string, string> { }
-//[System.Serializable]
-//public class HandlerFingerPointerUpEvent : UnityEvent<string, string, int> { }
-//CubeEnteredSolutionMatrix waits for us to send these - NOT after 12/18/22
-//  HandlerFingerPointerUpEvent handlerFingerPointerEvent;  //empty class declared above - before this class -- we receive these 
-
-//  bool cube10WaitingForFingerUp, cube20WaitingForFingerUp, cube30WaitingForFingerUp, cube40WaitingForFingerUp;
-
-//public Cube10FingerPointerEvent cube10FingerPointerEvent;  // we send these -  NOT after 12/18/22
-//public Cube20FingerPointerEvent cube20FingerPointerEvent;  //
-//public Cube30FingerPointerEvent cube30FingerPointerEvent;  // 
-//public Cube40FingerPointerEvent cube40FingerPointerEvent;  // 
-
-//More unused stuff 
-//GameObject cube10, cube20, cube30, cube40;
-//GameObject placement1, placement2, placement3, placement4;
-//Find the Cube GameObjects (Cube10, Cube20, etc.)  we could do an array - maybe later 
-//cube10 = GameObject.Find("Cube10");
-//cube20 = GameObject.Find("Cube20");
-//cube30 = GameObject.Find("Cube30");
-//cube40 = GameObject.Find("Cube40");
-////Find the Placement GameObjects (CubePlacement1, CubePlacemrnt2, etc.)  we could do an array - maybe later 
-//placement1 = GameObject.Find("CubePlacement1");
-//placement2 = GameObject.Find("CubePlacement2");
-//placement3 = GameObject.Find("CubePlacement3");
-//placement4 = GameObject.Find("CubePlacement4");
-
-//if (handlerFingerPointerEvent == null) handlerFingerPointerEvent = new HandlerFingerPointerUpEvent();  //not sure but it stopped the null reference 
-//handlerFingerPointerEvent.AddListener(ReceivedFingerUpEvent);   // in paren is the method in this script that gets invoked 
