@@ -78,6 +78,8 @@ public class CubeGameHandler : MonoBehaviour
     GameObject[] cubeGameTargetSum;
     public GameObject menuButton, lightButton, cubeGameStartButton, cubeGameIsUnsolvableButton, cubeGameExitButton; //Buttons to toggle 
     public GameObject cubeGameResultText, cubeGameTimerText;
+    public GameObject cubeGameTitleText, cubeGameInstructText;
+    public GameObject cubeGamesWonInteger, cubeGamesLostInteger;
     TMP_Text cubeGameWonOrLostText, cubeGameRoundText;
     public TMP_Text cubeGameStartButtonText, cubeGameTimeLeftText;
     TMP_Text[] cubeGameTargetSumText;
@@ -88,7 +90,7 @@ public class CubeGameHandler : MonoBehaviour
     void Start()
     {
         inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");
-        // Debug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
+        // //aDebug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
         if (cubeGameBoardEvent == null) cubeGameBoardEvent = new CubeGameBoardEvent();  //not sure but it stopped the null reference 
         cubeGameBoardEvent.AddListener(CubeEnteredOrLeft);
         if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
@@ -127,7 +129,7 @@ public class CubeGameHandler : MonoBehaviour
         if (!cubeGameIsActive) //Player should not be moving cubes while no game in progress - we take the easy way out // needed since AOTouch locked?
         {
             //We may want a sound effect here 
-            Debug.Log("CheckCubeMovement(go,str) calling SendCubesToHomePositions()");
+            //aDebug.Log("CheckCubeMovement(go,str) calling SendCubesToHomePositions()");
             SendCubesToHomePositions();
         }
     }
@@ -137,14 +139,14 @@ public class CubeGameHandler : MonoBehaviour
         if (!cubeGameIsActive && !_entered)
         {
             cubesToBeSentHome -= 1;
-            Debug.Log("CGH Ev recvd when cubeGameIsActive is FALSE,  _entered = " + _entered + " ,cubesToBeSentHome = " + cubesToBeSentHome);
+            //aDebug.Log("CGH Ev recvd when cubeGameIsActive is FALSE,  _entered = " + _entered + " ,cubesToBeSentHome = " + cubesToBeSentHome);
         }
 
         if (cubeGameIsActive)  //since we now shutdown ActOnTouch, cubeGameIsActive should ALWAYS be true EXCEPT when SendCubesToHomePositions causes
         {                      //OnTriggerExit(s) via CESMatrix.cs  - first call of SCTHPositions in SetupNewCubeGameRound() causes our timing issue... 
             cubesOccupied = _entered ? cubesOccupied += 1 : cubesOccupied -= 1;  //this is happening sometimes when it shouldn't??
             if (cubesOccupied == 1 && cubeGameIsUnsolvableButton.activeSelf) cubeGameIsUnsolvableButton.SetActive(false);
-            Debug.Log("CGH Ev recvd: " + cubeName + " " + _entered + " " + placeName + " cubeValue = " + cubeValue + ", cubeGameIsActive = " + cubeGameIsActive );
+            //aDebug.Log("CGH Ev recvd: " + cubeName + " " + _entered + " " + placeName + " cubeValue = " + cubeValue + ", cubeGameIsActive = " + cubeGameIsActive );
             switch (placeName)
             {
                 case "CubePlacement1":
@@ -160,7 +162,7 @@ public class CubeGameHandler : MonoBehaviour
                     place4CubeValue = _entered ? cubeValue : 0;
                     break;
                 default:
-                    Debug.Log("CGHandler case got a default");
+                    //aDebug.Log("CGHandler case got a default");
                     break;
             }
             CalculateTheMatrix();
@@ -169,7 +171,7 @@ public class CubeGameHandler : MonoBehaviour
         if (cubeGameIsResetting) return;
         //else //commented because we return above - but if the game is active we fall thru
         //{
-            Debug.Log("CubeEnteredOrLeft(str,bool,str,int) calling SendCubesToHomePositions() _entered = " + _entered + " resetting = " +cubeGameIsResetting);
+            //aDebug.Log("CubeEnteredOrLeft(str,bool,str,int) calling SendCubesToHomePositions() _entered = " + _entered + " resetting = " +cubeGameIsResetting);
             SendCubesToHomePositions();  //issue involves this call getting done 
         //}
     }
@@ -179,7 +181,7 @@ public class CubeGameHandler : MonoBehaviour
         col1SumText.text = (place1CubeValue + place3CubeValue).ToString(); // + " added down";
         row2SumText.text = (place3CubeValue + place4CubeValue).ToString(); // + " added across" ;
         col2SumText.text = (place2CubeValue + place4CubeValue).ToString(); // + " added down"; 
-        Debug.Log("CalculateTheMatrix says cubesOccupied = " + cubesOccupied);
+        //aDebug.Log("CalculateTheMatrix says cubesOccupied = " + cubesOccupied);
         if (cubesOccupied == 4)  // the game cube placements are finished as player filled 4th placement -- now check for won/lost
         {
             CheckCubePlacementResults(); //win or lose 
@@ -188,7 +190,7 @@ public class CubeGameHandler : MonoBehaviour
     // ///////////////////////Next 3 methods decide if round is lost or won //////////////////////////////
     void CheckCubePlacementResults()  //win or lose - player placed cubes, are they correct?
     {
-        //Debug.Log("CheckCubePlacementResults() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
+        ////aDebug.Log("CheckCubePlacementResults() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
         bool row1IsGood, row2IsGood, col1IsGood, col2IsGood, roundWonPlacingCubes;
         int placeRow1 = 0, placeCol1 = 0, placeRow2 = 0, placeCol2 = 0;
         placeRow1 += place1CubeValue + place2CubeValue;
@@ -217,18 +219,18 @@ public class CubeGameHandler : MonoBehaviour
     public void OnCubeGameIsUnsolvableButtonPressed()  //win or lose - play pressed "Can't be Solved" button - is that correct?
     {
         bool roundWonOnUnsolvablePress;
-        Debug.Log("player pressed Can't Solve ");
+        //aDebug.Log("player pressed Can't Solve ");
         if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
         if (GameCanBeSolved())
         {
-            Debug.Log("Wrong --- Game CAN be solved!");
+            //aDebug.Log("Wrong --- Game CAN be solved!");
             cubeGameWonOrLostText.text = "Nope can be solved... Awwwwww";
             audioManager.PlayAudio(audioManager.clipfalling);
             roundWonOnUnsolvablePress = false;
         }
         else
         {
-            Debug.Log("Right --- Game CANNOT be solved!");
+            //aDebug.Log("Right --- Game CANNOT be solved!");
             cubeGameWonOrLostText.text = "Right! You Win! Hooray";
             audioManager.PlayAudio(audioManager.clipApplause);
             roundWonOnUnsolvablePress = true;
@@ -256,37 +258,15 @@ public class CubeGameHandler : MonoBehaviour
     // ///////////////////////Above 3 methods decide if round is lost or won //////////////////////////////
     void ProcessCubeGameRoundEnd(bool aWin)
     {
-        Debug.Log("ProcessCubeGameRoundEnd got a win? " + aWin);
+        //aDebug.Log("ProcessCubeGameRoundEnd got a win? " + aWin);
+        if (aWin) roundsWon += 1; else roundsLost += 1;
         cubeGameResultText.SetActive(true);
         cubeGameIsActive = false;
         cubeGameRoundNumber += 1;
+        SetCubeGameRoundsWonLostText();
         SetRoundNumberHeadingAndStartButtonText();
         if (timeLimiter != null) StopCoroutine(timeLimiter);
         if (!cubeGameStartButton.activeSelf) cubeGameStartButton.SetActive(true);
-        // Originals here - all are commented out
-        // FROM CheckCubePlacementResults()  //win or lose 
-
-        //cubeGameResultText.SetActive(true);
-        //cubeGameIsActive = false;
-        //cubeGameRoundNumber += 1;
-        //SetRoundNumberHeadingAndStartButtonText();
-        //if (timeLimiter != null) StopCoroutine(timeLimiter);
-
-        //// FROM OnCubeGameIsUnsolvableButtonPressed()  //win or lose 
-
-        //cubeGameResultText.SetActive(true);
-        //cubeGameIsActive = false;
-        //cubeGameRoundNumber += 1;
-        //SetRoundNumberHeadingAndStartButtonText();
-        //if (timeLimiter != null) StopCoroutine(timeLimiter);
-
-        //// FROM IEnumerator CubeGameTimer(float timeLimit) //win or lose 
-
-        //cubeGameResultText.SetActive(true);
-        //cubeGameIsActive = false; //causes any cubes the player drags/moves to be sent back to their home position(s)
-        //cubeGameRoundNumber += 1;
-        //SetRoundNumberHeadingAndStartButtonText();
-        //if (timeLimiter != null) StopCoroutine(timeLimiter); //here from the coroutine itself 
     }
     void SetupNewCubeGameRound()
     {
@@ -295,15 +275,16 @@ public class CubeGameHandler : MonoBehaviour
         {
             cubesToBeSentHome = cubesOccupied;
             cubeGameIsResetting = true;
-            Debug.Log("SetupNewCubeGameRound() calling SendCubesToHomePositions() cubeGameIsActive = " + cubeGameIsActive + ", resetting = " + cubeGameIsResetting);
+            //aDebug.Log("SetupNewCubeGameRound() calling SendCubesToHomePositions() cubeGameIsActive = " + cubeGameIsActive + ", resetting = " + cubeGameIsResetting);
             SendCubesToHomePositions(); //acts as if cubeGameIsActive is already true!  the OnExitTriggers in CESMatrix.cs? yes but what do we do about it?
         }
 
         ResetTargetTextsToZero();
         ResetRowAndColumnSumsToZero();
         ResetPlaceCubeValuesToZero();
+        SetCubeGameRoundsWonLostText();
         cubeGameResultText.SetActive(false);
-        StartCoroutine(SetCubeGameIsActiveAfterDelay(1f));  //seems to work ok -- but why oh why do we need it? needs to look at bools - not time
+        StartCoroutine(SetCubeGameIsActiveAfterCubesSentHome()); 
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         if (cubeGameTimerText) cubeGameTimerText.SetActive(true);
         cubeGameIsUnsolvableButton.SetActive(true);
@@ -313,13 +294,18 @@ public class CubeGameHandler : MonoBehaviour
         if  (cubeGameRoundNumber == nonPluggedSeed) SeedCubePuzzle(); else SeedCubePuzzleWithWinner();  //either one calls GameCanBeSolved()
         timeLimiter = StartCoroutine(CubeGameTimer(cubeGameTimeLimit));  //moved from OnCubeGameStartButtonPressed()
     }
-    IEnumerator SetCubeGameIsActiveAfterDelay(float _delay)
+    IEnumerator SetCubeGameIsActiveAfterCubesSentHome()
     {  //need to revamp this coroutine to look for something like cubesToBeSentHome == 0
         //yield return new WaitForSeconds(_delay);
         yield return new WaitUntil(() => cubesToBeSentHome == 0);
         cubeGameIsActive = true;
         cubeGameIsResetting = false;  //99% sure this is setting BEFORE SendCubesToHomePositions() triggers our exit events
-        Debug.Log("SetCubeGameIsActiveAfterDelay set cubeGameIsActive = TRUE; ");
+        //aDebug.Log("SetCubeGameIsActiveAfterDelay set cubeGameIsActive = TRUE; ");
+    }
+    void SetCubeGameRoundsWonLostText()
+    {
+        cubeGamesLostInteger.GetComponent<TextMeshPro>().text = roundsLost.ToString();
+        cubeGamesWonInteger.GetComponent<TextMeshPro>().text = roundsWon.ToString();
     }
     void SetRoundNumberHeadingAndStartButtonText()
     {
@@ -361,7 +347,7 @@ public class CubeGameHandler : MonoBehaviour
     {
         startGameSums.CopyTo(gameSums, 0);
         Shuffle(gameSums);
-        //Debug.Log("SeedCubePuzzle() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
+        ////aDebug.Log("SeedCubePuzzle() is " +gameSums[0] + ", " + gameSums[1] + ", " + gameSums[2] + ", " + gameSums[3] + ", " + gameSums[4]);
         for (int i = 0; i <= cubeGameTargetSum.Length - 1; i++)
         {
             cubeGameTargetSumText[i].text = gameSums[i].ToString();
@@ -386,14 +372,14 @@ public class CubeGameHandler : MonoBehaviour
         thirdPlusFourth = gameSums[2] + gameSums[3];
         if (firstPlusSecond == 100 && thirdPlusFourth == 100)
         {
-            // Debug.Log("Game CAN be solved... theSum = " + theSum + " colSum = " + colSum + " rowSum = " + rowSum); 
-            Debug.Log("Game CAN be solved... firstPlusSecond = " + firstPlusSecond + " and thirdPlusFourth = " + thirdPlusFourth);
+            // //aDebug.Log("Game CAN be solved... theSum = " + theSum + " colSum = " + colSum + " rowSum = " + rowSum); 
+            //aDebug.Log("Game CAN be solved... firstPlusSecond = " + firstPlusSecond + " and thirdPlusFourth = " + thirdPlusFourth);
             return true;
         }
        // else
        // {
-            // Debug.Log("Game CANNOT be solved... theSum = " + theSum + " colSum = " + colSum + " rowSum = " + rowSum);
-            Debug.Log("Game CANNOT be solved... firstPlusSecond = " + firstPlusSecond + " and thirdPlusFourth = " + thirdPlusFourth);
+            // //aDebug.Log("Game CANNOT be solved... theSum = " + theSum + " colSum = " + colSum + " rowSum = " + rowSum);
+            //aDebug.Log("Game CANNOT be solved... firstPlusSecond = " + firstPlusSecond + " and thirdPlusFourth = " + thirdPlusFourth);
             return false;
        // }
     }
@@ -420,15 +406,20 @@ public class CubeGameHandler : MonoBehaviour
             cubeGameStartButton.SetActive(true);
             //if (cubeGameExitButton) cubeGameExitButton.SetActive(true); //We may not need an Exit Button at all 
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
+            if (!cubeGameTitleText.activeSelf) cubeGameTitleText.SetActive(true);
+            if (!cubeGameInstructText.activeSelf) cubeGameInstructText.SetActive(true);
+            if (cubeGameResultText.activeSelf) cubeGameResultText.SetActive(false);
             TellTextCloud(helpNeedHI);
             animator.speed = 0;
             SetRoundNumberHeadingAndStartButtonText();
             ResetTargetTextsToZero();
             ResetRowAndColumnSumsToZero();
             ResetPlaceCubeValuesToZero();
+            SetCubeGameRoundsWonLostText();
+            if (cubeGameTimerText) cubeGameTimerText.SetActive(false);
             if (thirdPersonController) thirdPersonController.enabled = false;
             nonPluggedSeed = Random.Range(1, 4); //which round to call SeedCubePuzzle() - other rounds get a Winnable
-            Debug.Log("nonPluggedSeed = " + nonPluggedSeed);
+            //aDebug.Log("nonPluggedSeed = " + nonPluggedSeed);
         }
     }
     void TellTextCloud(string caption)
@@ -445,12 +436,14 @@ public class CubeGameHandler : MonoBehaviour
         {
             cubesToBeSentHome = cubesOccupied;
             cubeGameIsResetting = true;
-            Debug.Log("ExitTheCubeGame() calling SendCubesToHomePositions() cubeGameIsActive = " + cubeGameIsActive + ", resetting = " + cubeGameIsResetting);
+            //aDebug.Log("ExitTheCubeGame() calling SendCubesToHomePositions() cubeGameIsActive = " + cubeGameIsActive + ", resetting = " + cubeGameIsResetting);
             SendCubesToHomePositions(); //acts as if cubeGameIsActive is already true!  the OnExitTriggers in CESMatrix.cs? yes but what do we do about it?
         }
         //cubeGameCam.Priority = originalCamPriority;// 2/3/23 try moving to 3rd round is over to when start(Done) is pressed 
-       // Debug.Log("ExitTheCubeGame() calling SendCubesToHomePositions()");
-       // SendCubesToHomePositions();
+        // //aDebug.Log("ExitTheCubeGame() calling SendCubesToHomePositions()");
+        // SendCubesToHomePositions();
+        roundsLost = 0;
+        roundsWon = 0;
         if (menuButton) menuButton.SetActive(true);
         if (lightButton) lightButton.SetActive(true);
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
@@ -461,14 +454,14 @@ public class CubeGameHandler : MonoBehaviour
     }
     void SendCubesToHomePositions()
     {
-        Debug.Log("SendCubesToHomePositions() called, cubesOccupied = " + cubesOccupied);
+        //aDebug.Log("SendCubesToHomePositions() called, cubesOccupied = " + cubesOccupied);
         if (cubesOccupied != 0)
         {
             for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  //Restore the cubes to home/original positions 
             {
                 cubeGameCubes[i].transform.position = cubeTransformStartPosition[i];
             }
-            Debug.Log("set cubesOccupied to zero");
+            //aDebug.Log("set cubesOccupied to zero");
             cubesOccupied = 0;
         }
        // allCubesAreHome = true;  //may be defunct 2/1/23
@@ -505,6 +498,8 @@ public class CubeGameHandler : MonoBehaviour
         {
             audioManager.PlayAudio(audioManager.clipding);
             SetupNewCubeGameRound();
+            if (cubeGameTitleText) cubeGameTitleText.SetActive(false);
+            if (cubeGameInstructText) cubeGameInstructText.SetActive(false);
             //timeLimiter = StartCoroutine(CubeGameTimer(cubeGameTimeLimit));  //moved into SetupNewCubeGameRound()
             return;
         }
