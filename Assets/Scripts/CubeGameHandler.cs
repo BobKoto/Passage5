@@ -37,8 +37,8 @@ public class CubeGameHandler : MonoBehaviour
     // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
     public MyIntEvent m_MyEvent;  //for TextCloud 
 
-    const string helpNeedHI = "#Need human assist!";  //for textcloud
-    const string okLetsGo = "#Ok, let's go";
+    const string helpNeedHI = "#Need human assist! \n #Your fingers please";  //for textcloud
+    const string okLetsGo = "#Ok, let's go \n #Slide me out!";
     const string cubeGameStartRound1Text = "Start Round 1"; //for the startButton text
     const string cubeGameStartRound2Text = "Start Round 2";
     const string cubeGameStartRound3Text = "Start Round 3";

@@ -20,6 +20,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip clipding;
     public AudioClip TYPE;
     public AudioClip WHOOSH;
+    public AudioClip strom;
+    public AudioClip tick;
 
     public AudioSource audioSource;
   //  [Header("END Audio Stuff")]
