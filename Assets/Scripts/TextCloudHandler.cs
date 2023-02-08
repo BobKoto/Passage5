@@ -13,6 +13,7 @@ public class MyIntEvent : UnityEvent<int, int, string>
 public class TextCloudHandler : MonoBehaviour
 {
     //public Transform  playerTransform; commented 11/7/22 see EnableTheTextCloud() below
+    public AudioManager audioManager;
     public GameObject textCloud;
     public GameObject cloudText;
     public MyIntEvent m_MyEvent;
@@ -27,6 +28,7 @@ public class TextCloudHandler : MonoBehaviour
 
         m_MyEvent.AddListener(EnableTheTextCloud);
         originalCamPriority = playerFacingCamera.Priority;
+        if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
 
     public void EnableTheTextCloud(int x, int y, string _caption)
@@ -38,7 +40,8 @@ public class TextCloudHandler : MonoBehaviour
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
     //    Debug.Log(this.name + "  Set caption string to " + _caption);
         textCloud.SetActive(true);
-     //   playerFacingCamera.Priority = 14;  //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
+        audioManager.PlayAudio(audioManager.strom);
+        //   playerFacingCamera.Priority = 14;  //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));
         //Debug.Log(this.name + "  EnableTheTextCloud called via event x = " + x + " y = " + y + " z = " + z);
     }
