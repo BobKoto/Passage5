@@ -6,9 +6,10 @@ using TMPro;
 using Cinemachine;
 using UnityEngine.Events;
 using CarouselAndMovingPlatforms;
-
+[System.Serializable]
+public class MontyDoorTouchEvent : UnityEvent<int> { }
 public class MontyStopTrigger : MonoBehaviour
-{
+{  //Component of MontyStopTrigger
     MovingPlatform movingPlatform;
     [Header("UI Buttons")]
     public GameObject stopButton;
@@ -31,11 +32,15 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera thirdPersonFollowCam;
     public CinemachineFreeLook freeLookCam;
+    public CinemachineVirtualCamera montyGameCam;
+
+    int originalCamPriority;
 
     int thirdPersonFollowCamOriginalPriority, freeLookCamOriginalPriority;
 
     [Header("The Input System canvas")]
     public GameObject inputControls;
+
 
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick, playerPickedWinner;
@@ -47,6 +52,8 @@ public class MontyStopTrigger : MonoBehaviour
     float originalMoveSpeed, originalSprintSpeed;
 
     public PlayerEnteredRelevantTrigger triggerEvent;
+
+    public MontyDoorTouchEvent montyDoorTouchEvent;
 
     Animator animDoor1, animDoor2, animDoor3, animPlayer;
     // Start is called before the first frame update
@@ -67,6 +74,11 @@ public class MontyStopTrigger : MonoBehaviour
         {
             triggerEvent = new PlayerEnteredRelevantTrigger();
         }
+        if (montyDoorTouchEvent == null)
+            montyDoorTouchEvent = new MontyDoorTouchEvent();
+
+        montyDoorTouchEvent.AddListener(OnMontyDoorTouch);
+        originalCamPriority = montyGameCam.Priority;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -75,9 +87,10 @@ public class MontyStopTrigger : MonoBehaviour
          //  Debug.Log(other.gameObject.name + " Entered montyPStop.. ");
             if (!montyGameEnded)
             {
-                triggerEvent.Invoke(1);
+                triggerEvent.Invoke(1);   //send event to ThirdPersonController to stop and rotate the player and camera
                 LockPlayerInTheMontyGameTriggerArea();
                 PlayTheMontyGame();
+                montyGameCam.Priority = 12;
                 audioManager.PlayAudio(audioManager.clipDRUMROLL);
             }
         }
@@ -89,6 +102,7 @@ public class MontyStopTrigger : MonoBehaviour
         {
          //   Debug.Log(other.gameObject.name + " Exited montyPlay(STOP)Trigger... from MontyStopTrigger");
             DisableTheDoorButtons();
+            montyGameCam.Priority = originalCamPriority;
         }
     }
     private void LockPlayerInTheMontyGameTriggerArea()
@@ -127,80 +141,30 @@ public class MontyStopTrigger : MonoBehaviour
     public void OnDoor1ButtonPressed()
     {
         ProcessTheDoorButton(1);
-        //if (awaitingFinalDoorPick)
-        //{
-        //    animDoor1.SetTrigger("MontyDoor1Down");
-        //    montyGameEnded = true;
-        //    if (theWinningDoor == 1) 
-        //    {
-        //       Debug.Log("Door 1 is a Winner");
-        //        montyGameSignText.text = "Door 1 is a winner!"; 
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Door 1 is a Loser");
-        //        montyGameSignText.text = "Door 1 is a loser... awww";
-        //    }
-        //    CleanUpTheMontyGameAndUnlockThePlayer();
-        //    return;
-        //}
-        //DisableTheDoorButtons();
-        //playerPickedDoor1 = true;
-        ////doorNumberPicked = 1;
-        //Debug.Log("player picked door 1" + playerPickedDoor1);
-        //ShowAlternativeDoors();
     }
     public void OnDoor2ButtonPressed()
     {
         ProcessTheDoorButton(2);
-        //if (awaitingFinalDoorPick)
-        //{
-        //    animDoor2.SetTrigger("MontyDoor2Down");
-        //    montyGameEnded = true;
-        //    if (theWinningDoor == 2)
-        //    {
-        //        Debug.Log("Door 2 is a Winner");
-        //        montyGameSignText.text = "Door 2 is a winner!";
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Door 2 is a Loser");
-        //        montyGameSignText.text = "Door 2 is a loser... awww";
-        //    }
-        //    CleanUpTheMontyGameAndUnlockThePlayer();
-        //    return;
-        //}
-        //DisableTheDoorButtons();
-        //playerPickedDoor2 = true;
-        ////doorNumberPicked = 2;
-        //Debug.Log("player picked door 2" + playerPickedDoor2);
-        //ShowAlternativeDoors();
     }
     public void OnDoor3ButtonPressed()
     {
         ProcessTheDoorButton(3);
-        //if (awaitingFinalDoorPick)
+    }
+    public void OnMontyDoorTouch(int _doorNumber)
+    {
+        //handle here - event will pass the door number touched - I hope   //Above 3 UI buttons will be deimped
+        ProcessTheDoorButton(_doorNumber); // its not a Button anymore 
+        //switch (_doorNumber)
         //{
-        //    animDoor3.SetTrigger("MontyDoor3Down");
-        //    montyGameEnded = true;
-        //    if (theWinningDoor == 3)
-        //    {
-        //        Debug.Log("Door 3 is a Winner");
-        //        montyGameSignText.text = "Door 3 is a winner!";
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Door 3 is a Loser");
-        //        montyGameSignText.text = "Door 3 is a loser... awww";
-        //    }
-        //    CleanUpTheMontyGameAndUnlockThePlayer();
-        //    return;
+        //    case 1:
+        //        break;
+        //    case 2:
+        //        break;
+        //    case 3:
+        //        break;
+        //    default: Debug.Log("OnMontyDoorTouch got an invalid door number!");
+        //        break;
         //}
-        //DisableTheDoorButtons();
-        //playerPickedDoor3 = true;
-        ////doorNumberPicked = 3;
-        //Debug.Log("player picked door 3" + playerPickedDoor3);
-        //ShowAlternativeDoors();
     }
     private void ProcessTheDoorButton(int doorPressed)
     {
