@@ -14,7 +14,7 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("UI Buttons")]
     public GameObject stopButton;
     public GameObject goButton;
-    public GameObject door1Button;
+    public GameObject door1Button;  // Door buttons to be deimped 
     public GameObject door2Button;
     public GameObject door3Button;
 
@@ -38,9 +38,8 @@ public class MontyStopTrigger : MonoBehaviour
 
     int thirdPersonFollowCamOriginalPriority, freeLookCamOriginalPriority;
 
-    [Header("The Input System canvas")]
+    [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
-
 
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick, playerPickedWinner;
@@ -56,8 +55,8 @@ public class MontyStopTrigger : MonoBehaviour
     public MontyDoorTouchEvent montyDoorTouchEvent;
 
     Animator animDoor1, animDoor2, animDoor3, animPlayer;
-    // Start is called before the first frame update
     AudioManager audioManager;
+    public static bool montyGameActive;
     void Start()
     {
         //Debug.Log(" 3pf cam priority = " + thirdPersonFollowCam.Priority + "    freeLook cam priority = " + freeLookCam.Priority);
@@ -79,6 +78,7 @@ public class MontyStopTrigger : MonoBehaviour
 
         montyDoorTouchEvent.AddListener(OnMontyDoorTouch);
         originalCamPriority = montyGameCam.Priority;
+
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -87,14 +87,13 @@ public class MontyStopTrigger : MonoBehaviour
          //  Debug.Log(other.gameObject.name + " Entered montyPStop.. ");
             if (!montyGameEnded)
             {
-                triggerEvent.Invoke(1);   //send event to ThirdPersonController to stop and rotate the player and camera
+               // triggerEvent.Invoke(1);   //send event to ThirdPersonController to rotate the player and camera  //2/10/23 Deimp, go straight  
                 LockPlayerInTheMontyGameTriggerArea();
-                PlayTheMontyGame();
+              //  PlayTheMontyGame();  //Only sets montyGameActive true - which causes ActOnMontyDoorTouch to accept door touches
                 montyGameCam.Priority = 12;
                 audioManager.PlayAudio(audioManager.clipDRUMROLL);
             }
         }
-
     }
     private void OnTriggerExit(Collider other)
     {
@@ -102,7 +101,7 @@ public class MontyStopTrigger : MonoBehaviour
         {
          //   Debug.Log(other.gameObject.name + " Exited montyPlay(STOP)Trigger... from MontyStopTrigger");
             DisableTheDoorButtons();
-            montyGameCam.Priority = originalCamPriority;
+           // montyGameCam.Priority = originalCamPriority;
         }
     }
     private void LockPlayerInTheMontyGameTriggerArea()
@@ -112,60 +111,46 @@ public class MontyStopTrigger : MonoBehaviour
         if (goButton) goButton.SetActive(false);
         thirdPersonController.MoveSpeed = 0f;
         thirdPersonController.SprintSpeed = 0f;
-        // Here we may need to rotate player to face doors  OR the play can do it 
-        // playerArmature.transform.rotation.y = //a bad start 
-        //freeLookCam.MoveToTopOfPrioritySubqueue();   //moves on rotation AND Look   but the call doesn't work?
-        //freeLookCam.Priority = 12;
+        Debug.Log("SET animPlayer.speed = 0");
+        animPlayer.speed = 0;
+        if (inputControls) inputControls.SetActive(false);  //causes unwanted almost automatic Door 1 touch ? right where the joystick is...
+        PlayTheMontyGame();  //so let's enable the door touches here - i bet no diff  //OK so we should add a start/play button
     }
     private void UnlockPlayerFromTheGameTriggerArea()
     {
-        if (AddRemoveChild.playerIsOnYellowPlatform)
+        if (AddRemoveChild.playerIsOnYellowPlatform)  // another useful public static bool
         {
             if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
             if (goButton) goButton.SetActive(true);
-
         }
+        if (inputControls) inputControls.SetActive(true);
         thirdPersonController.MoveSpeed = originalMoveSpeed;
         thirdPersonController.SprintSpeed = originalSprintSpeed;
-        //thirdPersonFollowCam.MoveToTopOfPrioritySubqueue();  //only moves on Look    call doesn't work?
-        //freeLookCam.Priority = 10;   //spins back too soon 
-    }
+        Debug.Log("SET animPlayer.speed = 1");
+        animPlayer.speed = 1;
 
+    }
     private void PlayTheMontyGame()
     {
-      //  montyGamePlayed = true;
-        if (door1Button) door1Button.SetActive(true);
-        if (door2Button) door2Button.SetActive(true);
-        if (door3Button) door3Button.SetActive(true);
+        //if (door1Button) door1Button.SetActive(true);//if (door2Button) door2Button.SetActive(true);//if (door3Button) door3Button.SetActive(true);
+        montyGameActive = true;
     }
-    public void OnDoor1ButtonPressed()
-    {
-        ProcessTheDoorButton(1);
-    }
-    public void OnDoor2ButtonPressed()
-    {
-        ProcessTheDoorButton(2);
-    }
-    public void OnDoor3ButtonPressed()
-    {
-        ProcessTheDoorButton(3);
-    }
-    public void OnMontyDoorTouch(int _doorNumber)
-    {
-        //handle here - event will pass the door number touched - I hope   //Above 3 UI buttons will be deimped
-        ProcessTheDoorButton(_doorNumber); // its not a Button anymore 
-        //switch (_doorNumber)
-        //{
-        //    case 1:
-        //        break;
-        //    case 2:
-        //        break;
-        //    case 3:
-        //        break;
-        //    default: Debug.Log("OnMontyDoorTouch got an invalid door number!");
-        //        break;
-        //}
-    }
+    //Door Buttons being Deimped, so these OnPress methods commented out....
+
+    //public void OnDoor1ButtonPressed()
+    //{
+    //    ProcessTheDoorButton(1);
+    //}
+    //public void OnDoor2ButtonPressed()
+    //{
+    //    ProcessTheDoorButton(2);
+    //}
+    //public void OnDoor3ButtonPressed()
+    //{
+    //    ProcessTheDoorButton(3);
+    //}
+    public void OnMontyDoorTouch(int _doorNumber) => ProcessTheDoorButton(_doorNumber); // its not Button anymore //Above 3 UI buttons will be deimped    
+                                                                                        //getting door # from ActOnMontyDoorTouch.cs Event 
     private void ProcessTheDoorButton(int doorPressed)
     {
         if (awaitingFinalDoorPick)   // //////////////////// This IS the SECOND door pick!! /////////////////////////////////
@@ -239,8 +224,6 @@ public class MontyStopTrigger : MonoBehaviour
                 break;
 
         }
-
-
         Debug.Log("player picked door " + doorPressed);
 
         if (!montyGameEnded)
@@ -259,9 +242,8 @@ public class MontyStopTrigger : MonoBehaviour
             {
                 StartCoroutine(WaitSeconds(.5f, audioManager.clipfalling));
             }
+            montyGameCam.Priority = originalCamPriority;
         }
-
-
     }
     private void ShowAlternativeDoors()
     {
@@ -389,31 +371,31 @@ public class MontyStopTrigger : MonoBehaviour
 
         awaitingFinalDoorPick = true;
        // audioManager.PlayAudio(audioManager.clipding);
-        switch (doorNumberDown)
-        {
-            case 1:
-                {
-                                                                              // if (door1Button) door1Button.SetActive(true);
-                    if (door2Button) door2Button.SetActive(true);
-                    if (door3Button) door3Button.SetActive(true);
-                    break;
-                }
-            case 2:
-                {
-                    if (door1Button) door1Button.SetActive(true);
-                                                                              // if (door2Button) door2Button.SetActive(true);
-                    if (door3Button) door3Button.SetActive(true);
-                    break;
+        //switch (doorNumberDown)
+        //{
+        //    case 1:
+        //        {
+        //                                                                  // if (door1Button) door1Button.SetActive(true);
+        //            if (door2Button) door2Button.SetActive(true);
+        //            if (door3Button) door3Button.SetActive(true);
+        //            break;
+        //        }
+        //    case 2:
+        //        {
+        //            if (door1Button) door1Button.SetActive(true);
+        //                                                                      // if (door2Button) door2Button.SetActive(true);
+        //            if (door3Button) door3Button.SetActive(true);
+        //            break;
 
-                }
-            case 3:
-                {
-                    if (door1Button) door1Button.SetActive(true);
-                    if (door2Button) door2Button.SetActive(true);
-                                                                               //   if (door3Button) door3Button.SetActive(true);
-                    break;
-                }
-        }
+        //        }
+        //    case 3:
+        //        {
+        //            if (door1Button) door1Button.SetActive(true);
+        //            if (door2Button) door2Button.SetActive(true);
+        //                                                                       //   if (door3Button) door3Button.SetActive(true);
+        //            break;
+        //        }
+        //}
     }
     private void CloseTheFirstOpenedDoor()  //do we really want to do this?
     {
@@ -430,7 +412,7 @@ public class MontyStopTrigger : MonoBehaviour
                     break;
         }
     }
-    private void DisableTheDoorButtons()
+    private void DisableTheDoorButtons()   //DoorButtons Will be Deimped, but we keep this temporarily 
     {
         if (door1Button) door1Button.SetActive(false);
         if (door2Button) door2Button.SetActive(false);
@@ -438,6 +420,7 @@ public class MontyStopTrigger : MonoBehaviour
     }
     private void CleanUpTheMontyGameAndUnlockThePlayer()
     {
+        montyGameActive = false;
         DisableTheDoorButtons();
         CloseTheFirstOpenedDoor();
         UnlockPlayerFromTheGameTriggerArea();
