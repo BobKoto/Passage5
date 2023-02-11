@@ -20,7 +20,7 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler, IPointer
     void Start()
     {
       //  Debug.Log("Hello from ActOnMontyDoorTouch my name is " + this.name);
-        AlignCam(); //with the on-standby vcam which will "become" cam/Camera.main when it goes Live
+      //  AlignCam(); //with the on-standby vcam which will "become" cam/Camera.main when it goes Live
     }
     void AlignCam()  //moved from Start in prep to align ONLY when player enters MontyGame- else where the player starts is an issue 
     {
@@ -37,10 +37,13 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-       // audioManager.PlayAudio(audioManager.clipapert);
+        // audioManager.PlayAudio(audioManager.clipapert);
+        if (MontyStopTrigger.montyGameActive)  //send touch event to MontyStopTrigger else ignore
+        {
+            Debug.Log("Object touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+            montyDoorTouchEvent.Invoke(IntegerToSend(this.gameObject));
+        }
 
-        Debug.Log("Object touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
-        montyDoorTouchEvent.Invoke(IntegerToSend(this.gameObject));
     }
     int IntegerToSend(GameObject gO)
     {
