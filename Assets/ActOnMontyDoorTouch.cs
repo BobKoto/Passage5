@@ -10,39 +10,59 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler, IPointer
 //IPointerClickHandler, IInitializePotentialDragHandler, IPointerUpHandler,IPointerExitHandler, IPointerEnterHandler, IDropHandler
 // Touch Testing only for now 
 // Component of MontySlidingDoorN objects  when N is 1,2 or 3
+// and Component of MontyPlayButton 
 {
     public MontyDoorTouchEvent montyDoorTouchEvent;
+    public MontyPlayButtonTouchEvent montyPlayButtonTouchEvent;
+    public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;
     public CinemachineVirtualCamera cVCam;
-    Camera cam;
-    float yPositionFixed, zPositionFixed, xPositionFixed, camCubeXDelta, yPositionTopLimit,
-    zPositionRightLimit, zPositionLeftLimit, movingCubeSizeX;
+
     // Start is called before the first frame update
     void Start()
     {
-      //  Debug.Log("Hello from ActOnMontyDoorTouch my name is " + this.name);
+        Debug.Log("Hello from ActOnMontyDoorTouch my name is " + this.name);
       //  AlignCam(); //with the on-standby vcam which will "become" cam/Camera.main when it goes Live
     }
-    void AlignCam()  //moved from Start in prep to align ONLY when player enters MontyGame- else where the player starts is an issue 
-    {
-        cam = Camera.main;  //
-        xPositionFixed = transform.position.x;  //we apparently need one of these fixed positions depending on cam/*cube orientation
-        yPositionFixed = transform.position.y;  // *cube as in the thing(s) we want to drag 
-        zPositionFixed = transform.position.z;
-        camCubeXDelta = cVCam.transform.position.x - transform.position.x; //for ScreenToWorldPoint - use pos X of cVCam which will "become" cam when Live
-        //Debug.Log("camCubeXDelta = " + camCubeXDelta);
-        //yPositionTopLimit = cubeGameTopWall.transform.position.y - transform.localScale.y / 2;
-        //zPositionLeftLimit = cubeGameLeftWall.transform.position.z;//
-        //zPositionRightLimit = cubeGameRightWall.transform.position.z;// 
-        movingCubeSizeX = transform.localScale.x;
-    }
+
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        // audioManager.PlayAudio(audioManager.clipapert);
-        if (MontyStopTrigger.montyGameActive)  //send touch event to MontyStopTrigger else ignore
+        switch (this.gameObject.name)
         {
-            Debug.Log("Object touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
-            montyDoorTouchEvent.Invoke(IntegerToSend(this.gameObject));
+            case "MontyPlayButton":
+                Debug.Log("Object/PLAYBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+                montyPlayButtonTouchEvent.Invoke();
+                break;
+            case "MontySlidingDoor1": case "MontySlidingDoor2" : case "MontySlidingDoor3":
+                Debug.Log("Object/DOOR touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+                if (MontyStopTrigger.montyGameActive)
+                {
+                    montyDoorTouchEvent.Invoke(IntegerToSend(this.gameObject));
+                }
+                break;
+            case "MontyGameMoveOnButton":
+                Debug.Log("Object/MOVEonBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+                montyMoveOnButtonTouchEvent.Invoke();
+                break;
+            default:  
+                Debug.Log("ActOnMontyDoorTouch DEFAULTED!!!");
+                //if (MontyStopTrigger.montyGameActive)
+                //{
+                //    montyDoorTouchEvent.Invoke(IntegerToSend(this.gameObject));
+                //}
+                break;
         }
+        //if (MontyStopTrigger.montyGameActive)  //send touch event to MontyStopTrigger else ignore
+        //{
+        //    Debug.Log("Object/DOOR touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+        //    montyDoorTouchEvent.Invoke(IntegerToSend(this.gameObject));
+        //    return;
+        //}
+        //else  //only works because intro panel is blocking the doors - lazy and shitty but...
+        //if (this.gameObject.name == "MontyPlayButton")
+        //{
+        //    Debug.Log("Object/PLAYBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+        //    montyPlayButtonTouchEvent.Invoke();
+        //}
 
     }
     int IntegerToSend(GameObject gO)
@@ -64,6 +84,16 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler, IPointer
 
         return _doorNumber;
     }
+    //public void AlertObservers(string message)  //this was for testing on 2/14/23 and I hope no longer needed 
+    //{
+    //    if (message.Equals("Door1DownFinished"))
+    //    {
+    //        //pc_attacking = false;
+    //        //pc_anim.SetBool("attack", false);
+    //        // Do other things based on an attack ending.
+    //        Debug.Log("Animation event received by ActOnMontyTouch... " + message);
+    //    }
+    //}
     //void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     //{
     //  //  Debug.Log("Pointer ENTERED!!!! this.name = " + this.name); // + " dragging? " + eventData.dragging);
