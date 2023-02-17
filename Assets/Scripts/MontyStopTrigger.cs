@@ -35,7 +35,10 @@ public class MontyStopTrigger : MonoBehaviour
     public GameObject montyDoor3;
     public GameObject montyDoorsAndBoxes;
 
+    public GameObject randomTest; //contains the script that instantiates the randomized text of winners and losers 
+
     [Header("Text Above the Doors")]
+    public GameObject mainMontySign;
     public TMP_Text montyGameSignText;
 
     [Header("Monty Game Intro")]
@@ -60,13 +63,9 @@ public class MontyStopTrigger : MonoBehaviour
     public Animation animDoor2Down;
     public Animation animDoor3Down;
 
-    private int animDoor1FinishedHash;
-    private int animDoor2FinishedHash;
-    private int animDoor3FinishedHash;
-    private string animDoor1FinishedName = "hello";
     int originalCamPriority;
 
-    int thirdPersonFollowCamOriginalPriority, freeLookCamOriginalPriority;
+   // int thirdPersonFollowCamOriginalPriority, freeLookCamOriginalPriority;
 
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
@@ -87,12 +86,11 @@ public class MontyStopTrigger : MonoBehaviour
     public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;
     public MontyDoorDownEvent montyDoorDownEvent;
 
-    Animator animDoor1, animDoor2, animDoor3, animPlayer;
+    Animator animDoor1, animDoor2, animDoor3;
     AudioManager audioManager;
     public static bool montyGameActive;
     void Start()
     {
-        //Debug.Log(" 3pf cam priority = " + thirdPersonFollowCam.Priority + "    freeLook cam priority = " + freeLookCam.Priority);
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         movingPlatform = GameObject.Find("MovingPlatform").GetComponent<MovingPlatform>();
         animDoor1 = montyDoor1.GetComponent<Animator>();
@@ -101,7 +99,7 @@ public class MontyStopTrigger : MonoBehaviour
 
         // Debug.Log("")
 
-        animPlayer = playerArmature.GetComponent<Animator>();
+        //animPlayer = playerArmature.GetComponent<Animator>();
 
         thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
         originalMoveSpeed = thirdPersonController.MoveSpeed;
@@ -126,8 +124,6 @@ public class MontyStopTrigger : MonoBehaviour
         montyDoorDownEvent.AddListener(OnMontyDoorDown);
 
         originalCamPriority = montyGameCam.Priority;
-
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -160,6 +156,7 @@ public class MontyStopTrigger : MonoBehaviour
         Debug.Log("IntroPlay Button Pressed - setting Intro Panel Active to false");
         if (montyGameIntro) montyGameIntro.SetActive(false);
         if (inputControls) inputControls.SetActive(false);
+        if (mainMontySign) mainMontySign.SetActive(true);
         audioManager.PlayAudio(audioManager.clipDRUMROLL);
     }
     public void MoveOnButtonPressed()
@@ -167,8 +164,15 @@ public class MontyStopTrigger : MonoBehaviour
         Debug.Log("MoveOn Button Pressed - wiping out all");
         if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);
         montyGameCam.Priority = originalCamPriority;
+        if (mainMontySign) mainMontySign.SetActive(false);
+        if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
         if (inputControls) inputControls.SetActive(true);
-        // audioManager.PlayAudio(audioManager.clipDRUMROLL);
+        GameObject missed1 = GameObject.Find("Missed1(Clone)");
+        if (missed1) missed1.SetActive(false);
+        GameObject missed3 = GameObject.Find("Missed3(Clone)");
+        if (missed3) missed3.SetActive(false);
+        GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
+        if (montyGoal) montyGoal.SetActive(false);
     }
     private void LockPlayerInTheMontyGameTriggerArea()
     {
@@ -185,33 +189,17 @@ public class MontyStopTrigger : MonoBehaviour
             if (goButton) goButton.SetActive(true);
         }
         if (montyGameBarriers) montyGameBarriers.SetActive(false);
-        if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
+       // if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
     }
     private void PlayTheMontyGame()
     {
-        //if (door1Button) door1Button.SetActive(true);//if (door2Button) door2Button.SetActive(true);//if (door3Button) door3Button.SetActive(true);
         Debug.Log("PlayTheMontyGame() set  montyGameActive = true ");
         montyGameActive = true;
     }
-    //Door Buttons being Deimped, so these OnPress methods commented out....
-
-    //public void OnDoor1ButtonPressed()
-    //{
-    //    ProcessTheDoorButton(1);
-    //}
-    //public void OnDoor2ButtonPressed()
-    //{
-    //    ProcessTheDoorButton(2);
-    //}
-    //public void OnDoor3ButtonPressed()
-    //{
-    //    ProcessTheDoorButton(3);
-    //}
     public void OnMontyDoorTouch(int _doorNumber) => ProcessTheDoorButton(_doorNumber); // its not Button anymore //Above 3 UI buttons will be deimped    
                                                                                         //getting door # from ActOnMontyDoorTouch.cs Event 
     private void ProcessTheDoorButton(int doorPressed)
     {
-        // bool animationIsPlaying = AnimIsPlaying(animDoor1Down) || AnimIsPlaying(animDoor2Down) || AnimIsPlaying(animDoor3Down);
         if (awaitingFinalDoorPick)  // //////////////////// This IS the SECOND door pick!! /////////////////////////////////
         {
             ProcessFinalDoorPick(doorPressed);
@@ -220,7 +208,7 @@ public class MontyStopTrigger : MonoBehaviour
         switch (doorPressed)
         {
             case 1:
-                playerPickedDoor1 = true;  //BEWARE it seems these cases are only good for a single iteration of the monty game! 
+                playerPickedDoor1 = true;  //BEWARE these cases are only good for ONE iteration of the monty game! need to reset for/if multiple games
                 break;
             case 2:
                 playerPickedDoor2 = true;
@@ -236,6 +224,7 @@ public class MontyStopTrigger : MonoBehaviour
             audioManager.PlayAudio(audioManager.clipding);
             StartCoroutine(WaitSeconds(2f, audioManager.clipdrama));
             //  montyGameSignText.text = "A chance to change door pick...";         
+            montyGameActive = false;  //disallow door presses until we get an animation ended event from ActOnMontyDoorTouch
             ShowAlternativeDoors();  // HERE MAYBE is where we don't want to allow a door touch until the alt door animation is finished
             return;
         }
@@ -243,7 +232,6 @@ public class MontyStopTrigger : MonoBehaviour
         if (playerPickedWinner)
         {
             StartCoroutine(WaitSeconds(2f, audioManager.clipApplause));
-            //   audioManager.PlayAudio(audioManager.clipApplause);
         }
         else
         {
@@ -307,7 +295,6 @@ public class MontyStopTrigger : MonoBehaviour
                 break;
         }
         CleanUpTheMontyGameAndUnlockThePlayer();
-
     }
     private void ShowAlternativeDoors()
     {
@@ -426,76 +413,11 @@ public class MontyStopTrigger : MonoBehaviour
             doorNumberDown = 3;
         }
         awaitingFinalDoorPick = true;
-        // StartCoroutine(WaitForAnimator(doorNumberDown));
-        // audioManager.PlayAudio(audioManager.clipding);
-        //switch (doorNumberDown)
-        //{
-        //    case 1:
-        //        {
-        //                                                                  // if (door1Button) door1Button.SetActive(true);
-        //            if (door2Button) door2Button.SetActive(true);
-        //            if (door3Button) door3Button.SetActive(true);
-        //            break;
-        //        }
-        //    case 2:
-        //        {
-        //            if (door1Button) door1Button.SetActive(true);
-        //                                                                      // if (door2Button) door2Button.SetActive(true);
-        //            if (door3Button) door3Button.SetActive(true);
-        //            break;
-        //
-        //        }
-        //    case 3:
-        //        {
-        //            if (door1Button) door1Button.SetActive(true);
-        //            if (door2Button) door2Button.SetActive(true);
-        //                                                                       //   if (door3Button) door3Button.SetActive(true);
-        //            break;
-        //        }
-        //}
     }
     public void OnMontyDoorDown(int doorDownReceived)
     {
-        Debug.Log("MontyDoorDownEvent  says  doorDown is door " + doorDownReceived);
-    }
-    //public void AlertObservers(string message)  //this doesn't work - but keep as a placeholder for future logic decision(s)
-    //{
-    //    Debug.Log("MONTY STOP TRIGGER Animation event received... " + message);
-    //    if (message.Equals("Door1DownFinished"))
-    //    {
-    //        //pc_attacking = false;
-    //        //pc_anim.SetBool("attack", false);
-    //        // Do other things based on an attack ending.
-    //        Debug.Log("Animation event received... " + message);
-    //    }
-    //}
-    IEnumerator WaitForAnimator(int doorDown)   //this doesn't work - but keep as a placeholder for future logic decision(s)
-    {
-        bool animIsDone = false;
-        Debug.Log("WaitForAnimator Entered....... doorDown = " + doorDown);
-        while (!animIsDone)
-        {
-            switch (doorDown)
-            {
-                case 1:
-                    AnimatorStateInfo animState1 = animDoor1.GetCurrentAnimatorStateInfo(0);
-                    animIsDone = (animState1.normalizedTime >= 1.0f && animState1.shortNameHash == animDoor1FinishedHash);
-                    Debug.Log("animState1.normalizedTime = " + animState1.normalizedTime + " shortNameHash = " + animState1.shortNameHash);
-                    break;
-                case 2:
-                    AnimatorStateInfo animState2 = animDoor2.GetCurrentAnimatorStateInfo(0);
-                    animIsDone = (animState2.normalizedTime >= 1.0f && animState2.shortNameHash == animDoor2FinishedHash);
-                    Debug.Log("animState2.normalizedTime = " + animState2.normalizedTime + " shortNameHash = " + animState2.shortNameHash);
-                    break;
-                case 3:
-                    AnimatorStateInfo animState3 = animDoor3.GetCurrentAnimatorStateInfo(0);
-                    animIsDone = (animState3.normalizedTime >= 1.0f && animState3.shortNameHash == animDoor3FinishedHash);
-                    Debug.Log("animState3.normalizedTime = " + animState3.normalizedTime + " shortNameHash = " + animState3.shortNameHash);
-                    break;
-            }
-            yield return new WaitForSeconds(.5f);
-        }
-        Debug.Log("Anim is Done Goodbye.......");
+        Debug.Log("MontyDoorDownEvent  says  doorDown is door " + doorDownReceived + " reset montyGameActive to TRUE");
+        montyGameActive = true;
     }
     private void CloseTheFirstOpenedDoor()  //do we really want to do this?
     {
@@ -524,6 +446,7 @@ public class MontyStopTrigger : MonoBehaviour
         DisableTheDoorButtons();
         CloseTheFirstOpenedDoor();
         UnlockPlayerFromTheGameTriggerArea();
+
     }
     IEnumerator WaitSeconds(float timeToWait, AudioClip audioClip)
     {

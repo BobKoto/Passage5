@@ -22,7 +22,7 @@ public class MontyPlayAreaEntered : MonoBehaviour
     void Start()
     {
         // randomTest = new randomize_array.RandomTest;
-
+        Debug.Log("HELLO from MontyPlayAreaEntered");
     }
     private void OnTriggerEnter(Collider other)
     {

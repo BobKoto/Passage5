@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 namespace randomize_array
 {
     public class RandomTest : MonoBehaviour
-    {
+    {//Component of RandomTest
         int[] doors = { 1, 2, 3 };
         public GameObject[] montyGameObject;
         public static int winningDoor;
