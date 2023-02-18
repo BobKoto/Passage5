@@ -40,7 +40,7 @@ public class TextCloudHandler : MonoBehaviour
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
     //    Debug.Log(this.name + "  Set caption string to " + _caption);
         textCloud.SetActive(true);
-        audioManager.PlayAudio(audioManager.strom);
+        audioManager.PlayAudio(audioManager.strom, 1f); //here maybe we can look for spaces in the string
         //   playerFacingCamera.Priority = 14;  //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));
         //Debug.Log(this.name + "  EnableTheTextCloud called via event x = " + x + " y = " + y + " z = " + z);

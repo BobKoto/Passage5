@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 //Use me like this : audioManager.PlayAudio(audioManager.clipApplause); // where clipApplause can be any clip declared below 
+//AND 2 other signature flavors: 1 to loop a clip - and 2 to stop a clip after x seconds
 public class AudioManager : MonoBehaviour
 {
     [Header("Audio Stuff")]   //should have been an array or list -- but...
-
 
     public AudioClip clipApplause;
     public AudioClip clipkongas;
@@ -24,29 +25,50 @@ public class AudioManager : MonoBehaviour
     public AudioClip tick;
 
     public AudioSource audioSource;
-  //  [Header("END Audio Stuff")]
-  
-    // Start is called before the first frame update
+
+    public AudioClipFinishedEvent audioClipFinishedEvent;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
     public void PlayAudio(AudioClip clip)
     {
         audioSource.clip = clip;
+        Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
         audioSource.loop = false;
         audioSource.Play();
+        if (clip.name == "drama") StartCoroutine(SendEventWhenAudioFinished(audioSource));  //until we think of a better way
+      //  else Debug.Log("clip.name is " + clip.name);
     }
     public void PlayAudio(AudioClip clip, bool loop)
     {
         audioSource.clip = clip;
         if (loop) audioSource.loop = true;
         audioSource.Play();
+    }
+    public void PlayAudio(AudioClip clip, float playTimeStop)
+    {
+        audioSource.clip = clip;
+        Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
+
+        audioSource.loop = false;
+        audioSource.Play();
+        StartCoroutine(StopAudioOnPlayTimeStop(audioSource, playTimeStop));
+    }
+    IEnumerator SendEventWhenAudioFinished(AudioSource thisClip)
+    {
+        while (thisClip.isPlaying)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        Debug.Log("AUDIO FINISHED................" + thisClip + " now Invoke event.....");
+        //Broadcast an event here like audioClipFinishedEvent.Invoke();
+        audioClipFinishedEvent.Invoke();
+    }
+    IEnumerator StopAudioOnPlayTimeStop(AudioSource audioSource, float stopAfter)
+    {
+         yield return new WaitForSeconds(stopAfter);
+        audioSource.Stop();
+        Debug.Log("AUDIO STOPPED after ................" + stopAfter + " seconds");
     }
 }
