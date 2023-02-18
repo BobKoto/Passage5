@@ -18,6 +18,8 @@ public class MontyPlayButtonTouchEvent : UnityEvent { }
 public class MontyMoveOnButtonTouchEvent : UnityEvent { }
 [System.Serializable]
 public class MontyDoorDownEvent : UnityEvent<int> { }
+[System.Serializable]
+public class AudioClipFinishedEvent : UnityEvent { }
 
 public class MontyStopTrigger : MonoBehaviour
 {  //Component of MontyStopTrigger
@@ -85,10 +87,12 @@ public class MontyStopTrigger : MonoBehaviour
     public MontyPlayButtonTouchEvent montyPlayButtonTouchEvent;
     public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;
     public MontyDoorDownEvent montyDoorDownEvent;
+    public AudioClipFinishedEvent audioClipFinishedEvent;
 
     Animator animDoor1, animDoor2, animDoor3;
     AudioManager audioManager;
     public static bool montyGameActive;
+    bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
     void Start()
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
@@ -122,6 +126,10 @@ public class MontyStopTrigger : MonoBehaviour
         if (montyDoorDownEvent == null)
             montyDoorDownEvent = new MontyDoorDownEvent();
         montyDoorDownEvent.AddListener(OnMontyDoorDown);
+
+        if (audioClipFinishedEvent == null)
+            audioClipFinishedEvent = new AudioClipFinishedEvent();
+        audioClipFinishedEvent.AddListener(OnAudioClipFinished);
 
         originalCamPriority = montyGameCam.Priority;
     }
@@ -224,7 +232,8 @@ public class MontyStopTrigger : MonoBehaviour
             audioManager.PlayAudio(audioManager.clipding);
             StartCoroutine(WaitSeconds(2f, audioManager.clipdrama));
             //  montyGameSignText.text = "A chance to change door pick...";         
-            montyGameActive = false;  //disallow door presses until we get an animation ended event from ActOnMontyDoorTouch
+            montyGameActive = false;  //disallow door presses until we get animation ended event from AOMDTouch AND audio ended event from AManager
+            StartCoroutine(WaitForEventsToAllowDoorTouches());
             ShowAlternativeDoors();  // HERE MAYBE is where we don't want to allow a door touch until the alt door animation is finished
             return;
         }
@@ -416,8 +425,21 @@ public class MontyStopTrigger : MonoBehaviour
     }
     public void OnMontyDoorDown(int doorDownReceived)
     {
-        Debug.Log("MontyDoorDownEvent  says  doorDown is door " + doorDownReceived + " reset montyGameActive to TRUE");
-        montyGameActive = true;
+        Debug.Log("MontyDoorDownEvent  says  doorDown is door " + doorDownReceived + "montyDoorDownEventReceived = true;");//" reset montyGameActive to TRUE");
+       // montyGameActive = true;  //ActonMontyTouch will see this and allow door touches to pass thru
+        montyDoorDownEventReceived = true;
+    }
+    public void OnAudioClipFinished()
+    {
+        Debug.Log("AudioClipFinishedEvent  says  audio is finished ...montyDramaAudioFinishedEventReceived = true");
+        montyDramaAudioFinishedEventReceived = true;
+    }
+    IEnumerator WaitForEventsToAllowDoorTouches()
+    {
+        //
+        yield return new WaitUntil(() => montyDramaAudioFinishedEventReceived && montyDoorDownEventReceived);  //every frame checked??? could be better
+        Debug.Log("WE GOT BOTH EVENTS !!!!!!!!!!!!!!!!!!!!");
+        montyGameActive = true; //re-allow door touches 
     }
     private void CloseTheFirstOpenedDoor()  //do we really want to do this?
     {
@@ -452,7 +474,7 @@ public class MontyStopTrigger : MonoBehaviour
     {
         yield return new WaitForSeconds(timeToWait);
         audioManager.PlayAudio(audioClip);
-        if (!playerPickedWinner && !montyGameEnded) montyGameSignText.text = "A chance to change door pick...";
+        if (!playerPickedWinner && !montyGameEnded) montyGameSignText.text = "A chance to change door. Choose...";
         if (montyGameEnded)
         {
             Debug.Log("WaitForSeconds sees montyGameEdnded = true");
