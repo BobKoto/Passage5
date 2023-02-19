@@ -34,7 +34,7 @@ public class AudioManager : MonoBehaviour
     public void PlayAudio(AudioClip clip)
     {
         audioSource.clip = clip;
-        Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
+        //Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
         audioSource.loop = false;
         audioSource.Play();
         if (clip.name == "drama") StartCoroutine(SendEventWhenAudioFinished(audioSource));  //until we think of a better way
@@ -49,7 +49,7 @@ public class AudioManager : MonoBehaviour
     public void PlayAudio(AudioClip clip, float playTimeStop)
     {
         audioSource.clip = clip;
-        Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
+        //Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
 
         audioSource.loop = false;
         audioSource.Play();
@@ -61,7 +61,7 @@ public class AudioManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
         }
-        Debug.Log("AUDIO FINISHED................" + thisClip + " now Invoke event.....");
+        //Debug.Log("AUDIO FINISHED................" + thisClip + " now Invoke event.....");
         //Broadcast an event here like audioClipFinishedEvent.Invoke();
         audioClipFinishedEvent.Invoke();
     }
@@ -69,6 +69,6 @@ public class AudioManager : MonoBehaviour
     {
          yield return new WaitForSeconds(stopAfter);
         audioSource.Stop();
-        Debug.Log("AUDIO STOPPED after ................" + stopAfter + " seconds");
+        //Debug.Log("AUDIO STOPPED after ................" + stopAfter + " seconds");
     }
 }

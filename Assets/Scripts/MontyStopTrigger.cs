@@ -165,7 +165,15 @@ public class MontyStopTrigger : MonoBehaviour
         if (montyGameIntro) montyGameIntro.SetActive(false);
         if (inputControls) inputControls.SetActive(false);
         if (mainMontySign) mainMontySign.SetActive(true);
+
+        StartCoroutine(ShowDoorsAndBoxesAfterDelay(1f));
+        //if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(true);
         audioManager.PlayAudio(audioManager.clipDRUMROLL);
+    }
+    IEnumerator ShowDoorsAndBoxesAfterDelay(float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
+        if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(true);
     }
     public void MoveOnButtonPressed()
     {
