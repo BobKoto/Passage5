@@ -79,6 +79,7 @@ public class MontyStopTrigger : MonoBehaviour
     int doorNumberDown, theWinningDoor;
 
     ThirdPersonController thirdPersonController;
+    CharacterController characterController;
     float originalMoveSpeed, originalSprintSpeed;
 
     public PlayerEnteredRelevantTrigger triggerEvent;
@@ -93,6 +94,9 @@ public class MontyStopTrigger : MonoBehaviour
     AudioManager audioManager;
     public static bool montyGameActive;
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
+
+    public GameObject resetJoystickObject;
+
     void Start()
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
@@ -106,6 +110,7 @@ public class MontyStopTrigger : MonoBehaviour
         //animPlayer = playerArmature.GetComponent<Animator>();
 
         thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
+        characterController = playerArmature.GetComponent<CharacterController>();
         originalMoveSpeed = thirdPersonController.MoveSpeed;
         originalSprintSpeed = thirdPersonController.SprintSpeed;
         if (triggerEvent == null)
@@ -161,7 +166,8 @@ public class MontyStopTrigger : MonoBehaviour
     }
     public void PlayButtonPressedOnIntro()
     {
-        Debug.Log("IntroPlay Button Pressed - setting Intro Panel Active to false");
+        //Debug.Log("IntroPlay Button Pressed - setting Intro Panel Active to false");
+        CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
         if (montyGameIntro) montyGameIntro.SetActive(false);
         if (inputControls) inputControls.SetActive(false);
         if (mainMontySign) mainMontySign.SetActive(true);
@@ -169,6 +175,16 @@ public class MontyStopTrigger : MonoBehaviour
         StartCoroutine(ShowDoorsAndBoxesAfterDelay(1f));
         //if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(true);
         audioManager.PlayAudio(audioManager.clipDRUMROLL);
+
+        if (playerArmature) playerArmature.SetActive(false);   
+        if (characterController) characterController.enabled = false;
+
+    }
+    private void CallResetJoystick()
+    {
+        Debug.Log("MontyST doing SendMessage....");
+        if (inputControls) resetJoystickObject.SendMessage("ResetJoystick");
+        if (playerArmature) playerArmature.SetActive(false);
     }
     IEnumerator ShowDoorsAndBoxesAfterDelay(float _delay)
     {
@@ -189,6 +205,13 @@ public class MontyStopTrigger : MonoBehaviour
         if (missed3) missed3.SetActive(false);
         GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
         if (montyGoal) montyGoal.SetActive(false);
+        CallResetJoystick();
+        if (playerArmature)
+        {
+            Debug.Log("reactivate  player.......................");
+            playerArmature.SetActive(true); // =  Instantiate(playerArmature, playerPosition, Quaternion.identity, playerParent);
+        }
+        characterController.enabled = true;
     }
     private void LockPlayerInTheMontyGameTriggerArea()
     {
@@ -238,7 +261,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (!montyGameEnded)
         {
             audioManager.PlayAudio(audioManager.clipding);
-            StartCoroutine(WaitSeconds(2f, audioManager.clipdrama));
+            StartCoroutine(WaitSeconds(.1f, audioManager.clipdrama));
             //  montyGameSignText.text = "A chance to change door pick...";         
             montyGameActive = false;  //disallow door presses until we get animation ended event from AOMDTouch AND audio ended event from AManager
             StartCoroutine(WaitForEventsToAllowDoorTouches());

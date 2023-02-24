@@ -30,20 +30,20 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler
         switch (this.gameObject.name)
         {
             case "MontyPlayButton":
-                Debug.Log("Object/PLAYBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+             //   Debug.Log("Object/PLAYBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
                 montyPlayButtonTouchEvent.Invoke();
                 break;
             case "MontySlidingDoor1":
             case "MontySlidingDoor2" :
             case "MontySlidingDoor3":
-                Debug.Log("Object/DOOR touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+             //   Debug.Log("Object/DOOR touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
                 if (MontyStopTrigger.montyGameActive)  //if we're NOT waiting for the 1st animation to end 
                 {
                     montyDoorTouchEvent.Invoke(IntegerToSend(this.gameObject));
                 }
                 break;
             case "MontyGameMoveOnButton":
-                Debug.Log("Object/MOVEonBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+             //   Debug.Log("Object/MOVEonBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
                 montyMoveOnButtonTouchEvent.Invoke();
                 break;
             default:  
@@ -70,15 +70,15 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler
     }
     public void AlertObservers(string message)
     {
-        Debug.Log(this.name + "  received Animation event received by MontyDoorEvent... " + message);
-        if (message.Equals("Door1DownFinished"))
-        {
-            // Do other things based on an animation ending.
-            Debug.Log(this.name + "  received Animation event received by MontyDoorEvent... " + message);
-        }
+        //Debug.Log(this.name + "  received Animation event received by MontyDoorEvent... " + message);
+        //if (message.Equals("Door1DownFinished"))
+        //{
+        //    // Do other things based on an animation ending.
+        //    Debug.Log(this.name + "  received Animation event received by MontyDoorEvent... " + message);
+        //}
         int x = DoorNumberToSend(); //inspector STATIC parameters override x so BE SURE to select dynamic (in this case either could work) 
         montyDoorDownEvent.Invoke(x);   //we did try to use DoorNumberToSend() instead of x 
-        Debug.Log("Invoked event with door # to send... " + DoorNumberToSend());
+        //Debug.Log("Invoked event with door # to send... " + DoorNumberToSend());
     }
     int DoorNumberToSend()
     {
