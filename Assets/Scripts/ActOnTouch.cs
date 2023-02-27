@@ -19,6 +19,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
     float yPositionFixed, zPositionFixed, xPositionFixed, camCubeXDelta, yPositionTopLimit,
         zPositionRightLimit, zPositionLeftLimit, movingCubeSizeX ;
     public FingerPointerEvent fingerPointerEvent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,6 +70,23 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
     //void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     //{
     //  //  Debug.Log("Pointer ENTERED!!!! this.name = " + this.name); // + " dragging? " + eventData.dragging);
+    //}
+    //void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)  //a user touch(click)
+    //{
+    //    switch (this.gameObject.name)
+    //    {
+    //        case "CubeGamePlayButton":
+    //            //   Debug.Log("Object/PLAYBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+    //            cubeGamePlayButtonTouchEvent.Invoke();
+    //            break;
+    //        case "CubeGameMoveOnButton":
+    //            //   Debug.Log("Object/MOVEonBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+    //            cubeGameMoveOnButtonTouchEvent.Invoke();
+    //            break;
+    //        default:
+    //            Debug.Log("ActOnTouch DEFAULTED!!! object = " + this.gameObject.name);
+    //            break;
+    //    }
     //}
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)   //player took finger off cube
     {

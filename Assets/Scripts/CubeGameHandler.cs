@@ -10,6 +10,11 @@ using StarterAssets;
 [System.Serializable]
 public class CubeGameBoardEvent : UnityEvent<string, bool, string, int> { }  //this declaration i guess is needed to accept
 
+[System.Serializable]
+public class CubeGamePlayButtonTouchEvent : UnityEvent { }
+[System.Serializable]
+public class CubeGameMoveOnButtonTouchEvent : UnityEvent { }
+
 public class CubeGameHandler : MonoBehaviour
 //Component of CubeGame -- receives events from CubeEnteredSolutionMatrix.cs(was)/is now PlacementHandler  -- calculates row/column totals
 //Here we need to figure if game is lost or won 
@@ -19,8 +24,12 @@ public class CubeGameHandler : MonoBehaviour
 {
     public CinemachineVirtualCamera cubeGameCam;
     int originalCamPriority;
+    //Touchy touchy events
     public FingerPointerEvent fingerPointerEvent; //12/18/22 we receive these from ActOnTouch 
-    public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public see line 31 
+    public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public 
+    public CubeGamePlayButtonTouchEvent cubeGamePlayButtonTouchEvent;
+    public CubeGameMoveOnButtonTouchEvent cubeGameMoveOnButtonTouchEvent;
+
     //GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
 
     TMP_Text row1SumText,row2SumText, col1SumText, col2SumText ;
@@ -69,7 +78,8 @@ public class CubeGameHandler : MonoBehaviour
          70, 30, 60, 40  //index 60
          };
     readonly int[] winningGameSumsIndex = new int[] { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 }; // so we have 16
-   // int[] variableGameSums = new int[4];
+                                                                                                                     // int[] variableGameSums = new int[4];
+    Animator animCubeGame; 
     public GameObject player;
     Animator animator;
     ThirdPersonController thirdPersonController;
@@ -80,6 +90,8 @@ public class CubeGameHandler : MonoBehaviour
     public GameObject cubeGameResultText, cubeGameTimerText;
     public GameObject cubeGameTitleText, cubeGameInstructText;
     public GameObject cubeGamesWonInteger, cubeGamesLostInteger;
+    public GameObject cubeGameIntro;
+    public GameObject cubeGame;
     TMP_Text cubeGameWonOrLostText, cubeGameRoundText;
     public TMP_Text cubeGameStartButtonText, cubeGameTimeLeftText;
     TMP_Text[] cubeGameTargetSumText;
@@ -91,10 +103,17 @@ public class CubeGameHandler : MonoBehaviour
     {
         inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");
         // //aDebug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
+
+        //Events and Listeners
         if (cubeGameBoardEvent == null) cubeGameBoardEvent = new CubeGameBoardEvent();  //not sure but it stopped the null reference 
         cubeGameBoardEvent.AddListener(CubeEnteredOrLeft);
         if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
         fingerPointerEvent.AddListener(CheckCubeMovement);
+        if (cubeGamePlayButtonTouchEvent == null) cubeGamePlayButtonTouchEvent = new CubeGamePlayButtonTouchEvent();
+        cubeGamePlayButtonTouchEvent.AddListener(PlayButtonPressedOnIntro);
+        if (cubeGameMoveOnButtonTouchEvent == null) cubeGameMoveOnButtonTouchEvent = new CubeGameMoveOnButtonTouchEvent();
+        cubeGameMoveOnButtonTouchEvent.AddListener(MoveOnButtonPressed);
+
         row1SumText = GameObject.Find("Row1Sum").GetComponent<TMP_Text>();
         row2SumText = GameObject.Find("Row2Sum").GetComponent<TMP_Text>();
         col1SumText = GameObject.Find("Col1Sum").GetComponent<TMP_Text>();
@@ -121,9 +140,21 @@ public class CubeGameHandler : MonoBehaviour
         }
         originalCamPriority = cubeGameCam.Priority;
         animator = player.GetComponent<Animator>();
+        animCubeGame = cubeGame.GetComponent<Animator>();
         thirdPersonController = player.GetComponent<ThirdPersonController>();
         // ////////////////////END MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
     }
+    public void PlayButtonPressedOnIntro()
+    {
+        animCubeGame.SetTrigger("RaiseCubeGame");
+        cubeGameIntro.SetActive(false);
+    }
+    public void MoveOnButtonPressed()
+    {
+        Debug.Log("CubeGame MoveOn Button Pressed!!");
+        
+    }
+
     public void CheckCubeMovement(GameObject go, string cubeName)  //ActOnTouch sent a fingerUp event - meaning player dragged a cube 
     {
         if (!cubeGameIsActive) //Player should not be moving cubes while no game in progress - we take the easy way out // needed since AOTouch locked?
@@ -420,6 +451,7 @@ public class CubeGameHandler : MonoBehaviour
             if (thirdPersonController) thirdPersonController.enabled = false;
             nonPluggedSeed = Random.Range(1, 4); //which round to call SeedCubePuzzle() - other rounds get a Winnable
             //aDebug.Log("nonPluggedSeed = " + nonPluggedSeed);
+            cubeGameIntro.SetActive(true);
         }
     }
     void TellTextCloud(string caption)

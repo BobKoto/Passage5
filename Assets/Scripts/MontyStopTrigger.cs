@@ -61,6 +61,8 @@ public class MontyStopTrigger : MonoBehaviour
     public CinemachineVirtualCamera montyGameCam;
 
     [Header("Animations")]
+    Animation animClipMontyDoorsAndBoxes;
+    public Animation raiseMontyDoorsAndBoxes;
     public Animation animDoor1Down;
     public Animation animDoor2Down;
     public Animation animDoor3Down;
@@ -90,7 +92,7 @@ public class MontyStopTrigger : MonoBehaviour
     public MontyDoorDownEvent montyDoorDownEvent;
     public AudioClipFinishedEvent audioClipFinishedEvent;
 
-    Animator animDoor1, animDoor2, animDoor3;
+    Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes;
     AudioManager audioManager;
     public static bool montyGameActive;
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
@@ -104,7 +106,8 @@ public class MontyStopTrigger : MonoBehaviour
         animDoor1 = montyDoor1.GetComponent<Animator>();
         animDoor2 = montyDoor2.GetComponent<Animator>();
         animDoor3 = montyDoor3.GetComponent<Animator>();
-
+        animMontyDoorsAndBoxes = montyDoorsAndBoxes.GetComponent<Animator>();
+        animClipMontyDoorsAndBoxes = montyDoorsAndBoxes.GetComponent<Animation>();
         // Debug.Log("")
 
         //animPlayer = playerArmature.GetComponent<Animator>();
@@ -167,7 +170,7 @@ public class MontyStopTrigger : MonoBehaviour
     public void PlayButtonPressedOnIntro()
     {
         //Debug.Log("IntroPlay Button Pressed - setting Intro Panel Active to false");
-        CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
+       // CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
         if (montyGameIntro) montyGameIntro.SetActive(false);
         if (inputControls) inputControls.SetActive(false);
         if (mainMontySign) mainMontySign.SetActive(true);
@@ -178,6 +181,7 @@ public class MontyStopTrigger : MonoBehaviour
 
         if (playerArmature) playerArmature.SetActive(false);   
         if (characterController) characterController.enabled = false;
+        if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
 
     }
     private void CallResetJoystick()
@@ -205,7 +209,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (missed3) missed3.SetActive(false);
         GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
         if (montyGoal) montyGoal.SetActive(false);
-        CallResetJoystick();
+       // CallResetJoystick();
         if (playerArmature)
         {
             Debug.Log("reactivate  player.......................");
