@@ -75,7 +75,7 @@ public class MontyStopTrigger : MonoBehaviour
     public GameObject inputControls;
 
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
-    bool awaitingFinalDoorPick, playerPickedWinner;
+    bool awaitingFinalDoorPick, playerPickedWinner, doorResultsShowing;
 
     public static bool montyGameEnded;
     int doorNumberDown, theWinningDoor;
@@ -97,7 +97,9 @@ public class MontyStopTrigger : MonoBehaviour
     public static bool montyGameActive;
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
 
-    public GameObject resetJoystickObject;
+    public GameObject resetJoystickObject;  //Maybe defunct 2/27/23 and before 
+
+    MeshRenderer m1, m2, m3;
 
     void Start()
     {
@@ -140,6 +142,7 @@ public class MontyStopTrigger : MonoBehaviour
         audioClipFinishedEvent.AddListener(OnAudioClipFinished);
 
         originalCamPriority = montyGameCam.Priority;
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -243,10 +246,15 @@ public class MontyStopTrigger : MonoBehaviour
                                                                                         //getting door # from ActOnMontyDoorTouch.cs Event 
     private void ProcessTheDoorButton(int doorPressed)
     {
+        if (!doorResultsShowing)
+        {
+            EnableTheDoorResultsMeshRenderers();
+        }
         if (awaitingFinalDoorPick)  // //////////////////// This IS the SECOND door pick!! /////////////////////////////////
         {
             ProcessFinalDoorPick(doorPressed);
         }
+
         DisableTheDoorButtons();  //deimped but hold because we may want to do something here like wait on the door animation
         switch (doorPressed)
         {
@@ -282,6 +290,16 @@ public class MontyStopTrigger : MonoBehaviour
             StartCoroutine(WaitSeconds(.5f, audioManager.clipfalling));
         }
         // montyGameCam.Priority = originalCamPriority;  //this is premature and should be done upon complete eviction of monty game
+    }
+    void EnableTheDoorResultsMeshRenderers()
+    {
+        m1 = GameObject.Find("MontyGoal(Clone)").GetComponent<MeshRenderer>();
+        m1.enabled = true;
+        m2 = GameObject.Find("Missed1(Clone)").GetComponent<MeshRenderer>();
+        m2.enabled = true;
+        m3 = GameObject.Find("Missed3(Clone)").GetComponent<MeshRenderer>();
+        m3.enabled = true;
+        doorResultsShowing = true;
     }
     void ProcessFinalDoorPick(int doorPressed)
     {

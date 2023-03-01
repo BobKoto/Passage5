@@ -59,7 +59,7 @@ public class AddRemoveChild : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Something  entered " + this.name + " trigger  " + other.gameObject.name);
+         //   Debug.Log("Something  entered " + this.name + " trigger  " + other.gameObject.name);
             child.transform.SetParent(newParent);
             HandleTriggerEnterPerGameObject(this.name);
         }
@@ -68,7 +68,7 @@ public class AddRemoveChild : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Something  exited " + this.name + " trigger  " + other.gameObject.name);
+          //  Debug.Log("Something  exited " + this.name + " trigger  " + other.gameObject.name);
             child.transform.SetParent(originalParent);
             HandleTriggerExitPerGameObject(this.name);
         }
@@ -79,7 +79,7 @@ public class AddRemoveChild : MonoBehaviour
         {
             case "MovingPlatform":
                 {
-                    movingPlatform.speed = 5;  //This is not an animation - its an Update() method
+                    movingPlatform.speed = 5;  //This is not an animation - its an Update() method in MovingPlatform
                     playerIsOnYellowPlatform = true;
                     stopButton.SetActive(true);
                     goButton.SetActive(false);
@@ -87,7 +87,7 @@ public class AddRemoveChild : MonoBehaviour
                 }
             case "MovingPlatformGreen":
                 {
-                    movingPlatform.speed = 5;  //This is not an animation - its an Update() method
+                    movingPlatform.speed = 5;  //This is not an animation - its an Update() method in MovingPlatform
                     stopButton.SetActive(true);
                     goButton.SetActive(false);
                     break;

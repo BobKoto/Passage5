@@ -148,6 +148,8 @@ public class CubeGameHandler : MonoBehaviour
     {
         animCubeGame.SetTrigger("RaiseCubeGame");
         cubeGameIntro.SetActive(false);
+        cubeGameStartButton.SetActive(true); //2/27/23 moved here from OnTriggerEnter
+        TellTextCloud(helpNeedHI);//2/27/23 moved here from OnTriggerEnter
     }
     public void MoveOnButtonPressed()
     {
@@ -423,7 +425,19 @@ public class CubeGameHandler : MonoBehaviour
         {
             if (inputControls) inputControls.SetActive(false);
         }
-
+    }
+    void EnableDisableUIButtons(bool _enable) //Menu & Light
+    {
+        if (_enable)
+        {
+            if (menuButton) menuButton.SetActive(true);
+            if (lightButton) lightButton.SetActive(true);
+        }
+        else
+        {
+            if (menuButton) menuButton.SetActive(false);
+            if (lightButton) lightButton.SetActive(false);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -432,27 +446,28 @@ public class CubeGameHandler : MonoBehaviour
             cubeGameRoundNumber = 1;
             cubeGameCam.Priority = 12;
             EnableDisableInputControls(false); // disable the inputControls
-            if (menuButton) menuButton.SetActive(false);
-            if (lightButton) lightButton.SetActive(false);
-            cubeGameStartButton.SetActive(true);
-            //if (cubeGameExitButton) cubeGameExitButton.SetActive(true); //We may not need an Exit Button at all 
+            EnableDisableUIButtons(false);
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
-            if (!cubeGameTitleText.activeSelf) cubeGameTitleText.SetActive(true);
-            if (!cubeGameInstructText.activeSelf) cubeGameInstructText.SetActive(true);
-            if (cubeGameResultText.activeSelf) cubeGameResultText.SetActive(false);
-            TellTextCloud(helpNeedHI);
+
             animator.speed = 0;
-            SetRoundNumberHeadingAndStartButtonText();
-            ResetTargetTextsToZero();
-            ResetRowAndColumnSumsToZero();
-            ResetPlaceCubeValuesToZero();
-            SetCubeGameRoundsWonLostText();
-            if (cubeGameTimerText) cubeGameTimerText.SetActive(false);
+            ResetCubeGameOnEntry(); //2/27/23 a little maint.
+
             if (thirdPersonController) thirdPersonController.enabled = false;
             nonPluggedSeed = Random.Range(1, 4); //which round to call SeedCubePuzzle() - other rounds get a Winnable
-            //aDebug.Log("nonPluggedSeed = " + nonPluggedSeed);
             cubeGameIntro.SetActive(true);
         }
+    }
+    void ResetCubeGameOnEntry()
+    {
+        if (!cubeGameTitleText.activeSelf) cubeGameTitleText.SetActive(true);  //maybe move these 4 into a method too...
+        if (!cubeGameInstructText.activeSelf) cubeGameInstructText.SetActive(true);
+        if (cubeGameResultText.activeSelf) cubeGameResultText.SetActive(false);
+        if (cubeGameTimerText) cubeGameTimerText.SetActive(false);
+        SetRoundNumberHeadingAndStartButtonText();
+        ResetTargetTextsToZero();
+        ResetRowAndColumnSumsToZero();
+        ResetPlaceCubeValuesToZero();
+        SetCubeGameRoundsWonLostText();
     }
     void TellTextCloud(string caption)
     {
@@ -476,8 +491,7 @@ public class CubeGameHandler : MonoBehaviour
         // SendCubesToHomePositions();
         roundsLost = 0;
         roundsWon = 0;
-        if (menuButton) menuButton.SetActive(true);
-        if (lightButton) lightButton.SetActive(true);
+        EnableDisableUIButtons(true);
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
         if (cubeGameExitButton) cubeGameExitButton.SetActive(false);
