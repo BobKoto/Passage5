@@ -37,7 +37,7 @@ public class AudioManager : MonoBehaviour
         //Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
         audioSource.loop = false;
         audioSource.Play();
-        if (clip.name == "drama") StartCoroutine(SendEventWhenAudioFinished(audioSource));  //until we think of a better way
+        if (clip.name == "dramaCut") StartCoroutine(SendEventWhenAudioFinished(audioSource));  //until we think of a better way
       //  else Debug.Log("clip.name is " + clip.name);
     }
     public void PlayAudio(AudioClip clip, bool loop)
