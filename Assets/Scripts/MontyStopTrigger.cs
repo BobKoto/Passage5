@@ -98,7 +98,7 @@ public class MontyStopTrigger : MonoBehaviour
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
 
     public GameObject resetJoystickObject;  //Maybe defunct 2/27/23 and before 
-
+    BoxCollider entryCollider;
     MeshRenderer m1, m2, m3;
 
     void Start()
@@ -142,7 +142,7 @@ public class MontyStopTrigger : MonoBehaviour
         audioClipFinishedEvent.AddListener(OnAudioClipFinished);
 
         originalCamPriority = montyGameCam.Priority;
-
+        entryCollider = gameObject.GetComponent<BoxCollider>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -157,7 +157,7 @@ public class MontyStopTrigger : MonoBehaviour
                 //  PlayTheMontyGame();  //Only sets montyGameActive true - which causes ActOnMontyDoorTouch to accept door touches
                 montyGameCam.Priority = 12;
                 if (montyGameIntro) montyGameIntro.SetActive(true);  //then we need to remove/fade it out to allow play
-                //audioManager.PlayAudio(audioManager.clipDRUMROLL);
+                entryCollider.isTrigger = false; //3/1/23 just turns into a collider that blocks player/robot movement 
             }
         }
     }
@@ -234,8 +234,9 @@ public class MontyStopTrigger : MonoBehaviour
             if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
             if (goButton) goButton.SetActive(true);
         }
-        if (montyGameBarriers) montyGameBarriers.SetActive(false);
-       // if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
+        if (montyGameBarriers) montyGameBarriers.SetActive(false);// 3/1/23 only deactivate the MontyGameStopRobot collider gO (switched in editor)
+        entryCollider.enabled = false;// let the player/robot move forward
+        // if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
     }
     private void PlayTheMontyGame()
     {
@@ -521,6 +522,7 @@ public class MontyStopTrigger : MonoBehaviour
         DisableTheDoorButtons();
         CloseTheFirstOpenedDoor();
         UnlockPlayerFromTheGameTriggerArea();
+
 
     }
     IEnumerator WaitSeconds(float timeToWait, AudioClip audioClip)
