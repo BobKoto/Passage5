@@ -18,6 +18,7 @@ public class CubePlacementHandler : MonoBehaviour
     public CubeGameBoardEvent cubeGameBoardEvent; //we send these to CubeGameHandler
     public FingerPointerEvent fingerPointerEvent; //12/18/22 we receive these from ActOnTouch 
     public CubeTriggerEnterExitEvent cubeTriggerEnterExitEvent;  // we receive these from CESMatrix
+    public CubeGameBoardUpEvent cubeGameBoardUpEvent;
 
     GameObject[] cubeGameCubes;
     Vector3[] cubeTransformStartPosition;  // so we can put cubes back to their original positions
@@ -42,6 +43,9 @@ public class CubePlacementHandler : MonoBehaviour
         if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
         fingerPointerEvent.AddListener(ReceivedFingerUpEvent);  //this line and one above needed to receive events
 
+        if (cubeGameBoardUpEvent == null) cubeGameBoardUpEvent = new CubeGameBoardUpEvent();
+        cubeGameBoardUpEvent.AddListener(OnCubeGameUpStoreCubePositions);
+
         cubeGameCubes = GameObject.FindGameObjectsWithTag("CubeGameCube");
         cubeTransformStartPosition = new Vector3[cubeGameCubes.Length];
         nullGO =  GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -55,6 +59,13 @@ public class CubePlacementHandler : MonoBehaviour
             cubeInThisPlacement[i] = nullGO;
         }
         StartCoroutine(WaitForFingerUpToLockCube());
+    }
+    public void OnCubeGameUpStoreCubePositions()
+    {
+        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)
+        {
+            cubeTransformStartPosition[i] = cubeGameCubes[i].transform.position;
+        }
     }
     public void CubeEnterExitPlacement(GameObject _place, string placementName, GameObject _cube, bool cubeEntered)  //Method name in Editor!
     {// OnTriggerEnters/Exits in CESMatrix sent here via this event 

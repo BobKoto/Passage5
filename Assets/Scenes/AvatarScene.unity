@@ -9152,6 +9152,9 @@ MonoBehaviour:
   cubeTriggerEnterExitEvent:
     m_PersistentCalls:
       m_Calls: []
+  cubeGameBoardUpEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &447263768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9464,6 +9467,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  cubeGameBoardUpEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &453397705
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13802,7 +13808,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.362983, y: 1}
+    m_SensorSize: {x: 0.77016556, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -15285,7 +15291,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3504043, y: 1}
+    m_SensorSize: {x: 0.77016556, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -18090,6 +18096,7 @@ GameObject:
   m_Component:
   - component: {fileID: 914838946}
   - component: {fileID: 914838947}
+  - component: {fileID: 914838948}
   m_Layer: 0
   m_Name: CubeGame
   m_TagString: Untagged
@@ -18105,7 +18112,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 914838945}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 66.93999, y: 0, z: -47.1}
+  m_LocalPosition: {x: 66.93999, y: -31.2, z: -47.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1876292874}
@@ -18162,6 +18169,93 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &914838948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914838945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5532be3a98b8b484e803e76659a067c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeGameBoardUpEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1876292875}
+        m_TargetAssemblyTypeName: ActOnTouch, Assembly-CSharp
+        m_MethodName: OnGameBoardUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 453397704}
+        m_TargetAssemblyTypeName: ActOnTouch, Assembly-CSharp
+        m_MethodName: OnGameBoardUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1175061775}
+        m_TargetAssemblyTypeName: ActOnTouch, Assembly-CSharp
+        m_MethodName: OnGameBoardUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1671186872}
+        m_TargetAssemblyTypeName: ActOnTouch, Assembly-CSharp
+        m_MethodName: OnGameBoardUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1712951742}
+        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
+        m_MethodName: OnGameBoardUpStoreCubeHomePositions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 445714906}
+        m_TargetAssemblyTypeName: CubePlacementHandler, Assembly-CSharp
+        m_MethodName: OnCubeGameUpStoreCubePositions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &918872529
 GameObject:
   m_ObjectHideFlags: 0
@@ -19264,7 +19358,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3450136, y: 1}
+    m_SensorSize: {x: 0.77016556, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -23976,6 +24070,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  cubeGameBoardUpEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1175061776
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -24887,19 +24984,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6870788
+      value: 0.6848809
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.050985843
+      value: 0.05082275
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7228045
+      value: 0.7248874
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.05363693
+      value: -0.053791497
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -27242,7 +27339,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1347404615
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33038,6 +33135,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  cubeGameBoardUpEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &1671186873
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -33721,8 +33821,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  audioManager: {fileID: 0}
-  cubeGameTimeLimit: 15
+  cubeGameBoardUpEvent:
+    m_PersistentCalls:
+      m_Calls: []
   m_MyEvent:
     m_PersistentCalls:
       m_Calls:
@@ -33738,6 +33839,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  audioManager: {fileID: 0}
+  cubeGameTimeLimit: 15
   player: {fileID: 1228386539}
   cubeGameCubes:
   - {fileID: 1876292873}
@@ -36744,6 +36847,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  cubeGameBoardUpEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &1876292876
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39886,6 +39992,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cVCam: {fileID: 0}
   fingerPointerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  cubeGameBoardUpEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!135 &2068412735

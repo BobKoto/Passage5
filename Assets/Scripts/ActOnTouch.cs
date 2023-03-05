@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using Cinemachine;
-
+[System.Serializable]
+public class CubeGameBoardUpEvent : UnityEvent { }  //we receive these from CubeGameBoard 
 public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointerUpHandler, IPointerExitHandler
 //IPointerClickHandler, IInitializePotentialDragHandler, IPointerUpHandler,IPointerExitHandler, IPointerEnterHandler, IDropHandler
 // Touch Testing only for now 
@@ -19,15 +20,23 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
     float yPositionFixed, zPositionFixed, xPositionFixed, camCubeXDelta, yPositionTopLimit,
         zPositionRightLimit, zPositionLeftLimit, movingCubeSizeX ;
     public FingerPointerEvent fingerPointerEvent;
-
+    public CubeGameBoardUpEvent cubeGameBoardUpEvent;
     // Start is called before the first frame update
     void Start()
     {
         cubeGameLeftWall = GameObject.Find("CubeGameLeftWall");
         cubeGameRightWall = GameObject.Find("CubeGameRightWall");
         cubeGameTopWall = GameObject.Find("CubeGameTopWall");
-        AlignCam(); //with the on-standby vcam which will "become" cam/Camera.main when it goes Live
+        if (cubeGameBoardUpEvent == null )
+            cubeGameBoardUpEvent = new CubeGameBoardUpEvent();
+        cubeGameBoardUpEvent.AddListener(OnGameBoardUp);
+       // AlignCam(); //with the on-standby vcam which will "become" cam/Camera.main when it goes Live  // 3/2/23 moved to OnGameBoardUp (event)
         //Debug.Log("hello from AOTOUCH");  //starts well before any issues
+    }
+    public void OnGameBoardUp()
+    {
+        //Debug.Log("AOTouch recvd event for OnGameBoardUp  Calling AlignCam....");
+        AlignCam();
     }
     void AlignCam()  //moved from Start in prep to align ONLY when player enters CubeGame - else where the player starts is an issue 
     {

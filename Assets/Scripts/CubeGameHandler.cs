@@ -15,6 +15,9 @@ public class CubeGamePlayButtonTouchEvent : UnityEvent { }
 [System.Serializable]
 public class CubeGameMoveOnButtonTouchEvent : UnityEvent { }
 
+//[System.Serializable]
+//public class CubeGameBoardUpEvent : UnityEvent { }  //we receive these from CubeGameBoard //??redundant cause it's in ActOnTouch?? still learning :<
+
 public class CubeGameHandler : MonoBehaviour
 //Component of CubeGame -- receives events from CubeEnteredSolutionMatrix.cs(was)/is now PlacementHandler  -- calculates row/column totals
 //Here we need to figure if game is lost or won 
@@ -29,6 +32,9 @@ public class CubeGameHandler : MonoBehaviour
     public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public 
     public CubeGamePlayButtonTouchEvent cubeGamePlayButtonTouchEvent;
     public CubeGameMoveOnButtonTouchEvent cubeGameMoveOnButtonTouchEvent;
+    public CubeGameBoardUpEvent cubeGameBoardUpEvent;
+
+    public MyIntEvent m_MyEvent;  //for TextCloud 
 
     //GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
 
@@ -44,7 +50,7 @@ public class CubeGameHandler : MonoBehaviour
     public float cubeGameTimeLimit;
     Coroutine timeLimiter;
     // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
-    public MyIntEvent m_MyEvent;  //for TextCloud 
+
 
     const string helpNeedHI = "#Need human assist! \n #Your fingers please";  //for textcloud
     const string okLetsGo = "#Ok, let's go \n #Slide me out!";
@@ -113,6 +119,10 @@ public class CubeGameHandler : MonoBehaviour
         cubeGamePlayButtonTouchEvent.AddListener(PlayButtonPressedOnIntro);
         if (cubeGameMoveOnButtonTouchEvent == null) cubeGameMoveOnButtonTouchEvent = new CubeGameMoveOnButtonTouchEvent();
         cubeGameMoveOnButtonTouchEvent.AddListener(MoveOnButtonPressed);
+        if (cubeGameBoardUpEvent == null)
+            cubeGameBoardUpEvent = new CubeGameBoardUpEvent();
+        cubeGameBoardUpEvent.AddListener(OnGameBoardUpStoreCubeHomePositions);
+
 
         row1SumText = GameObject.Find("Row1Sum").GetComponent<TMP_Text>();
         row2SumText = GameObject.Find("Row2Sum").GetComponent<TMP_Text>();
@@ -497,6 +507,16 @@ public class CubeGameHandler : MonoBehaviour
         if (cubeGameExitButton) cubeGameExitButton.SetActive(false);
         animator.speed = 1;
         EnableDisableInputControls(true); // if (inputControls) inputControls.SetActive(true);
+    }
+
+    public void OnGameBoardUpStoreCubeHomePositions()
+    {
+       // Debug.Log("OnGameBoardUpStoreCubeHomePositions() Called..........");
+        for (int i = 0; i <= cubeGameCubes.Length - 1; i++)
+        {
+            cubeTransformStartPosition[i] = cubeGameCubes[i].transform.position;
+          //  Debug.Log("OnGameBoardUpStoreCubeHomePositions() Transform position = " + cubeGameCubes[i].transform.position);
+        }
     }
     void SendCubesToHomePositions()
     {
