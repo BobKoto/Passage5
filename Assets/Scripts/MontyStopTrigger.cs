@@ -92,7 +92,7 @@ public class MontyStopTrigger : MonoBehaviour
     public MontyDoorDownEvent montyDoorDownEvent;
     public AudioClipFinishedEvent audioClipFinishedEvent;
 
-    Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes;
+    Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro;
     AudioManager audioManager;
     public static bool montyGameActive;
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
@@ -109,7 +109,8 @@ public class MontyStopTrigger : MonoBehaviour
         animDoor2 = montyDoor2.GetComponent<Animator>();
         animDoor3 = montyDoor3.GetComponent<Animator>();
         animMontyDoorsAndBoxes = montyDoorsAndBoxes.GetComponent<Animator>();
-        animClipMontyDoorsAndBoxes = montyDoorsAndBoxes.GetComponent<Animation>();
+        animClipMontyDoorsAndBoxes = montyDoorsAndBoxes.GetComponent<Animation>();  //3/4/23 not imp'd??
+        animMontyGameIntro = montyGameIntro.GetComponent<Animator>();
         // Debug.Log("")
 
         //animPlayer = playerArmature.GetComponent<Animator>();
@@ -157,6 +158,8 @@ public class MontyStopTrigger : MonoBehaviour
                 //  PlayTheMontyGame();  //Only sets montyGameActive true - which causes ActOnMontyDoorTouch to accept door touches
                 montyGameCam.Priority = 12;
                 if (montyGameIntro) montyGameIntro.SetActive(true);  //then we need to remove/fade it out to allow play
+                animMontyGameIntro.SetTrigger("RaiseCubeGameIntro");
+                audioManager.PlayAudio(audioManager.clipapert);
                 entryCollider.isTrigger = false; //3/1/23 just turns into a collider that blocks player/robot movement 
             }
         }

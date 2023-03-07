@@ -314,7 +314,7 @@ public class CubeGameHandler : MonoBehaviour
     void SetupNewCubeGameRound()
     {
         //cubeGameIsResetting = true;
-        if (cubesOccupied > 0)
+       // if (cubesOccupied > 0) // 3/5/23 
         {
             cubesToBeSentHome = cubesOccupied;
             cubeGameIsResetting = true;
@@ -521,7 +521,7 @@ public class CubeGameHandler : MonoBehaviour
     void SendCubesToHomePositions()
     {
         //aDebug.Log("SendCubesToHomePositions() called, cubesOccupied = " + cubesOccupied);
-        if (cubesOccupied != 0)
+      //  if (cubesOccupied != 0)  // 3/5/23 commented so we send all cubes home whether or not they are in a placement 
         {
             for (int i = 0; i <= cubeGameCubes.Length - 1; i++)  //Restore the cubes to home/original positions 
             {
