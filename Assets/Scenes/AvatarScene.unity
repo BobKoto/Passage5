@@ -13808,7 +13808,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.5119617, y: 1}
+    m_SensorSize: {x: 2.0730011, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -15291,7 +15291,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.5119617, y: 1}
+    m_SensorSize: {x: 2.0730011, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -19540,7 +19540,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.5119617, y: 1}
+    m_SensorSize: {x: 2.0730011, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -25002,19 +25002,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.68389153
+      value: 0.6898525
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.050749324
+      value: 0.05119167
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7258209
+      value: 0.7201577
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.053860757
+      value: -0.05344052
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -28028,7 +28028,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: One door is a winner. Choose...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 73dbd82c98041f74f9aa868c3c1ad8e8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2f299a87fcb5f3c4691e3cdc03827f81, type: 2}
   m_sharedMaterial: {fileID: -8333250609966275279, guid: 73dbd82c98041f74f9aa868c3c1ad8e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -28095,7 +28095,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 1393485627}
   m_maskType: 0
 --- !u!23 &1393485627
