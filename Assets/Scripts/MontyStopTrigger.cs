@@ -54,6 +54,7 @@ public class MontyStopTrigger : MonoBehaviour
 
     [Header("The Player")]
     public GameObject playerArmature;
+    public GameObject evilTwin;
 
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera thirdPersonFollowCam;
@@ -299,11 +300,11 @@ public class MontyStopTrigger : MonoBehaviour
     void EnableTheDoorResultsMeshRenderers()
     {
         m1 = GameObject.Find("MontyGoal(Clone)").GetComponent<MeshRenderer>();
-        m1.enabled = true;
+        if(m1) m1.enabled = true;
         m2 = GameObject.Find("Missed1(Clone)").GetComponent<MeshRenderer>();
-        m2.enabled = true;
+        if (m2) m2.enabled = true;
         m3 = GameObject.Find("Missed3(Clone)").GetComponent<MeshRenderer>();
-        m3.enabled = true;
+        if (m3) m3.enabled = true;
         doorResultsShowing = true;
     }
     void ProcessFinalDoorPick(int doorPressed)
@@ -324,6 +325,7 @@ public class MontyStopTrigger : MonoBehaviour
                     Debug.Log("Door 1 is a Loser");
                     montyGameSignText.color = Color.red;
                     montyGameSignText.text = "Door 1 is a loser... awww";
+                    Instantiate(evilTwin, new Vector3(237, 0, -228), Quaternion.Euler(0, 52, 0));
                 }
                 //    CleanUpTheMontyGameAndUnlockThePlayer();
                 break;
@@ -342,6 +344,7 @@ public class MontyStopTrigger : MonoBehaviour
                     Debug.Log("Door 2 is a Loser");
                     montyGameSignText.color = Color.red;
                     montyGameSignText.text = "Door 2 is a loser... awww";
+                    Instantiate(evilTwin, new Vector3(237, 0, -221), Quaternion.Euler(0, 52, 0));
                 }
                 //     CleanUpTheMontyGameAndUnlockThePlayer();
                 break;
@@ -360,6 +363,7 @@ public class MontyStopTrigger : MonoBehaviour
                     Debug.Log("Door 3 is a Loser");
                     montyGameSignText.color = Color.red;
                     montyGameSignText.text = "Door 3 is a loser... awww";
+                    Instantiate(evilTwin, new Vector3(237, 0, -214), Quaternion.Euler(0, 52, 0));
                 }
                 //  CleanUpTheMontyGameAndUnlockThePlayer();
                 break;
