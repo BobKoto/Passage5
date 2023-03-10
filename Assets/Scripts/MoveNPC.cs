@@ -1,4 +1,3 @@
-// MoveTo.cs
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,7 +5,7 @@ using UnityEngine.AI;
     {
         Animator anim;
         public Transform[] agentGoals;
-        public bool agentUpdatePosition = true; //the Default I think
+        public bool agentUpdatePosition = false; //the Default I think  //3/9/23 try false 
         NavMeshAgent agent;
         enum Mode
         {
@@ -22,12 +21,13 @@ using UnityEngine.AI;
         void Start()
         {
             anim = GetComponent<Animator>();
-            anim.SetFloat(forwardSpeedParmeterName, 2f);
+            anim.SetFloat(forwardSpeedParmeterName, .1f);//3/9/23 was 2 try 1 no help try .5
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = agentUpdatePosition;  //book recipe says set to false (so default true?)
-
-            //    agentGoals = new Transform[3];
-            agent.destination = agentGoals[0].position;
+              agentGoals[0] = GameObject.Find("EvilTwinNavDest01").transform;
+              agentGoals[1] = GameObject.Find("EvilTwinNavDest02").transform;
+        //    agentGoals = new Transform[3];
+        agent.destination = agentGoals[0].position;
             var dest = agent.pathEndPosition;
             //  Debug.Log("the dest is " + dest + "  The Goal is " + agentGoals[agentGoalIndex].position);
         }

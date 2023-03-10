@@ -1663,7 +1663,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5412203589994124247}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 36078ab0369161e49a29d349ae3e0739, type: 3}
   m_Controller: {fileID: 9100000, guid: c813b12131a31d34b851c9d61dec4597, type: 2}
   m_CullingMode: 1
@@ -1948,8 +1948,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89081483e89ab0b40b514ee0f0230a66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentGoals: []
-  agentUpdatePosition: 1
+  agentGoals:
+  - {fileID: 0}
+  - {fileID: 0}
+  agentUpdatePosition: 0
   mode: 1
   forwardSpeedParmeterName: Speed
 --- !u!1 &5516159897921546967
