@@ -323,8 +323,10 @@ public class MontyStopTrigger : MonoBehaviour
                 else
                 {
                     Debug.Log("Door 1 is a Loser");
+                    if (m2) m2.enabled = false;
+                    if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
-                    montyGameSignText.text = "Door 1 is a loser... awww";
+                    montyGameSignText.text = "Door 1 releases Evil Twin";
                     Instantiate(evilTwin, new Vector3(237, 0, -228), Quaternion.Euler(0, 52, 0));
                 }
                 //    CleanUpTheMontyGameAndUnlockThePlayer();
@@ -342,8 +344,10 @@ public class MontyStopTrigger : MonoBehaviour
                 else
                 {
                     Debug.Log("Door 2 is a Loser");
+                    if (m2) m2.enabled = false;
+                    if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
-                    montyGameSignText.text = "Door 2 is a loser... awww";
+                    montyGameSignText.text = "Door 2 releases Evil Twin";
                     Instantiate(evilTwin, new Vector3(237, 0, -221), Quaternion.Euler(0, 52, 0));
                 }
                 //     CleanUpTheMontyGameAndUnlockThePlayer();
@@ -361,8 +365,10 @@ public class MontyStopTrigger : MonoBehaviour
                 else
                 {
                     Debug.Log("Door 3 is a Loser");
+                    if (m2) m2.enabled = false;
+                    if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
-                    montyGameSignText.text = "Door 3 is a loser... awww";
+                    montyGameSignText.text = "Door 3 releases Evil Twin";
                     Instantiate(evilTwin, new Vector3(237, 0, -214), Quaternion.Euler(0, 52, 0));
                 }
                 //  CleanUpTheMontyGameAndUnlockThePlayer();
