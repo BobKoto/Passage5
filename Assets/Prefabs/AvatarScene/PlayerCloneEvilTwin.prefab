@@ -1952,7 +1952,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   agentUpdatePosition: 0
-  mode: 1
+  mode: 0
   forwardSpeedParmeterName: Speed
 --- !u!1 &5516159897921546967
 GameObject:

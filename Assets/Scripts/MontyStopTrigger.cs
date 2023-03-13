@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using CarouselAndMovingPlatforms;
 using UnityEditor.Animations;
 using System.Linq;
+using UnityEngine.AI;
 
 [System.Serializable]
 public class MontyDoorTouchEvent : UnityEvent<int> { }
@@ -309,6 +310,7 @@ public class MontyStopTrigger : MonoBehaviour
     }
     void ProcessFinalDoorPick(int doorPressed)
     {
+        bool winnerChosen = false;
         switch (doorPressed)     // //////////////////// This IS the SECOND door pick!! /////////////////////////////////
         {
             case 1:
@@ -317,6 +319,7 @@ public class MontyStopTrigger : MonoBehaviour
                 if (theWinningDoor == 1)
                 {
                     Debug.Log("Door 1 is a Winner");
+                    winnerChosen = true;
                     playerPickedWinner = true;
                     montyGameSignText.text = "Door 1 is a winner!";
                 }
@@ -327,9 +330,10 @@ public class MontyStopTrigger : MonoBehaviour
                     if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
                     montyGameSignText.text = "Door 1 releases Evil Twin";
-                    Instantiate(evilTwin, new Vector3(237, 0, -228), Quaternion.Euler(0, 52, 0));
+
+                   //Instantiate(evilTwin, new Vector3(237, 0, -228), Quaternion.Euler(0, 52, 0));
+                   // StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evile twin when the door is down(fully)
                 }
-                //    CleanUpTheMontyGameAndUnlockThePlayer();
                 break;
 
             case 2:
@@ -338,6 +342,7 @@ public class MontyStopTrigger : MonoBehaviour
                 if (theWinningDoor == 2)
                 {
                     Debug.Log("Door 2 is a Winner");
+                    winnerChosen = true;
                     playerPickedWinner = true;
                     montyGameSignText.text = "Door 2 is a winner!";
                 }
@@ -348,9 +353,10 @@ public class MontyStopTrigger : MonoBehaviour
                     if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
                     montyGameSignText.text = "Door 2 releases Evil Twin";
-                    Instantiate(evilTwin, new Vector3(237, 0, -221), Quaternion.Euler(0, 52, 0));
+                   //Instantiate(evilTwin, new Vector3(237, 0, -221), Quaternion.Euler(0, 52, 0));
+                   // StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evile twin when the door is down(fully)
                 }
-                //     CleanUpTheMontyGameAndUnlockThePlayer();
+
                 break;
             case 3:
                 animDoor3.SetTrigger("MontyDoor3Down");
@@ -358,6 +364,7 @@ public class MontyStopTrigger : MonoBehaviour
                 if (theWinningDoor == 3)
                 {
                     Debug.Log("Door 3 is a Winner");
+                    winnerChosen = true;
                     playerPickedWinner = true;
 
                     montyGameSignText.text = "Door 3 is a winner!";
@@ -369,11 +376,17 @@ public class MontyStopTrigger : MonoBehaviour
                     if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
                     montyGameSignText.text = "Door 3 releases Evil Twin";
-                    Instantiate(evilTwin, new Vector3(237, 0, -214), Quaternion.Euler(0, 52, 0));
+                   //  Instantiate(evilTwin, new Vector3(237, 0, -214), Quaternion.Euler(0, 52, 0));
+                   // StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evile twin when the door is down(fully)
                 }
-                //  CleanUpTheMontyGameAndUnlockThePlayer();
                 break;
+            default: break;
         }
+        if (!winnerChosen)
+        {
+            StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evile twin when the door is down(fully)
+        }
+
         CleanUpTheMontyGameAndUnlockThePlayer();
     }
     private void ShowAlternativeDoors()
@@ -515,6 +528,45 @@ public class MontyStopTrigger : MonoBehaviour
         montyGameSignText.text = "A chance to change door. Choose...";
         if (mainMontySign) mainMontySign.SetActive(true);
         montyGameActive = true; //re-allow door touches 
+        montyDoorDownEventReceived = false;
+    }
+    IEnumerator WaitForEventToInstantiateEvilTwin(int outOfDoor)
+    {
+        //
+        yield return new WaitUntil(() =>  montyDoorDownEventReceived);  //every frame checked??? could be better
+        Debug.Log("WE GOT EVENT to Instatiate the Evil Twin!!!!!!! from door " + outOfDoor);
+
+        audioManager.PlayAudio(audioManager.clipding);
+        switch (outOfDoor)
+        {
+            case 1:
+                Instantiate(evilTwin, new Vector3(237, 0, -228), Quaternion.Euler(0, 52, 0));
+                NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<NavMeshAgent>();
+               // agent1.speed = 0f;
+                Animator anim1 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<Animator>();
+              //  anim1.speed = 0f;
+                yield return new WaitForSeconds(1f);
+                break;
+            case 2:
+                Instantiate(evilTwin, new Vector3(237, 0, -221), Quaternion.Euler(0, 52, 0));
+                NavMeshAgent agent2 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<NavMeshAgent>();
+              //  agent2.speed = 0f;
+                Animator anim2 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<Animator>();
+             //   anim2.speed = 0f;
+                yield return new WaitForSeconds(1f);
+                break;
+            case 3:
+                Instantiate(evilTwin, new Vector3(237, 0, -214), Quaternion.Euler(0, 52, 0));
+                NavMeshAgent agent3 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<NavMeshAgent>();
+             //   agent3.speed = 0f;
+                Animator anim3 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<Animator>();
+             //   anim3.speed = 0f;
+                yield return new WaitForSeconds(1f);
+                break;
+
+            default:
+                break;
+        }
     }
     private void CloseTheFirstOpenedDoor()  //do we really want to do this?
     {
