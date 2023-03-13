@@ -24,8 +24,8 @@ public class MoveNPC : MonoBehaviour
         anim.SetFloat(forwardSpeedParmeterName, .1f);//3/9/23 was 2 try 1 no help try .5
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = agentUpdatePosition;  //book recipe says set to false (so default true?)
-        agentGoals[0] = GameObject.Find("EvilTwinNavDest01").transform;
-        agentGoals[1] = GameObject.Find("EvilTwinNavDest02").transform;
+        //agentGoals[0] = GameObject.Find("EvilTwinNavDest01").transform;
+        //agentGoals[1] = GameObject.Find("EvilTwinNavDest02").transform;
         //    agentGoals = new Transform[3];
         agent.destination = agentGoals[0].position;
         var dest = agent.pathEndPosition;
