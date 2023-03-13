@@ -1646,8 +1646,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5412203589994124247}
-  m_LocalRotation: {x: 0, y: 0.4383711, z: 0, w: 0.89879405}
-  m_LocalPosition: {x: 237, y: 0, z: -228}
+  m_LocalRotation: {x: 0, y: 0.7880107, z: 0, w: 0.6156615}
+  m_LocalPosition: {x: 237, y: 0, z: -214}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 1827847886172147135}
@@ -1952,7 +1952,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   agentUpdatePosition: 0
-  mode: 1
+  mode: 0
   forwardSpeedParmeterName: Speed
 --- !u!1 &5516159897921546967
 GameObject:
