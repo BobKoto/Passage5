@@ -11,7 +11,7 @@ public class MyIntEvent : UnityEvent<int, int, string>
 {
 }
 public class TextCloudHandler : MonoBehaviour
-{
+{//Component of TextCloudHandleHolder
     //public Transform  playerTransform; commented 11/7/22 see EnableTheTextCloud() below
     public AudioManager audioManager;
     public GameObject textCloud;

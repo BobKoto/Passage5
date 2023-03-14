@@ -56,11 +56,13 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("The Player")]
     public GameObject playerArmature;
     public GameObject evilTwin;
+    public float timeToPauseOnTheEvilTwin = 4f;
 
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera thirdPersonFollowCam;
     public CinemachineFreeLook freeLookCam;
     public CinemachineVirtualCamera montyGameCam;
+    public CinemachineVirtualCamera camOnEvilTwin;
 
     [Header("Animations")]
     Animation animClipMontyDoorsAndBoxes;
@@ -69,7 +71,7 @@ public class MontyStopTrigger : MonoBehaviour
     public Animation animDoor2Down;
     public Animation animDoor3Down;
     public float xPos = 200;
-    int originalCamPriority;
+    int originalMontyGameCamPriority, originalCamOnEvilTwinPriority;
 
    // int thirdPersonFollowCamOriginalPriority, freeLookCamOriginalPriority;
 
@@ -93,6 +95,7 @@ public class MontyStopTrigger : MonoBehaviour
     public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;
     public MontyDoorDownEvent montyDoorDownEvent;
     public AudioClipFinishedEvent audioClipFinishedEvent;
+    public MyIntEvent m_MyEvent;  //for TextCloud 
 
     Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro;
     AudioManager audioManager;
@@ -102,6 +105,8 @@ public class MontyStopTrigger : MonoBehaviour
     public GameObject resetJoystickObject;  //Maybe defunct 2/27/23 and before 
     BoxCollider entryCollider;
     MeshRenderer m1, m2, m3;
+
+    const string evilTwinSpeaks1 = "Hello, Hashnag. \n Prepare yourself!";
 
     void Start()
     {
@@ -144,7 +149,8 @@ public class MontyStopTrigger : MonoBehaviour
             audioClipFinishedEvent = new AudioClipFinishedEvent();
         audioClipFinishedEvent.AddListener(OnAudioClipFinished);
 
-        originalCamPriority = montyGameCam.Priority;
+        originalMontyGameCamPriority = montyGameCam.Priority; //10
+        originalCamOnEvilTwinPriority = camOnEvilTwin.Priority;  //10
         entryCollider = gameObject.GetComponent<BoxCollider>();
     }
 
@@ -207,7 +213,7 @@ public class MontyStopTrigger : MonoBehaviour
     {
         Debug.Log("MoveOn Button Pressed - wiping out all");
         if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);
-        montyGameCam.Priority = originalCamPriority;
+        montyGameCam.Priority = originalMontyGameCamPriority;
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
         if (inputControls) inputControls.SetActive(true);
@@ -535,8 +541,10 @@ public class MontyStopTrigger : MonoBehaviour
         //
         yield return new WaitUntil(() =>  montyDoorDownEventReceived);  //every frame checked??? could be better
         Debug.Log("WE GOT EVENT to Instatiate/Enable the Evil Twin!!!!!!! from door " + outOfDoor);
-        //float xPos = 200f;
+        float eTwinRot = 0f;
         audioManager.PlayAudio(audioManager.clipding);
+        camOnEvilTwin.Priority = 13;
+        TellTextCloud(evilTwinSpeaks1);
         switch (outOfDoor)
         {
             case 1:
@@ -545,15 +553,16 @@ public class MontyStopTrigger : MonoBehaviour
                 //Animator anim1 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<Animator>();
                 //yield return new WaitForSeconds(1f);
                 evilTwin.transform.position = new Vector3(xPos, 0, -228);
-                evilTwin.transform.Rotate(0f, 52f, 0f, Space.Self);
+                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
                 evilTwin.SetActive(true);
+                //camOnEvilTwin.Priority = 13;
                 NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
                 Animator anim1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
                 float agent1OriginalSpeed = agent1.speed;
                 float anim1OriginalSpeed = anim1.speed;
                 agent1.speed = 0;
                 anim1.speed = 0;
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
                 agent1.speed = agent1OriginalSpeed;
                 anim1.speed = anim1OriginalSpeed;
                 break;
@@ -563,15 +572,16 @@ public class MontyStopTrigger : MonoBehaviour
                 //Animator anim2 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<Animator>();
                 //yield return new WaitForSeconds(1f);
                 evilTwin.transform.position = new Vector3(xPos, 0, -221);
-                evilTwin.transform.Rotate(0f, 52f, 0f, Space.Self);
+                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);//was 52
                 evilTwin.SetActive(true);
+                //camOnEvilTwin.Priority = 13;
                 NavMeshAgent agent2 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
                 Animator anim2 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
                 float agent2OriginalSpeed = agent2.speed;
                 float anim2OriginalSpeed = anim2.speed;
                 agent2.speed = 0;
                 anim2.speed = 0;
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
                 agent2.speed = agent2OriginalSpeed;
                 anim2.speed = anim2OriginalSpeed;
                 break;
@@ -581,15 +591,16 @@ public class MontyStopTrigger : MonoBehaviour
                 //Animator anim3 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<Animator>();
                 //yield return new WaitForSeconds(1f);
                 evilTwin.transform.position = new Vector3(xPos, 0, -214);
-                evilTwin.transform.Rotate(0f, 52f, 0f, Space.Self);
+                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
                 evilTwin.SetActive(true);
+                //camOnEvilTwin.Priority = 13;
                 NavMeshAgent agent3 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
                 Animator anim3 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
                 float agent3OriginalSpeed = agent3.speed;
                 float anim3OriginalSpeed = anim3.speed;
                 agent3.speed = 0;
                 anim3.speed = 0;
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
                 agent3.speed = agent3OriginalSpeed;
                 anim3.speed = anim3OriginalSpeed;
                 break;
@@ -597,6 +608,11 @@ public class MontyStopTrigger : MonoBehaviour
             default:
                 break;
         }
+        camOnEvilTwin.Priority = originalCamOnEvilTwinPriority;
+    }
+    void TellTextCloud(string caption)
+    {
+        m_MyEvent.Invoke(5, 4, caption);
     }
     private void CloseTheFirstOpenedDoor()  //do we really want to do this?
     {

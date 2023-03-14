@@ -15,6 +15,7 @@ TagManager:
   - CubeGamePlacement
   - TargetSum
   - MontyGameDoor
+  - EvilTwin
   layers:
   - Default
   - TransparentFX
