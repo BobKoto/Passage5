@@ -106,7 +106,7 @@ public class MontyStopTrigger : MonoBehaviour
     BoxCollider entryCollider;
     MeshRenderer m1, m2, m3;
 
-    const string evilTwinSpeaks1 = "Hello, Hashnag. \n Prepare yourself!";
+    const string evilTwinSpeaks1 = "Hello, Hashnag, you mechanical jerk. Prepare yourself!";
 
     void Start()
     {
