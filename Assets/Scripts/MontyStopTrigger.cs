@@ -539,76 +539,77 @@ public class MontyStopTrigger : MonoBehaviour
     IEnumerator WaitForEventToInstantiateEvilTwin(int outOfDoor)
     {
         //
-        yield return new WaitUntil(() =>  montyDoorDownEventReceived);  //every frame checked??? could be better
+       // yield return new WaitUntil(() =>  montyDoorDownEventReceived);  //every frame checked??? could be better
         Debug.Log("WE GOT EVENT to Instatiate/Enable the Evil Twin!!!!!!! from door " + outOfDoor);
         float eTwinRot = 0f;
-        audioManager.PlayAudio(audioManager.clipding);
-        camOnEvilTwin.Priority = 13;
-        TellTextCloud(evilTwinSpeaks1);
+       // audioManager.PlayAudio(audioManager.clipding);
+       // camOnEvilTwin.Priority = 13;
+       // TellTextCloud(evilTwinSpeaks1);
         switch (outOfDoor)
         {
             case 1:
-                //Instantiate(evilTwin, new Vector3(237, 0, -228), Quaternion.Euler(0, 52, 0));
-                //NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<NavMeshAgent>();
-                //Animator anim1 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<Animator>();
-                //yield return new WaitForSeconds(1f);
                 evilTwin.transform.position = new Vector3(xPos, 0, -228);
-                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
-                evilTwin.SetActive(true);
-                //camOnEvilTwin.Priority = 13;
-                NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
-                Animator anim1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
-                float agent1OriginalSpeed = agent1.speed;
-                float anim1OriginalSpeed = anim1.speed;
-                agent1.speed = 0;
-                anim1.speed = 0;
-                yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
-                agent1.speed = agent1OriginalSpeed;
-                anim1.speed = anim1OriginalSpeed;
+                //evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
+                //evilTwin.SetActive(true);
+                //NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
+                //Animator anim1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
+                //float agent1OriginalSpeed = agent1.speed;
+                //float anim1OriginalSpeed = anim1.speed;
+                //agent1.speed = 0;
+                //anim1.speed = 0;
+                //yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
+                //agent1.speed = agent1OriginalSpeed;
+                //anim1.speed = anim1OriginalSpeed;
                 break;
             case 2:
-                //Instantiate(evilTwin, new Vector3(237, 0, -221), Quaternion.Euler(0, 52, 0));
-                //NavMeshAgent agent2 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<NavMeshAgent>();
-                //Animator anim2 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<Animator>();
-                //yield return new WaitForSeconds(1f);
                 evilTwin.transform.position = new Vector3(xPos, 0, -221);
-                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);//was 52
-                evilTwin.SetActive(true);
-                //camOnEvilTwin.Priority = 13;
-                NavMeshAgent agent2 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
-                Animator anim2 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
-                float agent2OriginalSpeed = agent2.speed;
-                float anim2OriginalSpeed = anim2.speed;
-                agent2.speed = 0;
-                anim2.speed = 0;
-                yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
-                agent2.speed = agent2OriginalSpeed;
-                anim2.speed = anim2OriginalSpeed;
+                //evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);//was 52
+                //evilTwin.SetActive(true);
+                //NavMeshAgent agent2 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
+                //Animator anim2 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
+                //float agent2OriginalSpeed = agent2.speed;
+                //float anim2OriginalSpeed = anim2.speed;
+                //agent2.speed = 0;
+                //anim2.speed = 0;
+                //yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
+                //agent2.speed = agent2OriginalSpeed;
+                //anim2.speed = anim2OriginalSpeed;
                 break;
             case 3:
-                //Instantiate(evilTwin, new Vector3(237, 0, -214), Quaternion.Euler(0, 52, 0));
-                //NavMeshAgent agent3 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<NavMeshAgent>();
-                //Animator anim3 = GameObject.Find("PlayerCloneEvilTwin(Clone)").GetComponent<Animator>();
-                //yield return new WaitForSeconds(1f);
                 evilTwin.transform.position = new Vector3(xPos, 0, -214);
-                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
-                evilTwin.SetActive(true);
-                //camOnEvilTwin.Priority = 13;
-                NavMeshAgent agent3 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
-                Animator anim3 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
-                float agent3OriginalSpeed = agent3.speed;
-                float anim3OriginalSpeed = anim3.speed;
-                agent3.speed = 0;
-                anim3.speed = 0;
-                yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
-                agent3.speed = agent3OriginalSpeed;
-                anim3.speed = anim3OriginalSpeed;
+                //evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
+                //evilTwin.SetActive(true);
+                //NavMeshAgent agent3 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
+                //Animator anim3 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
+                //float agent3OriginalSpeed = agent3.speed;
+                //float anim3OriginalSpeed = anim3.speed;
+                //agent3.speed = 0;
+                //anim3.speed = 0;
+                //yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
+                //agent3.speed = agent3OriginalSpeed;
+                //anim3.speed = anim3OriginalSpeed;
                 break;
-
             default:
                 break;
         }
-        camOnEvilTwin.Priority = originalCamOnEvilTwinPriority;
+        evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
+        evilTwin.SetActive(true);
+
+        NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
+        Animator anim1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
+        float agent1OriginalSpeed = agent1.speed;
+        float anim1OriginalSpeed = anim1.speed;
+        agent1.speed = 0;
+        anim1.speed = 0;
+        yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
+        yield return new WaitForSeconds(2f);
+        camOnEvilTwin.Priority = 13; //put this cam on AFTER the door is down
+        TellTextCloud(evilTwinSpeaks1);
+        yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
+
+        agent1.speed = agent1OriginalSpeed;
+        anim1.speed = anim1OriginalSpeed;
+        camOnEvilTwin.Priority = originalCamOnEvilTwinPriority;  //esentially disable the cam
     }
     void TellTextCloud(string caption)
     {
