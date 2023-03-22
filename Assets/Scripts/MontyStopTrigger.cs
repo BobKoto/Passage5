@@ -7,7 +7,7 @@ using TMPro;
 using Cinemachine;
 using UnityEngine.Events;
 using CarouselAndMovingPlatforms;
-using UnityEditor.Animations;
+//using UnityEditor.Animations;
 using System.Linq;
 using UnityEngine.AI;
 
@@ -55,14 +55,21 @@ public class MontyStopTrigger : MonoBehaviour
 
     [Header("The Player")]
     public GameObject playerArmature;
+
     public GameObject evilTwin;
-    public float timeToPauseOnTheEvilTwin = 4f;
+    public GameObject goodTwin;
+
+    public float timeToPauseOnAnyTwin = 4f;
 
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera thirdPersonFollowCam;
     public CinemachineFreeLook freeLookCam;
     public CinemachineVirtualCamera montyGameCam;
     public CinemachineVirtualCamera camOnEvilTwin;
+    public CinemachineVirtualCamera camOnGoodTwin;
+
+    public float zoomAmount = 23f;
+    public float zoomTime = 2.5f;
 
     [Header("Animations")]
     Animation animClipMontyDoorsAndBoxes;
@@ -71,7 +78,7 @@ public class MontyStopTrigger : MonoBehaviour
     public Animation animDoor2Down;
     public Animation animDoor3Down;
     public float xPos = 200;
-    int originalMontyGameCamPriority, originalCamOnEvilTwinPriority;
+    int originalMontyGameCamPriority, originalCamOnEvilTwinPriority, originalCamOnGoodTwinPriority;
 
    // int thirdPersonFollowCamOriginalPriority, freeLookCamOriginalPriority;
 
@@ -107,6 +114,7 @@ public class MontyStopTrigger : MonoBehaviour
     MeshRenderer m1, m2, m3;
 
     const string evilTwinSpeaks1 = "Hello, Hashnag, you mechanical jerk. Prepare yourself!";
+    const string goodTwinSpeaks1 = "Hello, Hashy, I'll be looking out for you...";
 
     void Start()
     {
@@ -214,15 +222,15 @@ public class MontyStopTrigger : MonoBehaviour
         Debug.Log("MoveOn Button Pressed - wiping out all");
         if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);
         montyGameCam.Priority = originalMontyGameCamPriority;
-        if (mainMontySign) mainMontySign.SetActive(false);
-        if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
-        if (inputControls) inputControls.SetActive(true);
-        GameObject missed1 = GameObject.Find("Missed1(Clone)");
-        if (missed1) missed1.SetActive(false);
-        GameObject missed3 = GameObject.Find("Missed3(Clone)");
-        if (missed3) missed3.SetActive(false);
-        GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
-        if (montyGoal) montyGoal.SetActive(false);
+        //if (mainMontySign) mainMontySign.SetActive(false);
+        //if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
+        //if (inputControls) inputControls.SetActive(true);
+        //GameObject missed1 = GameObject.Find("Missed1(Clone)");
+        //if (missed1) missed1.SetActive(false);
+        //GameObject missed3 = GameObject.Find("Missed3(Clone)");
+        //if (missed3) missed3.SetActive(false);
+        //GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
+        //if (montyGoal) montyGoal.SetActive(false);
        // CallResetJoystick();
         if (playerArmature)
         {
@@ -390,8 +398,10 @@ public class MontyStopTrigger : MonoBehaviour
         }
         if (!winnerChosen)
         {
-            StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evile twin when the door is down(fully)
+            StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evil twin when the door is down(fully)
         }
+        else
+            StartCoroutine(WaitForEventToInstantiateGoodTwin(doorPressed)); //release the good twin when the door is down(fully)
 
         CleanUpTheMontyGameAndUnlockThePlayer();
     }
@@ -536,19 +546,72 @@ public class MontyStopTrigger : MonoBehaviour
         montyGameActive = true; //re-allow door touches 
         montyDoorDownEventReceived = false;
     }
+    IEnumerator WaitForEventToInstantiateGoodTwin(int outOfDoor)
+    {
+        // MUCH of this routine is commented UNTIL we create a GOOD TWIN
+        Debug.Log("WE GOT EVENT to Instatiate/Enable the Good Twin!!!!!!! from door " + outOfDoor);
+        float gTwinRot = 0f;
+        switch (outOfDoor)
+        {
+            case 1:
+                goodTwin.transform.position = new Vector3(xPos, 0, -228);
+                goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
+                break;
+            case 2:
+                goodTwin.transform.position = new Vector3(xPos, 0, -221);
+                goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
+                break;
+            case 3:
+                goodTwin.transform.position = new Vector3(xPos, 0, -214);
+                goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
+                break;
+            default:
+                break;
+        }
+
+        goodTwin.SetActive(true);  //we're gonna use this and the following so KEEP
+
+        NavMeshAgent agent1 = GameObject.Find("PlayerCloneGoodTwin").GetComponent<NavMeshAgent>();
+        Animator anim1 = GameObject.Find("PlayerCloneGoodTwin").GetComponent<Animator>();
+        float agent1OriginalSpeed = agent1.speed;
+        float anim1OriginalSpeed = anim1.speed;
+        agent1.speed = 0;
+              GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
+        if (montyGoal) montyGoal.SetActive(false);  anim1.speed = 0;
+        camOnGoodTwin.Priority = 13; //or maybe b4
+        StartCoroutine(ZoomGoodTwinCam());  //may be able to consolidate 
+        yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
+        yield return new WaitForSeconds(2f);
+        // camOnEvilTwin.Priority = 13; //put this cam on AFTER the door is down
+        TellTextCloud(goodTwinSpeaks1);
+        yield return new WaitForSeconds(timeToPauseOnAnyTwin);
+
+        // montyGameCam.Priority = originalMontyGameCamPriority;
+        if (mainMontySign) mainMontySign.SetActive(false);
+        if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
+        if (inputControls) inputControls.SetActive(true);
+        GameObject montyGameBarriers = GameObject.Find("MontyGameBarriers");
+        if (montyGameBarriers) montyGameBarriers.SetActive(false);
+        GameObject missed1 = GameObject.Find("Missed1(Clone)");
+        if (missed1) missed1.SetActive(false);
+        GameObject missed3 = GameObject.Find("Missed3(Clone)");
+        if (missed3) missed3.SetActive(false);
+
+
+        agent1.speed = agent1OriginalSpeed;
+        anim1.speed = anim1OriginalSpeed;
+        camOnGoodTwin.Priority = originalCamOnGoodTwinPriority;  // disable the camOnGoodTwin and revert to follow cam
+    }
     IEnumerator WaitForEventToInstantiateEvilTwin(int outOfDoor)
     {
         //
-       // yield return new WaitUntil(() =>  montyDoorDownEventReceived);  //every frame checked??? could be better
         Debug.Log("WE GOT EVENT to Instatiate/Enable the Evil Twin!!!!!!! from door " + outOfDoor);
         float eTwinRot = 0f;
-       // audioManager.PlayAudio(audioManager.clipding);
-       // camOnEvilTwin.Priority = 13;
-       // TellTextCloud(evilTwinSpeaks1);
         switch (outOfDoor)
         {
             case 1:
                 evilTwin.transform.position = new Vector3(xPos, 0, -228);
+                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
                 //evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
                 //evilTwin.SetActive(true);
                 //NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
@@ -563,6 +626,7 @@ public class MontyStopTrigger : MonoBehaviour
                 break;
             case 2:
                 evilTwin.transform.position = new Vector3(xPos, 0, -221);
+                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
                 //evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);//was 52
                 //evilTwin.SetActive(true);
                 //NavMeshAgent agent2 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
@@ -577,6 +641,7 @@ public class MontyStopTrigger : MonoBehaviour
                 break;
             case 3:
                 evilTwin.transform.position = new Vector3(xPos, 0, -214);
+                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
                 //evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
                 //evilTwin.SetActive(true);
                 //NavMeshAgent agent3 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
@@ -592,7 +657,7 @@ public class MontyStopTrigger : MonoBehaviour
             default:
                 break;
         }
-        evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
+
         evilTwin.SetActive(true);
 
         NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
@@ -601,15 +666,60 @@ public class MontyStopTrigger : MonoBehaviour
         float anim1OriginalSpeed = anim1.speed;
         agent1.speed = 0;
         anim1.speed = 0;
+        camOnEvilTwin.Priority = 13; //or maybe b4
+        StartCoroutine(ZoomEvilTwinCam());
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
         yield return new WaitForSeconds(2f);
-        camOnEvilTwin.Priority = 13; //put this cam on AFTER the door is down
+       // camOnEvilTwin.Priority = 13; //put this cam on AFTER the door is down
         TellTextCloud(evilTwinSpeaks1);
-        yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
+        yield return new WaitForSeconds(timeToPauseOnAnyTwin);
+
+       // montyGameCam.Priority = originalMontyGameCamPriority;
+        if (mainMontySign) mainMontySign.SetActive(false);
+        if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
+        if (inputControls) inputControls.SetActive(true);
+        GameObject montyGameBarriers = GameObject.Find("MontyGameBarriers");
+        if (montyGameBarriers) montyGameBarriers.SetActive(false);
+        GameObject missed1 = GameObject.Find("Missed1(Clone)");
+        if (missed1) missed1.SetActive(false);
+        GameObject missed3 = GameObject.Find("Missed3(Clone)");
+        if (missed3) missed3.SetActive(false);
+        GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
+        if (montyGoal) montyGoal.SetActive(false);
 
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
-        camOnEvilTwin.Priority = originalCamOnEvilTwinPriority;  //esentially disable the cam
+        camOnEvilTwin.Priority = originalCamOnEvilTwinPriority;  // disable the camOnEvilTwin and revert to follow cam
+    }
+    private IEnumerator ZoomEvilTwinCam()
+    {
+        var originalFOV = camOnEvilTwin.m_Lens.FieldOfView;
+        var targetFOV = originalFOV - zoomAmount;  //40 - 23 = 17 
+
+        float timer = 0f;
+
+        while (timer < zoomTime)
+        {
+            timer += Time.deltaTime;
+            camOnEvilTwin.m_Lens.FieldOfView = Mathf.Lerp(originalFOV, targetFOV, timer / zoomTime);
+          //  Debug.Log("ori/targ  " + originalFOV + "/" + targetFOV + "  camFOV = " + camOnEvilTwin.m_Lens.FieldOfView);
+            yield return null;
+        }
+    }
+    private IEnumerator ZoomGoodTwinCam()
+    {
+        var originalFOV = camOnGoodTwin.m_Lens.FieldOfView;
+        var targetFOV = originalFOV - zoomAmount;  //40 - 23 = 17 
+
+        float timer = 0f;
+
+        while (timer < zoomTime)
+        {
+            timer += Time.deltaTime;
+            camOnGoodTwin.m_Lens.FieldOfView = Mathf.Lerp(originalFOV, targetFOV, timer / zoomTime);
+            //  Debug.Log("ori/targ  " + originalFOV + "/" + targetFOV + "  camFOV = " + camOnGoodTwin.m_Lens.FieldOfView);
+            yield return null;
+        }
     }
     void TellTextCloud(string caption)
     {
@@ -642,8 +752,6 @@ public class MontyStopTrigger : MonoBehaviour
         DisableTheDoorButtons();
         CloseTheFirstOpenedDoor();
         UnlockPlayerFromTheGameTriggerArea();
-
-
     }
     IEnumerator WaitSeconds(float timeToWait, AudioClip audioClip)
     {

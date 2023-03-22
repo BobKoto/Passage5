@@ -22,7 +22,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     int originalCamOnPlayerCloneAsNPCPriority;
 
     const string playerCloneAsNPCSpeaks1 = "#Hello. Pardon the #'s - a former employer";
-    const string playerCloneAsNPCSpeaks2 = "#My new job is puzzles...";
+    const string playerCloneAsNPCSpeaks2 = "#My new job is puzzles... \n #Lead on!";
 
     //Joysticks_StarterAssetsInputs_Joysticks
 
