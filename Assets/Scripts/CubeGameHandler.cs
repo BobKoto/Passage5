@@ -241,10 +241,20 @@ public class CubeGameHandler : MonoBehaviour
         placeRow2 += place3CubeValue + place4CubeValue;
         placeCol2 += place2CubeValue + place4CubeValue;
 
-        row1IsGood = placeRow1 == gameSums[0];
-        col1IsGood = placeCol1 == gameSums[2];
-        row2IsGood = placeRow2 == gameSums[1];
-        col2IsGood = placeCol2 == gameSums[3];
+        if (Application.platform == RuntimePlatform.Android)  //maybe need on IOS too? // kludgy but I surrender, and it works 
+        {   //flip the columns/rows
+            row1IsGood = placeCol1 == gameSums[0];  
+            col1IsGood = placeRow1 == gameSums[2];
+            row2IsGood = placeCol2 == gameSums[1];
+            col2IsGood = placeRow2 == gameSums[3];
+        }
+        else
+        {  // as originally coded and working in Unity Editor
+           row1IsGood = placeRow1 == gameSums[0];  //these 4 are original working but not for HHeld
+           col1IsGood = placeCol1 == gameSums[2];
+           row2IsGood = placeRow2 == gameSums[1];
+           col2IsGood = placeCol2 == gameSums[3];
+        }
         if (row1IsGood && row2IsGood && col1IsGood && col2IsGood)
         {
             cubeGameWonOrLostText.text = "Hooray you Won";
@@ -252,7 +262,10 @@ public class CubeGameHandler : MonoBehaviour
             roundWonPlacingCubes = true;
         } else
         {
-            cubeGameWonOrLostText.text = "Awwwww you lose";
+            int x = 0;
+            if (Application.platform == RuntimePlatform.Android) x = 94;
+            cubeGameWonOrLostText.text = "Awwwww you lose " + gameSums[0] + " " + gameSums[1] + " " + gameSums[2] + " " + gameSums[3] + " " + x;
+            //Debug.Log(s0 + placeRow1 + s1 + placeCol1 + s2 + placeRow2 + s3+ placeCol2);
             audioManager.PlayAudio(audioManager.clipfalling);
             roundWonPlacingCubes = false;
         }
@@ -411,8 +424,17 @@ public class CubeGameHandler : MonoBehaviour
     bool GameCanBeSolved()
     {
         int firstPlusSecond, thirdPlusFourth;
-        firstPlusSecond = gameSums[0] + gameSums[1];
-        thirdPlusFourth = gameSums[2] + gameSums[3];
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            firstPlusSecond = gameSums[2] + gameSums[3];
+            thirdPlusFourth = gameSums[0] + gameSums[1];
+        }
+        else
+        {
+            firstPlusSecond = gameSums[0] + gameSums[1];
+            thirdPlusFourth = gameSums[2] + gameSums[3];
+        }
+
         if (firstPlusSecond == 100 && thirdPlusFourth == 100)
         {
             // //aDebug.Log("Game CAN be solved... theSum = " + theSum + " colSum = " + colSum + " rowSum = " + rowSum); 
