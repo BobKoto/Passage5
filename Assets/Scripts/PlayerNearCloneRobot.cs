@@ -6,7 +6,7 @@ public class PlayerNearCloneRobot : MonoBehaviour
 {
     public float stopWavingAfterXSeconds = 10f;
     public float stopWalkingAfterXSeconds = 10f;
-    public MyIntEvent m_MyEvent;
+    public CloudTextEvent m_MyEvent;
     const string noMoney = "#No money.";
     Animator anim;
     // Start is called before the first frame update

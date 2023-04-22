@@ -36,7 +36,7 @@ public class OpenDoor : MonoBehaviour
     public bool targetIsVisible { get; private set; }
     [SerializeField]
     bool visualize = true;
-    public MyIntEvent m_MyEvent;
+    public CloudTextEvent m_MyEvent;
     const string firstDoor = "#Good Robot.";
     const string firstSteps = "#Take a dip!";
     // Start is called before the first frame update
@@ -90,7 +90,7 @@ public class OpenDoor : MonoBehaviour
         playerRotationY = player.transform.eulerAngles;
         //  Debug.Log(" playerY rotation = " + playerRotationY);
         if (m_MyEvent == null)
-            m_MyEvent = new MyIntEvent();
+            m_MyEvent = new CloudTextEvent();
 
       //  m_MyEvent.AddListener(EnableTheTextCloud);
 
