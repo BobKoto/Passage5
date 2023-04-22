@@ -5,7 +5,7 @@ using Cinemachine;
 using UnityEngine.Events;
 
 public class PlayerCloneAsNpcIntro : MonoBehaviour
-{//Component of PlayerCloneAsNPC
+{//Component of PlayerCloneAsNPC  
 
     [Header("The Player(s)")]
     public GameObject playerArmature;
@@ -13,7 +13,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera camOnPlayerCloneAsNPC;
     [Header("Text Cloud Event")]
-    public MyIntEvent m_MyEvent;  //for TextCloud 
+    public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
     [Header("Intro Duration")]
@@ -29,20 +29,22 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        originalCamOnPlayerCloneAsNPCPriority = camOnPlayerCloneAsNPC.Priority;
+
         if (canvasNextPagePressedEvent == null)
             canvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
         canvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
-        originalCamOnPlayerCloneAsNPCPriority = camOnPlayerCloneAsNPC.Priority;
+
         StartCoroutine(Intro(introDuration));
     }
 
     void TellTextCloud(string caption)
     {
-        m_MyEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, 4, caption);
     }
-    void TellTextCloud(string caption, bool nextPagePressed)
+    void TellTextCloud(string caption, bool waitForNextPagePressed)
     {
-        m_MyEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, 4, caption);
     }
 
     IEnumerator Intro(float duration)
@@ -51,7 +53,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         playerArmature.SetActive(false);
         inputControls.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = 12;
-        TellTextCloud(playerCloneAsNPCSpeaks1);
+        TellTextCloud(playerCloneAsNPCSpeaks1, true);
       //  yield return new WaitForSeconds(duration);
         yield return new WaitUntil(() => nextPagePressed); 
         playerArmature.SetActive(true);

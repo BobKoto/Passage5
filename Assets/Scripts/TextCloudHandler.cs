@@ -6,17 +6,17 @@ using Cinemachine;
 using TMPro;
 
 
-[System.Serializable]
-public class MyIntEvent : UnityEvent<int, int, string>
-{
-}
+//[System.Serializable]
+//public class MyIntEvent : UnityEvent<int, int, string>
+//{
+//}
 public class TextCloudHandler : MonoBehaviour
 {//Component of TextCloudHandleHolder
     //public Transform  playerTransform; commented 11/7/22 see EnableTheTextCloud() below
     public AudioManager audioManager;
     public GameObject textCloud;
     public GameObject cloudText;
-    public MyIntEvent m_MyEvent;
+    public CloudTextEvent m_CloudTextEvent;
     public int cloudTextDuration = 6;
     public CinemachineVirtualCamera playerFacingCamera; //2/2/23 don't activate this Cam until we have a clean flow - if ever
     int originalCamPriority;                            //2/2/23 don't activate this Cam until we have a clean flow - if ever
@@ -26,10 +26,10 @@ public class TextCloudHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (m_MyEvent == null)
-            m_MyEvent = new MyIntEvent();
+        if (m_CloudTextEvent == null)
+            m_CloudTextEvent = new CloudTextEvent();
 
-        m_MyEvent.AddListener(EnableTheTextCloud);
+        m_CloudTextEvent.AddListener(EnableTheTextCloud);
 
         if (canvasNextPagePressedEvent == null)
             canvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
@@ -44,15 +44,17 @@ public class TextCloudHandler : MonoBehaviour
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
         textCloud.SetActive(true);
         audioManager.PlayAudio(audioManager.strom, 1f); //here maybe we can look for spaces in the string
+        Debug.Log("call StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));");
         StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));
         //Debug.Log(this.name + "  EnableTheTextCloud called via event x = " + x + " y = " + y + " z = " + z);
     }
-    public void EnableTheTextCloud(int x, int y, string _caption, Event nextPagePressed)
+    public void EnableTheTextCloud(int x, int y, string _caption, bool waitForNextPagePressed)
     {
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
         textCloud.SetActive(true);
         audioManager.PlayAudio(audioManager.strom, 1f); //here maybe we can look for spaces in the string
-        StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));
+        Debug.Log("call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));");
+        StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
         //Debug.Log(this.name + "  EnableTheTextCloud called via event x = " + x + " y = " + y + " z = " + z);
     }
     IEnumerator RemoveCloudAfterXSeconds(int x)
@@ -61,7 +63,7 @@ public class TextCloudHandler : MonoBehaviour
         // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         textCloud.SetActive(false);
     }
-    IEnumerator RemoveCloudAfterNextPagePressedEvent(Event nextPressed)
+    IEnumerator RemoveCloudAfterNextPagePressed(bool nextPressed)
     {
         yield return new WaitUntil(() => nextPagePressed);
         // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
@@ -79,7 +81,7 @@ public class TextCloudHandler : MonoBehaviour
     }
     private void OnDisable()
     {
-        m_MyEvent.RemoveListener(EnableTheTextCloud);  //I guess we should do this
+        m_CloudTextEvent.RemoveListener(EnableTheTextCloud);  //I guess we should do this
         StopAllCoroutines();
     }
 }

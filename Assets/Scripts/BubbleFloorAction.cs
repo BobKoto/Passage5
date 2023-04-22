@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class BubbleFloorAction : MonoBehaviour
 {
 
-    public MyIntEvent m_MyEvent;
+    public CloudTextEvent m_MyEvent;
 
     const string hitFloorYuk = "#Yuck";
 

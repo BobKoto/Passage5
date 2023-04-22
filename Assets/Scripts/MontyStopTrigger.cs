@@ -102,7 +102,7 @@ public class MontyStopTrigger : MonoBehaviour
     public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;
     public MontyDoorDownEvent montyDoorDownEvent;
     public AudioClipFinishedEvent audioClipFinishedEvent;
-    public MyIntEvent m_MyEvent;  //for TextCloud 
+    public CloudTextEvent m_MyEvent;  //for TextCloud 
 
     Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro;
     AudioManager audioManager;

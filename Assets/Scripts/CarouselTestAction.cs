@@ -5,7 +5,7 @@ using UnityEngine;
 public class CarouselTestAction : MonoBehaviour
 {
 
-    public MyIntEvent m_MyEvent;
+    public CloudTextEvent m_MyEvent;
 
     const string onCarousel = "#Wheee";
     const string offCarousel = "#Dizzy";

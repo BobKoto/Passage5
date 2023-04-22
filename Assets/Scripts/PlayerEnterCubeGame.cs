@@ -6,7 +6,7 @@ using TMPro;
 
 public class PlayerEnterCubeGame : MonoBehaviour      //Componenet of PlayerEnterCubeTrigger (the collider in front of the cube game  
 {
-    public MyIntEvent m_MyEvent;
+    public CloudTextEvent m_MyEvent;
     const string helpNeedHI = "#Need human assist!";
     public AudioManager audioManager;
     public CinemachineVirtualCamera cubeGameCam;

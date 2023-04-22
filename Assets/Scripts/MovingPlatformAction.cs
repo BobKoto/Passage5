@@ -5,7 +5,7 @@ using UnityEngine;
 public class MovingPlatformAction : MonoBehaviour
 {
 
-    public MyIntEvent m_MyEvent;
+    public CloudTextEvent m_MyEvent;
 
     const string onPlatform = "#Free ride";
     const string offPlatform = "#Now walk";

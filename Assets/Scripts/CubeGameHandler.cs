@@ -34,7 +34,7 @@ public class CubeGameHandler : MonoBehaviour
     public CubeGameMoveOnButtonTouchEvent cubeGameMoveOnButtonTouchEvent;
     public CubeGameBoardUpEvent cubeGameBoardUpEvent;
 
-    public MyIntEvent m_MyEvent;  //for TextCloud 
+    public CloudTextEvent m_MyEvent;  //for TextCloud 
 
     //GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
 
