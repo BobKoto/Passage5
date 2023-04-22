@@ -24,18 +24,23 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     const string playerCloneAsNPCSpeaks1 = "#Hello. Pardon the #'s - a former employer";
     const string playerCloneAsNPCSpeaks2 = "#My new job is puzzles... \n #Lead on!";
 
-    //Joysticks_StarterAssetsInputs_Joysticks
-
+    public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
+    bool nextPagePressed;
     // Start is called before the first frame update
     void Start()
     {
-
-
+        if (canvasNextPagePressedEvent == null)
+            canvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
+        canvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
         originalCamOnPlayerCloneAsNPCPriority = camOnPlayerCloneAsNPC.Priority;
         StartCoroutine(Intro(introDuration));
     }
 
     void TellTextCloud(string caption)
+    {
+        m_MyEvent.Invoke(5, 4, caption);
+    }
+    void TellTextCloud(string caption, bool nextPagePressed)
     {
         m_MyEvent.Invoke(5, 4, caption);
     }
@@ -47,17 +52,27 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         inputControls.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = 12;
         TellTextCloud(playerCloneAsNPCSpeaks1);
-        yield return new WaitForSeconds(duration);
+      //  yield return new WaitForSeconds(duration);
+        yield return new WaitUntil(() => nextPagePressed); 
         playerArmature.SetActive(true);
         inputControls.SetActive(true);
         playerCloneAsNPC.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = originalCamOnPlayerCloneAsNPCPriority;
         TellTextCloud(playerCloneAsNPCSpeaks2);
     }
+    void OnCanvasNextPagePressedEvent()
+    {
+        Debug.Log("next page pressed");
+        nextPagePressed = true;
+    }
+    public void OnCanvasNextPagePressed()
+    {
+        canvasNextPagePressedEvent.Invoke();
+    }
     //// Update is called once per frame
     //void Update()
     //{
-        
+
     //}
 
 }
