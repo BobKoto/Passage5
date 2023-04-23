@@ -12,19 +12,19 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     public GameObject playerCloneAsNPC;
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera camOnPlayerCloneAsNPC;
-    [Header("Text Cloud Event")]
+    [Header("Text Cloud Events")]
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
+    public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
+    public CloudTextEventWaitNextPage m_CloudTextEventWaitNextPage;
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
     [Header("Intro Duration")]
     public float introDuration = 4;
-
-    int originalCamOnPlayerCloneAsNPCPriority;
-
+ 
     const string playerCloneAsNPCSpeaks1 = "#Hello. Pardon the #'s - a former employer";
     const string playerCloneAsNPCSpeaks2 = "#My new job is puzzles... \n #Lead on!";
-
-    public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
+ 
+    int originalCamOnPlayerCloneAsNPCPriority;
     //public CloudTextEvent m_CloudTextEvent;
     bool nextPagePressed;
     // Start is called before the first frame update
@@ -42,6 +42,10 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
             canvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
         canvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
 
+        if (m_CloudTextEventWaitNextPage == null)
+            m_CloudTextEventWaitNextPage = new CloudTextEventWaitNextPage();
+       // m_CloudTextEventWaitNextPage.AddListener(EnableTheTextCloudAndWaitForNextPage);
+
         StartCoroutine(Intro(introDuration));
     }
 
@@ -51,7 +55,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     }
     void TellTextCloud(string caption, bool waitForNextPagePressed)
     {
-        m_CloudTextEvent.Invoke(5, 4, caption);
+        m_CloudTextEventWaitNextPage.Invoke(5, 4, caption, true);
     }
 
     IEnumerator Intro(float duration)
@@ -79,10 +83,10 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     {
         canvasNextPagePressedEvent.Invoke();
     }
-    //// Update is called once per frame
-    //void Update()
-    //{
 
-    //}
+    void Disable()
+    {
+        canvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
+    }
 
 }
