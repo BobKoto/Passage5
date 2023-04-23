@@ -5,17 +5,14 @@ using UnityEngine.Events;
 using Cinemachine;
 using TMPro;
 
-
-//[System.Serializable]
-//public class MyIntEvent : UnityEvent<int, int, string>
-//{
-//}
 public class TextCloudHandler : MonoBehaviour
 {//Component of TextCloudHandleHolder
     //public Transform  playerTransform; commented 11/7/22 see EnableTheTextCloud() below
     public AudioManager audioManager;
     public GameObject textCloud;
     public GameObject cloudText;
+    public GameObject menuButton;
+    public GameObject lightButton;
     //public CloudTextEvent m_CloudTextEvent;
     //public CloudTextEventWaitNextPage m_CloudTextEventWaitNextPage;
     public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
@@ -43,6 +40,9 @@ public class TextCloudHandler : MonoBehaviour
 
         originalCamPriority = playerFacingCamera.Priority;
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+
+        if (menuButton) menuButton.SetActive(false);
+        if (lightButton) lightButton.SetActive(false);
     }
 
     public void EnableTheTextCloud(int x, int y, string _caption)
