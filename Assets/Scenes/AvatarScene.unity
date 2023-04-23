@@ -10891,11 +10891,17 @@ MonoBehaviour:
   audioManager: {fileID: 0}
   textCloud: {fileID: 555542196}
   cloudText: {fileID: 607975430}
-  m_MyEvent:
+  m_CloudTextEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_CloudTextEventWaitForNextPage:
     m_PersistentCalls:
       m_Calls: []
   cloudTextDuration: 5
   playerFacingCamera: {fileID: 634641889}
+  canvasNextPagePressedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &494851451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42466,7 +42472,7 @@ MonoBehaviour:
   playerArmature: {fileID: 1228386539}
   playerCloneAsNPC: {fileID: 2078872980}
   camOnPlayerCloneAsNPC: {fileID: 1875798904}
-  m_MyEvent:
+  m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 493443869}

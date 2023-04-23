@@ -16,7 +16,7 @@ public class TextCloudHandler : MonoBehaviour
     public AudioManager audioManager;
     public GameObject textCloud;
     public GameObject cloudText;
-    public CloudTextEvent m_CloudTextEvent;
+    public CloudTextEvent m_CloudTextEvent, m_CloudTextEventWaitForNextPage;
     public int cloudTextDuration = 6;
     public CinemachineVirtualCamera playerFacingCamera; //2/2/23 don't activate this Cam until we have a clean flow - if ever
     int originalCamPriority;                            //2/2/23 don't activate this Cam until we have a clean flow - if ever
@@ -26,10 +26,14 @@ public class TextCloudHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Hello from TextCloudHandler");
         if (m_CloudTextEvent == null)
             m_CloudTextEvent = new CloudTextEvent();
-
         m_CloudTextEvent.AddListener(EnableTheTextCloud);
+
+        //if (m_CloudTextEventWaitForNextPage == null)
+        //    m_CloudTextEventWaitForNextPage = new CloudTextEvent();
+        //m_CloudTextEventWaitForNextPage.AddListener(DisableTheTextCloudAfterNextPage);
 
         if (canvasNextPagePressedEvent == null)
             canvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
@@ -48,7 +52,7 @@ public class TextCloudHandler : MonoBehaviour
         StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));
         //Debug.Log(this.name + "  EnableTheTextCloud called via event x = " + x + " y = " + y + " z = " + z);
     }
-    public void EnableTheTextCloud(int x, int y, string _caption, bool waitForNextPagePressed)
+    public void DisableTheTextCloudAfterNextPage(int x, int y, string _caption, bool waitForNextPagePressed)
     {
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
         textCloud.SetActive(true);

@@ -25,11 +25,18 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     const string playerCloneAsNPCSpeaks2 = "#My new job is puzzles... \n #Lead on!";
 
     public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
+    //public CloudTextEvent m_CloudTextEvent;
     bool nextPagePressed;
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Hello from PlayerCloneAsNpcIntro");
+
         originalCamOnPlayerCloneAsNPCPriority = camOnPlayerCloneAsNPC.Priority;
+
+        if (m_CloudTextEvent == null)
+            m_CloudTextEvent = new CloudTextEvent();
+       // CloudTextEvent.AddListener(OnCanvasNextPagePressedEvent);
 
         if (canvasNextPagePressedEvent == null)
             canvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
@@ -49,7 +56,8 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
     IEnumerator Intro(float duration)
     {
-      //  yield return new WaitForSeconds(2f); //timing?  it works but I don't like (script execution order better solution? warily yes)
+        //  yield return new WaitForSeconds(2f); //timing?  it works but I don't like (script execution order better solution? warily yes)
+        Debug.Log(" PlayerCloneAsNpcIntro Execute IEnumerator Intro(float duration)");
         playerArmature.SetActive(false);
         inputControls.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = 12;
