@@ -20,7 +20,10 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     public GameObject inputControls;
     [Header("Intro Duration")]
     public float introDuration = 4;
- 
+    [Header("The UI stuff as GameObjects")]
+    public GameObject nextPage;
+    public GameObject nowPlay;
+
     const string playerCloneAsNPCSpeaks1 = "#Hello. Pardon the #'s - a former employer";
     const string playerCloneAsNPCSpeaks2 = "#My new job is puzzles... \n #Lead on!";
  
@@ -44,8 +47,9 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
         if (m_CloudTextEventWaitNextPage == null)
             m_CloudTextEventWaitNextPage = new CloudTextEventWaitNextPage();
-       // m_CloudTextEventWaitNextPage.AddListener(EnableTheTextCloudAndWaitForNextPage);
-
+        // m_CloudTextEventWaitNextPage.AddListener(EnableTheTextCloudAndWaitForNextPage);
+        if (nowPlay) nowPlay.SetActive(false);
+        if (nextPage) nextPage.SetActive(false);
         StartCoroutine(Intro(introDuration));
     }
 
@@ -66,13 +70,16 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         inputControls.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = 12;
         TellTextCloud(playerCloneAsNPCSpeaks1, true);
-      //  yield return new WaitForSeconds(duration);
+        if (nextPage) nextPage.SetActive(true);
+        //  yield return new WaitForSeconds(duration);
         yield return new WaitUntil(() => nextPagePressed); 
         playerArmature.SetActive(true);
         inputControls.SetActive(true);
         playerCloneAsNPC.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = originalCamOnPlayerCloneAsNPCPriority;
         TellTextCloud(playerCloneAsNPCSpeaks2);
+       // if (nowPlay) nowPlay.SetActive(true);
+        if (nextPage) nextPage.SetActive(false);
     }
     void OnCanvasNextPagePressedEvent()
     {
