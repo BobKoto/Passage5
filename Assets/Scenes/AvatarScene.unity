@@ -10893,11 +10893,11 @@ MonoBehaviour:
   cloudText: {fileID: 607975430}
   menuButton: {fileID: 1349875210}
   lightButton: {fileID: 28316890}
+  cloudTextDuration: 5
+  playerFacingCamera: {fileID: 634641889}
   m_CanvasNextPagePressedEvent:
     m_PersistentCalls:
       m_Calls: []
-  cloudTextDuration: 5
-  playerFacingCamera: {fileID: 634641889}
 --- !u!1001 &494851451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31852,6 +31852,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 493443869}
+        m_TargetAssemblyTypeName: TextCloudHandler, Assembly-CSharp
+        m_MethodName: OnCanvasNextPagePressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1574509616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42483,7 +42495,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  canvasNextPagePressedEvent:
+  m_CanvasNextPagePressedEvent:
     m_PersistentCalls:
       m_Calls: []
   m_CloudTextEventWaitNextPage:

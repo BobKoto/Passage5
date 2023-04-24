@@ -14,7 +14,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     public CinemachineVirtualCamera camOnPlayerCloneAsNPC;
     [Header("Text Cloud Events")]
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
-    public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
+    public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
     public CloudTextEventWaitNextPage m_CloudTextEventWaitNextPage;
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
@@ -38,9 +38,9 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
             m_CloudTextEvent = new CloudTextEvent();
        // CloudTextEvent.AddListener(OnCanvasNextPagePressedEvent);
 
-        if (canvasNextPagePressedEvent == null)
-            canvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
-        canvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
+        if (m_CanvasNextPagePressedEvent == null)
+            m_CanvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
+        m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
 
         if (m_CloudTextEventWaitNextPage == null)
             m_CloudTextEventWaitNextPage = new CloudTextEventWaitNextPage();
@@ -76,17 +76,19 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     }
     void OnCanvasNextPagePressedEvent()
     {
-        Debug.Log("next page pressed");
+        Debug.Log(this.name + " says next page pressed Remve Listener");
         nextPagePressed = true;
+        m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
     }
     public void OnCanvasNextPagePressed()
     {
-        canvasNextPagePressedEvent.Invoke();
+        m_CanvasNextPagePressedEvent.Invoke();
     }
 
     void Disable()
     {
-        canvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
+        m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
+        StopAllCoroutines();
     }
 
 }
