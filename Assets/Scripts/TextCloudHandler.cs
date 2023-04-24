@@ -13,6 +13,9 @@ public class TextCloudHandler : MonoBehaviour
     public GameObject cloudText;
     public GameObject menuButton;
     public GameObject lightButton;
+    [Header("The UI stuff as GameObjects")]
+    public GameObject nextPage;
+    public GameObject nowPlay;
 
     public int cloudTextDuration = 6;
     public CinemachineVirtualCamera playerFacingCamera; //2/2/23 don't activate this Cam until we have a clean flow - if ever
@@ -21,24 +24,24 @@ public class TextCloudHandler : MonoBehaviour
     //public CloudTextEvent m_CloudTextEvent;
     //public CloudTextEventWaitNextPage m_CloudTextEventWaitNextPage;
     public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
+    public CloudTextEventExtinguished m_CloudTextEventExtinguished;
+    [Header("The Input System canvas Joystick etc.")]
+    public GameObject inputControls;
 
-   // public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
+    // public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
     bool nextPagePressed;
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Hello from TextCloudHandler");
-        //if (m_CloudTextEvent == null)
-        //    m_CloudTextEvent = new CloudTextEvent();
-        //m_CloudTextEvent.AddListener(EnableTheTextCloud);
-
-        //if (m_CloudTextEventWaitNextPage == null)
-        //    m_CloudTextEventWaitNextPage = new CloudTextEventWaitNextPage();
-        //m_CloudTextEventWaitNextPage.AddListener(EnableTheTextCloudAndWaitForNextPage);
 
         if (m_CanvasNextPagePressedEvent == null)
             m_CanvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
         m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
+
+        if (m_CloudTextEventExtinguished == null)
+            m_CloudTextEventExtinguished = new CloudTextEventExtinguished();
+        m_CloudTextEventExtinguished.AddListener(OnCloudTextEventExtinguished);
 
         originalCamPriority = playerFacingCamera.Priority;
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
@@ -70,12 +73,15 @@ public class TextCloudHandler : MonoBehaviour
         yield return new WaitForSeconds (x);
         // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         textCloud.SetActive(false);
+        m_CloudTextEventExtinguished.Invoke();
     }
     IEnumerator RemoveCloudAfterNextPagePressed(bool nextPressed)
     {
         yield return new WaitUntil(() => nextPagePressed);
         // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         textCloud.SetActive(false);
+        m_CloudTextEventExtinguished.Invoke();
+
     }
     void OnCanvasNextPagePressedEvent()
     {
@@ -88,7 +94,11 @@ public class TextCloudHandler : MonoBehaviour
         m_CanvasNextPagePressedEvent.Invoke();
 
     }
-
+    void OnCloudTextEventExtinguished()
+    {
+        Debug.Log(this.name + " says the cloud went away... So enable the Play box");
+        if (nowPlay) nowPlay.SetActive(true);
+    }
     private void OnDisable()
     {
         //  m_CloudTextEvent.RemoveListener(EnableTheTextCloud);  //I guess we should do this
