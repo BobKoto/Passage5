@@ -13,12 +13,14 @@ public class TextCloudHandler : MonoBehaviour
     public GameObject cloudText;
     public GameObject menuButton;
     public GameObject lightButton;
-    //public CloudTextEvent m_CloudTextEvent;
-    //public CloudTextEventWaitNextPage m_CloudTextEventWaitNextPage;
-    public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
+
     public int cloudTextDuration = 6;
     public CinemachineVirtualCamera playerFacingCamera; //2/2/23 don't activate this Cam until we have a clean flow - if ever
     int originalCamPriority;                            //2/2/23 don't activate this Cam until we have a clean flow - if ever
+
+    //public CloudTextEvent m_CloudTextEvent;
+    //public CloudTextEventWaitNextPage m_CloudTextEventWaitNextPage;
+    public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
 
    // public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
     bool nextPagePressed;
@@ -75,16 +77,18 @@ public class TextCloudHandler : MonoBehaviour
         // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         textCloud.SetActive(false);
     }
+    void OnCanvasNextPagePressedEvent()
+    {
+
+        Debug.Log(this.name + " says next page pressed remove Listener");
+        m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
+    }
     public void OnCanvasNextPagePressed()
     {
         m_CanvasNextPagePressedEvent.Invoke();
+
     }
 
-    void OnCanvasNextPagePressedEvent()
-    {
-        Debug.Log("next page pressed");
-        nextPagePressed = true;
-    }
     private void OnDisable()
     {
         //  m_CloudTextEvent.RemoveListener(EnableTheTextCloud);  //I guess we should do this
