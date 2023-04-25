@@ -85,6 +85,10 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
 
+    [Header("The Now Play Sign and NextPage button aka The UI stuff as GameObjects")]
+    public GameObject nextPage;
+    public GameObject nowPlay;
+
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick, playerPickedWinner, doorResultsShowing;
 
@@ -103,6 +107,7 @@ public class MontyStopTrigger : MonoBehaviour
     public MontyDoorDownEvent montyDoorDownEvent;
     public AudioClipFinishedEvent audioClipFinishedEvent;
     public CloudTextEvent m_MyEvent;  //for TextCloud 
+    public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
 
     Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro;
     AudioManager audioManager;
@@ -157,12 +162,15 @@ public class MontyStopTrigger : MonoBehaviour
             audioClipFinishedEvent = new AudioClipFinishedEvent();
         audioClipFinishedEvent.AddListener(OnAudioClipFinished);
 
+        if (m_CanvasNextPagePressedEvent == null)
+            m_CanvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
+        m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
         originalMontyGameCamPriority = montyGameCam.Priority; //10
         originalCamOnEvilTwinPriority = camOnEvilTwin.Priority;  //10
         entryCollider = gameObject.GetComponent<BoxCollider>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)   //Player enters the MontyGame area
     {
         if (other.CompareTag("Player") || other.CompareTag("MovingPlatform"))
         {
@@ -179,6 +187,23 @@ public class MontyStopTrigger : MonoBehaviour
                 entryCollider.isTrigger = false; //3/1/23 just turns into a collider that blocks player/robot movement 
             }
         }
+    }
+    private void LockPlayerInTheMontyGameTriggerArea()
+    {
+        movingPlatform.speed = 0;
+        if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
+        if (goButton) goButton.SetActive(false);
+        PlayTheMontyGame();  //so let's enable the door touches here - i bet no diff  //OK so we should add a start/play button
+    }
+    private void PlayTheMontyGame()
+    {
+        //Here we need to turn off PlayBox and inputcontrols - then enable NextPage
+        // if (inputControls) inputControls.SetActive(false);
+        if (nowPlay) nowPlay.SetActive(false);
+        if (nextPage) nextPage.SetActive(true);
+        //m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
+        Debug.Log("PlayTheMontyGame() set  montyGameActive = true ");
+        montyGameActive = true;
     }
     private void OnTriggerExit(Collider other)
     {
@@ -205,6 +230,30 @@ public class MontyStopTrigger : MonoBehaviour
         if (characterController) characterController.enabled = false;
         if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
 
+    }
+    public void OnCanvasNextpagePressed()
+    {
+        Debug.Log("CanvasNextPage Pressed - setting Intro Panel Active to false");
+        // CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
+        if (montyGameIntro) montyGameIntro.SetActive(false);
+        if (inputControls) inputControls.SetActive(false);
+        if (mainMontySign) mainMontySign.SetActive(true);
+
+        StartCoroutine(ShowDoorsAndBoxesAfterDelay(1f));
+        //if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(true);
+        audioManager.PlayAudio(audioManager.clipDRUMROLL);
+
+        if (playerArmature) playerArmature.SetActive(false);
+        if (characterController) characterController.enabled = false;
+        if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
+
+    }
+    void OnCanvasNextPagePressedEvent()
+    {
+
+        Debug.Log(this.name + " says next page pressed remove Listener");
+      //  m_CanvasNextPagePressedEvent.Invoke();
+        m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
     }
     private void CallResetJoystick()
     {
@@ -239,13 +288,7 @@ public class MontyStopTrigger : MonoBehaviour
         }
         characterController.enabled = true;
     }
-    private void LockPlayerInTheMontyGameTriggerArea()
-    {
-        movingPlatform.speed = 0;
-        if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
-        if (goButton) goButton.SetActive(false);
-        PlayTheMontyGame();  //so let's enable the door touches here - i bet no diff  //OK so we should add a start/play button
-    }
+
     private void UnlockPlayerFromTheGameTriggerArea()
     {
         if (AddRemoveChild.playerIsOnYellowPlatform)  // another useful public static bool
@@ -257,11 +300,7 @@ public class MontyStopTrigger : MonoBehaviour
         entryCollider.enabled = false;// let the player/robot move forward
         // if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
     }
-    private void PlayTheMontyGame()
-    {
-        Debug.Log("PlayTheMontyGame() set  montyGameActive = true ");
-        montyGameActive = true;
-    }
+
     public void OnMontyDoorTouch(int _doorNumber) => ProcessTheDoorButton(_doorNumber); // its not Button anymore //Above 3 UI buttons will be deimped    
                                                                                         //getting door # from ActOnMontyDoorTouch.cs Event 
     private void ProcessTheDoorButton(int doorPressed)
