@@ -37,7 +37,7 @@ public class TextCloudHandler : MonoBehaviour
 
         if (m_CanvasNextPagePressedEvent == null)
             m_CanvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
-        m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
+       // m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //Commented so we wait/addlistener only as needed
 
         if (m_CloudTextEventExtinguished == null)
             m_CloudTextEventExtinguished = new CloudTextEventExtinguished();
@@ -64,7 +64,8 @@ public class TextCloudHandler : MonoBehaviour
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
         textCloud.SetActive(true);
         audioManager.PlayAudio(audioManager.strom, 1f); //here maybe we can look for spaces in the string
-        Debug.Log("call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));");
+        Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));");
+        m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
         StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
         //Debug.Log(this.name + "  EnableTheTextCloud called via event x = " + x + " y = " + y + " z = " + z);
     }
