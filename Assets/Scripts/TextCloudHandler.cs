@@ -100,6 +100,7 @@ public class TextCloudHandler : MonoBehaviour
         Debug.Log(this.name + " says the cloud went away... So enable the Play box");
         m_CloudTextEventExtinguished.RemoveListener(OnCloudTextEventExtinguished);
         if (nowPlay) nowPlay.SetActive(true);
+        if (inputControls) inputControls.SetActive(true);
     }
     private void OnDisable()
     {
