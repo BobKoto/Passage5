@@ -10,7 +10,7 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler
 //IPointerClickHandler, IInitializePotentialDragHandler, IPointerUpHandler,IPointerExitHandler, IPointerEnterHandler, IDropHandler
 // Touch Testing only for now 
 // Component of MontySlidingDoorN objects  when N is 1,2 or 3
-// and Component of MontyPlayButton 
+// and Component of MontyPlayButton (in MontyGameIntro parent)
 // and Component of MontyGameMoveOnButton
 {
     public MontyDoorTouchEvent montyDoorTouchEvent;

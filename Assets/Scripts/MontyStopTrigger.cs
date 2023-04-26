@@ -13,8 +13,8 @@ using UnityEngine.AI;
 
 [System.Serializable]
 public class MontyDoorTouchEvent : UnityEvent<int> { }
-[System.Serializable]
-public class MontyPlayButtonTouchEvent : UnityEvent { }
+//[System.Serializable]
+//public class MontyPlayButtonTouchEvent : UnityEvent { }
 [System.Serializable]
 public class MontyMoveOnButtonTouchEvent : UnityEvent { }
 [System.Serializable]
@@ -97,7 +97,7 @@ public class MontyStopTrigger : MonoBehaviour
 
     ThirdPersonController thirdPersonController;
     CharacterController characterController;
-    float originalMoveSpeed, originalSprintSpeed;
+    float originalMoveSpeed, originalSprintSpeed, originalPlayerSpeed;
 
     public PlayerEnteredRelevantTrigger triggerEvent;
 
@@ -109,7 +109,7 @@ public class MontyStopTrigger : MonoBehaviour
     public CloudTextEvent m_MyEvent;  //for TextCloud 
     public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
 
-    Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro;
+    Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro, animPlayer;
     AudioManager audioManager;
     public static bool montyGameActive;
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
@@ -133,12 +133,14 @@ public class MontyStopTrigger : MonoBehaviour
         animMontyGameIntro = montyGameIntro.GetComponent<Animator>();
         // Debug.Log("")
 
-        //animPlayer = playerArmature.GetComponent<Animator>();
+        animPlayer = playerArmature.GetComponent<Animator>();
 
         thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
         characterController = playerArmature.GetComponent<CharacterController>();
         originalMoveSpeed = thirdPersonController.MoveSpeed;
         originalSprintSpeed = thirdPersonController.SprintSpeed;
+        originalPlayerSpeed = animPlayer.speed;
+
         if (triggerEvent == null)
             triggerEvent = new PlayerEnteredRelevantTrigger();
 
@@ -178,8 +180,7 @@ public class MontyStopTrigger : MonoBehaviour
             if (!montyGameEnded)
             {
                 // triggerEvent.Invoke(1);   //send event to ThirdPersonController to rotate the player and camera  //2/10/23 Deimp, go straight  
-                LockPlayerInTheMontyGameTriggerArea();
-                //  PlayTheMontyGame();  //Only sets montyGameActive true - which causes ActOnMontyDoorTouch to accept door touches
+                LockPlayerInTheMontyGameTriggerArea();  //THIS will call PlayTheMontyGame()
                 montyGameCam.Priority = 12;
                 if (montyGameIntro) montyGameIntro.SetActive(true);  //then we need to remove/fade it out to allow play
                 animMontyGameIntro.SetTrigger("RaiseCubeGameIntro");
@@ -188,7 +189,7 @@ public class MontyStopTrigger : MonoBehaviour
             }
         }
     }
-    private void LockPlayerInTheMontyGameTriggerArea()
+    private void LockPlayerInTheMontyGameTriggerArea()    //THIS Calls PlayTheMontyGame()
     {
         movingPlatform.speed = 0;
         if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
@@ -198,12 +199,18 @@ public class MontyStopTrigger : MonoBehaviour
     private void PlayTheMontyGame()
     {
         //Here we need to turn off PlayBox and inputcontrols - then enable NextPage
-        // if (inputControls) inputControls.SetActive(false);
+        thirdPersonController.MoveSpeed = 0;  
+        thirdPersonController.SprintSpeed = 0;
+        thirdPersonController.enabled = false;
+        animPlayer.speed = 0;
+        if (characterController) characterController.enabled = false;
+        if (inputControls) inputControls.SetActive(false);
+
         if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(true);
         //m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
-        Debug.Log("PlayTheMontyGame() set  montyGameActive = true ");
-        montyGameActive = true;
+        Debug.Log("PlayTheMontyGame() set  montyGameActive = true AND Wait for user action like 'next page' ");
+        montyGameActive = true;   //Now we just wait for a user action like "nextPage"
     }
     private void OnTriggerExit(Collider other)
     {
@@ -231,9 +238,11 @@ public class MontyStopTrigger : MonoBehaviour
         if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
 
     }
-    public void OnCanvasNextpagePressed()
+    public void OnCanvasNextpagePressed()   // Replaces PlayButtonPressedOnIntro()
     {
-        Debug.Log("CanvasNextPage Pressed - setting Intro Panel Active to false");
+        Debug.Log("CanvasNextPage Pressed - setting Intro Panel Active to false -- montyGameActive  " + montyGameActive );
+        if (montyGameActive)
+        {
         // CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
         if (montyGameIntro) montyGameIntro.SetActive(false);
         if (inputControls) inputControls.SetActive(false);
@@ -246,7 +255,26 @@ public class MontyStopTrigger : MonoBehaviour
         if (playerArmature) playerArmature.SetActive(false);
         if (characterController) characterController.enabled = false;
         if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
-
+        if (nextPage) nextPage.SetActive(false);
+        }
+        else 
+            if (montyGameEnded)
+        {
+            Debug.Log("MoveOn -- WHICH IS NOW nextPage -- Button Pressed - wiping out all");
+            if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);
+            montyGameCam.Priority = originalMontyGameCamPriority;
+            if (playerArmature)
+            {
+                Debug.Log("reactivate  player.......................");
+                playerArmature.SetActive(true); // =  Instantiate(playerArmature, playerPosition, Quaternion.identity, playerParent);
+                thirdPersonController.MoveSpeed = originalMoveSpeed;
+                thirdPersonController.SprintSpeed = originalSprintSpeed;
+                thirdPersonController.enabled = true;
+                animPlayer.speed = originalPlayerSpeed;
+                if (characterController) characterController.enabled = true;
+            }
+            characterController.enabled = true;
+        }
     }
     void OnCanvasNextPagePressedEvent()
     {
@@ -271,20 +299,11 @@ public class MontyStopTrigger : MonoBehaviour
         Debug.Log("MoveOn Button Pressed - wiping out all");
         if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);
         montyGameCam.Priority = originalMontyGameCamPriority;
-        //if (mainMontySign) mainMontySign.SetActive(false);
-        //if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
-        //if (inputControls) inputControls.SetActive(true);
-        //GameObject missed1 = GameObject.Find("Missed1(Clone)");
-        //if (missed1) missed1.SetActive(false);
-        //GameObject missed3 = GameObject.Find("Missed3(Clone)");
-        //if (missed3) missed3.SetActive(false);
-        //GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
-        //if (montyGoal) montyGoal.SetActive(false);
-       // CallResetJoystick();
         if (playerArmature)
         {
             Debug.Log("reactivate  player.......................");
             playerArmature.SetActive(true); // =  Instantiate(playerArmature, playerPosition, Quaternion.identity, playerParent);
+            animPlayer.speed = originalPlayerSpeed;
         }
         characterController.enabled = true;
     }
@@ -440,7 +459,10 @@ public class MontyStopTrigger : MonoBehaviour
             StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evil twin when the door is down(fully)
         }
         else
-            StartCoroutine(WaitForEventToInstantiateGoodTwin(doorPressed)); //release the good twin when the door is down(fully)
+        {
+           StartCoroutine(WaitForEventToInstantiateGoodTwin(doorPressed)); //release the good twin when the door is down(fully)
+        }
+ 
 
         CleanUpTheMontyGameAndUnlockThePlayer();
     }
@@ -594,22 +616,22 @@ public class MontyStopTrigger : MonoBehaviour
         {
             case 1:
                 goodTwin.transform.position = new Vector3(xPos, 0, -228);
-                goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
+             //    goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
                 break;
             case 2:
                 goodTwin.transform.position = new Vector3(xPos, 0, -221);
-                goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
+             //   goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
                 break;
             case 3:
                 goodTwin.transform.position = new Vector3(xPos, 0, -214);
-                goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
+              //  goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
                 break;
             default:
                 break;
         }
-
+        goodTwin.transform.Rotate(0f, gTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D  //moved out of switch case 4/25/23
         goodTwin.SetActive(true);  //we're gonna use this and the following so KEEP
-
+        // for now just have the twin pace back and forth...
         NavMeshAgent agent1 = GameObject.Find("PlayerCloneGoodTwin").GetComponent<NavMeshAgent>();
         Animator anim1 = GameObject.Find("PlayerCloneGoodTwin").GetComponent<Animator>();
         float agent1OriginalSpeed = agent1.speed;
@@ -650,55 +672,22 @@ public class MontyStopTrigger : MonoBehaviour
         {
             case 1:
                 evilTwin.transform.position = new Vector3(xPos, 0, -228);
-                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
-                //evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
-                //evilTwin.SetActive(true);
-                //NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
-                //Animator anim1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
-                //float agent1OriginalSpeed = agent1.speed;
-                //float anim1OriginalSpeed = anim1.speed;
-                //agent1.speed = 0;
-                //anim1.speed = 0;
-                //yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
-                //agent1.speed = agent1OriginalSpeed;
-                //anim1.speed = anim1OriginalSpeed;
+               // evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
                 break;
             case 2:
                 evilTwin.transform.position = new Vector3(xPos, 0, -221);
-                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
-                //evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);//was 52
-                //evilTwin.SetActive(true);
-                //NavMeshAgent agent2 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
-                //Animator anim2 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
-                //float agent2OriginalSpeed = agent2.speed;
-                //float anim2OriginalSpeed = anim2.speed;
-                //agent2.speed = 0;
-                //anim2.speed = 0;
-                //yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
-                //agent2.speed = agent2OriginalSpeed;
-                //anim2.speed = anim2OriginalSpeed;
+               // evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
                 break;
             case 3:
                 evilTwin.transform.position = new Vector3(xPos, 0, -214);
-                evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
-                //evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);
-                //evilTwin.SetActive(true);
-                //NavMeshAgent agent3 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
-                //Animator anim3 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
-                //float agent3OriginalSpeed = agent3.speed;
-                //float anim3OriginalSpeed = anim3.speed;
-                //agent3.speed = 0;
-                //anim3.speed = 0;
-                //yield return new WaitForSeconds(timeToPauseOnTheEvilTwin);
-                //agent3.speed = agent3OriginalSpeed;
-                //anim3.speed = anim3OriginalSpeed;
+               // evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D
                 break;
             default:
                 break;
         }
-
+        evilTwin.transform.Rotate(0f, eTwinRot, 0f, Space.Self);  //rotation depends on the door - thank U 3D  //moved out of switch case 4/25/23
         evilTwin.SetActive(true);
-
+        // for now just have the twin pace back and forth...
         NavMeshAgent agent1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<NavMeshAgent>();
         Animator anim1 = GameObject.Find("PlayerCloneEvilTwin").GetComponent<Animator>();
         float agent1OriginalSpeed = agent1.speed;
@@ -800,7 +789,8 @@ public class MontyStopTrigger : MonoBehaviour
         if (montyGameEnded)
         {
             Debug.Log("WaitForSeconds sees montyGameEdnded = true");
-            montyGameMoveOnButton.SetActive(true);
+            if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(true);
+            if (nextPage) nextPage.SetActive(true);
         }
     }
     private void OnDisable()

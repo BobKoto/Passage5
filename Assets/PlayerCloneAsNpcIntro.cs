@@ -74,7 +74,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         //  yield return new WaitForSeconds(duration);
         yield return new WaitUntil(() => nextPagePressed); 
         playerArmature.SetActive(true);
-        inputControls.SetActive(true);
+       // inputControls.SetActive(true);
         playerCloneAsNPC.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = originalCamOnPlayerCloneAsNPCPriority;
         TellTextCloud(playerCloneAsNPCSpeaks2);
