@@ -14,6 +14,8 @@ public class CloudTextEventExtinguished : UnityEvent { }
 public class CloudTextEventWaitNextPage : UnityEvent<int, int, string, bool> { }
 [System.Serializable]
 public class MontyPlayButtonTouchEvent : UnityEvent { }
+[System.Serializable]
+public class PlayerMoveStopEvent : UnityEvent { }   // to see if we can STOP the fucking player from moving after we've done all else 
 //Find this in Assets\Scripts
 
 //We probably should move all public Events into here... for now we have these 2 and ok so far 

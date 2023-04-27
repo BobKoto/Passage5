@@ -196,7 +196,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (goButton) goButton.SetActive(false);
         PlayTheMontyGame();  //so let's enable the door touches here - i bet no diff  //OK so we should add a start/play button
     }
-    private void PlayTheMontyGame()
+    private void PlayTheMontyGame()  //Called by LockPlayerInTheMontyGameTriggerArea() 
     {
         //Here we need to turn off PlayBox and inputcontrols - then enable NextPage
         thirdPersonController.MoveSpeed = 0;  
@@ -262,14 +262,18 @@ public class MontyStopTrigger : MonoBehaviour
         {
             Debug.Log("MoveOn -- WHICH IS NOW nextPage -- Button Pressed - wiping out all");
             if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);
+            if (nextPage) nextPage.SetActive(false);
             montyGameCam.Priority = originalMontyGameCamPriority;
             if (playerArmature)
             {
                 Debug.Log("reactivate  player.......................");
-                playerArmature.SetActive(true); // =  Instantiate(playerArmature, playerPosition, Quaternion.identity, playerParent);
-                thirdPersonController.MoveSpeed = originalMoveSpeed;
-                thirdPersonController.SprintSpeed = originalSprintSpeed;
+               // playerArmature.SetActive(true); // =  Instantiate(playerArmature, playerPosition, Quaternion.identity, playerParent);
                 thirdPersonController.enabled = true;
+                CallResetJoystick();
+                if (playerArmature) playerArmature.SetActive(true);  // to undo the CallResetJoystick 
+              //  thirdPersonController.MoveSpeed = originalMoveSpeed;
+                thirdPersonController.SprintSpeed = originalSprintSpeed;
+
                 animPlayer.speed = originalPlayerSpeed;
                 if (characterController) characterController.enabled = true;
             }
@@ -651,6 +655,10 @@ public class MontyStopTrigger : MonoBehaviour
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
         if (inputControls) inputControls.SetActive(true);
+        CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
+        thirdPersonController.MoveSpeed = 0;
+        //if (inputControls) inputControls.SetActive(false);  //just try a toggle 
+        //if (inputControls) inputControls.SetActive(true);
         GameObject montyGameBarriers = GameObject.Find("MontyGameBarriers");
         if (montyGameBarriers) montyGameBarriers.SetActive(false);
         GameObject missed1 = GameObject.Find("Missed1(Clone)");
@@ -706,6 +714,10 @@ public class MontyStopTrigger : MonoBehaviour
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
         if (inputControls) inputControls.SetActive(true);
+        CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
+        thirdPersonController.MoveSpeed = 0;
+        //if (inputControls) inputControls.SetActive(false);  //just try a toggle 
+        //if (inputControls) inputControls.SetActive(true);
         GameObject montyGameBarriers = GameObject.Find("MontyGameBarriers");
         if (montyGameBarriers) montyGameBarriers.SetActive(false);
         GameObject missed1 = GameObject.Find("Missed1(Clone)");
@@ -788,7 +800,7 @@ public class MontyStopTrigger : MonoBehaviour
        // if (!playerPickedWinner && !montyGameEnded) montyGameSignText.text = "A chance to change door. Choose...";  //3/7/23 moved to after drama audio
         if (montyGameEnded)
         {
-            Debug.Log("WaitForSeconds sees montyGameEdnded = true");
+            Debug.Log("WaitForSeconds sees montyGameEdnded = true  SETTING NextPage Active");
             if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(true);
             if (nextPage) nextPage.SetActive(true);
         }
