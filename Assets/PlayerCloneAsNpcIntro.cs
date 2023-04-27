@@ -92,7 +92,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         m_CanvasNextPagePressedEvent.Invoke();
     }
 
-    void Disable()
+    void OnDisable()
     {
         m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
         StopAllCoroutines();

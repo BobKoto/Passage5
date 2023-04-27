@@ -9,6 +9,53 @@ public class ResetVirtualJoystick : MonoBehaviour
     //public InputAction moveAction;
     //InputControl inputControl;
     //InputActionReference moveActionReference;
+    public RectTransform moveHandle;  //resets position but dracula stays alive and keeps moving 
+    Vector2 moveHandlePosition = Vector2.zero;
+    private Gamepad gamepad;
+    private void Start()
+    {
+    }
+
+    private void OnEnable()
+    {
+        // Get the gamepad device
+        gamepad = Gamepad.current;
+    }
+    private void ResetJoystick()
+    {
+        Debug.Log("ResetVJ recvd MontyST SendMessage.... trying to set jstick to Vector2.zero");
+        moveHandle.localPosition =  moveHandlePosition;//resets position but dracula stays alive and keeps moving  - oh well :|
+        Debug.Log("RVJ did moveHandle.position =  moveHandlePosition;");
+        InputAction moveAction = new InputAction("Move", InputActionType.PassThrough, "Gamepad/leftStick");// " < Gamepad>/leftStick");
+        InputAction moveAction2 = new InputAction("Move", InputActionType.PassThrough, "<Gamepad>/leftStick");// " < Gamepad>/leftStick");
+        moveAction.Enable();
+        moveAction.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
+        moveAction2.Enable();
+        moveAction2.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
+        Debug.Log("moveAction.ApplyBindingOverride" + "(leftStick [Gamepad]" + "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
+        Debug.Log
+            ("moveAction.BindingDisplayString is " + moveAction.GetBindingDisplayString(InputBinding.DisplayStringOptions.DontOmitDevice));
+    }
+    //private void OnEnable()
+    //{
+    //    joystickAction.Enable();
+    //    moveAction.Enable();
+    //}
+    //private void OnDisable()
+    //{
+    //    joystickAction.Disable();
+    //    moveAction.Disable();
+    //}
+} //end class 
+/* 
+ * as of 4/27/23 we try a reboot on this 
+ * public class ResetVirtualJoystick : MonoBehaviour
+{
+    //Component of UI_Virtual_Joystick_Move
+    //public InputAction joystickAction;
+    //public InputAction moveAction;
+    //InputControl inputControl;
+    //InputActionReference moveActionReference;
     //public RectTransform moveHandle;  //resets position but dracula stays alive and keeps moving 
     //Vector2 moveHandlePosition = Vector2.zero;
     private Gamepad gamepad;
@@ -62,6 +109,7 @@ public class ResetVirtualJoystick : MonoBehaviour
 
     }
 } //end class 
+*/
 /*
 InputAction moveAction = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick");
 moveAction.Enable();
