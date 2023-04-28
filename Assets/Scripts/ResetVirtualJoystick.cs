@@ -26,8 +26,8 @@ public class ResetVirtualJoystick : MonoBehaviour
         Debug.Log("ResetVJ recvd MontyST SendMessage.... trying to set jstick to Vector2.zero");
         moveHandle.localPosition =  moveHandlePosition;//resets position but dracula stays alive and keeps moving  - oh well :|
         Debug.Log("RVJ did moveHandle.position =  moveHandlePosition;");
-        InputAction moveAction = new InputAction("Move", InputActionType.PassThrough, "Gamepad/leftStick");// " < Gamepad>/leftStick");
-        InputAction moveAction2 = new InputAction("Move", InputActionType.PassThrough, "<Gamepad>/leftStick");// " < Gamepad>/leftStick");
+        InputAction moveAction = new InputAction("Move", InputActionType.Value, "Gamepad/leftStick");// " < Gamepad>/leftStick");
+        InputAction moveAction2 = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick");// " < Gamepad>/leftStick");
         moveAction.Enable();
         moveAction.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
         moveAction2.Enable();

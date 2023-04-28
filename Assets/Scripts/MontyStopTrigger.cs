@@ -289,9 +289,12 @@ public class MontyStopTrigger : MonoBehaviour
     }
     private void CallResetJoystick()
     {
-        Debug.Log("MontyST doing SendMessage....");
+        Debug.Log("MontyST CallResetJoystick()    doing SendMessage....");
+        if (inputControls) inputControls.SetActive(true);
+        thirdPersonController.MoveSpeed = originalMoveSpeed;
         if (inputControls) resetJoystickObject.SendMessage("ResetJoystick");
-        if (playerArmature) playerArmature.SetActive(false);
+        if (playerArmature) playerArmature.SetActive(false);  //why we do this?
+       // thirdPersonController.MoveSpeed = originalMoveSpeed;
     }
     IEnumerator ShowDoorsAndBoxesAfterDelay(float _delay)
     {
@@ -654,9 +657,9 @@ public class MontyStopTrigger : MonoBehaviour
         // montyGameCam.Priority = originalMontyGameCamPriority;
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
-        if (inputControls) inputControls.SetActive(true);
-        CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
-        thirdPersonController.MoveSpeed = 0;
+        //if (inputControls) inputControls.SetActive(true);
+        //CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
+        //thirdPersonController.MoveSpeed = 0;
         //if (inputControls) inputControls.SetActive(false);  //just try a toggle 
         //if (inputControls) inputControls.SetActive(true);
         GameObject montyGameBarriers = GameObject.Find("MontyGameBarriers");
@@ -713,9 +716,9 @@ public class MontyStopTrigger : MonoBehaviour
        // montyGameCam.Priority = originalMontyGameCamPriority;
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
-        if (inputControls) inputControls.SetActive(true);
-        CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
-        thirdPersonController.MoveSpeed = 0;
+        //if (inputControls) inputControls.SetActive(true);
+        //CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
+        //thirdPersonController.MoveSpeed = 0;
         //if (inputControls) inputControls.SetActive(false);  //just try a toggle 
         //if (inputControls) inputControls.SetActive(true);
         GameObject montyGameBarriers = GameObject.Find("MontyGameBarriers");
