@@ -12,15 +12,34 @@ public class ResetVirtualJoystick : MonoBehaviour
     public RectTransform moveHandle;  //resets position but dracula stays alive and keeps moving 
     Vector2 moveHandlePosition = Vector2.zero;
     private Gamepad gamepad;
+    [SerializeField] private InputAction joystickAction;
+
     private void Start()
     {
+        // Find the joystick action by name
+        joystickAction = new InputAction("Joystick", binding: "<Gamepad>/leftStick");
+        joystickAction.Enable();
     }
-
-    private void OnEnable()
+    //private void Start()
+    //{
+    //}
+    /*
+    public void MimicJoystickInput(Vector2 joystickValue)
     {
-        // Get the gamepad device
-        gamepad = Gamepad.current;
+        // Set the value of the joystick axis
+        //joystickAction.ReadValue<Vector2>() = joystickValue;
+        var input = joystickAction.ReadValue<Vector2>();
+        input.x = joystickValue.x;
+        input.y = joystickValue.y;
+        // Trigger a fake input event
+        //var inputEvent = InputSystem.CreateFakeInputEvent(joystickAction, input);  //for newer inputSystem  ver 1.1?
+        //InputSystem.QueueEvent(inputEvent);
+        var inputEvent = new InputEvent(joystickAction);
+        inputEvent.ReadValue<Vector2>() = input;
+        InputSystem.QueueEvent(inputEvent);
+        InputSystem.Update();
     }
+    */
     private void ResetJoystick()
     {
         Debug.Log("ResetVJ recvd MontyST SendMessage.... trying to set jstick to Vector2.zero");
@@ -35,6 +54,12 @@ public class ResetVirtualJoystick : MonoBehaviour
         Debug.Log("moveAction.ApplyBindingOverride" + "(leftStick [Gamepad]" + "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
         Debug.Log
             ("moveAction.BindingDisplayString is " + moveAction.GetBindingDisplayString(InputBinding.DisplayStringOptions.DontOmitDevice));
+    }
+
+    private void OnEnable()
+    {
+        // Get the gamepad device
+        gamepad = Gamepad.current;
     }
     //private void OnEnable()
     //{
