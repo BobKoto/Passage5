@@ -4,18 +4,15 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine.InputSystem.Controls;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
-[Serializable]
 public class ResetVirtualJoystick : MonoBehaviour
 {
     //Component of UI_Virtual_Joystick_Move
-    //public InputAction joystickAction;
-    //public InputAction moveAction;
-    //InputControl inputControl;
-    //InputActionReference moveActionReference;
+
     public RectTransform moveHandle;  //resets position but dracula stays alive and keeps moving 
     Vector2 moveHandlePosition = Vector2.zero;
-    [SerializeField] private Gamepad gamepad;
+
     [SerializeField] private InputAction joystickAction;
 
     //private void OnEnable()
@@ -25,237 +22,80 @@ public class ResetVirtualJoystick : MonoBehaviour
     //}
     private void Start()
     {
-        Debug.Log(" hello from REsetVirtualJoystick");
-
-        //Debug.Log(" first check gamepad... " );
-        //Debug.Log(" gamepad is " + gamepad.name );
-        //Debug.Log(" Now check Gamepad.current... ");
-        //Debug.Log(" Gamepad.current is " + Gamepad.current.name);
-        // Find the joystick action by name
+        Debug.Log(" hello from REsetVirtualJoystick  with Touch Mimic");
         joystickAction = new InputAction("Joystick", binding: "<Gamepad>/leftStick");
         joystickAction.Enable();
     }
-    //private void Start()
-    //{
-    //}
 
-
-    /*
-    public void MimicJoystickInput(Vector2 joystickValue)
-    {
-        // Set the value of the joystick axis
-        //joystickAction.ReadValue<Vector2>() = joystickValue;
-        var input = joystickAction.ReadValue<Vector2>();
-        input.x = joystickValue.x;
-        input.y = joystickValue.y;
-        // Trigger a fake input event
-        //var inputEvent = InputSystem.CreateFakeInputEvent(joystickAction, input);  //for newer inputSystem  ver 1.1?
-        //InputSystem.QueueEvent(inputEvent);
-        var inputEvent = new InputEvent(joystickAction);
-        inputEvent.ReadValue<Vector2>() = input;
-        InputSystem.QueueEvent(inputEvent);
-        InputSystem.Update();
-    }
-    */
     private void ResetJoystick()
     {
-        //gamepad = Gamepad.current;
-        //Debug.Log(" first check gamepad... ");
-        //Debug.Log(" gamepad is " + gamepad.name);
-        //Debug.Log(" Now check Gamepad.current... ");
-        //Debug.Log(" Gamepad.current is " + Gamepad.current.name);
-
         Debug.Log("ResetVJ recvd MontyST SendMessage.... trying to set jstick to Vector2.zero");
         moveHandle.localPosition =  moveHandlePosition;//resets position but dracula stays alive and keeps moving  - oh well :|
-        Debug.Log("RVJ did moveHandle.position =  moveHandlePosition;");
+        Debug.Log("RVJ did moveHandle.position =  moveHandlePosition; =" + moveHandlePosition);
+
         InputAction moveAction = new InputAction("Move", InputActionType.Value, "Gamepad/leftStick");// " < Gamepad>/leftStick");
-      //  InputAction moveAction2 = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick");// " < Gamepad>/leftStick");
         moveAction.Enable();
         moveAction.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-     //   moveAction2.Enable();
-     //   moveAction2.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-      //  Debug.Log("moveAction.ApplyBindingOverride" + "(leftStick [Gamepad]" + "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
         Debug.Log
             ("moveAction.BindingDisplayString is " + moveAction.GetBindingDisplayString(InputBinding.DisplayStringOptions.DontOmitDevice));
 
-        // Send event to update leftStick on the gamepad.
+        // Now try mimic touch - we need x/y coord   (Gamepad.anything doesn't work for virtual GPs)
+        // Start touch.
+        InputSystem.QueueStateEvent(Touchscreen.current,
+            new UnityEngine.InputSystem.LowLevel.TouchState { touchId = 1, phase = TouchPhase.Began, position = new Vector2(194f, 199f) });
 
-        if (Gamepad.current != null)
-        {
-            Debug.Log("Gamepad found ?!?!");
-            InputSystem.QueueDeltaStateEvent(Gamepad.current.leftStick,
-                new Vector2(0f, 0f));
-        }
-        else
-        {
-            Debug.Log("No gamepad found!");
-        }
-        //InputSystem.QueueDeltaStateEvent(gamepad.leftStick,
-        //      new Vector2(0f, 0f));
+        // Move touch.
+        InputSystem.QueueStateEvent(Touchscreen.current,
+            new UnityEngine.InputSystem.LowLevel.TouchState { touchId = 1, phase = TouchPhase.Moved, position = new Vector2(191f, 178f) });
+
+        // End touch.
+        InputSystem.QueueStateEvent(Touchscreen.current,
+            new UnityEngine.InputSystem.LowLevel.TouchState { touchId = 1, phase = TouchPhase.Ended, position = new Vector2(191f, 178f) });
+
+        // or try this...
+        // `StateEvent.From` creates a temporary buffer in unmanaged memory that holds  
+        // a state event large enough for the given device and contains a memory
+        // copy of the device's current state.
+
+        //UnityEngine.InputSystem.LowLevel.InputEventPtr eventPtr;
+        //using (UnityEngine.InputSystem.LowLevel.StateEvent.From(Touchscreen.current, out eventPtr))
+        //{
+        //    ((AxisControl)Touchscreen.current["Move"]).WriteValueIntoEvent(0.5f, eventPtr);   //gamepad["leftStick"]
+        //    InputSystem.QueueEvent(eventPtr);
+        //}
     }
 
-
-    //private void OnEnable()
-    //{
-    //    joystickAction.Enable();
-    //    moveAction.Enable();
-    //}
     //private void OnDisable()
     //{
     //    joystickAction.Disable();
     //    moveAction.Disable();
     //}
 } //end class 
-/* 
- * as of 4/27/23 we try a reboot on this 
- * public class ResetVirtualJoystick : MonoBehaviour
-{
-    //Component of UI_Virtual_Joystick_Move
-    //public InputAction joystickAction;
-    //public InputAction moveAction;
-    //InputControl inputControl;
-    //InputActionReference moveActionReference;
-    //public RectTransform moveHandle;  //resets position but dracula stays alive and keeps moving 
-    //Vector2 moveHandlePosition = Vector2.zero;
-    private Gamepad gamepad;
-    private void Start()
-    {
-        //  moveAction = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick");
-        // inputControl = a
-    }
-    //private void OnEnable()
-    //{
-    //    joystickAction.Enable();
-    //    moveAction.Enable();
-    //}
-    //private void OnDisable()
-    //{
-    //    joystickAction.Disable();
-    //    moveAction.Disable();
-    //}
-    private void OnEnable()
-    {
-        // Get the gamepad device
-        gamepad = Gamepad.current;
-    }
-    private void ResetJoystick()
-    {
-        Debug.Log("ResetVJ recvd MontyST SendMessage.... trying to set jstick to Vector2.zero");
-        //moveHandle.position =  moveHandlePosition;//resets position but dracula stays alive and keeps moving  - oh well :|
-        // InputAction moveAction = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick", null,null,null);
-        //InputAction moveAction = new InputAction("MoveStop", binding: "<Gamepad>/leftStick");
 
-        InputAction moveAction = new InputAction("Move", InputActionType.PassThrough, "Gamepad/leftStick");// " < Gamepad>/leftStick");
-        moveAction.Enable();
-       // moveAction             ["<Gamepad>/leftStick"].SetValue(Vector2.zero);
+//// Get a reference to the Gamepad device
+//Gamepad gamepad = Gamepad.current;
 
-        //  moveAction.actionMap                           //Set(Vector2.zero);
-      //  moveAction.ApplyBindingOverride("Gamepad/leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-        moveAction.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-        Debug.Log("moveAction.ApplyBindingOverride" + "(leftStick [Gamepad]" + "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-        //Debug.Log(" binding index = " + moveAction.GetBindingIndex());
-        //Debug.Log(" activeControl = " + moveAction.activeControl);
-        ////moveAction.name
-        Debug.Log
-            ("moveAction.BindingDisplayString is " + moveAction.GetBindingDisplayString(InputBinding.DisplayStringOptions.DontOmitDevice));
-
-        // Create a new input event with a Vector2 value of (0,0)
-        //  var inputEvent = new InputEvent<Vector2>(gamepad.leftStick, new Vector2(0, 0));
-        //var inputEvent = new InputEvent      (gamepad.leftStick, new Vector2(0, 0));
-
-        //// Trigger the input event to set the value of the left stick to (0,0)
-        //InputSystem.QueueEvent(inputEvent);
-
-    }
-} //end class 
-*/
-/*
-InputAction moveAction = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick");
-moveAction.Enable();
-moveAction.ApplyBindingOverride("<Gamepad>/leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-//--------------------------
-InputAction moveAction = new InputAction("Move", InputActionType.Value, "LS", "Gamepad");
-moveAction.Enable();
-moveAction.ApplyBindingOverride("LS", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-
-*/
-/*
- * ORIGINAL to @35
- *         InputAction moveAction = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick");
-        //InputAction moveAction = new InputAction("Move", InputActionType.Value, "Left Stick [Gamepad]");
-        moveAction.Enable();
-
-        // ...
-
-        // Reset the binding of the Move action to Vector2.zero
-        // moveAction.ApplyBindingOverride("<Gamepad>/leftStick", "<Vector2> = (0,0)");
-        moveAction.ApplyBindingOverride("<Gamepad>/leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-        moveAction.ApplyBindingOverride("<Gamepad>/leftStick:disabled", "<Gamepad>/leftStick");
-        moveAction.ApplyBindingOverride("<Gamepad>/leftStick", "");
- * */
-//public static void ApplyBindingOverride(this InputAction action, int bindingIndex, string path);
-//public static void ApplyBindingOverride(this InputAction action, string newPath, string group = null, string path = null);
-//public static void ApplyBindingOverride(this InputAction action, InputBinding bindingOverride);
-//public static void ApplyBindingOverride(this InputAction action, int bindingIndex, InputBinding bindingOverride);
-
-//public static int ApplyBindingOverride(this InputActionMap actionMap, InputBinding bindingOverride);
-//public static void ApplyBindingOverride(this InputActionMap actionMap, int bindingIndex, InputBinding bindingOverride);
-//public static void ApplyBindingOverrides(this InputActionMap actionMap, IEnumerable<InputBinding> overrides);
-
-//public static string GetBindingDisplayString(this InputAction action, InputBinding.DisplayStringOptions options = 0, string group = null);
-//public static string GetBindingDisplayString(this InputAction action, InputBinding bindingMask, InputBinding.DisplayStringOptions options = 0);
-//public static string GetBindingDisplayString(this InputAction action, int bindingIndex, InputBinding.DisplayStringOptions options = 0);
-//public static string GetBindingDisplayString(this InputAction action, int bindingIndex, out string deviceLayoutName, out string controlPath, InputBinding.DisplayStringOptions options = 0);
-
-//from the only method - none of this worked :(
-//var newInputControl = InputSystem.GetDevice<Gamepad> ();
-//if (newInputControl != null)
+//// Check if the Gamepad device exists
+//if (gamepad != null)
 //{
-//    inputControl = newInputControl;
+//    // Get a reference to the leftStick control on the Gamepad device
+//    AxisControl leftStick = gamepad.leftStick;
+
+//    // Create a new input event
+//    InputEventPtr eventPtr = InputEventPtr.Zero;
+//    InputEvent.Create(PointerMoveEvent.Type, Allocator.Temp, out eventPtr);
+
+//    // Set the value of the leftStick control in the event
+//    leftStick.WriteValueIntoEvent(new Vector2(0.5f, 0.5f), eventPtr);
+
+//    // Queue the event
+//    InputSystem.QueueEvent(eventPtr);
 //}
-// Debug.Log("newIC devID = " + inputControl.device);
-// Debug.Log("Dev Name = " + inputControl.displayName);
-// newInputControl.leftStick.device
-// newInputControl.Set(new Vector2(0f, 0f));
 
-// Reset the binding of the Move action to Vector2.zero
-// moveAction.ApplyBindingOverride(1, "<Gamepad>/leftStick", "<Vector2> = (0,0)");
-//moveAction.ApplyBindingOverride("<Gamepad>/leftStick", "<Vector2> = (0,0)");
-//if (InputSystem.TryResetDevice(Gamepad.current)) Debug.Log("try reset ok"); else Debug.Log("try reset failed");
-// throws ArgumentNullException: Value cannot be null.
 
-//moveAction.ApplyBindingOverride("<Gamepad>/leftStick:disabled", "<Gamepad>/leftStick");
-//  moveAction.ApplyBindingOverride("<Gamepad>/leftStick", null);  //was ""
-// moveAction.ApplyBindingOverride("UI_Virtual_Joystick_Move", "");  //was ""
 
-//next time try UI_Virtual_Joystick_Move?????
-
-// moveAction.ApplyBindingOverride("Left Stick[Gamepad]", " < Vector2> = (0,0)");
-
-// ...
-// Show all gamepads in the system.
-// Debug.Log("Show all gamepads in the system.  " + string.Join("\n", Gamepad.all));  //nothing...
-//joystickAction.ReadValue<Vector2>();
-//joystickAction.ApplyBindingOverride("<Vector2> = none");
-//Move.ReadValue<Vector2>();
-//Move.ApplyBindingOverride("<Vector2> = none");
-//============== probing moveAction variables -- keep if only for the foreach syntax!
-//InputBinding binding;
-//string bindingString = null;
-//foreach (InputBinding b in moveAction.bindings)
-//{
-//    Debug.Log(" IPbinding is " + b);
-//    binding = b;
-//    bindingString = b.ToString();
-//}
-//Debug.Log("param to override " + bindingString + " < Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-//moveAction.ApplyBindingOverride(bindingString, "< Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-//InputControl ipControl;
-//string ipControlString = null;
-//Debug.Log("moveAction.controls length/Count = " + moveAction.controls.Count);
-//foreach (InputControl i in moveAction.controls)
-//{
-//    Debug.Log(" IPcontrol is " + i);
-//    ipControl = i;
-//    ipControlString = i.ToString();
-//}
+//            ((AxisControl)Touchscreen.current["myControl"]).WriteValueIntoEvent(0.5f, eventPtr);   //gamepad["leftStick"]
+//  InputAction moveAction2 = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick");// " < Gamepad>/leftStick");
+//   moveAction2.Enable();
+//   moveAction2.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
+//  Debug.Log("moveAction.ApplyBindingOverride" + "(leftStick [Gamepad]" + "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
