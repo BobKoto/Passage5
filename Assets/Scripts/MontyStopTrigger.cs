@@ -267,10 +267,10 @@ public class MontyStopTrigger : MonoBehaviour
             if (playerArmature)
             {
                 Debug.Log("reactivate  player.......................");
-               // playerArmature.SetActive(true); // =  Instantiate(playerArmature, playerPosition, Quaternion.identity, playerParent);
+                if (playerArmature) playerArmature.SetActive(true);  // to enable the Gamepad?
                 thirdPersonController.enabled = true;
                 CallResetJoystick();
-                if (playerArmature) playerArmature.SetActive(true);  // to undo the CallResetJoystick 
+              //  if (playerArmature) playerArmature.SetActive(true);  // to undo the CallResetJoystick 
               //  thirdPersonController.MoveSpeed = originalMoveSpeed;
                 thirdPersonController.SprintSpeed = originalSprintSpeed;
 
@@ -293,7 +293,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (inputControls) inputControls.SetActive(true);
         thirdPersonController.MoveSpeed = originalMoveSpeed;
         if (inputControls) resetJoystickObject.SendMessage("ResetJoystick");
-        if (playerArmature) playerArmature.SetActive(false);  //why we do this?
+       // if (playerArmature) playerArmature.SetActive(false);  //why we do this? // commented on 4/29/23
        // thirdPersonController.MoveSpeed = originalMoveSpeed;
     }
     IEnumerator ShowDoorsAndBoxesAfterDelay(float _delay)

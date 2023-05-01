@@ -1,7 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using System;
+using System.Linq;
+using UnityEngine.InputSystem.Controls;
 
+[Serializable]
 public class ResetVirtualJoystick : MonoBehaviour
 {
     //Component of UI_Virtual_Joystick_Move
@@ -11,11 +15,22 @@ public class ResetVirtualJoystick : MonoBehaviour
     //InputActionReference moveActionReference;
     public RectTransform moveHandle;  //resets position but dracula stays alive and keeps moving 
     Vector2 moveHandlePosition = Vector2.zero;
-    private Gamepad gamepad;
+    [SerializeField] private Gamepad gamepad;
     [SerializeField] private InputAction joystickAction;
 
+    //private void OnEnable()
+    //{
+    //    // Get the gamepad device
+    //    gamepad = Gamepad.current;
+    //}
     private void Start()
     {
+        Debug.Log(" hello from REsetVirtualJoystick");
+
+        //Debug.Log(" first check gamepad... " );
+        //Debug.Log(" gamepad is " + gamepad.name );
+        //Debug.Log(" Now check Gamepad.current... ");
+        //Debug.Log(" Gamepad.current is " + Gamepad.current.name);
         // Find the joystick action by name
         joystickAction = new InputAction("Joystick", binding: "<Gamepad>/leftStick");
         joystickAction.Enable();
@@ -23,6 +38,8 @@ public class ResetVirtualJoystick : MonoBehaviour
     //private void Start()
     //{
     //}
+
+
     /*
     public void MimicJoystickInput(Vector2 joystickValue)
     {
@@ -42,25 +59,42 @@ public class ResetVirtualJoystick : MonoBehaviour
     */
     private void ResetJoystick()
     {
+        //gamepad = Gamepad.current;
+        //Debug.Log(" first check gamepad... ");
+        //Debug.Log(" gamepad is " + gamepad.name);
+        //Debug.Log(" Now check Gamepad.current... ");
+        //Debug.Log(" Gamepad.current is " + Gamepad.current.name);
+
         Debug.Log("ResetVJ recvd MontyST SendMessage.... trying to set jstick to Vector2.zero");
         moveHandle.localPosition =  moveHandlePosition;//resets position but dracula stays alive and keeps moving  - oh well :|
         Debug.Log("RVJ did moveHandle.position =  moveHandlePosition;");
         InputAction moveAction = new InputAction("Move", InputActionType.Value, "Gamepad/leftStick");// " < Gamepad>/leftStick");
-        InputAction moveAction2 = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick");// " < Gamepad>/leftStick");
+      //  InputAction moveAction2 = new InputAction("Move", InputActionType.Value, "<Gamepad>/leftStick");// " < Gamepad>/leftStick");
         moveAction.Enable();
         moveAction.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-        moveAction2.Enable();
-        moveAction2.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
-        Debug.Log("moveAction.ApplyBindingOverride" + "(leftStick [Gamepad]" + "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
+     //   moveAction2.Enable();
+     //   moveAction2.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
+      //  Debug.Log("moveAction.ApplyBindingOverride" + "(leftStick [Gamepad]" + "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
         Debug.Log
             ("moveAction.BindingDisplayString is " + moveAction.GetBindingDisplayString(InputBinding.DisplayStringOptions.DontOmitDevice));
+
+        // Send event to update leftStick on the gamepad.
+
+        if (Gamepad.current != null)
+        {
+            Debug.Log("Gamepad found ?!?!");
+            InputSystem.QueueDeltaStateEvent(Gamepad.current.leftStick,
+                new Vector2(0f, 0f));
+        }
+        else
+        {
+            Debug.Log("No gamepad found!");
+        }
+        //InputSystem.QueueDeltaStateEvent(gamepad.leftStick,
+        //      new Vector2(0f, 0f));
     }
 
-    private void OnEnable()
-    {
-        // Get the gamepad device
-        gamepad = Gamepad.current;
-    }
+
     //private void OnEnable()
     //{
     //    joystickAction.Enable();
