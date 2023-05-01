@@ -316,7 +316,7 @@ namespace StarterAssets
             {
                 _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-               Debug.Log(this.name + " doing Move  _speed = " + _speed + "  _speed * Time.deltaTime = " + (_speed * Time.deltaTime));
+              // Debug.Log(this.name + " doing Move  _speed = " + _speed + "  _speed * Time.deltaTime = " + (_speed * Time.deltaTime));
             }
 
             // update animator if using character
