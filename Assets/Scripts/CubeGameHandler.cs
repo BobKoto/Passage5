@@ -5,18 +5,13 @@ using UnityEngine.Events;
 using TMPro;
 using Cinemachine;
 using StarterAssets; 
-//[System.Serializable]
-//public class FingerPointerEvent : UnityEvent<GameObject, string> { }  // we receive these from ActOnTouch 
-[System.Serializable]
-public class CubeGameBoardEvent : UnityEvent<string, bool, string, int> { }  //this declaration i guess is needed to accept
 
-[System.Serializable]
-public class CubeGamePlayButtonTouchEvent : UnityEvent { }
-[System.Serializable]
-public class CubeGameMoveOnButtonTouchEvent : UnityEvent { }
-
+//[System.Serializable]   //moved these 3 to OurEvents.cs 5/3/23
+//public class CubeGameBoardEvent : UnityEvent<string, bool, string, int> { }  //this declaration i guess is needed to accept
 //[System.Serializable]
-//public class CubeGameBoardUpEvent : UnityEvent { }  //we receive these from CubeGameBoard //??redundant cause it's in ActOnTouch?? still learning :<
+//public class CubeGamePlayButtonTouchEvent : UnityEvent { }
+//[System.Serializable]
+//public class CubeGameMoveOnButtonTouchEvent : UnityEvent { }
 
 public class CubeGameHandler : MonoBehaviour
 //Component of CubeGame -- receives events from CubeEnteredSolutionMatrix.cs(was)/is now PlacementHandler  -- calculates row/column totals
