@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using Cinemachine;
-[System.Serializable]
-public class CubeGameBoardUpEvent : UnityEvent { }  //we receive these from CubeGameBoard 
+//[System.Serializable]
+//public class CubeGameBoardUpEvent : UnityEvent { }  //we receive these from CubeGameBoard // 5/3/23 moved to OurEvents.cs 
 public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointerUpHandler, IPointerExitHandler
 //IPointerClickHandler, IInitializePotentialDragHandler, IPointerUpHandler,IPointerExitHandler, IPointerEnterHandler, IDropHandler
 // Touch Testing only for now 

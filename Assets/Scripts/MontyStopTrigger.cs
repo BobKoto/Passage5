@@ -11,16 +11,16 @@ using CarouselAndMovingPlatforms;
 using System.Linq;
 using UnityEngine.AI;
 
-[System.Serializable]
-public class MontyDoorTouchEvent : UnityEvent<int> { }
 //[System.Serializable]
-//public class MontyPlayButtonTouchEvent : UnityEvent { }
-[System.Serializable]
-public class MontyMoveOnButtonTouchEvent : UnityEvent { }
-[System.Serializable]
-public class MontyDoorDownEvent : UnityEvent<int> { }
-[System.Serializable]
-public class AudioClipFinishedEvent : UnityEvent { }
+//public class MontyDoorTouchEvent : UnityEvent<int> { }
+////[System.Serializable]
+////public class MontyPlayButtonTouchEvent : UnityEvent { }
+//[System.Serializable]
+//public class MontyMoveOnButtonTouchEvent : UnityEvent { }
+//[System.Serializable]
+//public class MontyDoorDownEvent : UnityEvent<int> { }
+//[System.Serializable]
+//public class AudioClipFinishedEvent : UnityEvent { }
 
 public class MontyStopTrigger : MonoBehaviour
 {  //Component of MontyStopTrigger
