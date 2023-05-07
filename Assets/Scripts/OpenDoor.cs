@@ -36,7 +36,7 @@ public class OpenDoor : MonoBehaviour
     public bool targetIsVisible { get; private set; }
     [SerializeField]
     bool visualize = true;
-    public CloudTextEvent m_MyEvent;
+    public CloudTextEvent m_CloudTextEvent;
     const string firstDoor = "#Good Robot.";
     const string firstSteps = "#Take a dip!";
     // Start is called before the first frame update
@@ -89,8 +89,8 @@ public class OpenDoor : MonoBehaviour
         //Debug.Log("player y = " + playerRotationY + " transform.rotation = " + player.rotation + " and Transform.Rotation = " + player.T );
         playerRotationY = player.transform.eulerAngles;
         //  Debug.Log(" playerY rotation = " + playerRotationY);
-        if (m_MyEvent == null)
-            m_MyEvent = new CloudTextEvent();
+        if (m_CloudTextEvent == null)
+            m_CloudTextEvent = new CloudTextEvent();
 
       //  m_MyEvent.AddListener(EnableTheTextCloud);
 
@@ -219,7 +219,7 @@ public class OpenDoor : MonoBehaviour
     }
     public void TellTextCloud(string caption)
     {
-        m_MyEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, 4, caption);
     }
 }
 
