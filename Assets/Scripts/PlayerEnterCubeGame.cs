@@ -5,8 +5,8 @@ using Cinemachine;
 using TMPro;
 
 public class PlayerEnterCubeGame : MonoBehaviour      //Componenet of PlayerEnterCubeTrigger (the collider in front of the cube game  
-{
-    public CloudTextEvent m_MyEvent;
+{                                                     //DeImped as of 2/27/23 or at least 5/6/23????
+    public CloudTextEvent m_CloudTextEvent;
     const string helpNeedHI = "#Need human assist!";
     public AudioManager audioManager;
     public CinemachineVirtualCamera cubeGameCam;
@@ -103,7 +103,7 @@ public class PlayerEnterCubeGame : MonoBehaviour      //Componenet of PlayerEnte
     }
     void TellTextCloud(string caption)
     {
-        m_MyEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, 4, caption);
     }
     private void OnTriggerExit(Collider other)
     {

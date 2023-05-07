@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class BubbleFloorAction : MonoBehaviour
-{
+{   //Component of WallsInMaze\BubbleRoom\FloorOfBubbles - pretty sure 
 
-    public CloudTextEvent m_MyEvent;
+    public CloudTextEvent m_CloudTextEvent;
 
     const string hitFloorYuk = "#Yuck";
 
@@ -34,7 +34,7 @@ public class BubbleFloorAction : MonoBehaviour
     }
     public void TellTextCloud(string caption)
     {
-        m_MyEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, 4, caption);
     }
 
     // Update is called once per frame

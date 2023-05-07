@@ -106,7 +106,7 @@ public class MontyStopTrigger : MonoBehaviour
     public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;
     public MontyDoorDownEvent montyDoorDownEvent;
     public AudioClipFinishedEvent audioClipFinishedEvent;
-    public CloudTextEvent m_MyEvent;  //for TextCloud 
+    public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
     public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
 
     Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro, animPlayer;
@@ -766,7 +766,7 @@ public class MontyStopTrigger : MonoBehaviour
     }
     void TellTextCloud(string caption)
     {
-        m_MyEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, 4, caption);
     }
     private void CloseTheFirstOpenedDoor()  //do we really want to do this?
     {

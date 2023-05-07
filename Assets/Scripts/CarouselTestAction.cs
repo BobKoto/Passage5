@@ -5,7 +5,7 @@ using UnityEngine;
 public class CarouselTestAction : MonoBehaviour
 {
 
-    public CloudTextEvent m_MyEvent;
+    public CloudTextEvent m_CloudTextEvent;
 
     const string onCarousel = "#Wheee";
     const string offCarousel = "#Dizzy";
@@ -34,7 +34,7 @@ public class CarouselTestAction : MonoBehaviour
     }
     public void TellTextCloud(string caption)
     {
-        m_MyEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, 4, caption);
     }
 
     // Update is called once per frame

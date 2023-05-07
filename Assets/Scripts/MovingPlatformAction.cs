@@ -5,7 +5,7 @@ using UnityEngine;
 public class MovingPlatformAction : MonoBehaviour
 {
 
-    public CloudTextEvent m_MyEvent;
+    public CloudTextEvent m_CloudTextEvent;
 
     const string onPlatform = "#Free ride";
     const string offPlatform = "#Now walk";
@@ -38,7 +38,7 @@ public class MovingPlatformAction : MonoBehaviour
     }
     public void TellTextCloud(string caption)
     {
-        m_MyEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, 4, caption);
     }
 
     // Update is called once per frame

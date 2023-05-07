@@ -29,7 +29,7 @@ public class CubeGameHandler : MonoBehaviour
     public CubeGameMoveOnButtonTouchEvent cubeGameMoveOnButtonTouchEvent;
     public CubeGameBoardUpEvent cubeGameBoardUpEvent;
 
-    public CloudTextEvent m_MyEvent;  //for TextCloud 
+    public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
 
     //GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
 
@@ -498,7 +498,7 @@ public class CubeGameHandler : MonoBehaviour
     }
     void TellTextCloud(string caption)
     {
-        m_MyEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, 4, caption);
     }
     private void OnTriggerExit(Collider other)
     {

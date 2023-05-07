@@ -751,7 +751,7 @@ MonoBehaviour:
   pressToOpenButton: {fileID: 1211312009}
   operateButton: DoorSlideDown
   visualize: 1
-  m_MyEvent:
+  m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 493443869}
@@ -1470,7 +1470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37a1374e34931114788c74795d09919d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MyEvent:
+  m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 493443869}
@@ -6111,7 +6111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f0ad63b3a8e6c49bf962207dc8e1d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MyEvent:
+  m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 493443869}
@@ -19199,7 +19199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e572046395f4c749aeec6267df6b7b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MyEvent:
+  m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 493443869}
@@ -19406,7 +19406,7 @@ MonoBehaviour:
   audioClipFinishedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_MyEvent:
+  m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 493443869}
@@ -22932,9 +22932,37 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
       propertyPath: m_MyEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 493443869}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 493443869}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EnableTheTextCloud
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TextCloudHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7004435271456089311, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -23983,12 +24011,40 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
       propertyPath: m_MyEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 493443869}
     - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
       propertyPath: m_MyEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: EnableTheTextCloud
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 493443869}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EnableTheTextCloud
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TextCloudHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788968694959084718, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
+      propertyPath: m_CloudTextEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7004435271456089311, guid: 229f455b149ad534ea1b80093a04e0d9, type: 3}
       propertyPath: m_RootOrder
@@ -25193,7 +25249,7 @@ MonoBehaviour:
   pressToOpenButton: {fileID: 113739307}
   operateButton: Steps1Raise
   visualize: 1
-  m_MyEvent:
+  m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 493443869}
@@ -36014,7 +36070,7 @@ MonoBehaviour:
   cubeGameBoardUpEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_MyEvent:
+  m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 493443869}
@@ -42543,7 +42599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f0ad63b3a8e6c49bf962207dc8e1d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MyEvent:
+  m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 493443869}
