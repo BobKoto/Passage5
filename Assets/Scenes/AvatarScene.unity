@@ -521,7 +521,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1310
+  m_Name: pb_Mesh-1302
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1496,7 +1496,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1336
+  m_Name: pb_Mesh-1328
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4788,31 +4788,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 198097441}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2078872993}
-        m_TargetAssemblyTypeName: PlayerCloneAsNpcIntro, Assembly-CSharp
-        m_MethodName: OnCanvasNextPagePressed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 493443869}
-        m_TargetAssemblyTypeName: TextCloudHandler, Assembly-CSharp
-        m_MethodName: OnCanvasNextPagePressed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &198097441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7667,7 +7643,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30518
+  m_Name: pb_Mesh30510
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8026,7 +8002,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-4548
+  m_Name: pb_Mesh-4540
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9243,7 +9219,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh31870
+  m_Name: pb_Mesh31862
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -15294,7 +15270,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-4504
+  m_Name: pb_Mesh-4496
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -18830,7 +18806,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-4562
+  m_Name: pb_Mesh-4554
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -28280,7 +28256,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-4698
+  m_Name: pb_Mesh-4690
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -31815,7 +31791,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30130
+  m_Name: pb_Mesh30122
   serializedVersion: 10
   m_SubMeshes: []
   m_Shapes:
@@ -32340,7 +32316,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 914655649}
         m_TargetAssemblyTypeName: MontyStopTrigger, Assembly-CSharp
-        m_MethodName: OnCanvasNextpagePressed
+        m_MethodName: OnCanvasNextPagePressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -36595,7 +36571,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1362
+  m_Name: pb_Mesh-1354
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -37070,7 +37046,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29756
+  m_Name: pb_Mesh29748
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -37602,7 +37578,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1388
+  m_Name: pb_Mesh-1380
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -42633,7 +42609,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-4576
+  m_Name: pb_Mesh-4568
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

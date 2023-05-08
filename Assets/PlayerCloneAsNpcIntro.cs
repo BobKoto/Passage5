@@ -89,6 +89,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     }
     public void OnCanvasNextPagePressed()
     {
+        Debug.Log(this.name + " DOING...    m_CanvasNextPagePressedEvent.Invoke();");
         m_CanvasNextPagePressedEvent.Invoke();
     }
 
