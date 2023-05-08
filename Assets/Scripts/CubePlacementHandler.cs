@@ -4,10 +4,10 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 
-[System.Serializable]
-public class FingerPointerEvent : UnityEvent<GameObject, string> { }  // we receive these from ActOnTouch 
-[System.Serializable]
-public class CubeTriggerEnterExitEvent : UnityEvent<GameObject, string, GameObject, bool> { }  // we receive these from CESMatrix
+//[System.Serializable]
+//public class FingerPointerEvent : UnityEvent<GameObject, string> { }  // we receive these from ActOnTouch 
+//[System.Serializable]
+//public class CubeTriggerEnterExitEvent : UnityEvent<GameObject, string, GameObject, bool> { }  // we receive these from CESMatrix
 
 public class CubePlacementHandler : MonoBehaviour
 // Component of CubePlacements  // objects -- receives Cube enter Trigger events   /exit events to CubeGameHandler.cs

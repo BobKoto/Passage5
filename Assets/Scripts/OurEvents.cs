@@ -36,8 +36,11 @@ public class CubeGameBoardEvent : UnityEvent<string, bool, string, int> { }  //t
 public class CubeGamePlayButtonTouchEvent : UnityEvent { }
 [System.Serializable]
 public class CubeGameMoveOnButtonTouchEvent : UnityEvent { }
-
 [System.Serializable]
-public class PlayerMoveStopEvent : UnityEvent { }   // We shouldn't need anymore since we have CallResetJoystick()
+public class FingerPointerEvent : UnityEvent<GameObject, string> { }  // we receive these from ActOnTouch 
+[System.Serializable]
+public class CubeTriggerEnterExitEvent : UnityEvent<GameObject, string, GameObject, bool> { }  // we receive these from CESMatrix
+//[System.Serializable]
+//public class PlayerMoveStopEvent : UnityEvent { }   // We shouldn't need anymore since we have CallResetJoystick()
 
 //Find this in Assets\Scripts
