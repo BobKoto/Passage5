@@ -50,8 +50,8 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("Monty Game Barriers")]
     public GameObject montyGameBarriers;
 
-    [Header("Monty Game Move On Button")]
-    public GameObject montyGameMoveOnButton;
+    //[Header("Monty Game Move On Button")]    //DeImp on 5/7/23
+    //public GameObject montyGameMoveOnButton;
 
     [Header("The Player")]
     public GameObject playerArmature;
@@ -103,7 +103,7 @@ public class MontyStopTrigger : MonoBehaviour
 
     public MontyDoorTouchEvent montyDoorTouchEvent;
     public MontyPlayButtonTouchEvent montyPlayButtonTouchEvent;
-    public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;
+    //public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;  // DeImp on 5/7/23
     public MontyDoorDownEvent montyDoorDownEvent;
     public AudioClipFinishedEvent audioClipFinishedEvent;
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
@@ -148,13 +148,13 @@ public class MontyStopTrigger : MonoBehaviour
             montyDoorTouchEvent = new MontyDoorTouchEvent();
         montyDoorTouchEvent.AddListener(OnMontyDoorTouch);
 
-        if (montyPlayButtonTouchEvent == null)
-            montyPlayButtonTouchEvent = new MontyPlayButtonTouchEvent();
-        montyPlayButtonTouchEvent.AddListener(PlayButtonPressedOnIntro);
+        //if (montyPlayButtonTouchEvent == null)    // DeImp 5/7/23
+        //    montyPlayButtonTouchEvent = new MontyPlayButtonTouchEvent();
+        //montyPlayButtonTouchEvent.AddListener(PlayButtonPressedOnIntro);
 
-        if (montyMoveOnButtonTouchEvent == null)
-            montyMoveOnButtonTouchEvent = new MontyMoveOnButtonTouchEvent();
-        montyMoveOnButtonTouchEvent.AddListener(MoveOnButtonPressed);
+        //if (montyMoveOnButtonTouchEvent == null)      //DeImp on 5/7/23
+        //    montyMoveOnButtonTouchEvent = new MontyMoveOnButtonTouchEvent();
+        //montyMoveOnButtonTouchEvent.AddListener(MoveOnButtonPressed);
 
         if (montyDoorDownEvent == null)
             montyDoorDownEvent = new MontyDoorDownEvent();
@@ -221,23 +221,23 @@ public class MontyStopTrigger : MonoBehaviour
             // montyGameCam.Priority = originalCamPriority;
         }
     }
-    public void PlayButtonPressedOnIntro()
-    {
-        //Debug.Log("IntroPlay Button Pressed - setting Intro Panel Active to false");
-       // CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
-        if (montyGameIntro) montyGameIntro.SetActive(false);
-        if (inputControls) inputControls.SetActive(false);
-        if (mainMontySign) mainMontySign.SetActive(true);
+    //public void PlayButtonPressedOnIntro()  // DeImp 5/7/23
+    //{
+    //    //Debug.Log("IntroPlay Button Pressed - setting Intro Panel Active to false");
+    //   // CallResetJoystick(); //this will throw a no receiver error if inputControls are active(false)
+    //    if (montyGameIntro) montyGameIntro.SetActive(false);
+    //    if (inputControls) inputControls.SetActive(false);
+    //    if (mainMontySign) mainMontySign.SetActive(true);
 
-        StartCoroutine(ShowDoorsAndBoxesAfterDelay(1f));
-        //if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(true);
-        audioManager.PlayAudio(audioManager.clipDRUMROLL);
+    //    StartCoroutine(ShowDoorsAndBoxesAfterDelay(1f));
+    //    //if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(true);
+    //    audioManager.PlayAudio(audioManager.clipDRUMROLL);
 
-        if (playerArmature) playerArmature.SetActive(false);   
-        if (characterController) characterController.enabled = false;
-        if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
+    //    if (playerArmature) playerArmature.SetActive(false);   
+    //    if (characterController) characterController.enabled = false;
+    //    if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
 
-    }
+    //}
     public void OnCanvasNextpagePressed()   // Replaces PlayButtonPressedOnIntro()
     {
         Debug.Log("CanvasNextPage Pressed - setting Intro Panel Active to false -- montyGameActive  " + montyGameActive );
@@ -261,7 +261,7 @@ public class MontyStopTrigger : MonoBehaviour
             if (montyGameEnded)
         {
             Debug.Log("MoveOn -- WHICH IS NOW nextPage -- Button Pressed - wiping out all");
-            if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);
+            //   if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);   //DeImp on 5/7/23
             if (nextPage) nextPage.SetActive(false);
             montyGameCam.Priority = originalMontyGameCamPriority;
             if (playerArmature)
@@ -301,19 +301,19 @@ public class MontyStopTrigger : MonoBehaviour
         yield return new WaitForSeconds(_delay);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(true);
     }
-    public void MoveOnButtonPressed()
-    {
-        Debug.Log("MoveOn Button Pressed - wiping out all");
-        if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);
-        montyGameCam.Priority = originalMontyGameCamPriority;
-        if (playerArmature)
-        {
-            Debug.Log("reactivate  player.......................");
-            playerArmature.SetActive(true); // =  Instantiate(playerArmature, playerPosition, Quaternion.identity, playerParent);
-            animPlayer.speed = originalPlayerSpeed;
-        }
-        characterController.enabled = true;
-    }
+    //public void MoveOnButtonPressed()  //DeImp on 5/7/23
+    //{
+    //    Debug.Log("MoveOn Button Pressed - wiping out all");
+    //    if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);
+    //    montyGameCam.Priority = originalMontyGameCamPriority;
+    //    if (playerArmature)
+    //    {
+    //        Debug.Log("reactivate  player.......................");
+    //        playerArmature.SetActive(true); // =  Instantiate(playerArmature, playerPosition, Quaternion.identity, playerParent);
+    //        animPlayer.speed = originalPlayerSpeed;
+    //    }
+    //    characterController.enabled = true;
+    //}
 
     private void UnlockPlayerFromTheGameTriggerArea()
     {
@@ -804,7 +804,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (montyGameEnded)
         {
             Debug.Log("WaitForSeconds sees montyGameEdnded = true  SETTING NextPage Active");
-            if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(true);
+         //   if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(true);   //5/7/23 DeImp and go with Canvas nextPage Button
             if (nextPage) nextPage.SetActive(true);
         }
     }

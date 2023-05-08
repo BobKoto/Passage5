@@ -15,7 +15,7 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler
 {
     public MontyDoorTouchEvent montyDoorTouchEvent;
     public MontyPlayButtonTouchEvent montyPlayButtonTouchEvent;
-    public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;
+    //public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;   //DeImp on 5/7/23
     public MontyDoorDownEvent montyDoorDownEvent;
 
     public CinemachineVirtualCamera cVCam;
@@ -42,10 +42,10 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler
                     montyDoorTouchEvent.Invoke(IntegerToSend(this.gameObject));
                 }
                 break;
-            case "MontyGameMoveOnButton":
-             //   Debug.Log("Object/MOVEonBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
-                montyMoveOnButtonTouchEvent.Invoke();
-                break;
+            //case "MontyGameMoveOnButton":     //DeImp on 5/7/23
+            // //   Debug.Log("Object/MOVEonBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
+            //    montyMoveOnButtonTouchEvent.Invoke();
+            //    break;
             default:  
                 Debug.Log("ActOnMontyDoorTouch DEFAULTED!!!");
                 break;

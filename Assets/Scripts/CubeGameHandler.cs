@@ -20,32 +20,42 @@ public class CubeGameHandler : MonoBehaviour
 //So we need to add Texts(numeric values) to serve as targets 
 //Some (randomly set) targets CAN be achieved while others cannot - therein lies our puzzle?
 {
-    public CinemachineVirtualCamera cubeGameCam;
-    int originalCamPriority;
-    //Touchy touchy events
+    [Header("The Now Play Sign and NextPage button aka The UI stuff as GameObjects")]
+    public GameObject nextPage;
+    public GameObject nowPlay;
+
+    [Header("Touch Events")]
     public FingerPointerEvent fingerPointerEvent; //12/18/22 we receive these from ActOnTouch 
     public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public 
     public CubeGamePlayButtonTouchEvent cubeGamePlayButtonTouchEvent;
     public CubeGameMoveOnButtonTouchEvent cubeGameMoveOnButtonTouchEvent;
     public CubeGameBoardUpEvent cubeGameBoardUpEvent;
-
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
 
-    //GameObject row1Sum, row2Sum, col1Sum, col2Sum ;
+    [Header("Other Public Items")]
+    public AudioManager audioManager;
+    public float cubeGameTimeLimit;
+    public GameObject player;
+    public GameObject[] cubeGameCubes;
+    public GameObject menuButton, lightButton, cubeGameStartButton, cubeGameIsUnsolvableButton, cubeGameExitButton; //Buttons to toggle 
+    public GameObject cubeGameResultText, cubeGameTimerText;
+    public GameObject cubeGameTitleText, cubeGameInstructText;
+    public GameObject cubeGamesWonInteger, cubeGamesLostInteger;
+    public GameObject cubeGameIntro;
+    public GameObject cubeGame;
+    public TMP_Text cubeGameStartButtonText, cubeGameTimeLeftText;
 
-    TMP_Text row1SumText,row2SumText, col1SumText, col2SumText ;
+    public static bool cubeGameIsActive, cubeGameIsResetting; //set public static 1/30/23 //added cubeGameIsResetting 2/1/23 static may not be needed
 
     GameObject inputControls;
-    public AudioManager audioManager;
-    //bool cubePlaceHolder1Taken, cubePlaceHolder2Taken, cubePlaceHolder3Taken, cubePlaceHolder4Taken; //never used 
-    public static bool cubeGameIsActive, cubeGameIsResetting; //set public static 1/30/23 //added cubeGameIsResetting 2/1/23 static may not be needed
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
     int cubesOccupied, cubesToBeSentHome, cubesSentHome;
     int cubeGameRoundNumber = 1, roundsWon, roundsLost, nonPluggedSeed;
-    public float cubeGameTimeLimit;
+    TMP_Text row1SumText,row2SumText, col1SumText, col2SumText ;
     Coroutine timeLimiter;
     // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
-
+    public CinemachineVirtualCamera cubeGameCam;
+    int originalCamPriority;
 
     const string helpNeedHI = "#Need human assist! \n #Your fingers please";  //for textcloud
     const string okLetsGo = "#Ok, let's go \n #Slide me out!";
@@ -81,20 +91,15 @@ public class CubeGameHandler : MonoBehaviour
     readonly int[] winningGameSumsIndex = new int[] { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 }; // so we have 16
                                                                                                                      // int[] variableGameSums = new int[4];
     Animator animCubeGame; 
-    public GameObject player;
+
     Animator animator;
     ThirdPersonController thirdPersonController;
-    public GameObject[] cubeGameCubes;
+
     GameObject[] cubeGamePlacement;
     GameObject[] cubeGameTargetSum;
-    public GameObject menuButton, lightButton, cubeGameStartButton, cubeGameIsUnsolvableButton, cubeGameExitButton; //Buttons to toggle 
-    public GameObject cubeGameResultText, cubeGameTimerText;
-    public GameObject cubeGameTitleText, cubeGameInstructText;
-    public GameObject cubeGamesWonInteger, cubeGamesLostInteger;
-    public GameObject cubeGameIntro;
-    public GameObject cubeGame;
+
     TMP_Text cubeGameWonOrLostText, cubeGameRoundText;
-    public TMP_Text cubeGameStartButtonText, cubeGameTimeLeftText;
+
     TMP_Text[] cubeGameTargetSumText;
     Vector3[] cubeTransformStartPosition;  // so we can put cubes back to their original positions
     Vector3[] cubePlacementPosition; // where to automatically place/start a Cube 
@@ -110,10 +115,10 @@ public class CubeGameHandler : MonoBehaviour
         cubeGameBoardEvent.AddListener(CubeEnteredOrLeft);
         if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
         fingerPointerEvent.AddListener(CheckCubeMovement);
-        if (cubeGamePlayButtonTouchEvent == null) cubeGamePlayButtonTouchEvent = new CubeGamePlayButtonTouchEvent();
-        cubeGamePlayButtonTouchEvent.AddListener(PlayButtonPressedOnIntro);
-        if (cubeGameMoveOnButtonTouchEvent == null) cubeGameMoveOnButtonTouchEvent = new CubeGameMoveOnButtonTouchEvent();
-        cubeGameMoveOnButtonTouchEvent.AddListener(MoveOnButtonPressed);
+        //if (cubeGamePlayButtonTouchEvent == null) cubeGamePlayButtonTouchEvent = new CubeGamePlayButtonTouchEvent(); //DeImp 0n 5/7/23
+        //cubeGamePlayButtonTouchEvent.AddListener(PlayButtonPressedOnIntro);
+        //if (cubeGameMoveOnButtonTouchEvent == null) cubeGameMoveOnButtonTouchEvent = new CubeGameMoveOnButtonTouchEvent(); //DeImp 0n 5/7/23
+        //cubeGameMoveOnButtonTouchEvent.AddListener(MoveOnButtonPressed);
         if (cubeGameBoardUpEvent == null)
             cubeGameBoardUpEvent = new CubeGameBoardUpEvent();
         cubeGameBoardUpEvent.AddListener(OnGameBoardUpStoreCubeHomePositions);
@@ -149,18 +154,29 @@ public class CubeGameHandler : MonoBehaviour
         thirdPersonController = player.GetComponent<ThirdPersonController>();
         // ////////////////////END MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
     }
-    public void PlayButtonPressedOnIntro()
+    //public void PlayButtonPressedOnIntro()  //DeImp 0n 5/7/23
+    //{
+    //    animCubeGame.SetTrigger("RaiseCubeGame");
+    //    cubeGameIntro.SetActive(false);
+    //    cubeGameStartButton.SetActive(true); //2/27/23 moved here from OnTriggerEnter
+    //    TellTextCloud(helpNeedHI);//2/27/23 moved here from OnTriggerEnter
+    //}
+
+    public void OnCanvasNextPagePressedOnIntro()   //5/7/23 as part of moving to nextPage Canvas button controlling things 
     {
+        if (cubeGameIntro.activeSelf)
+        {
         animCubeGame.SetTrigger("RaiseCubeGame");
         cubeGameIntro.SetActive(false);
         cubeGameStartButton.SetActive(true); //2/27/23 moved here from OnTriggerEnter
         TellTextCloud(helpNeedHI);//2/27/23 moved here from OnTriggerEnter
+        }
     }
-    public void MoveOnButtonPressed()
-    {
-        Debug.Log("CubeGame MoveOn Button Pressed!!");
-        
-    }
+    //public void MoveOnButtonPressed()   //DeImp 0n 5/7/23
+    //{
+    //    Debug.Log("CubeGame MoveOn Button Pressed!!");
+
+    //}
 
     public void CheckCubeMovement(GameObject go, string cubeName)  //ActOnTouch sent a fingerUp event - meaning player dragged a cube 
     {
@@ -482,6 +498,7 @@ public class CubeGameHandler : MonoBehaviour
             if (thirdPersonController) thirdPersonController.enabled = false;
             nonPluggedSeed = Random.Range(1, 4); //which round to call SeedCubePuzzle() - other rounds get a Winnable
             cubeGameIntro.SetActive(true);
+            nextPage.SetActive(true);
         }
     }
     void ResetCubeGameOnEntry()
