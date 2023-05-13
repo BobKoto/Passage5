@@ -11,9 +11,9 @@ public class CanvasNextPagePressedEvent : UnityEvent { }
 [System.Serializable]
 public class CloudTextEvent : UnityEvent<int, int, string>{ }
 [System.Serializable]
-public class CloudTextEventExtinguished : UnityEvent { }
+public class CloudTextExtinguishedEvent : UnityEvent { }
 [System.Serializable]
-public class CloudTextEventWaitNextPage : UnityEvent<int, int, string, bool> { }
+public class CloudTextWaitNextPageEvent : UnityEvent<int, int, string, bool> { }
 [System.Serializable]
 public class MontyPlayButtonTouchEvent : UnityEvent { }
 

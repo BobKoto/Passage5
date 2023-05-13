@@ -108,6 +108,7 @@ public class MontyStopTrigger : MonoBehaviour
     public AudioClipFinishedEvent audioClipFinishedEvent;
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
     public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
+    public CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
 
     Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro, animPlayer;
     AudioManager audioManager;
@@ -166,7 +167,11 @@ public class MontyStopTrigger : MonoBehaviour
 
         if (m_CanvasNextPagePressedEvent == null)
             m_CanvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
-       // m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
+        // m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
+
+        if (m_CloudTextExtinguishedEvent == null)
+            m_CloudTextExtinguishedEvent = new CloudTextExtinguishedEvent();
+
         originalMontyGameCamPriority = montyGameCam.Priority; //10
         originalCamOnEvilTwinPriority = camOnEvilTwin.Priority;  //10
         entryCollider = gameObject.GetComponent<BoxCollider>();
@@ -339,6 +344,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (awaitingFinalDoorPick)  // //////////////////// This IS the SECOND door pick!! /////////////////////////////////
         {
             ProcessFinalDoorPick(doorPressed);
+            montyGameEnded = true;  //5/10/23 moved here out of ProcessFinalDoorPick(doorPressed); 
         }
 
         DisableTheDoorButtons();  //deimped but hold because we may want to do something here like wait on the door animation
@@ -462,7 +468,7 @@ public class MontyStopTrigger : MonoBehaviour
                 break;
             default: break;
         }
-        montyGameEnded = true;  //moved out of above 3 switch cases 5/8/23
+       // montyGameEnded = true;  //moved out of above 3 switch cases 5/8/23   //5/10/23 then moved to ProcessTheDoorButton()
         if (!winnerChosen)
         {
             StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evil twin when the door is down(fully)
@@ -787,18 +793,24 @@ public class MontyStopTrigger : MonoBehaviour
         DisableTheDoorButtons();
         CloseTheFirstOpenedDoor();
         UnlockPlayerFromTheGameTriggerArea();
-
-
     }
     IEnumerator WaitSeconds(float timeToWait, AudioClip audioClip)
     {
         yield return new WaitForSeconds(timeToWait);
         audioManager.PlayAudio(audioClip);
        // if (!playerPickedWinner && !montyGameEnded) montyGameSignText.text = "A chance to change door. Choose...";  //3/7/23 moved to after drama audio
-        if (montyGameEnded)
+        //if (montyGameEnded)
+        //{
+        //    Debug.Log("WaitForSeconds sees montyGameEdnded = true  SETTING NextPage Active   AND Adding Listener");
+        // //   if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(true);   //5/7/23 DeImp and go with Canvas nextPage Button
+        // //  if (nextPage) nextPage.SetActive(true);
+        //    m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
+        //}
+    }
+    public void OnCloudTextExtinguishedEvent()
+    {   if (montyGameEnded)
         {
-            Debug.Log("WaitForSeconds sees montyGameEdnded = true  SETTING NextPage Active   AND Adding Listener");
-         //   if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(true);   //5/7/23 DeImp and go with Canvas nextPage Button
+            Debug.Log("MST sees OnCloudTextEventExtinguished() Adding Listener for NextPage button...");
             if (nextPage) nextPage.SetActive(true);
             m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
         }
