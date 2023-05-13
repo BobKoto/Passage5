@@ -91,13 +91,16 @@ public class MontyStopTrigger : MonoBehaviour
 
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick, playerPickedWinner, doorResultsShowing;
+    bool ignoreNextPagePress;
 
-    public static bool montyGameEnded;
+    public static bool montyGameEnded,montyGameActive, evilTwinActivated, goodTwinActivated ;
+    bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
+
     int doorNumberDown, theWinningDoor;
+    float originalMoveSpeed, originalSprintSpeed, originalPlayerSpeed;
 
     ThirdPersonController thirdPersonController;
     CharacterController characterController;
-    float originalMoveSpeed, originalSprintSpeed, originalPlayerSpeed;
 
     public PlayerEnteredRelevantTrigger triggerEvent;
 
@@ -112,8 +115,6 @@ public class MontyStopTrigger : MonoBehaviour
 
     Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro, animPlayer;
     AudioManager audioManager;
-    public static bool montyGameActive;
-    bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
 
     public GameObject resetJoystickObject;  //Maybe defunct 2/27/23 and before 
     BoxCollider entryCollider;
@@ -246,6 +247,7 @@ public class MontyStopTrigger : MonoBehaviour
     //}
     public void OnCanvasNextPagePressedEvent()   // Replaces PlayButtonPressedOnIntro()
     {
+        if (ignoreNextPagePress) return;
         Debug.Log("CanvasNextPage Pressed - setting Intro Panel Active to false -- montyGameActive  " + montyGameActive );
         if (montyGameActive)
         {
@@ -264,9 +266,10 @@ public class MontyStopTrigger : MonoBehaviour
         if (nextPage) nextPage.SetActive(false);
         }
         else 
-            if (montyGameEnded)
+        if (montyGameEnded)
         {
-            Debug.Log("MoveOn -- WHICH IS NOW nextPage -- Button Pressed - wiping out all");
+
+            Debug.Log("MoveOn -- WHICH IS NOW nextPage -- Button Pressed - wiping out all montyGameActive = " + montyGameActive);
             //   if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);   //DeImp on 5/7/23
             if (nextPage) nextPage.SetActive(false);
             montyGameCam.Priority = originalMontyGameCamPriority;
@@ -276,17 +279,15 @@ public class MontyStopTrigger : MonoBehaviour
                 if (playerArmature) playerArmature.SetActive(true);  // to enable the Gamepad?
                 thirdPersonController.enabled = true;
                 CallResetJoystick();
-              //  if (playerArmature) playerArmature.SetActive(true);  // to undo the CallResetJoystick 
-              //  thirdPersonController.MoveSpeed = originalMoveSpeed;
                 thirdPersonController.SprintSpeed = originalSprintSpeed;
-
                 animPlayer.speed = originalPlayerSpeed;
                 if (characterController) characterController.enabled = true;
             }
             characterController.enabled = true;
+            ignoreNextPagePress = (evilTwinActivated || goodTwinActivated) ;//5/13/23 
         }
     }
-    public void OnCanvasNextPagePressed()
+    public void OnCanvasNextPagePressed()   //This is the BUTTON
     {
 
         Debug.Log(this.name + " says next page pressed, remove Listener   After Invoke");
@@ -366,7 +367,6 @@ public class MontyStopTrigger : MonoBehaviour
         {
             audioManager.PlayAudio(audioManager.clipding);
             StartCoroutine(WaitSeconds(.1f, audioManager.clipdrama));
-            //  montyGameSignText.text = "A chance to change door pick...";         
             montyGameActive = false;  //disallow door presses until we get animation ended event from AOMDTouch AND audio ended event from AManager
             if (mainMontySign) mainMontySign.SetActive(false);
             StartCoroutine(WaitForEventsToAllowDoorTouches());
@@ -675,6 +675,8 @@ public class MontyStopTrigger : MonoBehaviour
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
         camOnGoodTwin.Priority = originalCamOnGoodTwinPriority;  // disable the camOnGoodTwin and revert to follow cam
+        goodTwinActivated = true;
+
     }
     IEnumerator WaitForEventToInstantiateEvilTwin(int outOfDoor)
     {
@@ -731,6 +733,8 @@ public class MontyStopTrigger : MonoBehaviour
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
         camOnEvilTwin.Priority = originalCamOnEvilTwinPriority;  // disable the camOnEvilTwin and revert to follow cam
+        evilTwinActivated = true;
+
     }
     private IEnumerator ZoomEvilTwinCam()
     {
@@ -808,12 +812,15 @@ public class MontyStopTrigger : MonoBehaviour
         //}
     }
     public void OnCloudTextExtinguishedEvent()
-    {   if (montyGameEnded)
+    {  
+
+        if (montyGameEnded && !ignoreNextPagePress)    
         {
-            Debug.Log("MST sees OnCloudTextEventExtinguished() Adding Listener for NextPage button...");
+            Debug.Log("MST sees OnCloudTextEventExtinguished() Add Listener for NextPage event... montyGameActiv  = " + montyGameActive);
             if (nextPage) nextPage.SetActive(true);
             m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
         }
+
     }
     private void OnDisable()
     {
