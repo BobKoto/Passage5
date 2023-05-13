@@ -166,10 +166,11 @@ public class CubeGameHandler : MonoBehaviour
     {
         if (cubeGameIntro.activeSelf)
         {
-        animCubeGame.SetTrigger("RaiseCubeGame");
-        cubeGameIntro.SetActive(false);
-        cubeGameStartButton.SetActive(true); //2/27/23 moved here from OnTriggerEnter
-        TellTextCloud(helpNeedHI);//2/27/23 moved here from OnTriggerEnter
+            animCubeGame.SetTrigger("RaiseCubeGame");
+            cubeGameIntro.SetActive(false);
+            cubeGameStartButton.SetActive(true); //2/27/23 moved here from OnTriggerEnter
+            TellTextCloud(helpNeedHI);//2/27/23 moved here from OnTriggerEnter
+            if (nextPage) nextPage.SetActive(false);
         }
     }
     //public void MoveOnButtonPressed()   //DeImp 0n 5/7/23

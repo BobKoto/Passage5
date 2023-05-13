@@ -15,7 +15,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     [Header("Text Cloud Events")]
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
     public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
-    public CloudTextEventWaitNextPage m_CloudTextEventWaitNextPage;
+    public CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
     [Header("Intro Duration")]
@@ -46,7 +46,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
 
         if (m_CloudTextEventWaitNextPage == null)
-            m_CloudTextEventWaitNextPage = new CloudTextEventWaitNextPage();
+            m_CloudTextEventWaitNextPage = new CloudTextWaitNextPageEvent();
         // m_CloudTextEventWaitNextPage.AddListener(EnableTheTextCloudAndWaitForNextPage);
         if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
