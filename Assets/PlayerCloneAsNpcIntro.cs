@@ -59,7 +59,8 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     }
     void TellTextCloud(string caption, bool waitForNextPagePressed)
     {
-        m_CloudTextEventWaitNextPage.Invoke(5, 4, caption, true);
+        // m_CloudTextEventWaitNextPage.Invoke(5, 4, caption, true);  //5/13/23 start using enums and case in TextCloudHandler.cs
+        m_CloudTextEvent.Invoke(6, 4, caption);
     }
 
     IEnumerator Intro(float duration)
