@@ -51,21 +51,19 @@ public class TextCloudHandler : MonoBehaviour
         if (menuButton) menuButton.SetActive(false);
         if (lightButton) lightButton.SetActive(false);
     }
-    public void EnableTheTextCloud(int cloudBehavior, int y, string _caption)
+    public void EnableTheTextCloud(int cloudBehavior, int cloudTimeout, string _caption)
     {
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
         textCloud.SetActive(true);
-        audioManager.PlayAudio(audioManager.strom, 1f); //here maybe we can look for spaces in the string
-        CloudBehavior caseBehavior = (CloudBehavior)cloudBehavior;
-        switch (caseBehavior)
+        audioManager.PlayAudio(audioManager.strom, 1f); //here maybe we can look for spaces in the string to adjust audio length
+        //CloudBehavior caseBehavior = (CloudBehavior)cloudBehavior; //5/14/23 moved to switch statement
+        switch ((CloudBehavior)cloudBehavior)
         {
             case CloudBehavior.followTimeOut:
-                // do something
-                Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));  ...new case");
-                StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));
+                // Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));  ...new case");
+                StartCoroutine(RemoveCloudAfterXSeconds(cloudTimeout));
                 break;
             case CloudBehavior.waitForNextPagePress:
-                // do something
                 Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed)); ....NEW CASE");
                 m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
@@ -75,18 +73,10 @@ public class TextCloudHandler : MonoBehaviour
                 break;
         }
     }
-    //public void EnableTheTextCloudAndWaitForNextPage(int x, int y, string _caption, bool waitForNextPagePressed)
-    //{
-    //    cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
-    //    textCloud.SetActive(true);
-    //    audioManager.PlayAudio(audioManager.strom, 1f); //here maybe we can look for spaces in the string
-    //    Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));... OLD CASE");
-    //    m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
-    //    StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
-    //}
-    IEnumerator RemoveCloudAfterXSeconds(int x)
+
+    IEnumerator RemoveCloudAfterXSeconds(int paramCloudTimeout)
     {
-        yield return new WaitForSeconds (x);
+        yield return new WaitForSeconds (paramCloudTimeout);
         // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         textCloud.SetActive(false);
         m_CloudTextExtinguishedEvent.Invoke();
@@ -121,3 +111,12 @@ public class TextCloudHandler : MonoBehaviour
         StopAllCoroutines();
     }
 }
+//public void EnableTheTextCloudAndWaitForNextPage(int x, int y, string _caption, bool waitForNextPagePressed)
+//{
+//    cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
+//    textCloud.SetActive(true);
+//    audioManager.PlayAudio(audioManager.strom, 1f); //here maybe we can look for spaces in the string
+//    Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));... OLD CASE");
+//    m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
+//    StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
+//}
