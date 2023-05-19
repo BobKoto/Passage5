@@ -6,13 +6,6 @@ using TMPro;
 using Cinemachine;
 using StarterAssets; 
 
-//[System.Serializable]   //moved these 3 to OurEvents.cs 5/3/23
-//public class CubeGameBoardEvent : UnityEvent<string, bool, string, int> { }  //this declaration i guess is needed to accept
-//[System.Serializable]
-//public class CubeGamePlayButtonTouchEvent : UnityEvent { }
-//[System.Serializable]
-//public class CubeGameMoveOnButtonTouchEvent : UnityEvent { }
-
 public class CubeGameHandler : MonoBehaviour
 //Component of CubeGame -- receives events from CubeEnteredSolutionMatrix.cs(was)/is now PlacementHandler  -- calculates row/column totals
 //Here we need to figure if game is lost or won 
@@ -108,9 +101,10 @@ public class CubeGameHandler : MonoBehaviour
     void Start()
     {
         inputControls = GameObject.Find("Joysticks_StarterAssetsInputs_Joysticks");
-        // //aDebug.Log("we have " + cubePlaceHolder.Length + " placeholders ");
+        //if (inputControls) Debug.Log(this.name + " found inputControls");
+        //else  Debug.Log(this.name + "  inputControls  NOT FOUND?");
 
-        //Events and Listeners
+            //Events and Listeners
         if (cubeGameBoardEvent == null) cubeGameBoardEvent = new CubeGameBoardEvent();  //not sure but it stopped the null reference 
         cubeGameBoardEvent.AddListener(CubeEnteredOrLeft);
         if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
@@ -356,7 +350,8 @@ public class CubeGameHandler : MonoBehaviour
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         if (cubeGameTimerText) cubeGameTimerText.SetActive(true);
         cubeGameIsUnsolvableButton.SetActive(true);
-        EnableDisableInputControls(false);
+        //EnableDisableInputControls(false);  5/18/23 we disable on enter then reenable after round 3 so this call may be unnecessary 
+
         //cubeGameIsResetting = false;  //99% sure this is setting BEFORE SendCubesToHomePositions() triggers our exit events
         // nonPlugged is a random 1,2 or 3 thus ensuring 2 winnables and 1 maybe winnable 
         if  (cubeGameRoundNumber == nonPluggedSeed) SeedCubePuzzle(); else SeedCubePuzzleWithWinner();  //either one calls GameCanBeSolved()
@@ -462,12 +457,21 @@ public class CubeGameHandler : MonoBehaviour
     }
     void EnableDisableInputControls(bool _enable) //joystick etc.
     {
+        if (inputControls) 
+            Debug.Log(this.name + " inputControls in EnableDisable Method found cubeGameRoundNumber = " + cubeGameRoundNumber + " _enable = " + _enable);
+        else Debug.Log(this.name + "  inputControls in EnableDisable Method NOT FOUND?");
         if (_enable)
         {
         if (inputControls) inputControls.SetActive(true);
-        }else
+            Debug.Log(this.name + "   setting jsticks TRUE");
+        }
+        else
         {
-            if (inputControls) inputControls.SetActive(false);
+             if (inputControls.activeSelf)
+             {
+                inputControls.SetActive(false);
+                Debug.Log(this.name + "  setting jsticks FALSE");
+             }
         }
     }
     void EnableDisableUIButtons(bool _enable) //Menu & Light
@@ -490,6 +494,7 @@ public class CubeGameHandler : MonoBehaviour
             cubeGameRoundNumber = 1;
             cubeGameCam.Priority = 12;
             EnableDisableInputControls(false); // disable the inputControls
+
             EnableDisableUIButtons(false);
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
 
@@ -541,7 +546,7 @@ public class CubeGameHandler : MonoBehaviour
         if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
         if (cubeGameExitButton) cubeGameExitButton.SetActive(false);
         animator.speed = 1;
-        EnableDisableInputControls(true); // if (inputControls) inputControls.SetActive(true);
+        // EnableDisableInputControls(true); // 5/18/23 already done by OnCubeGameStartButtonPressed() which is now a "DONE" button
     }
 
     public void OnGameBoardUpStoreCubeHomePositions()
