@@ -120,8 +120,11 @@ public class MontyStopTrigger : MonoBehaviour
     BoxCollider entryCollider;
     MeshRenderer m1, m2, m3;
 
-    const string evilTwinSpeaks1 = "Hello, Hashnag, you mechanical jerk. Prepare yourself!";
-    const string goodTwinSpeaks1 = "Hello, Hashy, I'll be looking out for you...";
+    //const string evilTwinSpeaks1 = "Hello, Hashnag, you mechanical jerk. Prepare yourself!";
+    //const string goodTwinSpeaks1 = "Hello, Hashy, I'll be looking out for you...";
+    const string evilTwinSpeaks1 = "Hello, Hashnag, you mechanical jerk. " +
+        "Prepare yourself! If I catch you in my sensors I'll slice your servos to bits.";
+    const string goodTwinSpeaks1 = "Hello, Hashy, I'll keep my sensors out for you...";
 
     void Start()
     {
@@ -613,11 +616,14 @@ public class MontyStopTrigger : MonoBehaviour
     IEnumerator WaitForEventsToAllowDoorTouches()
     {
         //
+        montyGameSignText.color = Color.red;  // 5/18/23 added these 3 to show a wait between door selections
+        montyGameSignText.text = "Ok, hold on a sec...";
+        if (mainMontySign) mainMontySign.SetActive(true);
         yield return new WaitUntil(() => montyDramaAudioFinishedEventReceived && montyDoorDownEventReceived);  //every frame checked??? could be better
         Debug.Log("WE GOT BOTH EVENTS !!!!!!!!!!!!!!!!!!!!");
         audioManager.PlayAudio(audioManager.clipding);
         montyGameSignText.color = Color.green;
-        montyGameSignText.text = "A chance to change door. Choose...";
+        montyGameSignText.text = "A chance to change door and unleash your Good or Evil Twin. Choose...";
         if (mainMontySign) mainMontySign.SetActive(true);
         montyGameActive = true; //re-allow door touches 
         montyDoorDownEventReceived = false;
