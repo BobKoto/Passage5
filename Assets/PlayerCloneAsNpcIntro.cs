@@ -16,6 +16,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
     public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
     public CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;
+    public CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
     [Header("Intro Duration")]
@@ -48,6 +49,11 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         if (m_CloudTextEventWaitNextPage == null)
             m_CloudTextEventWaitNextPage = new CloudTextWaitNextPageEvent();
         // m_CloudTextEventWaitNextPage.AddListener(EnableTheTextCloudAndWaitForNextPage);
+
+        if (m_CloudTextExtinguishedEvent == null)
+            m_CloudTextExtinguishedEvent = new CloudTextExtinguishedEvent();
+        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextEventExtinguished);
+
         if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
         StartCoroutine(Intro(introDuration));
@@ -93,7 +99,13 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         Debug.Log(this.name + " DOING...    m_CanvasNextPagePressedEvent.Invoke();");
         m_CanvasNextPagePressedEvent.Invoke();
     }
-
+    public void OnCloudTextEventExtinguished()
+    {
+        Debug.Log(this.name + " says the cloud went away... So enable the Play box");
+        m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextEventExtinguished);
+        if (nowPlay) nowPlay.SetActive(true);
+        if (inputControls) inputControls.SetActive(true);
+    }
     void OnDisable()
     {
         m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
