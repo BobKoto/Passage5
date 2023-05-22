@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using UnityEngine.Events;
+//using UnityEngine.Events;
 
 public class PlayerCloneAsNpcIntro : MonoBehaviour
 {//Component of PlayerCloneAsNPC  
@@ -14,9 +14,12 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     public CinemachineVirtualCamera camOnPlayerCloneAsNPC;
     [Header("Text Cloud Events")]
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
-    public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
-    public CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;
-    public CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
+    //public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
+    //public CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;
+    //public CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
+    CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
+    CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;
+    CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
     [Header("Intro Duration")]
@@ -29,8 +32,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     const string playerCloneAsNPCSpeaks2 = "#My new job is puzzles... \n #Lead on!";
  
     int originalCamOnPlayerCloneAsNPCPriority;
-    //public CloudTextEvent m_CloudTextEvent;
-    bool nextPagePressed;
+    bool nextPagePressed, waitingTextExtinguish = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +42,6 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
         if (m_CloudTextEvent == null)
             m_CloudTextEvent = new CloudTextEvent();
-       // CloudTextEvent.AddListener(OnCanvasNextPagePressedEvent);
 
         if (m_CanvasNextPagePressedEvent == null)
             m_CanvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
@@ -48,44 +49,39 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
         if (m_CloudTextEventWaitNextPage == null)
             m_CloudTextEventWaitNextPage = new CloudTextWaitNextPageEvent();
-        // m_CloudTextEventWaitNextPage.AddListener(EnableTheTextCloudAndWaitForNextPage);
 
         if (m_CloudTextExtinguishedEvent == null)
             m_CloudTextExtinguishedEvent = new CloudTextExtinguishedEvent();
-        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextEventExtinguished);
+        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
 
         if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
-        StartCoroutine(Intro(introDuration));
+        StartCoroutine(Intro());
     }
-
     void TellTextCloud(string caption)
     {
         m_CloudTextEvent.Invoke(5, 4, caption);
     }
     void TellTextCloud(string caption, bool waitForNextPagePressed)
     {
-        // m_CloudTextEventWaitNextPage.Invoke(5, 4, caption, true);  //5/13/23 start using enums and case in TextCloudHandler.cs
         m_CloudTextEvent.Invoke(6, 4, caption);
     }
-
-    IEnumerator Intro(float duration)
+    IEnumerator Intro()
     {
-        //  yield return new WaitForSeconds(2f); //timing?  it works but I don't like (script execution order better solution? warily yes)
         Debug.Log(" PlayerCloneAsNpcIntro Execute IEnumerator Intro(float duration)");
         playerArmature.SetActive(false);
         inputControls.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = 12;
+
         TellTextCloud(playerCloneAsNPCSpeaks1, true);
         if (nextPage) nextPage.SetActive(true);
-        //  yield return new WaitForSeconds(duration);
+
         yield return new WaitUntil(() => nextPagePressed); 
         playerArmature.SetActive(true);
-       // inputControls.SetActive(true);
         playerCloneAsNPC.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = originalCamOnPlayerCloneAsNPCPriority;
         TellTextCloud(playerCloneAsNPCSpeaks2);
-       // if (nowPlay) nowPlay.SetActive(true);
+
         if (nextPage) nextPage.SetActive(false);
     }
     void OnCanvasNextPagePressedEvent()
@@ -99,17 +95,21 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         Debug.Log(this.name + " DOING...    m_CanvasNextPagePressedEvent.Invoke();");
         m_CanvasNextPagePressedEvent.Invoke();
     }
-    public void OnCloudTextEventExtinguished()
+    public void OnCloudTextExtinguishedEvent()
     {
-        Debug.Log(this.name + " says the cloud went away... So enable the Play box");
-        m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextEventExtinguished);
-        if (nowPlay) nowPlay.SetActive(true);
-        if (inputControls) inputControls.SetActive(true);
+        if (waitingTextExtinguish)
+        {
+            Debug.Log(this.name + " says the cloud went away... So enable the Play box");
+            m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);
+            if (nowPlay) nowPlay.SetActive(true);
+            if (inputControls) inputControls.SetActive(true);
+            waitingTextExtinguish = false;
+        }
     }
     void OnDisable()
     {
         m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
+        m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);
         StopAllCoroutines();
     }
-
 }
