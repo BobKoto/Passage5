@@ -90,7 +90,8 @@ public class TextCloudHandler : MonoBehaviour
     }
     void OnCanvasNextPagePressedEvent()
     {
-        Debug.Log(this.name + " says next page pressed remove Listener");
+        Debug.Log(this.name + " says next page pressed remove Listener -- AND If TextCloud is up ERASE it....");
+        textCloud.SetActive(false);   //5/21/23
         m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
     }
     public void OnCanvasNextPagePressed()
