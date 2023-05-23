@@ -56,6 +56,7 @@ public class MontyStopTrigger : MonoBehaviour
     public CinemachineVirtualCamera montyGameCam;
     public CinemachineVirtualCamera camOnEvilTwin;
     public CinemachineVirtualCamera camOnGoodTwin;
+    public CinemachineVirtualCamera camOnTwin;
 
     public float zoomAmount = 23f;
     public float zoomTime = 2.5f;
@@ -67,7 +68,7 @@ public class MontyStopTrigger : MonoBehaviour
     public Animation animDoor2Down;
     public Animation animDoor3Down;
     public float xPos = 200;
-    int originalMontyGameCamPriority, originalCamOnEvilTwinPriority, originalCamOnGoodTwinPriority;
+    int originalMontyGameCamPriority, originalCamOnEvilTwinPriority, originalCamOnGoodTwinPriority, originalCamOnTwinPriority;
 
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
@@ -151,6 +152,7 @@ public class MontyStopTrigger : MonoBehaviour
 
         originalMontyGameCamPriority = montyGameCam.Priority; //10
         originalCamOnEvilTwinPriority = camOnEvilTwin.Priority;  //10
+        originalCamOnTwinPriority = camOnTwin.Priority;  //10
         entryCollider = gameObject.GetComponent<BoxCollider>();
     }
 
@@ -591,21 +593,19 @@ public class MontyStopTrigger : MonoBehaviour
         float agent1OriginalSpeed = agent1.speed;
         float anim1OriginalSpeed = anim1.speed;
         agent1.speed = 0;
-              GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
-        if (montyGoal) montyGoal.SetActive(false);  anim1.speed = 0;
-        camOnGoodTwin.Priority = 13; //or maybe b4
-        StartCoroutine(ZoomGoodTwinCam());  //may be able to consolidate 
+        GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
+        if (montyGoal) montyGoal.SetActive(false);
+        anim1.speed = 0;
+        camOnGoodTwin.Priority = 13; //or maybe b4  //5/22/23
+        StartCoroutine(ZoomGoodTwinCam());  //may be able to consolidate // and doing so on 5/22/23
+        //camOnTwin.LookAt = goodTwin.transform;
+        //camOnTwin.Priority = 13; //or maybe b4
+        //StartCoroutine(ZoomTwinCam());
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
         yield return new WaitForSeconds(2f);
-        camOnEvilTwin.Priority = 13; //put this cam on AFTER the door is down   //should rename this cam? 5/21/23
+        //camOnEvilTwin.Priority = 13; //put this cam on AFTER the door is down   //should rename this cam? 5/21/23
         TellTextCloud(goodTwinSpeaks1);
         yield return new WaitForSeconds(timeToPauseOnAnyTwin);
-
-        // TellTextCloud(goodTwinSpeaks1, true);
-        // if (nextPage) nextPage.SetActive(true);
-
-        // yield return new WaitUntil(() => nextPagePressed); 
-        //// if (nextPage) nextPage.SetActive(true);
 
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
@@ -619,7 +619,8 @@ public class MontyStopTrigger : MonoBehaviour
 
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
-        camOnGoodTwin.Priority = originalCamOnGoodTwinPriority;  // disable the camOnGoodTwin and revert to follow cam
+        camOnGoodTwin.Priority = originalCamOnGoodTwinPriority;  // disable the camOnGoodTwin and revert to follow cam  //5/22/23
+    //    camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
         goodTwinActivated = true;
 
     }
@@ -654,8 +655,12 @@ public class MontyStopTrigger : MonoBehaviour
         float anim1OriginalSpeed = anim1.speed;
         agent1.speed = 0;
         anim1.speed = 0;
-        camOnEvilTwin.Priority = 13; //or maybe b4
-        StartCoroutine(ZoomEvilTwinCam());
+        camOnEvilTwin.Priority = 13; //or maybe b4  //5/22/23
+        StartCoroutine(ZoomEvilTwinCam());  //5/22/23
+
+        //camOnTwin.Priority = 13; //5/22/23
+        //camOnTwin.LookAt = evilTwin.transform;
+        //StartCoroutine(ZoomTwinCam());
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
         yield return new WaitForSeconds(2f);
 
@@ -676,7 +681,8 @@ public class MontyStopTrigger : MonoBehaviour
 
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
-        camOnEvilTwin.Priority = originalCamOnEvilTwinPriority;  // disable the camOnEvilTwin and revert to follow cam
+        camOnEvilTwin.Priority = originalCamOnEvilTwinPriority;  // disable the camOnEvilTwin and revert to follow cam  //5/22/23
+       // camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
         evilTwinActivated = true;
 
     }
@@ -691,7 +697,7 @@ public class MontyStopTrigger : MonoBehaviour
         {
             timer += Time.deltaTime;
             camOnEvilTwin.m_Lens.FieldOfView = Mathf.Lerp(originalFOV, targetFOV, timer / zoomTime);
-          //  Debug.Log("ori/targ  " + originalFOV + "/" + targetFOV + "  camFOV = " + camOnEvilTwin.m_Lens.FieldOfView);
+            //  Debug.Log("ori/targ  " + originalFOV + "/" + targetFOV + "  camFOV = " + camOnEvilTwin.m_Lens.FieldOfView);
             yield return null;
         }
     }
@@ -710,6 +716,21 @@ public class MontyStopTrigger : MonoBehaviour
             yield return null;
         }
     }
+    //private IEnumerator ZoomTwinCam()  //added 5/22/23 to consolidate Good and Evil Twin cam zoom ops
+    //{
+    //    var originalFOV = camOnTwin.m_Lens.FieldOfView;
+    //    var targetFOV = originalFOV - zoomAmount;  //40 - 23 = 17 
+
+    //    float timer = 0f;
+
+    //    while (timer < zoomTime)
+    //    {
+    //        timer += Time.deltaTime;
+    //        camOnTwin.m_Lens.FieldOfView = Mathf.Lerp(originalFOV, targetFOV, timer / zoomTime);
+    //        //  Debug.Log("ori/targ  " + originalFOV + "/" + targetFOV + "  camFOV = " + camOnGoodTwin.m_Lens.FieldOfView);
+    //        yield return null;
+    //    }
+    //}
     void TellTextCloud(string caption)
     {
         m_CloudTextEvent.Invoke(5, 4, caption);
