@@ -95,7 +95,7 @@ public class PlayerEnterCubeGame : MonoBehaviour      //Componenet of PlayerEnte
             DisableInputControls();
             if (menuButton) menuButton.SetActive(false);
             if (lightButton) lightButton.SetActive(false);
-            cubeGameStartButton.SetActive(true);
+         //   cubeGameStartButton.SetActive(true);  //5/23/23  and made no difference?
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
             TellTextCloud(helpNeedHI);
             animator.speed = 0;
@@ -152,48 +152,3 @@ public class PlayerEnterCubeGame : MonoBehaviour      //Componenet of PlayerEnte
          cubeGameIsUnsolvableButton.SetActive(true);
     }
 }  //end class 
-
-/* TEMPORARILY DON'T SEED AN INITIAL CUBE - JUST SEED THE SUMS 
-int randomCubePosition = Random.Range(0, cubeGamePlacement.Length);  //higher val was  hardcoded to 3 but u never know...
-int randomCubePlacement = Random.Range(0, cubeGamePlacement.Length);  //higher val was  hardcoded to 3 but u never know...
-                                                                   //Debug.Log("randCubeRAW = " + randomCubePosition +        "  randCubePlacRAW = "  + randomCubePlacement );
-                                                                   //Debug.Log("randCube =      " + (randomCubePosition+1)*10 + "  randCubePlac =        " + (randomCubePlacement+1));
-
-Vector3 xForward = new Vector3(1.5f, 0f, 0f);//pull cube out toward cam
-cubeGameCubes[randomCubePosition].transform.position = cubePlacementPosition[randomCubePlacement] + xForward;
-*/
-/*
-using System;
-using System.Linq;
-using System.Security.Cryptography;
-
-namespace randomize_array
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            int[] arr = { 1, 2, 3, 4, 5 };
-            Random random = new Random();
-            arr = arr.OrderBy(x => random.Next()).ToArray();
-            foreach (var i in arr)
-            {
-              //  Console.WriteLine(i);
-            }
-        }
-    }
-}
-OR Another
-void reshuffle(string[] texts)
-    {
-        // Knuth shuffle algorithm :: courtesy of Wikipedia :)
-        for (int t = 0; t < texts.Length; t++ )
-        {
-            string tmp = texts[t];
-            int r = Random.Range(t, texts.Length);
-            texts[t] = texts[r];
-            texts[r] = tmp;
-        }
-    }
- 
-*/
