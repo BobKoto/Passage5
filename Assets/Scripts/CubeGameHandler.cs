@@ -162,7 +162,7 @@ public class CubeGameHandler : MonoBehaviour
         {
             animCubeGame.SetTrigger("RaiseCubeGame");
             cubeGameIntro.SetActive(false);
-            cubeGameStartButton.SetActive(true); //2/27/23 moved here from OnTriggerEnter
+          //  cubeGameStartButton.SetActive(true); //2/27/23 moved here from OnTriggerEnter  //5/23/23
             TellTextCloud(helpNeedHI);//2/27/23 moved here from OnTriggerEnter
             if (nextPage) nextPage.SetActive(false);
         }
@@ -551,12 +551,14 @@ public class CubeGameHandler : MonoBehaviour
 
     public void OnGameBoardUpStoreCubeHomePositions()
     {
-       // Debug.Log("OnGameBoardUpStoreCubeHomePositions() Called..........");
+        // Debug.Log("OnGameBoardUpStoreCubeHomePositions() Called..........");
         for (int i = 0; i <= cubeGameCubes.Length - 1; i++)
         {
             cubeTransformStartPosition[i] = cubeGameCubes[i].transform.position;
-          //  Debug.Log("OnGameBoardUpStoreCubeHomePositions() Transform position = " + cubeGameCubes[i].transform.position);
+            //  Debug.Log("OnGameBoardUpStoreCubeHomePositions() Transform position = " + cubeGameCubes[i].transform.position);
+
         }
+        if (cubeGameStartButton) cubeGameStartButton.SetActive(true);  //5/23/23 so we wait until game board is up 
     }
     void SendCubesToHomePositions()
     {
