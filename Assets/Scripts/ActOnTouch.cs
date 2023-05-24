@@ -11,7 +11,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
 // Touch Testing only for now 
 // Component of CubeNN objects 
 {
-    AudioManager audioManager;
+    //AudioManager audioManager; //5/24/23 unused
     Camera cam;
     public CinemachineVirtualCamera cVCam;
     Vector3 point, newPoint;
@@ -41,7 +41,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler, IPointe
     void AlignCam()  //moved from Start in prep to align ONLY when player enters CubeGame - else where the player starts is an issue 
     {
         cam = Camera.main;  //
-        audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        //audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();  //5/24/23 unused
         xPositionFixed = transform.position.x;  //we apparently need one of these fixed positions depending on cam/*cube orientation
         yPositionFixed = transform.position.y;  // *cube as in the thing(s) we want to drag 
         zPositionFixed = transform.position.z;
