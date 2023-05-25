@@ -39,6 +39,7 @@ public class CubeGameHandler : MonoBehaviour
     public TMP_Text cubeGameStartButtonText, cubeGameTimeLeftText;
 
     public static bool cubeGameIsActive, cubeGameIsResetting; //set public static 1/30/23 //added cubeGameIsResetting 2/1/23 static may not be needed
+    bool gameBoardIsUp;  //added 5/24/23
 
     GameObject inputControls;
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
@@ -165,6 +166,10 @@ public class CubeGameHandler : MonoBehaviour
           //  cubeGameStartButton.SetActive(true); //2/27/23 moved here from OnTriggerEnter  //5/23/23
             TellTextCloud(helpNeedHI);//2/27/23 moved here from OnTriggerEnter
             if (nextPage) nextPage.SetActive(false);
+            if (gameBoardIsUp)  //added 5/24/23
+            {
+                if (cubeGameStartButton) cubeGameStartButton.SetActive(true);
+            }
         }
     }
     //public void MoveOnButtonPressed()   //DeImp 0n 5/7/23
@@ -552,6 +557,7 @@ public class CubeGameHandler : MonoBehaviour
     public void OnGameBoardUpStoreCubeHomePositions()
     {
         // Debug.Log("OnGameBoardUpStoreCubeHomePositions() Called..........");
+        gameBoardIsUp = true;
         for (int i = 0; i <= cubeGameCubes.Length - 1; i++)
         {
             cubeTransformStartPosition[i] = cubeGameCubes[i].transform.position;
