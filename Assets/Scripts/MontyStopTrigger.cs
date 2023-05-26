@@ -13,7 +13,7 @@ using UnityEngine.AI;
 
 public class MontyStopTrigger : MonoBehaviour
 {  //Component of MontyStopTrigger
-    MovingPlatform movingPlatform;
+    //MovingPlatform movingPlatform;  //removed 5/26/23
     [Header("UI Buttons")]
     public GameObject stopButton;
     public GameObject goButton;
@@ -54,8 +54,8 @@ public class MontyStopTrigger : MonoBehaviour
     public CinemachineVirtualCamera thirdPersonFollowCam;
     public CinemachineFreeLook freeLookCam;
     public CinemachineVirtualCamera montyGameCam;
-    public CinemachineVirtualCamera camOnEvilTwin;
-    public CinemachineVirtualCamera camOnGoodTwin;
+    //public CinemachineVirtualCamera camOnEvilTwin;   //removed 5/26/23
+    //public CinemachineVirtualCamera camOnGoodTwin;   //removed 5/26/23
     public CinemachineVirtualCamera camOnTwin;
 
     public float zoomAmount = 23f;
@@ -114,7 +114,7 @@ public class MontyStopTrigger : MonoBehaviour
     void Start()
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
-        movingPlatform = GameObject.Find("MovingPlatform").GetComponent<MovingPlatform>();
+        //  movingPlatform = GameObject.Find("MovingPlatform").GetComponent<MovingPlatform>();  //removed 5/26/23
         animDoor1 = montyDoor1.GetComponent<Animator>();
         animDoor2 = montyDoor2.GetComponent<Animator>();
         animDoor3 = montyDoor3.GetComponent<Animator>();
@@ -151,7 +151,7 @@ public class MontyStopTrigger : MonoBehaviour
             m_CloudTextExtinguishedEvent = new CloudTextExtinguishedEvent();
 
         originalMontyGameCamPriority = montyGameCam.Priority; //10
-        originalCamOnEvilTwinPriority = camOnEvilTwin.Priority;  //10
+      //  originalCamOnEvilTwinPriority = camOnEvilTwin.Priority;  //10  //removed 5/26/23
         originalCamOnTwinPriority = camOnTwin.Priority;  //10
         entryCollider = gameObject.GetComponent<BoxCollider>();
     }
@@ -175,9 +175,9 @@ public class MontyStopTrigger : MonoBehaviour
     }
     private void LockPlayerInTheMontyGameTriggerArea()    //THIS Calls PlayTheMontyGame()
     {
-        movingPlatform.speed = 0;
-        if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
-        if (goButton) goButton.SetActive(false);
+        //  movingPlatform.speed = 0;  //removed 5/26/23
+        //if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area  //removed 5/26/23
+        //if (goButton) goButton.SetActive(false);                                                            //removed 5/26/23  
         PlayTheMontyGame();  //so let's enable the door touches here - i bet no diff  //OK so we should add a start/play button
     }
     private void PlayTheMontyGame()  //Called by LockPlayerInTheMontyGameTriggerArea() 
@@ -266,11 +266,11 @@ public class MontyStopTrigger : MonoBehaviour
     }
     private void UnlockPlayerFromTheGameTriggerArea()
     {
-        if (AddRemoveChild.playerIsOnYellowPlatform)  // another useful public static bool
-        {
-            if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
-            if (goButton) goButton.SetActive(true);
-        }
+        //if (AddRemoveChild.playerIsOnYellowPlatform)  // another useful public static bool  //removed 5/26/23  the whole block
+        //{
+        //    if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
+        //    if (goButton) goButton.SetActive(true);
+        //}
         if (montyGameBarriers) montyGameBarriers.SetActive(false);// 3/1/23 only deactivate the MontyGameStopRobot collider gO (switched in editor)
         entryCollider.enabled = false;// let the player/robot move forward
         // if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
