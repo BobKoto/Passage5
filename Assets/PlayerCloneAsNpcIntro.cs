@@ -32,7 +32,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     const string playerCloneAsNPCSpeaks2 = "#My new job is puzzles... \n #Lead on!";
  
     int originalCamOnPlayerCloneAsNPCPriority;
-    bool nextPagePressed, waitingTextExtinguish = true;
+    bool nextPagePressed, waitingNextPagePress, waitingForTextExtinguishEvent, testExtinguishedReceived;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,14 +45,14 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
         if (m_CanvasNextPagePressedEvent == null)
             m_CanvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
-        m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);
+      //  m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);//5/25/23
 
         if (m_CloudTextEventWaitNextPage == null)
             m_CloudTextEventWaitNextPage = new CloudTextWaitNextPageEvent();
 
         if (m_CloudTextExtinguishedEvent == null)
             m_CloudTextExtinguishedEvent = new CloudTextExtinguishedEvent();
-        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
+      //  m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);//5/25/23 move to Intro()
 
         if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
@@ -68,42 +68,59 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     }
     IEnumerator Intro()
     {
-        Debug.Log(" PlayerCloneAsNpcIntro Execute IEnumerator Intro(float duration)");
+      //  Debug.Log(" PlayerCloneAsNpcIntro Execute IEnumerator Intro(float duration)");
         playerArmature.SetActive(false);
         inputControls.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = 12;
 
         TellTextCloud(playerCloneAsNPCSpeaks1, true);
-        if (nextPage) nextPage.SetActive(true);
+        waitingForTextExtinguishEvent = true;
+        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
+        yield return new WaitUntil(() => !waitingForTextExtinguishEvent);  //when TCH sees NextPage press and extinguishes text cloud 
 
-        yield return new WaitUntil(() => nextPagePressed); 
+      //  Debug.Log(this.name + " *****  GOT TextExtinguishEvent so set player active and do NEXT CLOUD ***** ");
         playerArmature.SetActive(true);
-        playerCloneAsNPC.SetActive(false);
+       // playerCloneAsNPC.SetActive(false);//5/25/23 this caused a bug where we kinda stopped here 
         camOnPlayerCloneAsNPC.Priority = originalCamOnPlayerCloneAsNPCPriority;
-        TellTextCloud(playerCloneAsNPCSpeaks2);
 
+        TellTextCloud(playerCloneAsNPCSpeaks2, true);
+        waitingForTextExtinguishEvent = true;
+        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
+
+       // Debug.Log(this.name + " *****  Drop into wait on !waitingForTextExtinguishEvent ***** ");
+        yield return new WaitUntil(() => !waitingForTextExtinguishEvent);//5/24/23
+      //  Debug.Log(this.name + " *****  Drop OUT OF wait on nextPagePressed & !waitingTextExtinguish ***** ");
+        playerCloneAsNPC.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
+
+        if (nowPlay) nowPlay.SetActive(true);
+        if (inputControls) inputControls.SetActive(true);
+
     }
     void OnCanvasNextPagePressedEvent()
     {
-        Debug.Log(this.name + " says next page pressed Remve Listener");
+        Debug.Log(this.name + " says next page pressed SET TRUE");
         nextPagePressed = true;
-        m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
+        m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent); //5/24/23
     }
     public void OnCanvasNextPagePressed()
     {
-        Debug.Log(this.name + " DOING...    m_CanvasNextPagePressedEvent.Invoke();");
-        m_CanvasNextPagePressedEvent.Invoke();
+        if (waitingNextPagePress)  //5/25/23 
+        {
+         //   Debug.Log(this.name + " DOING...    m_CanvasNextPagePressedEvent.Invoke();");
+            m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent); //5/24/23
+            m_CanvasNextPagePressedEvent.Invoke();
+        }
+
     }
     public void OnCloudTextExtinguishedEvent()
     {
-        if (waitingTextExtinguish)
+      //  Debug.Log(this.name + " says the cloud went away... waitingTextExtinguish = " + waitingForTextExtinguishEvent);
+        if (waitingForTextExtinguishEvent)
         {
-            Debug.Log(this.name + " says the cloud went away... So enable the Play box");
-            m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);
-            if (nowPlay) nowPlay.SetActive(true);
-            if (inputControls) inputControls.SetActive(true);
-            waitingTextExtinguish = false;
+      //      Debug.Log(this.name + " says RemoveListener(OnCloudTextExtinguishedEvent)  and  SEwaitingForTextExtinguishEvent = false;");
+            m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);  //5/24/23
+            waitingForTextExtinguishEvent = false;
         }
     }
     void OnDisable()
