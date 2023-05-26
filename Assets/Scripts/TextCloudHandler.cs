@@ -27,7 +27,7 @@ public class TextCloudHandler : MonoBehaviour
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
     // public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
-    bool nextPagePressed;
+    bool nextPagePressed, waitingForNextPagePress;
     enum CloudBehavior :int
     {
         followTimeOut =  5,
@@ -64,8 +64,10 @@ public class TextCloudHandler : MonoBehaviour
                 StartCoroutine(RemoveCloudAfterXSeconds(cloudTimeout));
                 break;
             case CloudBehavior.waitForNextPagePress:
-                Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed)); ....NEW CASE");
+             //   Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed)); ....NEW CASE");
                 m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
+                waitingForNextPagePress = true;
+                if (nextPage) nextPage.SetActive(true);
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
                 break;
             default:
@@ -84,19 +86,27 @@ public class TextCloudHandler : MonoBehaviour
     IEnumerator RemoveCloudAfterNextPagePressed(bool nextPressed)
     {
         yield return new WaitUntil(() => nextPagePressed);
+        nextPagePressed = false;
         // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
         textCloud.SetActive(false);
+        if (nextPage) nextPage.SetActive(false);
+      //  Debug.Log(this.name + "  ****** now invoking m_CloudTextExtinguishedEvent ***** ");
         m_CloudTextExtinguishedEvent.Invoke();
     }
     void OnCanvasNextPagePressedEvent()
     {
-        Debug.Log(this.name + " says next page pressed remove Listener -- AND If TextCloud is up ERASE it....");
+      //  Debug.Log(this.name + " says next page pressed remove Listener -- AND If TextCloud is up ERASE it....");
         textCloud.SetActive(false);   //5/21/23
         m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
     }
     public void OnCanvasNextPagePressed()
     {
-        m_CanvasNextPagePressedEvent.Invoke();
+        if (waitingForNextPagePress)
+        {
+            nextPagePressed = true;
+            m_CanvasNextPagePressedEvent.Invoke();
+            waitingForNextPagePress = false;
+        }
     }
     //public void OnCloudTextEventExtinguished()    //5/20/23 only invoke the event - let other scripts handle
     //{
