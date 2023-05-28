@@ -10,6 +10,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     [Header("The Player(s)")]
     public GameObject playerArmature;
     public GameObject playerCloneAsNPC;
+    public SkinnedMeshRenderer skinnedMeshRendererPlayerCloneAsNPC;
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera camOnPlayerCloneAsNPC;
     [Header("Text Cloud Events")]
@@ -80,7 +81,9 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
       //  Debug.Log(this.name + " *****  GOT TextExtinguishEvent so set player active and do NEXT CLOUD ***** ");
         playerArmature.SetActive(true);
-       // playerCloneAsNPC.SetActive(false);//5/25/23 this caused a bug where we kinda stopped here 
+
+        // playerCloneAsNPC.SetActive(false);//5/25/23 this caused a bug where we kinda stopped here 
+        skinnedMeshRendererPlayerCloneAsNPC.enabled = false;  //5/26/23 so instead we do this 
         camOnPlayerCloneAsNPC.Priority = originalCamOnPlayerCloneAsNPCPriority;
 
         TellTextCloud(playerCloneAsNPCSpeaks2, true);

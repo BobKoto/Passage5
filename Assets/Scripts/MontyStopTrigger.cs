@@ -80,8 +80,9 @@ public class MontyStopTrigger : MonoBehaviour
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick, playerPickedWinner, doorResultsShowing;
     bool ignoreNextPagePress, nextPagePressed;
+    bool waitingForTextExtinguishEvent;
 
-    public static bool montyGameEnded,montyGameActive, evilTwinActivated, goodTwinActivated ;
+    public static bool montyGameEnded,montyGameActive, evilTwinActivated, goodTwinActivated, montyGameAllowDoorTouch ;
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
 
     int doorNumberDown, theWinningDoor;
@@ -196,6 +197,7 @@ public class MontyStopTrigger : MonoBehaviour
         m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
 
         montyGameActive = true;   //Now we just wait for a user action like "nextPage"
+        montyGameAllowDoorTouch = true;
     }
     private void OnTriggerExit(Collider other)
     {
@@ -208,8 +210,14 @@ public class MontyStopTrigger : MonoBehaviour
     }
     public void OnCanvasNextPagePressedEvent()   // Replaces PlayButtonPressedOnIntro()
     {
-        if (ignoreNextPagePress) return;
-        Debug.Log("CanvasNextPage Pressed - setting Intro Panel Active to false -- montyGameActive  " + montyGameActive );
+        Debug.Log("MSTCanvasNextPageEvent ignoreNextPagePress = " + ignoreNextPagePress + "  nextPagePressed = " + nextPagePressed +
+            "  montyGameEnded = " + montyGameEnded + "  montyGameActive = " + montyGameActive);
+        if (ignoreNextPagePress)
+        {
+            Debug.Log("CanvasNextPage Pressed IGNORING and doing return;");
+            return;
+        }
+        Debug.Log("MSTCanvasNextPageEVENT - setting Intro Panel Active to false -- montyGameActive  " + montyGameActive );
         if (montyGameActive)
         {
         if (montyGameIntro) montyGameIntro.SetActive(false);
@@ -222,10 +230,12 @@ public class MontyStopTrigger : MonoBehaviour
         if (playerArmature) playerArmature.SetActive(false);
         if (characterController) characterController.enabled = false;
         if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
+        montyGameActive = false; //5/27/23
         if (nextPage) nextPage.SetActive(false);
         }
-        else 
-        if (montyGameEnded)
+        else
+      if (montyGameEnded)  //5/26/23 
+     // if (nextPagePressed)  //5/26/23 
         {
             Debug.Log("MoveOn -- WHICH IS NOW nextPage -- Button Pressed - wiping out all montyGameActive = " + montyGameActive);
             //   if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);   //DeImp on 5/7/23
@@ -243,14 +253,18 @@ public class MontyStopTrigger : MonoBehaviour
             }
             characterController.enabled = true;
             ignoreNextPagePress = (evilTwinActivated || goodTwinActivated) ;//5/13/23 
+            montyGameEnded = (evilTwinActivated || goodTwinActivated);  //5/27/23
         }
     }
     public void OnCanvasNextPagePressed()   //This is the BUTTON
     {
-        Debug.Log(this.name + " says next page pressed, remove Listener   After Invoke");
-        m_CanvasNextPagePressedEvent.Invoke();
-        m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
-        if(montyGameEnded) nextPagePressed = true; //5/21/23
+       // if (!montyGameActive) return;
+        Debug.Log(this.name + " says next page pressed, remove Listener   After Invoke  -- montyGameActive = " + montyGameActive 
+            + "  montyGameEnded = " + montyGameEnded);
+        //m_CanvasNextPagePressedEvent.Invoke();  //5/27/23 Are we using an event needlessly here?
+        //m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
+        OnCanvasNextPagePressedEvent();//5/27/23 so let's try this 
+        if (montyGameEnded) nextPagePressed = true; //5/21/23
     }
     private void CallResetJoystick()
     {
@@ -303,13 +317,13 @@ public class MontyStopTrigger : MonoBehaviour
                 playerPickedDoor3 = true;
                 break;
         }
-        Debug.Log("player picked door " + doorPressed);
+       // Debug.Log("player picked door " + doorPressed);
 
         if (!montyGameEnded)
         {
             audioManager.PlayAudio(audioManager.clipding);
             StartCoroutine(WaitSeconds(.1f, audioManager.clipdrama));
-            montyGameActive = false;  //disallow door presses until we get animation ended event from AOMDTouch AND audio ended event from AManager
+            montyGameAllowDoorTouch = false;  //disallow door presses until we get animation ended event from AOMDTouch AND audio ended event from AManager
             if (mainMontySign) mainMontySign.SetActive(false);
             StartCoroutine(WaitForEventsToAllowDoorTouches());
             ShowAlternativeDoors();  // HERE MAYBE is where we don't want to allow a door touch until the alt door animation is finished
@@ -344,14 +358,14 @@ public class MontyStopTrigger : MonoBehaviour
                // montyGameEnded = true;
                 if (theWinningDoor == 1)
                 {
-                    Debug.Log("Door 1 is a Winner");
+                 //   Debug.Log("Door 1 is a Winner");
                     winnerChosen = true;
                     playerPickedWinner = true;
                     montyGameSignText.text = "Door 1 is a winner!";
                 }
                 else
                 {
-                    Debug.Log("Door 1 is a Loser");
+                  //  Debug.Log("Door 1 is a Loser");
                     if (m2) m2.enabled = false;
                     if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
@@ -367,14 +381,14 @@ public class MontyStopTrigger : MonoBehaviour
             //    montyGameEnded = true;
                 if (theWinningDoor == 2)
                 {
-                    Debug.Log("Door 2 is a Winner");
+                  //  Debug.Log("Door 2 is a Winner");
                     winnerChosen = true;
                     playerPickedWinner = true;
                     montyGameSignText.text = "Door 2 is a winner!";
                 }
                 else
                 {
-                    Debug.Log("Door 2 is a Loser");
+                 //   Debug.Log("Door 2 is a Loser");
                     if (m2) m2.enabled = false;
                     if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
@@ -389,7 +403,7 @@ public class MontyStopTrigger : MonoBehaviour
              //   montyGameEnded = true;
                 if (theWinningDoor == 3)
                 {
-                    Debug.Log("Door 3 is a Winner");
+                 //   Debug.Log("Door 3 is a Winner");
                     winnerChosen = true;
                     playerPickedWinner = true;
 
@@ -397,7 +411,7 @@ public class MontyStopTrigger : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Door 3 is a Loser");
+                 //   Debug.Log("Door 3 is a Loser");
                     if (m2) m2.enabled = false;
                     if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
@@ -524,29 +538,29 @@ public class MontyStopTrigger : MonoBehaviour
 
         if (door1Down)
         {
-            Debug.Log("door 1 is down so our pick is 2 or 3");
+         //   Debug.Log("door 1 is down so our pick is 2 or 3");
             doorNumberDown = 1;
         }
         if (door2Down)
         {
-            Debug.Log("door 2 is down so our pick is 1 or 3");
+         //   Debug.Log("door 2 is down so our pick is 1 or 3");
             doorNumberDown = 2;
         }
         if (door3Down)
         {
-            Debug.Log("door 3 is down so our pick is 1 or 2");
+          //  Debug.Log("door 3 is down so our pick is 1 or 2");
             doorNumberDown = 3;
         }
         awaitingFinalDoorPick = true;
     }
     public void OnMontyDoorDown(int doorDownReceived)
     {
-        Debug.Log("MontyDoorDownEvent  says  doorDown is door " + doorDownReceived + "montyDoorDownEventReceived = true;");//" reset montyGameActive to TRUE");
+      //  Debug.Log("MontyDoorDownEvent  says  doorDown is door " + doorDownReceived + "montyDoorDownEventReceived = true;");//" reset montyGameActive to TRUE");
         montyDoorDownEventReceived = true;
     }
     public void OnAudioClipFinished()
     {
-        Debug.Log("AudioClipFinishedEvent  says  audio is finished ...montyDramaAudioFinishedEventReceived = true");
+      //  Debug.Log("AudioClipFinishedEvent  says  audio is finished ...montyDramaAudioFinishedEventReceived = true");
         montyDramaAudioFinishedEventReceived = true;
     }
     IEnumerator WaitForEventsToAllowDoorTouches()
@@ -555,18 +569,19 @@ public class MontyStopTrigger : MonoBehaviour
         montyGameSignText.text = "Ok, hold on a sec...";
         if (mainMontySign) mainMontySign.SetActive(true);
         yield return new WaitUntil(() => montyDramaAudioFinishedEventReceived && montyDoorDownEventReceived);  //every frame checked??? could be better
-        Debug.Log("WE GOT BOTH EVENTS !!!!!!!!!!!!!!!!!!!!");
+       // Debug.Log("WE GOT BOTH EVENTS !!!!!!!!!!!!!!!!!!!!");
         audioManager.PlayAudio(audioManager.clipding);
         montyGameSignText.color = Color.green;
         montyGameSignText.text = "A chance to change door and unleash your Good or Evil Twin. Choose...";
         if (mainMontySign) mainMontySign.SetActive(true);
-        montyGameActive = true; //re-allow door touches 
+        montyGameAllowDoorTouch = true; //re-allow door touches 
         montyDoorDownEventReceived = false;
     }
     IEnumerator WaitForEventToInstantiateGoodTwin(int outOfDoor)
     {
         // MUCH of this routine is commented UNTIL we create a GOOD TWIN
-        Debug.Log("WE GOT EVENT to Instatiate/Enable the Good Twin!!!!!!! from door " + outOfDoor);
+        goodTwinActivated = true;
+      //  Debug.Log("WE GOT EVENT to Instatiate/Enable the Good Twin!!!!!!! from door " + outOfDoor);
         float gTwinRot = 0f;
 
         camOnTwin.transform.SetParent(goodTwin.transform);  // NEW Cam consolidation
@@ -610,9 +625,16 @@ public class MontyStopTrigger : MonoBehaviour
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
         yield return new WaitForSeconds(2f);
         //camOnEvilTwin.Priority = 13; //put this cam on AFTER the door is down   //should rename this cam? 5/21/23
-        TellTextCloud(goodTwinSpeaks1);
-        yield return new WaitForSeconds(timeToPauseOnAnyTwin);
 
+        //TellTextCloud(goodTwinSpeaks1);    //5/26/23
+        //yield return new WaitForSeconds(timeToPauseOnAnyTwin);    //5/26/23
+
+        TellTextCloud(goodTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+        waitingForTextExtinguishEvent = true;
+        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
+        yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
+        Debug.Log("WE SEE !waitingForTextExtinguishEvent, SET Twin in Motion !!! montyGameActive = " + montyGameActive +
+            "  montyGameEnded = " + montyGameEnded);
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
 
@@ -633,7 +655,8 @@ public class MontyStopTrigger : MonoBehaviour
 
     IEnumerator WaitForEventToInstantiateEvilTwin(int outOfDoor)
     {
-        Debug.Log("WE GOT EVENT to Instatiate/Enable the Evil Twin!!!!!!! from door " + outOfDoor);
+        evilTwinActivated = true;
+       // Debug.Log("WE GOT EVENT to Instatiate/Enable the Evil Twin!!!!!!! from door " + outOfDoor);
         float eTwinRot = 0f;
 
         camOnTwin.transform.SetParent(evilTwin.transform);  // NEW Cam consolidation
@@ -676,9 +699,15 @@ public class MontyStopTrigger : MonoBehaviour
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
         yield return new WaitForSeconds(2f);
 
-        TellTextCloud(evilTwinSpeaks1);
-        yield return new WaitForSeconds(timeToPauseOnAnyTwin);
+        //TellTextCloud(evilTwinSpeaks1);
+        //yield return new WaitForSeconds(timeToPauseOnAnyTwin);
 
+        TellTextCloud(evilTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+        waitingForTextExtinguishEvent = true;
+        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
+        yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
+        Debug.Log("WE SEE !waitingForTextExtinguishEvent, SET EVIL Twin in Motion !!! montyGameActive = " + montyGameActive +
+    "  montyGameEnded = " + montyGameEnded);
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
 
@@ -774,7 +803,8 @@ public class MontyStopTrigger : MonoBehaviour
     }
     private void CleanUpTheMontyGameAndUnlockThePlayer()
     {
-        montyGameActive = false;
+        Debug.Log("MSTCleanUpTheMontyGameAndUnlockThePlayer() Called montyGameActive = " + montyGameActive);
+       // montyGameActive = false;//5/27/23 commented but we'll need this somewhere
         DisableTheDoorButtons();
         CloseTheFirstOpenedDoor();
         UnlockPlayerFromTheGameTriggerArea();
@@ -784,16 +814,29 @@ public class MontyStopTrigger : MonoBehaviour
         yield return new WaitForSeconds(timeToWait);
         audioManager.PlayAudio(audioClip);
     }
-    public void OnCloudTextExtinguishedEvent()
-    {  
+    //public void OnCloudTextExtinguishedEvent()
+    //{  
 
-        if (montyGameEnded && !ignoreNextPagePress)    
+    //    if (montyGameEnded && !ignoreNextPagePress)    
+    //    {
+    //        Debug.Log("MST sees OnCloudTextEventExtinguished() Add Listener for NextPage event... montyGameActiv  = " + montyGameActive);
+    //        if (nextPage) nextPage.SetActive(true);
+    //        m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
+    //    }
+
+    //}
+    public void OnCloudTextExtinguishedEvent()
+    { 
+
+        Debug.Log("MST Rcvd OnCloudTextExtinguishedEvent() --- waitingForTextExtinguishEvent = " + waitingForTextExtinguishEvent +
+            " montyGameActive = " + montyGameActive + "  If false we return;");
+       // if (!montyGameActive) return;
+        if (waitingForTextExtinguishEvent)
         {
-            Debug.Log("MST sees OnCloudTextEventExtinguished() Add Listener for NextPage event... montyGameActiv  = " + montyGameActive);
-            if (nextPage) nextPage.SetActive(true);
+            m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);  //5/24/23
+            waitingForTextExtinguishEvent = false;
             m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
         }
-
     }
     private void OnDisable()
     {

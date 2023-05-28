@@ -19417,8 +19417,6 @@ MonoBehaviour:
   thirdPersonFollowCam: {fileID: 824859301}
   freeLookCam: {fileID: 1436985124}
   montyGameCam: {fileID: 994484015}
-  camOnEvilTwin: {fileID: 1210339949}
-  camOnGoodTwin: {fileID: 1236664675}
   camOnTwin: {fileID: 2026436809}
   zoomAmount: 23
   zoomTime: 2.5
@@ -21413,6 +21411,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1018118499}
   m_CullTransparentMesh: 1
+--- !u!137 &1021383286 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4322578007567473187, guid: c3a287aaf9b2f0544ab78d3d9ca183f3, type: 3}
+  m_PrefabInstance: {fileID: 1011554404}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1040472058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43342,6 +43345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerArmature: {fileID: 1228386539}
   playerCloneAsNPC: {fileID: 2078872980}
+  skinnedMeshRendererPlayerCloneAsNPC: {fileID: 1021383286}
   camOnPlayerCloneAsNPC: {fileID: 1875798904}
   m_CloudTextEvent:
     m_PersistentCalls:

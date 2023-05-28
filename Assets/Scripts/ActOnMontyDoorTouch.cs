@@ -29,7 +29,7 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler
     {
         switch (this.gameObject.name)
         {
-            case "MontyPlayButton":
+            case "MontyPlayButton":  //5/27/23 pretty sure no longer needed as MontyPlayButton is Deimped
              //   Debug.Log("Object/PLAYBUTTON touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
                 montyPlayButtonTouchEvent.Invoke();
                 break;
@@ -37,7 +37,7 @@ public class ActOnMontyDoorTouch : MonoBehaviour, IPointerEnterHandler
             case "MontySlidingDoor2" :
             case "MontySlidingDoor3":
              //   Debug.Log("Object/DOOR touched IPointerEnterHandler.OnPointerEnter " + eventData.pointerCurrentRaycast);
-                if (MontyStopTrigger.montyGameActive)  //if we're NOT waiting for the 1st animation to end 
+                if (MontyStopTrigger.montyGameAllowDoorTouch)  //if we're NOT waiting for the 1st animation to end 
                 {
                     montyDoorTouchEvent.Invoke(IntegerToSend(this.gameObject));
                 }
