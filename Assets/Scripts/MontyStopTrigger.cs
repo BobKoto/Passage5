@@ -208,6 +208,18 @@ public class MontyStopTrigger : MonoBehaviour
             // montyGameCam.Priority = originalCamPriority;
         }
     }
+    public void OnCanvasNextPagePressed()   //This is the BUTTON
+    {
+        //if (!montyGameActive) return;
+        Debug.Log(this.name + " ***** CANVAS next page pressed, CALL OnCanvasNextPagePressedEvent()  -- montyGameActive = " + montyGameActive
+            + "  montyGameEnded = " + montyGameEnded);
+        OnCanvasNextPagePressedEvent();//5/27/23 so let's try this 
+        if (montyGameEnded)
+        {
+            Debug.Log(this.name + " ***** CANVAS next page pressed, SET nextPagePressed = true   -- montyGameEnded is true");
+            nextPagePressed = true; //5/21/23
+        }
+    }
     public void OnCanvasNextPagePressedEvent()   // Replaces PlayButtonPressedOnIntro()
     {
         Debug.Log("MSTCanvasNextPageEvent ignoreNextPagePress = " + ignoreNextPagePress + "  nextPagePressed = " + nextPagePressed +
@@ -230,8 +242,8 @@ public class MontyStopTrigger : MonoBehaviour
         if (playerArmature) playerArmature.SetActive(false);
         if (characterController) characterController.enabled = false;
         if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
-        montyGameActive = false; //5/27/23
-        if (nextPage) nextPage.SetActive(false);
+        montyGameActive = false; //5/27/23  //5/28/23 move to afrer  if (montyGameEnded)  //5/26/23 
+            if (nextPage) nextPage.SetActive(false);
         }
         else
       if (montyGameEnded)  //5/26/23 
@@ -254,18 +266,10 @@ public class MontyStopTrigger : MonoBehaviour
             characterController.enabled = true;
             ignoreNextPagePress = (evilTwinActivated || goodTwinActivated) ;//5/13/23 
             montyGameEnded = (evilTwinActivated || goodTwinActivated);  //5/27/23
+           // montyGameActive = false; //5/28/23 moved here from above if (montyGameActive) block
         }
     }
-    public void OnCanvasNextPagePressed()   //This is the BUTTON
-    {
-       // if (!montyGameActive) return;
-        Debug.Log(this.name + " says next page pressed, remove Listener   After Invoke  -- montyGameActive = " + montyGameActive 
-            + "  montyGameEnded = " + montyGameEnded);
-        //m_CanvasNextPagePressedEvent.Invoke();  //5/27/23 Are we using an event needlessly here?
-        //m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
-        OnCanvasNextPagePressedEvent();//5/27/23 so let's try this 
-        if (montyGameEnded) nextPagePressed = true; //5/21/23
-    }
+
     private void CallResetJoystick()
     {
         Debug.Log("MontyST CallResetJoystick()    doing SendMessage....");
