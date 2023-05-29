@@ -72,7 +72,7 @@ public class MontyStopTrigger : MonoBehaviour
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick, playerPickedWinner, doorResultsShowing;
     bool ignoreNextPagePress, nextPagePressed;
-    bool waitingForTextExtinguishEvent;
+    bool waitingForTextExtinguishEvent, waitingForNextPagePressEvent;
 
     public static bool montyGameEnded,montyGameActive, twinActivated,  montyGameAllowDoorTouch ;     //evilTwinActivated, goodTwinActivated,
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
@@ -175,17 +175,32 @@ public class MontyStopTrigger : MonoBehaviour
         if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(true);
         Debug.Log("PlayTheMontyGame() set  montyGameActive = true AND Wait for user action like 'next page' ");
-        m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
-
+        // m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
+        waitingForNextPagePressEvent = true;
         montyGameActive = true;   //Now we just wait for a user action like "nextPage"
         montyGameAllowDoorTouch = true;
     }
+    public void OnCloudTextExtinguishedEvent()
+    {
+        //Debug.Log("MST Rcvd OnCloudTextExtinguishedEvent() --- waitingForTextExtinguishEvent = " + waitingForTextExtinguishEvent +
+        //    " montyGameActive = " + montyGameActive + "  If false we return;");
+        // if (!montyGameActive) return;
+        if (!waitingForTextExtinguishEvent) return;
+        {
+            Debug.Log("MST Rcvd OnCloudTextExtinguishedEvent() ---  montyGameActive = " + montyGameActive +
+                "   montyGameEnded = " +  montyGameEnded);
+            m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);  //5/24/23
+            waitingForTextExtinguishEvent = false;
+         //   m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
+        }
+    }
     public void OnCanvasNextPagePressed()   //This is the BUTTON
     {
-        //if (!montyGameActive) return;
+        if (!waitingForNextPagePressEvent) return;
         Debug.Log(this.name + " ***** CANVAS next page pressed, CALL OnCanvasNextPagePressedEvent()  -- montyGameActive = " + montyGameActive
             + "  montyGameEnded = " + montyGameEnded);
         OnCanvasNextPagePressedEvent();//5/27/23 so let's try this 
+        waitingForNextPagePressEvent = false;
         if (montyGameEnded)
         {
             Debug.Log(this.name + " ***** CANVAS next page pressed, SET nextPagePressed = true   -- montyGameEnded is true");
@@ -237,6 +252,7 @@ public class MontyStopTrigger : MonoBehaviour
             characterController.enabled = true;
             ignoreNextPagePress = twinActivated;// (evilTwinActivated || goodTwinActivated) ;//5/13/23 
             montyGameEnded = twinActivated;     // (evilTwinActivated || goodTwinActivated);  //5/27/23
+            StartCoroutine(WaitSecondsThenSwitchCam(1.5f));
         }
     }
 
@@ -288,7 +304,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (!montyGameEnded)
         {
             audioManager.PlayAudio(audioManager.clipding);
-            StartCoroutine(WaitSeconds(.1f, audioManager.clipdrama));
+            StartCoroutine(WaitSecondsThenPlayAudioClip(.1f, audioManager.clipdrama));
             montyGameAllowDoorTouch = false;  //disallow door presses until we get animation ended event from AOMDTouch AND audio ended event from AManager
             if (mainMontySign) mainMontySign.SetActive(false);
             StartCoroutine(WaitForEventsToAllowDoorTouches());
@@ -297,11 +313,11 @@ public class MontyStopTrigger : MonoBehaviour
         }
         if (playerPickedWinner)
         {
-            StartCoroutine(WaitSeconds(2f, audioManager.clipApplause));
+            StartCoroutine(WaitSecondsThenPlayAudioClip(2f, audioManager.clipApplause));
         }
         else
         {
-            StartCoroutine(WaitSeconds(.5f, audioManager.clipfalling));
+            StartCoroutine(WaitSecondsThenPlayAudioClip(.5f, audioManager.clipfalling));
         }
     }
     void EnableTheDoorResultsMeshRenderers()
@@ -574,7 +590,7 @@ public class MontyStopTrigger : MonoBehaviour
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
         yield return new WaitForSeconds(2f);
 
-        if (goodTwinActivating)
+        if (goodTwinActivating)    //the true parameter causes TTC to set nextPage active
         {
             TellTextCloud(goodTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
@@ -582,6 +598,7 @@ public class MontyStopTrigger : MonoBehaviour
         {
             TellTextCloud(evilTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
+        waitingForNextPagePressEvent = true;
         waitingForTextExtinguishEvent = true;
         m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
@@ -599,8 +616,14 @@ public class MontyStopTrigger : MonoBehaviour
 
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
-        camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
+        //camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
+       // StartCoroutine(WaitSecondsThenSwitchCam(1.5f));  //let user see the twin start walking
         twinActivated = true;
+    }
+    IEnumerator WaitSecondsThenSwitchCam(float timeToWait)
+    {
+        yield return new WaitForSeconds(timeToWait);
+        camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
     }
     private IEnumerator ZoomTwinCam()  //added 5/22/23 to consolidate Good and Evil Twin cam zoom ops
     {
@@ -645,23 +668,12 @@ public class MontyStopTrigger : MonoBehaviour
         CloseTheFirstOpenedDoor();
         UnlockPlayerFromTheGameTriggerArea();
     }
-    IEnumerator WaitSeconds(float timeToWait, AudioClip audioClip)
+    IEnumerator WaitSecondsThenPlayAudioClip(float timeToWait, AudioClip audioClip)
     {
         yield return new WaitForSeconds(timeToWait);
         audioManager.PlayAudio(audioClip);
     }
-    public void OnCloudTextExtinguishedEvent()
-    { 
-        Debug.Log("MST Rcvd OnCloudTextExtinguishedEvent() --- waitingForTextExtinguishEvent = " + waitingForTextExtinguishEvent +
-            " montyGameActive = " + montyGameActive + "  If false we return;");
-       // if (!montyGameActive) return;
-        if (waitingForTextExtinguishEvent)
-        {
-            m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);  //5/24/23
-            waitingForTextExtinguishEvent = false;
-            m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
-        }
-    }
+
     private void OnDisable()
     {
         StopAllCoroutines();
