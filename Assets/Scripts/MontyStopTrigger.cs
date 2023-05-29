@@ -17,9 +17,6 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("UI Buttons")]
     public GameObject stopButton;
     public GameObject goButton;
-    public GameObject door1Button;  // Door buttons to be deimped 
-    public GameObject door2Button;
-    public GameObject door3Button;
 
     [Header("Monty Game Doors and Boxes")]
     public GameObject montyDoor1;
@@ -39,9 +36,6 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("Monty Game Barriers")]
     public GameObject montyGameBarriers;
 
-    //[Header("Monty Game Move On Button")]    //DeImp on 5/7/23
-    //public GameObject montyGameMoveOnButton;
-
     [Header("The Player")]
     public GameObject playerArmature;
 
@@ -54,8 +48,6 @@ public class MontyStopTrigger : MonoBehaviour
     public CinemachineVirtualCamera thirdPersonFollowCam;
     public CinemachineFreeLook freeLookCam;
     public CinemachineVirtualCamera montyGameCam;
-    //public CinemachineVirtualCamera camOnEvilTwin;   //removed 5/26/23
-    //public CinemachineVirtualCamera camOnGoodTwin;   //removed 5/26/23
     public CinemachineVirtualCamera camOnTwin;
 
     public float zoomAmount = 23f;
@@ -95,7 +87,6 @@ public class MontyStopTrigger : MonoBehaviour
 
     public MontyDoorTouchEvent montyDoorTouchEvent;
     public MontyPlayButtonTouchEvent montyPlayButtonTouchEvent;
-    //public MontyMoveOnButtonTouchEvent montyMoveOnButtonTouchEvent;  // DeImp on 5/7/23
     public MontyDoorDownEvent montyDoorDownEvent;
     public AudioClipFinishedEvent audioClipFinishedEvent;
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
@@ -115,7 +106,6 @@ public class MontyStopTrigger : MonoBehaviour
     void Start()
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
-        //  movingPlatform = GameObject.Find("MovingPlatform").GetComponent<MovingPlatform>();  //removed 5/26/23
         animDoor1 = montyDoor1.GetComponent<Animator>();
         animDoor2 = montyDoor2.GetComponent<Animator>();
         animDoor3 = montyDoor3.GetComponent<Animator>();
@@ -161,11 +151,9 @@ public class MontyStopTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.CompareTag("MovingPlatform"))
         {
-            //  Debug.Log(other.gameObject.name + " Entered montyPStop.. ");
             if (!montyGameEnded)
             {
-                // triggerEvent.Invoke(1);   //send event to ThirdPersonController to rotate the player and camera  //2/10/23 Deimp, go straight  
-                LockPlayerInTheMontyGameTriggerArea();  //THIS will call PlayTheMontyGame()
+                PlayTheMontyGame();  //so let's enable the door touches here - i bet no diff  //OK so we should add a start/play button
                 montyGameCam.Priority = 12;
                 if (montyGameIntro) montyGameIntro.SetActive(true);  //then we need to remove/fade it out to allow play
                 animMontyGameIntro.SetTrigger("RaiseCubeGameIntro");
@@ -173,13 +161,6 @@ public class MontyStopTrigger : MonoBehaviour
                 entryCollider.isTrigger = false; //3/1/23 just turns into a collider that blocks player/robot movement 
             }
         }
-    }
-    private void LockPlayerInTheMontyGameTriggerArea()    //THIS Calls PlayTheMontyGame()
-    {
-        //  movingPlatform.speed = 0;  //removed 5/26/23
-        //if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area  //removed 5/26/23
-        //if (goButton) goButton.SetActive(false);                                                            //removed 5/26/23  
-        PlayTheMontyGame();  //so let's enable the door touches here - i bet no diff  //OK so we should add a start/play button
     }
     private void PlayTheMontyGame()  //Called by LockPlayerInTheMontyGameTriggerArea() 
     {
@@ -198,15 +179,6 @@ public class MontyStopTrigger : MonoBehaviour
 
         montyGameActive = true;   //Now we just wait for a user action like "nextPage"
         montyGameAllowDoorTouch = true;
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player") || other.CompareTag("MovingPlatform"))
-        {
-            //   Debug.Log(other.gameObject.name + " Exited montyPlay(STOP)Trigger... from MontyStopTrigger");
-            DisableTheDoorButtons();
-            // montyGameCam.Priority = originalCamPriority;
-        }
     }
     public void OnCanvasNextPagePressed()   //This is the BUTTON
     {
@@ -247,7 +219,6 @@ public class MontyStopTrigger : MonoBehaviour
         }
         else
       if (montyGameEnded)  //5/26/23 
-     // if (nextPagePressed)  //5/26/23 
         {
             Debug.Log("MoveOn -- WHICH IS NOW nextPage -- Button Pressed - wiping out all montyGameActive = " + montyGameActive);
             //   if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);   //DeImp on 5/7/23
@@ -266,7 +237,6 @@ public class MontyStopTrigger : MonoBehaviour
             characterController.enabled = true;
             ignoreNextPagePress = (evilTwinActivated || goodTwinActivated) ;//5/13/23 
             montyGameEnded = (evilTwinActivated || goodTwinActivated);  //5/27/23
-           // montyGameActive = false; //5/28/23 moved here from above if (montyGameActive) block
         }
     }
 
@@ -284,14 +254,8 @@ public class MontyStopTrigger : MonoBehaviour
     }
     private void UnlockPlayerFromTheGameTriggerArea()
     {
-        //if (AddRemoveChild.playerIsOnYellowPlatform)  // another useful public static bool  //removed 5/26/23  the whole block
-        //{
-        //    if (stopButton) stopButton.SetActive(false); //Part of locking the player in the game trigger area
-        //    if (goButton) goButton.SetActive(true);
-        //}
         if (montyGameBarriers) montyGameBarriers.SetActive(false);// 3/1/23 only deactivate the MontyGameStopRobot collider gO (switched in editor)
         entryCollider.enabled = false;// let the player/robot move forward
-        // if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
     }
 
     public void OnMontyDoorTouch(int _doorNumber) => ProcessTheDoorButton(_doorNumber); // its not Button anymore //Above 3 UI buttons will be deimped    
@@ -308,7 +272,6 @@ public class MontyStopTrigger : MonoBehaviour
             montyGameEnded = true;  //5/10/23 moved here out of ProcessFinalDoorPick(doorPressed); 
         }
 
-        DisableTheDoorButtons();  //deimped but hold because we may want to do something here like wait on the door animation
         switch (doorPressed)
         {
             case 1:
@@ -321,7 +284,6 @@ public class MontyStopTrigger : MonoBehaviour
                 playerPickedDoor3 = true;
                 break;
         }
-       // Debug.Log("player picked door " + doorPressed);
 
         if (!montyGameEnded)
         {
@@ -359,7 +321,6 @@ public class MontyStopTrigger : MonoBehaviour
         {
             case 1:
                 animDoor1.SetTrigger("MontyDoor1Down");  //show the Final Door player picked, & set sign to Result
-               // montyGameEnded = true;
                 if (theWinningDoor == 1)
                 {
                  //   Debug.Log("Door 1 is a Winner");
@@ -374,15 +335,11 @@ public class MontyStopTrigger : MonoBehaviour
                     if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
                     montyGameSignText.text = "Door 1 releases Evil Twin";
-
-                   //Instantiate(evilTwin, new Vector3(237, 0, -228), Quaternion.Euler(0, 52, 0));
-                   // StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evile twin when the door is down(fully)
                 }
                 break;
 
             case 2:
                 animDoor2.SetTrigger("MontyDoor2Down");
-            //    montyGameEnded = true;
                 if (theWinningDoor == 2)
                 {
                   //  Debug.Log("Door 2 is a Winner");
@@ -397,8 +354,6 @@ public class MontyStopTrigger : MonoBehaviour
                     if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
                     montyGameSignText.text = "Door 2 releases Evil Twin";
-                   //Instantiate(evilTwin, new Vector3(237, 0, -221), Quaternion.Euler(0, 52, 0));
-                   // StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evile twin when the door is down(fully)
                 }
 
                 break;
@@ -420,13 +375,10 @@ public class MontyStopTrigger : MonoBehaviour
                     if (m3) m3.enabled = false;
                     montyGameSignText.color = Color.red;
                     montyGameSignText.text = "Door 3 releases Evil Twin";
-                   //  Instantiate(evilTwin, new Vector3(237, 0, -214), Quaternion.Euler(0, 52, 0));
-                   // StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evile twin when the door is down(fully)
                 }
                 break;
             default: break;
         }
-       // montyGameEnded = true;  //moved out of above 3 switch cases 5/8/23   //5/10/23 then moved to ProcessTheDoorButton()
         if (!winnerChosen)
         {
             StartCoroutine(WaitForEventToInstantiateEvilTwin(doorPressed));  //release the evil twin when the door is down(fully)
@@ -435,8 +387,6 @@ public class MontyStopTrigger : MonoBehaviour
         {
            StartCoroutine(WaitForEventToInstantiateGoodTwin(doorPressed)); //release the good twin when the door is down(fully)
         }
- 
-
         CleanUpTheMontyGameAndUnlockThePlayer();
     }
     private void ShowAlternativeDoors()
@@ -557,23 +507,14 @@ public class MontyStopTrigger : MonoBehaviour
         }
         awaitingFinalDoorPick = true;
     }
-    public void OnMontyDoorDown(int doorDownReceived)
-    {
-      //  Debug.Log("MontyDoorDownEvent  says  doorDown is door " + doorDownReceived + "montyDoorDownEventReceived = true;");//" reset montyGameActive to TRUE");
-        montyDoorDownEventReceived = true;
-    }
-    public void OnAudioClipFinished()
-    {
-      //  Debug.Log("AudioClipFinishedEvent  says  audio is finished ...montyDramaAudioFinishedEventReceived = true");
-        montyDramaAudioFinishedEventReceived = true;
-    }
+    public void OnMontyDoorDown(int doorDownReceived) => montyDoorDownEventReceived = true;
+    public void OnAudioClipFinished() => montyDramaAudioFinishedEventReceived = true;
     IEnumerator WaitForEventsToAllowDoorTouches()
     {
         montyGameSignText.color = Color.red;  // 5/18/23 added these 3 to show a wait between door selections
-        montyGameSignText.text = "Ok, hold on a sec...";
+        montyGameSignText.text = "Ok, hold on...";
         if (mainMontySign) mainMontySign.SetActive(true);
         yield return new WaitUntil(() => montyDramaAudioFinishedEventReceived && montyDoorDownEventReceived);  //every frame checked??? could be better
-       // Debug.Log("WE GOT BOTH EVENTS !!!!!!!!!!!!!!!!!!!!");
         audioManager.PlayAudio(audioManager.clipding);
         montyGameSignText.color = Color.green;
         montyGameSignText.text = "A chance to change door and unleash your Good or Evil Twin. Choose...";
@@ -583,9 +524,7 @@ public class MontyStopTrigger : MonoBehaviour
     }
     IEnumerator WaitForEventToInstantiateGoodTwin(int outOfDoor)
     {
-        // MUCH of this routine is commented UNTIL we create a GOOD TWIN
         goodTwinActivated = true;
-      //  Debug.Log("WE GOT EVENT to Instatiate/Enable the Good Twin!!!!!!! from door " + outOfDoor);
         float gTwinRot = 0f;
 
         camOnTwin.transform.SetParent(goodTwin.transform);  // NEW Cam consolidation
@@ -619,19 +558,11 @@ public class MontyStopTrigger : MonoBehaviour
         GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
         if (montyGoal) montyGoal.SetActive(false);
         anim1.speed = 0;
-        //camOnGoodTwin.Priority = 13; //or maybe b4  //5/22/23
-        //StartCoroutine(ZoomGoodTwinCam());  //may be able to consolidate // and doing so on 5/22/23
-        // NEW Cam consolidation //
 
         camOnTwin.Priority = 13; //or maybe b4
         StartCoroutine(ZoomTwinCam());
-        // END New Cam consolidation //
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
         yield return new WaitForSeconds(2f);
-        //camOnEvilTwin.Priority = 13; //put this cam on AFTER the door is down   //should rename this cam? 5/21/23
-
-        //TellTextCloud(goodTwinSpeaks1);    //5/26/23
-        //yield return new WaitForSeconds(timeToPauseOnAnyTwin);    //5/26/23
 
         TellTextCloud(goodTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         waitingForTextExtinguishEvent = true;
@@ -651,16 +582,13 @@ public class MontyStopTrigger : MonoBehaviour
 
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
-     //   camOnGoodTwin.Priority = originalCamOnGoodTwinPriority;  // disable the camOnGoodTwin and revert to follow cam  //5/22/23
         camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
         goodTwinActivated = true;
-
     }
 
     IEnumerator WaitForEventToInstantiateEvilTwin(int outOfDoor)
     {
         evilTwinActivated = true;
-       // Debug.Log("WE GOT EVENT to Instatiate/Enable the Evil Twin!!!!!!! from door " + outOfDoor);
         float eTwinRot = 0f;
 
         camOnTwin.transform.SetParent(evilTwin.transform);  // NEW Cam consolidation
@@ -692,19 +620,11 @@ public class MontyStopTrigger : MonoBehaviour
         float anim1OriginalSpeed = anim1.speed;
         agent1.speed = 0;
         anim1.speed = 0;
-        //camOnEvilTwin.Priority = 13; //or maybe b4  //5/22/23
-        //StartCoroutine(ZoomEvilTwinCam());  //5/22/23
-
-        // NEW Cam consolidation //
 
         camOnTwin.Priority = 13; //or maybe b4
         StartCoroutine(ZoomTwinCam());
-        // END New Cam consolidation //
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
         yield return new WaitForSeconds(2f);
-
-        //TellTextCloud(evilTwinSpeaks1);
-        //yield return new WaitForSeconds(timeToPauseOnAnyTwin);
 
         TellTextCloud(evilTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         waitingForTextExtinguishEvent = true;
@@ -726,41 +646,10 @@ public class MontyStopTrigger : MonoBehaviour
 
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
-       // camOnEvilTwin.Priority = originalCamOnEvilTwinPriority;  // disable the camOnEvilTwin and revert to follow cam  //5/22/23
         camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
         evilTwinActivated = true;
 
     }
-    //private IEnumerator ZoomEvilTwinCam()
-    //{
-    //    var originalFOV = camOnEvilTwin.m_Lens.FieldOfView;
-    //    var targetFOV = originalFOV - zoomAmount;  //40 - 23 = 17 
-
-    //    float timer = 0f;
-
-    //    while (timer < zoomTime)
-    //    {
-    //        timer += Time.deltaTime;
-    //        camOnEvilTwin.m_Lens.FieldOfView = Mathf.Lerp(originalFOV, targetFOV, timer / zoomTime);
-    //        //  Debug.Log("ori/targ  " + originalFOV + "/" + targetFOV + "  camFOV = " + camOnEvilTwin.m_Lens.FieldOfView);
-    //        yield return null;
-    //    }
-    //}
-    //private IEnumerator ZoomGoodTwinCam()
-    //{
-    //    var originalFOV = camOnGoodTwin.m_Lens.FieldOfView;
-    //    var targetFOV = originalFOV - zoomAmount;  //40 - 23 = 17 
-
-    //    float timer = 0f;
-
-    //    while (timer < zoomTime)
-    //    {
-    //        timer += Time.deltaTime;
-    //        camOnGoodTwin.m_Lens.FieldOfView = Mathf.Lerp(originalFOV, targetFOV, timer / zoomTime);
-    //        //  Debug.Log("ori/targ  " + originalFOV + "/" + targetFOV + "  camFOV = " + camOnGoodTwin.m_Lens.FieldOfView);
-    //        yield return null;
-    //    }
-    //}
     private IEnumerator ZoomTwinCam()  //added 5/22/23 to consolidate Good and Evil Twin cam zoom ops
     {
         var originalFOV = camOnTwin.m_Lens.FieldOfView;
@@ -799,17 +688,9 @@ public class MontyStopTrigger : MonoBehaviour
                 break;
         }
     }
-    private void DisableTheDoorButtons()   //DoorButtons Will be Deimped, but we keep this temporarily 
-    {
-        if (door1Button) door1Button.SetActive(false);
-        if (door2Button) door2Button.SetActive(false);
-        if (door3Button) door3Button.SetActive(false);
-    }
     private void CleanUpTheMontyGameAndUnlockThePlayer()
     {
         Debug.Log("MSTCleanUpTheMontyGameAndUnlockThePlayer() Called montyGameActive = " + montyGameActive);
-       // montyGameActive = false;//5/27/23 commented but we'll need this somewhere
-        DisableTheDoorButtons();
         CloseTheFirstOpenedDoor();
         UnlockPlayerFromTheGameTriggerArea();
     }
@@ -818,20 +699,8 @@ public class MontyStopTrigger : MonoBehaviour
         yield return new WaitForSeconds(timeToWait);
         audioManager.PlayAudio(audioClip);
     }
-    //public void OnCloudTextExtinguishedEvent()
-    //{  
-
-    //    if (montyGameEnded && !ignoreNextPagePress)    
-    //    {
-    //        Debug.Log("MST sees OnCloudTextEventExtinguished() Add Listener for NextPage event... montyGameActiv  = " + montyGameActive);
-    //        if (nextPage) nextPage.SetActive(true);
-    //        m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
-    //    }
-
-    //}
     public void OnCloudTextExtinguishedEvent()
     { 
-
         Debug.Log("MST Rcvd OnCloudTextExtinguishedEvent() --- waitingForTextExtinguishEvent = " + waitingForTextExtinguishEvent +
             " montyGameActive = " + montyGameActive + "  If false we return;");
        // if (!montyGameActive) return;
