@@ -14,6 +14,7 @@ public class MoveNPC : MonoBehaviour
     }
     [SerializeField] Mode mode = Mode.AnimatorControlsPosition;
     [SerializeField] string forwardSpeedParmeterName = "Speed";
+    [SerializeField] float forwardSpeedParmeterValue = .1f;
 
     Vector2 smoothDeltaPosition = Vector2.zero;
     bool robotReachedDestination;
@@ -21,7 +22,7 @@ public class MoveNPC : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        anim.SetFloat(forwardSpeedParmeterName, .1f);//3/9/23 was 2 try 1 no help try .5
+        anim.SetFloat(forwardSpeedParmeterName, forwardSpeedParmeterValue);//3/9/23 was 2 try 1 no help try .5  //6/1/23 put in editor for test/tuning
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = agentUpdatePosition;  //book recipe says set to false (so default true?)
         //agentGoals[0] = GameObject.Find("EvilTwinNavDest01").transform;
