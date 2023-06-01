@@ -34,9 +34,11 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
  
     int originalCamOnPlayerCloneAsNPCPriority;
     bool nextPagePressed, waitingNextPagePress, waitingForTextExtinguishEvent, testExtinguishedReceived;
+    AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
     {
+        audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         Debug.Log("Hello from PlayerCloneAsNpcIntro");
 
         originalCamOnPlayerCloneAsNPCPriority = camOnPlayerCloneAsNPC.Priority;
@@ -97,6 +99,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         if (nextPage) nextPage.SetActive(false);
 
         if (nowPlay) nowPlay.SetActive(true);
+        audioManager.PlayAudio(audioManager.clipapert);
         if (inputControls) inputControls.SetActive(true);
 
     }
