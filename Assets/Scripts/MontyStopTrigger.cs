@@ -71,7 +71,7 @@ public class MontyStopTrigger : MonoBehaviour
 
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick, playerPickedWinner, doorResultsShowing;
-    bool ignoreNextPagePress; //, nextPagePressed;   //5/31/23 nextPagePressed not used 
+   // bool ignoreNextPagePress; //, nextPagePressed;   //5/31/23 nextPagePressed not used //6/1/23 neither is ignoreNextPagePress
     bool waitingForTextExtinguishEvent, waitingForNextPagePressEvent;
 
     public static bool montyGameEnded,montyGameActive, twinActivated,  montyGameAllowDoorTouch ;     //evilTwinActivated, goodTwinActivated,
@@ -211,11 +211,11 @@ public class MontyStopTrigger : MonoBehaviour
     {
         //Debug.Log("MSTCanvasNextPageEvent ignoreNextPagePress = " + ignoreNextPagePress + "  nextPagePressed = " + nextPagePressed +
         //    "  montyGameEnded = " + montyGameEnded + "  montyGameActive = " + montyGameActive);
-        if (ignoreNextPagePress)  //5/31/23 this never goes?
-        {
-            Debug.Log("CanvasNextPage Pressed IGNORING and doing return;");
-            return;
-        }
+        //if (ignoreNextPagePress)  //5/31/23 this never goes?
+        //{
+        //    Debug.Log("CanvasNextPage Pressed IGNORING and doing return;");
+        //    return;
+        //}
      //   Debug.Log("MSTCanvasNextPageEVENT - setting Intro Panel Active to false -- montyGameActive  " + montyGameActive );
         if (montyGameActive)
         {
@@ -250,7 +250,7 @@ public class MontyStopTrigger : MonoBehaviour
                 if (characterController) characterController.enabled = true;
             }
             characterController.enabled = true;
-            ignoreNextPagePress = twinActivated;// (evilTwinActivated || goodTwinActivated) ;//5/13/23 
+           // ignoreNextPagePress = twinActivated;// (evilTwinActivated || goodTwinActivated) ;//5/13/23 //6/1/23 never used 
             montyGameEnded = twinActivated;     // (evilTwinActivated || goodTwinActivated);  //5/27/23
             StartCoroutine(WaitSecondsThenSwitchCam(1.5f));
         }
