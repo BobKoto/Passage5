@@ -22,10 +22,10 @@ public class TextCloudHandler : MonoBehaviour
 
     //public CloudTextEvent m_CloudTextEvent;
     //public CloudTextEventWaitNextPage m_CloudTextEventWaitNextPage;
-    public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
+    CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
     public CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
-    [Header("The Input System canvas Joystick etc.")]
-    public GameObject inputControls;
+   // [Header("The Input System canvas Joystick etc.")]
+    //public GameObject inputControls;
     // public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
     bool nextPagePressed, waitingForNextPagePress;
     enum CloudBehavior :int
