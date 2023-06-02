@@ -85,13 +85,13 @@ public class MontyStopTrigger : MonoBehaviour
 
     public PlayerEnteredRelevantTrigger triggerEvent;
 
-    public MontyDoorTouchEvent montyDoorTouchEvent;
-    public MontyPlayButtonTouchEvent montyPlayButtonTouchEvent;
-    public MontyDoorDownEvent montyDoorDownEvent;
-    public AudioClipFinishedEvent audioClipFinishedEvent;
+    MontyDoorTouchEvent montyDoorTouchEvent;
+   // public MontyPlayButtonTouchEvent montyPlayButtonTouchEvent;
+    MontyDoorDownEvent montyDoorDownEvent;
+    AudioClipFinishedEvent audioClipFinishedEvent;
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
-    public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
-    public CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
+    CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
+    CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
 
     Animator animDoor1, animDoor2, animDoor3, animMontyDoorsAndBoxes, animMontyGameIntro, animPlayer;
     AudioManager audioManager;

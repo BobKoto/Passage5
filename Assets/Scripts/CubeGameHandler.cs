@@ -18,11 +18,11 @@ public class CubeGameHandler : MonoBehaviour
     public GameObject nowPlay;
 
     [Header("Touch Events")]
-    public FingerPointerEvent fingerPointerEvent; //12/18/22 we receive these from ActOnTouch 
-    public CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public 
+    FingerPointerEvent fingerPointerEvent; //12/18/22 we receive these from ActOnTouch 
+    CubeGameBoardEvent cubeGameBoardEvent;  //empty class declared above - before this class // took away public 
     public CubeGamePlayButtonTouchEvent cubeGamePlayButtonTouchEvent;
-    public CubeGameMoveOnButtonTouchEvent cubeGameMoveOnButtonTouchEvent;
-    public CubeGameBoardUpEvent cubeGameBoardUpEvent;
+    //public CubeGameMoveOnButtonTouchEvent cubeGameMoveOnButtonTouchEvent;
+    CubeGameBoardUpEvent cubeGameBoardUpEvent;
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
 
     [Header("Other Public Items")]
