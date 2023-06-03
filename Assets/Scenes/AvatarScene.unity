@@ -10797,9 +10797,6 @@ MonoBehaviour:
   nowPlay: {fileID: 198097438}
   cloudTextDuration: 5
   playerFacingCamera: {fileID: 634641889}
-  m_CanvasNextPagePressedEvent:
-    m_PersistentCalls:
-      m_Calls: []
   m_CloudTextExtinguishedEvent:
     m_PersistentCalls:
       m_Calls:
@@ -10827,7 +10824,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  inputControls: {fileID: 2041336491}
 --- !u!1001 &494851451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19093,7 +19089,7 @@ MonoBehaviour:
   goodTwin: {fileID: 163266645}
   timeToPauseOnAnyTwin: 4
   thirdPersonFollowCam: {fileID: 824859301}
-  freeLookCam: {fileID: 1436985124}
+  camOnPlayer: {fileID: 634641889}
   montyGameCam: {fileID: 994484015}
   camOnTwin: {fileID: 2026436809}
   zoomAmount: 23
@@ -19121,30 +19117,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  montyDoorTouchEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  montyPlayButtonTouchEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  montyDoorDownEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  audioClipFinishedEvent:
-    m_PersistentCalls:
-      m_Calls: []
   m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
@@ -19160,24 +19132,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_CanvasNextPagePressedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 914655649}
-        m_TargetAssemblyTypeName: MontyStopTrigger, Assembly-CSharp
-        m_MethodName: OnCanvasNextpagePressed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_CloudTextExtinguishedEvent:
-    m_PersistentCalls:
-      m_Calls: []
   resetJoystickObject: {fileID: 2049937462}
 --- !u!95 &914655650
 Animator:
@@ -26137,7 +26091,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177671, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_RootOrder
@@ -26157,19 +26111,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6850541
+      value: 0.68417865
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.05083559
+      value: 0.076847464
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7247237
+      value: 0.7207225
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.05377933
+      value: -0.080952086
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -26196,12 +26150,16 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_Lens.NearClipPlane
       value: 5.65
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_Lens.m_SensorSize.x
-      value: 0.49229646
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2070925442191277752, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: ShoulderOffset.x
@@ -35359,12 +35317,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextPage: {fileID: 1574509613}
   nowPlay: {fileID: 198097438}
-  fingerPointerEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  cubeGameBoardEvent:
-    m_PersistentCalls:
-      m_Calls: []
   cubeGamePlayButtonTouchEvent:
     m_PersistentCalls:
       m_Calls:
@@ -35380,24 +35332,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  cubeGameMoveOnButtonTouchEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1712951742}
-        m_TargetAssemblyTypeName: CubeGameHandler, Assembly-CSharp
-        m_MethodName: MoveOnButtonPressed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  cubeGameBoardUpEvent:
-    m_PersistentCalls:
-      m_Calls: []
   m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
