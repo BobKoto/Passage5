@@ -46,7 +46,7 @@ public class MontyStopTrigger : MonoBehaviour
 
     [Header("Cinemachine Cameras")]
     public CinemachineVirtualCamera thirdPersonFollowCam;
-    public CinemachineFreeLook freeLookCam;
+    public CinemachineVirtualCamera camOnPlayer;
     public CinemachineVirtualCamera montyGameCam;
     public CinemachineVirtualCamera camOnTwin;
 
@@ -60,8 +60,8 @@ public class MontyStopTrigger : MonoBehaviour
     public Animation animDoor2Down;
     public Animation animDoor3Down;
     public float xPos = 200;
-    int originalMontyGameCamPriority, originalCamOnEvilTwinPriority, originalCamOnGoodTwinPriority, originalCamOnTwinPriority;
-
+    //int originalMontyGameCamPriority, originalCamOnEvilTwinPriority, originalCamOnGoodTwinPriority, originalCamOnTwinPriority; 6/2/23
+    int originalMontyGameCamPriority, originalCamOnlayerPriority, originalCamOnTwinPriority;
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
 
@@ -102,7 +102,16 @@ public class MontyStopTrigger : MonoBehaviour
     const string evilTwinSpeaks1 = "Hello, Hashnag, you mechanical jerk. " +
         "Prepare yourself! If I catch you in my sensors I'll slice your servos to bits.";
     const string goodTwinSpeaks1 = "Hello, Hashy, I'll keep my sensors out for you...";
+    const string playerSpeakstoEvilTwin1 = "#Hello, Metal, thanks for your cutting remarks!";
+    const string playerSpeaksToGoodTwin1 = "Hello, TikTak! Always good to see a friend!";
 
+    enum MontyGameState :int
+    {
+        MontyGameInProgress,
+        MontyGameInDialogue,
+        MontyGameOver
+    }
+    MontyGameState montyGameState;
     void Start()
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
@@ -165,6 +174,13 @@ public class MontyStopTrigger : MonoBehaviour
     private void PlayTheMontyGame()  //Called by LockPlayerInTheMontyGameTriggerArea() 
     {
         //Here we need to turn off PlayBox and inputcontrols - then enable NextPage
+
+        montyGameState = MontyGameState.MontyGameInProgress;
+        switch (montyGameState)
+        {
+           case MontyGameState.MontyGameInProgress: Debug.Log("In progress  FOUND IN ENUMS ");
+           break;
+        }
         thirdPersonController.MoveSpeed = 0;  
         thirdPersonController.SprintSpeed = 0;
         thirdPersonController.enabled = false;
@@ -182,41 +198,22 @@ public class MontyStopTrigger : MonoBehaviour
     }
     public void OnCloudTextExtinguishedEvent()
     {
-        //Debug.Log("MST Rcvd OnCloudTextExtinguishedEvent() --- waitingForTextExtinguishEvent = " + waitingForTextExtinguishEvent +
-        //    " montyGameActive = " + montyGameActive + "  If false we return;");
-        // if (!montyGameActive) return;
         if (!waitingForTextExtinguishEvent) return;
         {
-            //Debug.Log("MST Rcvd OnCloudTextExtinguishedEvent() ---  montyGameActive = " + montyGameActive +
-            //    "   montyGameEnded = " +  montyGameEnded);
             m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);  //5/24/23
             waitingForTextExtinguishEvent = false;
-         //   m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
         }
     }
     public void OnCanvasNextPagePressed()   //This is the BUTTON
     {
         if (!waitingForNextPagePressEvent) return;
-        //Debug.Log(this.name + " ***** CANVAS next page pressed, CALL OnCanvasNextPagePressedEvent()  -- montyGameActive = " + montyGameActive
-        //    + "  montyGameEnded = " + montyGameEnded);
+
         OnCanvasNextPagePressedEvent();//5/27/23 so let's try this 
         waitingForNextPagePressEvent = false;
-        //if (montyGameEnded)  //5/31/23 we never get here or use this 
-        //{
-        //    Debug.Log(this.name + " ***** CANVAS next page pressed, SET nextPagePressed = true   -- montyGameEnded is true");
-        //    nextPagePressed = true; //5/21/23
-        //}
+
     }
     public void OnCanvasNextPagePressedEvent()   // Replaces PlayButtonPressedOnIntro()
     {
-        //Debug.Log("MSTCanvasNextPageEvent ignoreNextPagePress = " + ignoreNextPagePress + "  nextPagePressed = " + nextPagePressed +
-        //    "  montyGameEnded = " + montyGameEnded + "  montyGameActive = " + montyGameActive);
-        //if (ignoreNextPagePress)  //5/31/23 this never goes?
-        //{
-        //    Debug.Log("CanvasNextPage Pressed IGNORING and doing return;");
-        //    return;
-        //}
-     //   Debug.Log("MSTCanvasNextPageEVENT - setting Intro Panel Active to false -- montyGameActive  " + montyGameActive );
         if (montyGameActive)
         {
         if (montyGameIntro) montyGameIntro.SetActive(false);
@@ -233,15 +230,14 @@ public class MontyStopTrigger : MonoBehaviour
             if (nextPage) nextPage.SetActive(false);
         }
         else
-      if (montyGameEnded)  //5/26/23 
+        if (montyGameEnded)  //5/26/23 
+     //    if (montyGameState == MontyGameState.MontyGameOver)  
         {
-           // Debug.Log("MoveOn -- WHICH IS NOW nextPage -- Button Pressed - wiping out all montyGameActive = " + montyGameActive);
-            //   if (montyGameMoveOnButton) montyGameMoveOnButton.SetActive(false);   //DeImp on 5/7/23
             if (nextPage) nextPage.SetActive(false);
             montyGameCam.Priority = originalMontyGameCamPriority;
             if (playerArmature)
             {
-              //  Debug.Log("reactivate  player.......................");
+                Debug.Log("reactivate  player....................... MontyGameState = " + montyGameState);
                 if (playerArmature) playerArmature.SetActive(true);  // to enable the Gamepad?
                 thirdPersonController.enabled = true;
                 CallResetJoystick();
@@ -250,7 +246,6 @@ public class MontyStopTrigger : MonoBehaviour
                 if (characterController) characterController.enabled = true;
             }
             characterController.enabled = true;
-           // ignoreNextPagePress = twinActivated;// (evilTwinActivated || goodTwinActivated) ;//5/13/23 //6/1/23 never used 
             montyGameEnded = twinActivated;     // (evilTwinActivated || goodTwinActivated);  //5/27/23
             StartCoroutine(WaitSecondsThenSwitchCam(1.5f));
         }
@@ -285,7 +280,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (awaitingFinalDoorPick)  // //////////////////// This IS the SECOND door pick!! /////////////////////////////////
         {
             ProcessFinalDoorPick(doorPressed);
-            montyGameEnded = true;  //5/10/23 moved here out of ProcessFinalDoorPick(doorPressed); 
+            montyGameEnded = true;  //5/10/23 moved here out of ProcessFinalDoorPick(doorPressed);
         }
 
         switch (doorPressed)
@@ -598,12 +593,29 @@ public class MontyStopTrigger : MonoBehaviour
         {
             TellTextCloud(evilTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
-        waitingForNextPagePressEvent = true;
-        waitingForTextExtinguishEvent = true;
-        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
+        //waitingForNextPagePressEvent = true;   //6/2/23 moved these 3 lines to TellTextCloud (..., true)
+        //waitingForTextExtinguishEvent = true;
+        //m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
+
         //Debug.Log("WE SEE !waitingForTextExtinguishEvent, SET Twin in Motion !!! montyGameActive = " + montyGameActive +
         //    "  montyGameEnded = " + montyGameEnded);
+
+        if (goodTwinActivating)    //the true parameter causes TTC to set nextPage active
+        {
+            TellTextCloud(playerSpeaksToGoodTwin1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+        }
+        else
+        {
+            TellTextCloud(playerSpeakstoEvilTwin1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+        }
+        camOnPlayer.Priority = 13;
+        montyGameState = MontyGameState.MontyGameInDialogue;
+        yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
+        camOnPlayer.Priority = originalCamOnlayerPriority;
+
+        montyGameState = MontyGameState.MontyGameOver;
+        
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
 
@@ -646,6 +658,9 @@ public class MontyStopTrigger : MonoBehaviour
     void TellTextCloud(string caption, bool waitForNextPagePressed)
     {
         m_CloudTextEvent.Invoke(6, 4, caption);
+        waitingForNextPagePressEvent = true;
+        waitingForTextExtinguishEvent = true;
+        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
     }
     private void CloseTheFirstOpenedDoor()  //do we really want to do this?
     {
