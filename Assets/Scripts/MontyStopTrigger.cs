@@ -75,7 +75,7 @@ public class MontyStopTrigger : MonoBehaviour
     bool waitingForTextExtinguishEvent, waitingForNextPagePressEvent;
 
     public static bool montyGameAllowDoorTouch;   // 6/3/23 leave this as only public static   (getter/setter instead?)
-    bool montyGameEnded, montyGameActive, twinActivated; //,  montyGameAllowDoorTouch ;     //evilTwinActivated, goodTwinActivated,
+    //bool twinActivated; //,  montyGameAllowDoorTouch ;     //evilTwinActivated, goodTwinActivated,montyGameActive,// 6/4/23 montyGameEnded,
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
 
     int doorNumberDown, theWinningDoor;
@@ -103,8 +103,8 @@ public class MontyStopTrigger : MonoBehaviour
     const string evilTwinSpeaks1 = "Hello, Hashnag, you mechanical jerk. " +
         "Prepare yourself! If I catch you in my sensors I'll slice your servos to bits.";
     const string goodTwinSpeaks1 = "Hello, Hashy, I'll keep my sensors out for you...";
-    const string playerSpeakstoEvilTwin1 = "#Hello, Metal, thanks for your cutting remarks!";
-    const string playerSpeaksToGoodTwin1 = "Hello, TikTak! Always good to see a friend!";
+    const string playerSpeakstoEvilTwin1 = "#Yo, Metal, thanks for your cutting remarks! \n\n#Hallucinating again?";
+    const string playerSpeaksToGoodTwin1 = "#Hello, TikTak! \n #Always good to see a friend!";
 
     enum MontyGameState :int
     {
@@ -191,7 +191,7 @@ public class MontyStopTrigger : MonoBehaviour
       //  Debug.Log("PlayTheMontyGame() set  montyGameActive = true AND Wait for user action like 'next page' ");
         // m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
         waitingForNextPagePressEvent = true;
-        montyGameActive = true;   //Now we just wait for a user action like "nextPage"
+       // montyGameActive = true;   //Now we just wait for a user action like "nextPage"  //6/4/23
         montyGameState = MontyGameState.MontyGameInProgress;  // 6/3/23 in prep to replace montyGameActive and other bools to track game State 
 
         montyGameAllowDoorTouch = true;
@@ -206,10 +206,11 @@ public class MontyStopTrigger : MonoBehaviour
     }
     public void OnCanvasNextPagePressed()   //This is the BUTTON
     {
-        if (!waitingForNextPagePressEvent) return;
-
+        if (!waitingForNextPagePressEvent) return; //ignore (esp. from other scripts) unless we intentionally set this or set by TextCloud()
+        if (nextPage) nextPage.SetActive(false);
         OnCanvasNextPagePressedEvent();//5/27/23 so let's try this 
         waitingForNextPagePressEvent = false;
+
 
     }
     public void OnCanvasNextPagePressedEvent()   // Replaces PlayButtonPressedOnIntro()
@@ -228,8 +229,8 @@ public class MontyStopTrigger : MonoBehaviour
                 if (playerArmature) playerArmature.SetActive(false);
                 if (characterController) characterController.enabled = false;
                 if (animMontyDoorsAndBoxes) animMontyDoorsAndBoxes.SetTrigger("RaiseAll");
-                montyGameActive = false; //5/27/23  //5/28/23 move to afrer  if (montyGameEnded)  //5/26/23 
-                if (nextPage) nextPage.SetActive(false);
+                //montyGameActive = false; //5/27/23  //5/28/23 move to afrer  if (montyGameEnded)  //5/26/23 //6/4/23
+              //  if (nextPage) nextPage.SetActive(false);  //6/4/23
                 break;
 
             case MontyGameState.MontyGameInDialogue:
@@ -239,21 +240,17 @@ public class MontyStopTrigger : MonoBehaviour
                 break;
 
             case MontyGameState.MontyGameOver:
-                if (nextPage) nextPage.SetActive(false);
+                //if (nextPage) nextPage.SetActive(false);  //6/4/23
                 montyGameCam.Priority = originalMontyGameCamPriority;
-                //if (playerArmature)
-                //{
-                    Debug.Log("reactivate  player....................... MontyGameState = " + montyGameState);
-                 //   if (playerArmature) playerArmature.SetActive(true); //6/3/23 moved to dialogue case 
-                    thirdPersonController.enabled = true;
-                    CallResetJoystick();
-                    thirdPersonController.SprintSpeed = originalSprintSpeed;
-                    animPlayer.speed = originalPlayerSpeed;
-                    if (characterController) characterController.enabled = true;
-               // }
+                Debug.Log("reactivate  player....................... MontyGameState = " + montyGameState);
+                thirdPersonController.enabled = true;
+                CallResetJoystick();
+                thirdPersonController.SprintSpeed = originalSprintSpeed;
+                animPlayer.speed = originalPlayerSpeed;
+                if (characterController) characterController.enabled = true;
                 characterController.enabled = true;
-                montyGameEnded = twinActivated;     // (evilTwinActivated || goodTwinActivated);  //5/27/23
-               // StartCoroutine(WaitSecondsThenSwitchCam(1.5f));   //6/3/23 moved to dialogue case 
+               // montyGameEnded = twinActivated;     // (evilTwinActivated || goodTwinActivated);  //5/27/23  //6/4/23
+                                                    // StartCoroutine(WaitSecondsThenSwitchCam(1.5f));   //6/3/23 moved to dialogue case 
                 break;
             default: Debug.Log("switch (montyGameState) got ??? state");
                 break;
@@ -290,7 +287,7 @@ public class MontyStopTrigger : MonoBehaviour
         if (awaitingFinalDoorPick)  // //////////////////// This IS the SECOND door pick!! /////////////////////////////////
         {
             ProcessFinalDoorPick(doorPressed);
-            montyGameEnded = true;  //5/10/23 moved here out of ProcessFinalDoorPick(doorPressed);
+           // montyGameEnded = true;  //5/10/23 moved here out of ProcessFinalDoorPick(doorPressed);  //6/4/23 
             montyGameState = MontyGameState.MontyGameInDialogue; // 6/3/23
        //     Debug.Log("awaitingFinalDoorPick  SO WE JUST SET montyGameEnded = true");
         }
@@ -308,7 +305,7 @@ public class MontyStopTrigger : MonoBehaviour
                 break;
         }
 
-        if (!montyGameEnded)
+        if (montyGameState == MontyGameState.MontyGameInProgress)      //if (!montyGameEnded) replaced 6/4/23
         {
             audioManager.PlayAudio(audioManager.clipding);
             StartCoroutine(WaitSecondsThenPlayAudioClip(.1f, audioManager.clipdrama));
@@ -643,7 +640,7 @@ public class MontyStopTrigger : MonoBehaviour
         anim1.speed = anim1OriginalSpeed;
         //camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
        // StartCoroutine(WaitSecondsThenSwitchCam(1.5f));  //let user see the twin start walking
-        twinActivated = true;
+        //twinActivated = true;
     }
     IEnumerator WaitSecondsThenSwitchCam(float timeToWait)
     {
