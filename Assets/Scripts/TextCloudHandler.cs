@@ -67,7 +67,7 @@ public class TextCloudHandler : MonoBehaviour
              //   Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed)); ....NEW CASE");
                 m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
                 waitingForNextPagePress = true;
-                if (nextPage) nextPage.SetActive(true);
+               // if (nextPage) nextPage.SetActive(true);  //6/4/23 moved into the coroutine on next line 
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
                 break;
             default:
@@ -85,6 +85,8 @@ public class TextCloudHandler : MonoBehaviour
     }
     IEnumerator RemoveCloudAfterNextPagePressed(bool nextPressed)
     {
+        yield return new WaitForSeconds(1f);  //added 6/4/23
+        if (nextPage) nextPage.SetActive(true);  //moved here 6/4/23
         yield return new WaitUntil(() => nextPagePressed);
         nextPagePressed = false;
         // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever

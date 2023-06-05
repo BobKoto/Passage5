@@ -15,9 +15,6 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     public CinemachineVirtualCamera camOnPlayerCloneAsNPC;
     [Header("Text Cloud Events")]
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
-    //public CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
-    //public CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;
-    //public CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
     CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
     CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;
     CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
@@ -29,8 +26,8 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     public GameObject nextPage;
     public GameObject nowPlay;
 
-    const string playerCloneAsNPCSpeaks1 = "#Hello. Pardon the #'s - a former employer";
-    const string playerCloneAsNPCSpeaks2 = "#My new job is puzzles... \n #Lead on!";
+    const string playerCloneAsNPCSpeaks1 = "#Hello. Pardon the #'s. \n#A former employer.";
+    const string playerCloneAsNPCSpeaks2 = "#My new job is yours to figure out.\n #Lead on!";
  
     int originalCamOnPlayerCloneAsNPCPriority;
     bool nextPagePressed, waitingNextPagePress, waitingForTextExtinguishEvent, testExtinguishedReceived;
