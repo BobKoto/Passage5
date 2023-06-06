@@ -16,7 +16,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     [Header("Text Cloud Events")]
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
     CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
-    CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;
+    //CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;  //deimped in favor of using int param in CloudTextEvent to drive behavior
     CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
@@ -47,8 +47,8 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
             m_CanvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
       //  m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);//5/25/23
 
-        if (m_CloudTextEventWaitNextPage == null)
-            m_CloudTextEventWaitNextPage = new CloudTextWaitNextPageEvent();
+        //if (m_CloudTextEventWaitNextPage == null)
+        //    m_CloudTextEventWaitNextPage = new CloudTextWaitNextPageEvent();
 
         if (m_CloudTextExtinguishedEvent == null)
             m_CloudTextExtinguishedEvent = new CloudTextExtinguishedEvent();
@@ -58,20 +58,31 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         if (nextPage) nextPage.SetActive(false);
         StartCoroutine(Intro());
     }
-    void TellTextCloud(string caption)
-    {
-        m_CloudTextEvent.Invoke(5, 4, caption);
-    }
-    void TellTextCloud(string caption, bool waitForNextPagePressed)
-    {
-        m_CloudTextEvent.Invoke(6, 4, caption);
-    }
+
     IEnumerator Intro()
     {
       //  Debug.Log(" PlayerCloneAsNpcIntro Execute IEnumerator Intro(float duration)");
         playerArmature.SetActive(false);
         inputControls.SetActive(false);
-        camOnPlayerCloneAsNPC.Priority = 12;
+        camOnPlayerCloneAsNPC.Priority = 25;  //12;
+        Debug.Log(this.name + "  camOnPlayerCloneAsNPC.Priority = 12;  should set the Active Cam to camOnPlayerCloneAsNPC *****");
+
+        // Find the active cam
+        CinemachineVirtualCameraBase[] virtualCameras = FindObjectsOfType<CinemachineVirtualCameraBase>();
+        float highestPriority = float.MinValue;
+        CinemachineVirtualCameraBase activeVirtualCamera = null;
+        foreach (CinemachineVirtualCameraBase virtualCamera in virtualCameras)
+        {
+            if (virtualCamera.Priority > highestPriority)
+            {
+                highestPriority = virtualCamera.Priority;
+                activeVirtualCamera = virtualCamera;
+            }
+        }
+        if (activeVirtualCamera != null)
+        {
+            Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);
+        }
 
         TellTextCloud(playerCloneAsNPCSpeaks1, true);
         waitingForTextExtinguishEvent = true;
@@ -100,6 +111,15 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         if (inputControls) inputControls.SetActive(true);
 
     }
+    void TellTextCloud(string caption)
+    {
+        m_CloudTextEvent.Invoke(5, 4, caption);
+    }
+    void TellTextCloud(string caption, bool waitForNextPagePressed)
+    {
+        m_CloudTextEvent.Invoke(6, 4, caption);
+    }
+
     void OnCanvasNextPagePressedEvent()
     {
         Debug.Log(this.name + " says next page pressed SET TRUE");
