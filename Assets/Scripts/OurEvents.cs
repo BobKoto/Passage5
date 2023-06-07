@@ -13,8 +13,8 @@ public class CloudTextEvent : UnityEvent<int, int, string>{ }
 [System.Serializable]
 public class CloudTextExtinguishedEvent : UnityEvent { }
 [System.Serializable]
-public class CloudTextWaitNextPageEvent : UnityEvent<int, int, string, bool> { }
-[System.Serializable]
+//public class CloudTextWaitNextPageEvent : UnityEvent<int, int, string, bool> { }  //6/6/23 deimped this in favor of using int
+//[System.Serializable]                                                             // in CloudTextEvent to drive behavior of cloud text
 public class MontyPlayButtonTouchEvent : UnityEvent { }
 
 [System.Serializable]

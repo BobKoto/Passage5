@@ -28,6 +28,7 @@ public class TextCloudHandler : MonoBehaviour
     //public GameObject inputControls;
     // public CanvasNextPagePressedEvent canvasNextPagePressedEvent;
     bool nextPagePressed, waitingForNextPagePress;
+
     enum CloudBehavior :int
     {
         followTimeOut =  5,
@@ -50,6 +51,7 @@ public class TextCloudHandler : MonoBehaviour
 
         if (menuButton) menuButton.SetActive(false);
         if (lightButton) lightButton.SetActive(false);
+
     }
     public void EnableTheTextCloud(int cloudBehavior, int cloudTimeout, string _caption)
     {
@@ -60,16 +62,32 @@ public class TextCloudHandler : MonoBehaviour
         switch ((CloudBehavior)cloudBehavior)
         {
             case CloudBehavior.followTimeOut:
-                // Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterXSeconds(cloudTextDuration));  ...new case");
                 StartCoroutine(RemoveCloudAfterXSeconds(cloudTimeout));
                 break;
+
             case CloudBehavior.waitForNextPagePress:
-             //   Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed)); ....NEW CASE");
+                //   Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed)); ....NEW CASE");
                 m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
                 waitingForNextPagePress = true;
-               // if (nextPage) nextPage.SetActive(true);  //6/4/23 moved into the coroutine on next line 
+                // Find the active cam
+                CinemachineVirtualCameraBase[] virtualCameras = FindObjectsOfType<CinemachineVirtualCameraBase>();
+                float highestPriority = float.MinValue;
+                CinemachineVirtualCameraBase activeVirtualCamera = null;
+                foreach (CinemachineVirtualCameraBase virtualCamera in virtualCameras)
+                {
+                    if (virtualCamera.Priority > highestPriority)
+                    {
+                        highestPriority = virtualCamera.Priority;
+                        activeVirtualCamera = virtualCamera;
+                    }
+                }
+                if (activeVirtualCamera != null)
+                {
+                    Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);
+                }
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
                 break;
+
             default:
                 Debug.Log(this.name + " EnableTheTextCloud recvd INVALID Behavior code ");
                 break;
