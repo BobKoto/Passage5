@@ -1,14 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using StarterAssets;
 using UnityEngine;
-using UnityEngine.Animations;
 using TMPro;
 using Cinemachine;
-using UnityEngine.Events;
-using CarouselAndMovingPlatforms;
-//using UnityEditor.Animations;
-using System.Linq;
 using UnityEngine.AI;
 
 public class MontyStopTrigger : MonoBehaviour
@@ -100,11 +94,20 @@ public class MontyStopTrigger : MonoBehaviour
     public GameObject resetJoystickObject;  //Maybe defunct 2/27/23 and before 
     BoxCollider entryCollider;
     MeshRenderer m1, m2, m3;
-    const string evilTwinSpeaks1 = "Hello, Hashnag, you mechanical jerk. " +
-        "Prepare yourself! If I catch you in my sensors I'll slice your servos to bits.";
+    const string evilTwinSpeaks1 = "Hey Hashnag, you mechanical jerk. Prepare yourself! If I catch you in my sensors I'll laser your servos to bits.";
+    const string playerSpeakstoEvilTwin1 = "#Yo, Metal. Thanks for your cutting remarks! \n#Hallucinating again?";
+
     const string goodTwinSpeaks1 = "Hello, Hashy, I'll keep my sensors out for you...";
-    const string playerSpeakstoEvilTwin1 = "#Yo, Metal, thanks for your cutting remarks! \n\n#Hallucinating again?";
     const string playerSpeaksToGoodTwin1 = "#Hello, TikTak! \n #Always good to see a friend!";
+
+    const string evilTwinSpeaks2 = "We'll see about that, Hashnag. Your friend TikTak has it coming, too.";
+    const string playerSpeakstoEvilTwin2 = "#You mess with TikTak and your name won't be Metal anymore. \nMaybe just Scrap.";
+
+    const string goodTwinSpeaks2 = "Same here. Hashy, be careful!...";
+    const string playerSpeaksToGoodTwin2 = "#You, too, TikTak. Metal is on the warpath for both of us. ";
+
+    const string evilTwinSpeaks3 = "Ha ha ha. LMAO, ha ha ha.";
+    const string goodTwinSpeaks3 = "Hashy, what would we do without you?";
 
     enum MontyGameState :int
     {
@@ -236,7 +239,7 @@ public class MontyStopTrigger : MonoBehaviour
             case MontyGameState.MontyGameInDialogue:
                // Debug.Log("OnCanvasNextPagePressedEvent  entered block for MontyGameInDialogue");
                 if (playerArmature) playerArmature.SetActive(true);
-                StartCoroutine(WaitSecondsThenSwitchCam(1.5f));
+             //   StartCoroutine(WaitSecondsThenSwitchCam(1.5f));  //6/8/23
                 break;
 
             case MontyGameState.MontyGameOver:
@@ -602,14 +605,9 @@ public class MontyStopTrigger : MonoBehaviour
         {
             TellTextCloud(evilTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
-        //waitingForNextPagePressEvent = true;   //6/2/23 moved these 3 lines to TellTextCloud (..., true)
-        //waitingForTextExtinguishEvent = true;
-        //m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
-
-        //Debug.Log("WE SEE !waitingForTextExtinguishEvent, SET Twin in Motion !!! montyGameActive = " + montyGameActive +
-        //    "  montyGameEnded = " + montyGameEnded);
-
+        camOnTwin.Priority = originalCamOnTwinPriority;
+        camOnPlayer.Priority = 13;
         if (goodTwinActivated)    //the true parameter causes TTC to set nextPage active
         {
             TellTextCloud(playerSpeaksToGoodTwin1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
@@ -618,14 +616,44 @@ public class MontyStopTrigger : MonoBehaviour
         {
             TellTextCloud(playerSpeakstoEvilTwin1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
+        yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
+        camOnPlayer.Priority = originalCamOnPlayerPriority;
+        camOnTwin.Priority = 13;
+        if (goodTwinActivated)    //the true parameter causes TTC to set nextPage active
+        {
+            TellTextCloud(goodTwinSpeaks2, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+        }
+        else
+        {
+            TellTextCloud(evilTwinSpeaks2, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+        }
+        yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
+        camOnTwin.Priority = originalCamOnTwinPriority;
         camOnPlayer.Priority = 13;
+        if (goodTwinActivated)    //the true parameter causes TTC to set nextPage active
+        {
+            TellTextCloud(playerSpeaksToGoodTwin2, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+        }
+        else
+        {
+            TellTextCloud(playerSpeakstoEvilTwin2, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+        }
+
+
         montyGameState = MontyGameState.MontyGameOver;
-      //  Debug.Log("WaitForEventToActivateTwin just set montyGameState to " + montyGameState);
+
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
         camOnPlayer.Priority = originalCamOnPlayerPriority;
 
-       // montyGameState = MontyGameState.MontyGameOver;  //does nothing unless nextPage is pressed 
-     //   Debug.Log("WaitForEventToActivateTwin just set montyGameState to " + montyGameState);
+        if (goodTwinActivated)
+        {
+            TellTextCloud(goodTwinSpeaks3);
+        }
+        else
+        {
+            TellTextCloud(evilTwinSpeaks3);
+        }
+
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
 
@@ -638,9 +666,6 @@ public class MontyStopTrigger : MonoBehaviour
 
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
-        //camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
-       // StartCoroutine(WaitSecondsThenSwitchCam(1.5f));  //let user see the twin start walking
-        //twinActivated = true;
     }
     IEnumerator WaitSecondsThenSwitchCam(float timeToWait)
     {
@@ -698,7 +723,6 @@ public class MontyStopTrigger : MonoBehaviour
         yield return new WaitForSeconds(timeToWait);
         audioManager.PlayAudio(audioClip);
     }
-
     private void OnDisable()
     {
         StopAllCoroutines();
@@ -706,10 +730,18 @@ public class MontyStopTrigger : MonoBehaviour
         thirdPersonController.SprintSpeed = originalSprintSpeed;
     }
 }  //end class 
-   //IEnumerator WaitForEventToInstantiateGoodTwin(int outOfDoor)
-   //{
-   //   // goodTwinActivated = true;
-   //    float gTwinRot = 0f;
+/*
+//using System.Collections.Generic;
+//using UnityEngine.Animations;
+//using UnityEngine.Events;
+//using CarouselAndMovingPlatforms;
+//using UnityEditor.Animations;
+//using System.Linq;
+ */
+//IEnumerator WaitForEventToInstantiateGoodTwin(int outOfDoor)
+//{
+//   // goodTwinActivated = true;
+//    float gTwinRot = 0f;
 
 //    camOnTwin.transform.SetParent(goodTwin.transform);  // NEW Cam consolidation
 //    camOnTwin.LookAt = goodTwin.transform;              // NEW Cam consolidation
