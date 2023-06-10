@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
 using Cinemachine;
@@ -199,7 +200,11 @@ public class CubeGameHandler : MonoBehaviour
         if (cubeGameIsActive)  //since we now shutdown ActOnTouch, cubeGameIsActive should ALWAYS be true EXCEPT when SendCubesToHomePositions causes
         {                      //OnTriggerExit(s) via CESMatrix.cs  - first call of SCTHPositions in SetupNewCubeGameRound() causes our timing issue... 
             cubesOccupied = _entered ? cubesOccupied += 1 : cubesOccupied -= 1;  //this is happening sometimes when it shouldn't??
-            if (cubesOccupied == 1 && cubeGameIsUnsolvableButton.activeSelf) cubeGameIsUnsolvableButton.SetActive(false);
+            if (cubesOccupied == 1 && cubeGameIsUnsolvableButton.activeSelf)
+            {
+                //cubeGameIsUnsolvableButton.SetActive(false);
+                cubeGameIsUnsolvableButton.GetComponent<Button>().interactable = false;
+            }
             //aDebug.Log("CGH Ev recvd: " + cubeName + " " + _entered + " " + placeName + " cubeValue = " + cubeValue + ", cubeGameIsActive = " + cubeGameIsActive );
             switch (placeName)
             {
@@ -354,7 +359,9 @@ public class CubeGameHandler : MonoBehaviour
         StartCoroutine(SetCubeGameIsActiveAfterCubesSentHome()); 
         if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
         if (cubeGameTimerText) cubeGameTimerText.SetActive(true);
+        cubeGameIsUnsolvableButton.GetComponent<Button>().interactable = false;  //6/10/23 
         cubeGameIsUnsolvableButton.SetActive(true);
+
         //EnableDisableInputControls(false);  5/18/23 we disable on enter then reenable after round 3 so this call may be unnecessary 
 
         //cubeGameIsResetting = false;  //99% sure this is setting BEFORE SendCubesToHomePositions() triggers our exit events
@@ -614,6 +621,7 @@ public class CubeGameHandler : MonoBehaviour
             SetupNewCubeGameRound();
             if (cubeGameTitleText) cubeGameTitleText.SetActive(false);
             if (cubeGameInstructText) cubeGameInstructText.SetActive(false);
+            cubeGameIsUnsolvableButton.GetComponent<Button>().interactable = true;
             //timeLimiter = StartCoroutine(CubeGameTimer(cubeGameTimeLimit));  //moved into SetupNewCubeGameRound()
             return;
         }
