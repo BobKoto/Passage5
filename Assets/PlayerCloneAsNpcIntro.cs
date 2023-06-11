@@ -64,8 +64,8 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
       //  Debug.Log(" PlayerCloneAsNpcIntro Execute IEnumerator Intro(float duration)");
         playerArmature.SetActive(false);
         inputControls.SetActive(false);
-        camOnPlayerCloneAsNPC.Priority = 25;  //12;
-        Debug.Log(this.name + "  camOnPlayerCloneAsNPC.Priority = 12;  should set the Active Cam to camOnPlayerCloneAsNPC *****");
+        camOnPlayerCloneAsNPC.Priority = 12;  //6/10/23 change from 25 back to 12 
+        //Debug.Log(this.name + "  camOnPlayerCloneAsNPC.Priority = 12;  should set the Active Cam to camOnPlayerCloneAsNPC *****");
 
         // Find the active cam
         CinemachineVirtualCameraBase[] virtualCameras = FindObjectsOfType<CinemachineVirtualCameraBase>();
@@ -81,7 +81,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         }
         if (activeVirtualCamera != null)
         {
-            Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);
+            // Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);  //6/10/23 comment for now - we may use
         }
 
         TellTextCloud(playerCloneAsNPCSpeaks1, true);

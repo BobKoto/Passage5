@@ -83,7 +83,7 @@ public class TextCloudHandler : MonoBehaviour
                 }
                 if (activeVirtualCamera != null)
                 {
-                    Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);
+                  //  Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);  //6/10/23 comment for now - we may use
                 }
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
                 break;
