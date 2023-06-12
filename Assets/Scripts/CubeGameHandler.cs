@@ -45,7 +45,8 @@ public class CubeGameHandler : MonoBehaviour
     GameObject inputControls;
     int place1CubeValue, place2CubeValue, place3CubeValue, place4CubeValue;
     int cubesOccupied, cubesToBeSentHome, cubesSentHome;
-    int cubeGameRoundNumber = 1, roundsWon, roundsLost, nonPluggedSeed;
+    int cubeGameRoundNumber = 1,  roundsLost, nonPluggedSeed;   //roundsWon,
+    public static int roundsWon;
     TMP_Text row1SumText,row2SumText, col1SumText, col2SumText ;
     Coroutine timeLimiter;
     // ////////////////////START MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
@@ -87,7 +88,7 @@ public class CubeGameHandler : MonoBehaviour
                                                                                                                      // int[] variableGameSums = new int[4];
     Animator animCubeGame; 
 
-    Animator animator;
+    Animator animator, animPlayer;
     ThirdPersonController thirdPersonController;
 
     GameObject[] cubeGamePlacement;
@@ -99,6 +100,14 @@ public class CubeGameHandler : MonoBehaviour
     Vector3[] cubeTransformStartPosition;  // so we can put cubes back to their original positions
     Vector3[] cubePlacementPosition; // where to automatically place/start a Cube 
     // ////////////////////END MERGE ///////////////////////
+    float originalMoveSpeed, originalSprintSpeed, originalPlayerSpeed;  //added 6/10/23 for reset jstick
+    [Header("For Resetting Joystick")]
+    public GameObject resetJoystickObject;
+    [Header("The Player")]
+    public GameObject playerArmature;
+    CharacterController characterController;
+    BoxCollider entryCollider;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -111,14 +120,10 @@ public class CubeGameHandler : MonoBehaviour
         cubeGameBoardEvent.AddListener(CubeEnteredOrLeft);
         if (fingerPointerEvent == null) fingerPointerEvent = new FingerPointerEvent();  //not sure but it stopped the null reference 
         fingerPointerEvent.AddListener(CheckCubeMovement);
-        //if (cubeGamePlayButtonTouchEvent == null) cubeGamePlayButtonTouchEvent = new CubeGamePlayButtonTouchEvent(); //DeImp 0n 5/7/23
-        //cubeGamePlayButtonTouchEvent.AddListener(PlayButtonPressedOnIntro);
-        //if (cubeGameMoveOnButtonTouchEvent == null) cubeGameMoveOnButtonTouchEvent = new CubeGameMoveOnButtonTouchEvent(); //DeImp 0n 5/7/23
-        //cubeGameMoveOnButtonTouchEvent.AddListener(MoveOnButtonPressed);
+
         if (cubeGameBoardUpEvent == null)
             cubeGameBoardUpEvent = new CubeGameBoardUpEvent();
         cubeGameBoardUpEvent.AddListener(OnGameBoardUpStoreCubeHomePositions);
-
 
         row1SumText = GameObject.Find("Row1Sum").GetComponent<TMP_Text>();
         row2SumText = GameObject.Find("Row2Sum").GetComponent<TMP_Text>();
@@ -149,6 +154,14 @@ public class CubeGameHandler : MonoBehaviour
         animCubeGame = cubeGame.GetComponent<Animator>();
         thirdPersonController = player.GetComponent<ThirdPersonController>();
         // ////////////////////END MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
+        thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
+        animPlayer = playerArmature.GetComponent<Animator>();
+        characterController = playerArmature.GetComponent<CharacterController>();
+        originalMoveSpeed = thirdPersonController.MoveSpeed;
+        originalSprintSpeed = thirdPersonController.SprintSpeed;
+        originalPlayerSpeed = animPlayer.speed;
+        entryCollider = gameObject.GetComponent<BoxCollider>();
+
     }
     //public void PlayButtonPressedOnIntro()  //DeImp 0n 5/7/23
     //{
@@ -517,6 +530,14 @@ public class CubeGameHandler : MonoBehaviour
             nonPluggedSeed = Random.Range(1, 4); //which round to call SeedCubePuzzle() - other rounds get a Winnable
             cubeGameIntro.SetActive(true);
             nextPage.SetActive(true);
+            //ADDED These 6 lines 6/10/23 
+            thirdPersonController.MoveSpeed = 0;
+            thirdPersonController.SprintSpeed = 0;
+            thirdPersonController.enabled = false;
+            animPlayer.speed = 0;
+            if (characterController) characterController.enabled = false;
+            if (inputControls) inputControls.SetActive(false);  //redundant cuz done above, but wait until we finish integrating reset jstick 
+            // END These 6 lines 6/10/23 
         }
     }
     void ResetCubeGameOnEntry()
@@ -613,6 +634,13 @@ public class CubeGameHandler : MonoBehaviour
     {
         EnableDisableInputControls(true);
     }
+    private void CallResetJoystick()
+    {
+        //  Debug.Log("MontyST CallResetJoystick()    doing SendMessage....");
+        if (inputControls) inputControls.SetActive(true);
+        thirdPersonController.MoveSpeed = originalMoveSpeed;
+        if (inputControls) resetJoystickObject.SendMessage("ResetJoystick");
+    }
     public void OnCubeGameStartButtonPressed()
     {
         if (cubeGameRoundNumber <= 3)
@@ -622,17 +650,20 @@ public class CubeGameHandler : MonoBehaviour
             if (cubeGameTitleText) cubeGameTitleText.SetActive(false);
             if (cubeGameInstructText) cubeGameInstructText.SetActive(false);
             cubeGameIsUnsolvableButton.GetComponent<Button>().interactable = true;
-            //timeLimiter = StartCoroutine(CubeGameTimer(cubeGameTimeLimit));  //moved into SetupNewCubeGameRound()
-            return;
+            return;  //we still have rounds to play
         }
-       // if (cubeGameRoundNumber > 3)  //Here Start button is "DONE" - Let Player move robot out of game to OnTriggerExit  //should just be an "else"
+       //Here Start button is "DONE" - Let Player move robot out of game to OnTriggerExit  //The Cube Gam is OVER 
             if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
             TellTextCloud(okLetsGo);
             cubeGameRoundNumber = 0;
             cubeGameCam.Priority = originalCamPriority;// 2/3/23 try moving to 3rd round is over to when start(Done) is pressed 
-           // animator.speed = 1;
+            animator.speed = 1;
             if (thirdPersonController) thirdPersonController.enabled = true;
             EnableDisableInputControls(true);
+        entryCollider.isTrigger = false; //6/10/23 and now we'll probably need to get rid of it altogether 
+        if (characterController) characterController.enabled = true;
+        CallResetJoystick(); //6/10/23 
+        if (cubeGame) cubeGame.SetActive(false);  //6/11/23  make it all go away
     }
     // ////////////////////END MERGE ///////////////////////
 }  // end class 
