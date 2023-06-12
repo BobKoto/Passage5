@@ -35375,6 +35375,8 @@ MonoBehaviour:
   cubeGameStartButtonText: {fileID: 1310825607}
   cubeGameTimeLeftText: {fileID: 1046228402}
   cubeGameCam: {fileID: 623122446}
+  resetJoystickObject: {fileID: 2049937462}
+  playerArmature: {fileID: 1228386539}
 --- !u!65 &1712951743
 BoxCollider:
   m_ObjectHideFlags: 0
