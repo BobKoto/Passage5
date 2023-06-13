@@ -107,6 +107,8 @@ public class CubeGameHandler : MonoBehaviour
     public GameObject playerArmature;
     CharacterController characterController;
     BoxCollider entryCollider;
+    [Header("Barrier used after Cube Game ends to pass control ")]
+    public GameObject cubeGameInnerCenterBarrier;
 
     // Start is called before the first frame update
     void Start()
@@ -661,9 +663,13 @@ public class CubeGameHandler : MonoBehaviour
             if (thirdPersonController) thirdPersonController.enabled = true;
             EnableDisableInputControls(true);
         entryCollider.isTrigger = false; //6/10/23 and now we'll probably need to get rid of it altogether 
+        entryCollider.enabled = false;
         if (characterController) characterController.enabled = true;
         CallResetJoystick(); //6/10/23 
         if (cubeGame) cubeGame.SetActive(false);  //6/11/23  make it all go away
+        if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
+        cubeGameInnerCenterBarrier.GetComponent<BoxCollider>().isTrigger = true;  //transition to next game/phase
+      //  Debug.Log("cubeGameInnerCenterBarrier is now set to isTrigger so we need an OnTrigger in a new script, right?");
     }
     // ////////////////////END MERGE ///////////////////////
 }  // end class 

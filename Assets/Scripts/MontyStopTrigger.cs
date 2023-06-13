@@ -159,7 +159,7 @@ public class MontyStopTrigger : MonoBehaviour
       //  originalCamOnEvilTwinPriority = camOnEvilTwin.Priority;  //10  //removed 5/26/23
         originalCamOnTwinPriority = camOnTwin.Priority;  //10
         entryCollider = gameObject.GetComponent<BoxCollider>();
-        Debug.Log("On Start montyGameState is " + montyGameState);
+      //  Debug.Log("On Start montyGameState is " + montyGameState);
     }
 
     private void OnTriggerEnter(Collider other)   //Player enters the MontyGame area
