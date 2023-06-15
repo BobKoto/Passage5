@@ -5,6 +5,7 @@ using UnityEngine;
 public class SelectARandomGame: MonoBehaviour
 {
     BoxCollider boxCollider;
+    public GameObject selectRandomGameSign;
     private void Start()
     {
         boxCollider = gameObject.GetComponent<BoxCollider>();
@@ -14,6 +15,7 @@ public class SelectARandomGame: MonoBehaviour
         if (!other.CompareTag("Player")) return;  //6/13/23 why oh why do we need to do this? the dummy's arms & legs, dummy.
         Debug.Log(this.name + "  " + other.name + " came thru! Let's do something now ");
         boxCollider.enabled = false;
+        if (selectRandomGameSign) selectRandomGameSign.SetActive(true);
         SelectARandomGameIntro();
 
     }
