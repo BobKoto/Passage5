@@ -29384,7 +29384,7 @@ MonoBehaviour:
   m_text: One door is a winner. Choose...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2f299a87fcb5f3c4691e3cdc03827f81, type: 2}
-  m_sharedMaterial: {fileID: -8333250609966275279, guid: 73dbd82c98041f74f9aa868c3c1ad8e8, type: 2}
+  m_sharedMaterial: {fileID: 7184457796401454304, guid: 2f299a87fcb5f3c4691e3cdc03827f81, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -29473,7 +29473,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8333250609966275279, guid: 73dbd82c98041f74f9aa868c3c1ad8e8, type: 2}
+  - {fileID: 7184457796401454304, guid: 2f299a87fcb5f3c4691e3cdc03827f81, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

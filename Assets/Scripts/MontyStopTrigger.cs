@@ -95,16 +95,16 @@ public class MontyStopTrigger : MonoBehaviour
     BoxCollider entryCollider;
     MeshRenderer m1, m2, m3;
     const string evilTwinSpeaks1 = "Hey Hashnag, you mechanical jerk. Prepare yourself! If I catch you in my sensors I'll laser your servos to bits.";
-    const string playerSpeakstoEvilTwin1 = "#Yo, Metal. Thanks for your cutting remarks! \n#Hallucinating again?";
+    const string playerSpeakstoEvilTwin1 = "#Yo, Metal. #Thanks for your cutting remarks! \n#Hallucinating again?";
 
     const string goodTwinSpeaks1 = "Hello, Hashy, I'll keep my sensors out for you...";
     const string playerSpeaksToGoodTwin1 = "#Hello, TikTak! \n #Always good to see a friend!";
 
     const string evilTwinSpeaks2 = "We'll see about that, Hashnag. Your friend TikTak has it coming, too.";
-    const string playerSpeakstoEvilTwin2 = "#You mess with TikTak and your name won't be Metal anymore. \nMaybe just Scrap.";
+    const string playerSpeakstoEvilTwin2 = "#You mess with TikTak and your name won't be Metal anymore. \n#Maybe just Scrap.";
 
     const string goodTwinSpeaks2 = "Same here. Hashy, be careful!...";
-    const string playerSpeaksToGoodTwin2 = "#You, too, TikTak. Metal is on the warpath for both of us. ";
+    const string playerSpeaksToGoodTwin2 = "#You, too, TikTak. \n #Metal is on the warpath for both of us. ";
 
     const string evilTwinSpeaks3 = "Ha ha ha. LMAO, ha ha ha.";
     const string goodTwinSpeaks3 = "Hashy, what would we do without you?";
@@ -591,7 +591,7 @@ public class MontyStopTrigger : MonoBehaviour
         GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
         if (montyGoal) montyGoal.SetActive(false);
         anim1.speed = 0;
-
+        // //  cam priorities: when set back to their original priorities reactivate the PlayerFollowCamera with priority of 11 //   
         camOnTwin.Priority = 13; //or maybe b4
         StartCoroutine(ZoomTwinCam());
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
@@ -638,13 +638,11 @@ public class MontyStopTrigger : MonoBehaviour
         {
             TellTextCloud(playerSpeakstoEvilTwin2, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
-
-
         montyGameState = MontyGameState.MontyGameOver;
 
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
         camOnPlayer.Priority = originalCamOnPlayerPriority;
-
+        camOnTwin.Priority = 13;
         if (goodTwinActivated)
         {
             TellTextCloud(goodTwinSpeaks3);
@@ -653,7 +651,10 @@ public class MontyStopTrigger : MonoBehaviour
         {
             TellTextCloud(evilTwinSpeaks3);
         }
-
+        agent1.speed = agent1OriginalSpeed;
+        anim1.speed = anim1OriginalSpeed;
+        yield return new WaitForSeconds(6f);
+        camOnTwin.Priority = originalCamOnTwinPriority;
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
 
@@ -663,9 +664,9 @@ public class MontyStopTrigger : MonoBehaviour
         if (missed1) missed1.SetActive(false);
         GameObject missed3 = GameObject.Find("Missed3(Clone)");
         if (missed3) missed3.SetActive(false);
+        //agent1.speed = agent1OriginalSpeed; //6/14/23 moved up so cam is on twin as it begins walking 
+        //anim1.speed = anim1OriginalSpeed;
 
-        agent1.speed = agent1OriginalSpeed;
-        anim1.speed = anim1OriginalSpeed;
     }
     IEnumerator WaitSecondsThenSwitchCam(float timeToWait)
     {
