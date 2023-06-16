@@ -484,20 +484,20 @@ public class CubeGameHandler : MonoBehaviour
     }
     void EnableDisableInputControls(bool _enable) //joystick etc.
     {
-        if (inputControls) 
-            Debug.Log(this.name + " inputControls in EnableDisable Method found cubeGameRoundNumber = " + cubeGameRoundNumber + " _enable = " + _enable);
-        else Debug.Log(this.name + "  inputControls in EnableDisable Method NOT FOUND?");
+        //if (inputControls) 
+        //    Debug.Log(this.name + " inputControls in EnableDisable Method found cubeGameRoundNumber = " + cubeGameRoundNumber + " _enable = " + _enable);
+        //else Debug.Log(this.name + "  inputControls in EnableDisable Method NOT FOUND?");
         if (_enable)
         {
         if (inputControls) inputControls.SetActive(true);
-            Debug.Log(this.name + "   setting jsticks TRUE");
+            //Debug.Log(this.name + "   setting jsticks TRUE");
         }
         else
         {
              if (inputControls.activeSelf)
              {
                 inputControls.SetActive(false);
-                Debug.Log(this.name + "  setting jsticks FALSE");
+                //Debug.Log(this.name + "  setting jsticks FALSE");
              }
         }
     }
