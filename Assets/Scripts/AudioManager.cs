@@ -7,7 +7,7 @@ using UnityEngine.Events;
 //AND 2 other signature flavors: 1 to loop a clip - and 2 to stop a clip after x seconds
 public class AudioManager : MonoBehaviour
 {
-    [Header("Audio Stuff")]   //should have been an array or list -- but...
+    [Header("Audio Stuff")]   //should have been an array or list -- but... it does make me think!
 
     public AudioClip clipApplause;
     public AudioClip clipkongas;
@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip WHOOSH;
     public AudioClip strom;
     public AudioClip tick;
+    public AudioClip theetone;
 
     public AudioSource audioSource;
 

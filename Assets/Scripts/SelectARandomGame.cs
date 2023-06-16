@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class SelectARandomGame: MonoBehaviour
 {
+    AudioManager audioManager;
     BoxCollider boxCollider;
     public GameObject selectRandomGameSign;
     private void Start()
     {
+        audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         boxCollider = gameObject.GetComponent<BoxCollider>();
     }
     private void OnTriggerEnter(Collider other)
@@ -16,6 +18,7 @@ public class SelectARandomGame: MonoBehaviour
         Debug.Log(this.name + "  " + other.name + " came thru! Let's do something now ");
         boxCollider.enabled = false;
         if (selectRandomGameSign) selectRandomGameSign.SetActive(true);
+        audioManager.PlayAudio(audioManager.theetone);
         SelectARandomGameIntro();
 
     }

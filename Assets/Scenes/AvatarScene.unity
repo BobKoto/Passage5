@@ -19741,6 +19741,7 @@ MonoBehaviour:
   WHOOSH: {fileID: 8300000, guid: d9d388283dfd4534f9e66307dd04d67f, type: 3}
   strom: {fileID: 8300000, guid: f7870d8b5d8adfe42a04322647f5f38a, type: 3}
   tick: {fileID: 8300000, guid: e70a684a23a240c44944d8558cc72c30, type: 3}
+  theetone: {fileID: 8300000, guid: c78b60ca5b44d6a4ba904d24fa5d15fa, type: 3}
   audioSource: {fileID: 935131225}
   audioClipFinishedEvent:
     m_PersistentCalls:
