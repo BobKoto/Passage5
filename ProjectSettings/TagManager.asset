@@ -16,6 +16,7 @@ TagManager:
   - TargetSum
   - MontyGameDoor
   - EvilTwin
+  - RandomGamePortal
   layers:
   - Default
   - TransparentFX

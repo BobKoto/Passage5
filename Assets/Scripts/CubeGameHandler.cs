@@ -533,8 +533,8 @@ public class CubeGameHandler : MonoBehaviour
             cubeGameIntro.SetActive(true);
             nextPage.SetActive(true);
             //ADDED These 6 lines 6/10/23 
-            thirdPersonController.MoveSpeed = 0;
-            thirdPersonController.SprintSpeed = 0;
+            //thirdPersonController.MoveSpeed = 0;  //6/17/23 pretty sure we don't need to set speed settings as we're disabling thirdPC entirely
+            //thirdPersonController.SprintSpeed = 0;
             thirdPersonController.enabled = false;
             animPlayer.speed = 0;
             if (characterController) characterController.enabled = false;
@@ -558,31 +558,33 @@ public class CubeGameHandler : MonoBehaviour
     {
         m_CloudTextEvent.Invoke(5, 4, caption);
     }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player")) ExitTheCubeGame();
-    }
-    void ExitTheCubeGame()
-    {
-        if (cubesOccupied > 0)  //replicated from SetupNewCubeGameRound()
-        {
-            cubesToBeSentHome = cubesOccupied;
-            cubeGameIsResetting = true;
-            //aDebug.Log("ExitTheCubeGame() calling SendCubesToHomePositions() cubeGameIsActive = " + cubeGameIsActive + ", resetting = " + cubeGameIsResetting);
-            SendCubesToHomePositions(); //acts as if cubeGameIsActive is already true!  the OnExitTriggers in CESMatrix.cs? yes but what do we do about it?
-        }
-        //cubeGameCam.Priority = originalCamPriority;// 2/3/23 try moving to 3rd round is over to when start(Done) is pressed 
-        // //aDebug.Log("ExitTheCubeGame() calling SendCubesToHomePositions()");
-        // SendCubesToHomePositions();
-        roundsLost = 0;
-        roundsWon = 0;
-        EnableDisableUIButtons(true);
-        if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
-        if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
-        if (cubeGameExitButton) cubeGameExitButton.SetActive(false);
-        animator.speed = 1;
-        // EnableDisableInputControls(true); // 5/18/23 already done by OnCubeGameStartButtonPressed() which is now a "DONE" button
-    }
+    //6/17/23 OnTriggerExit and ExitTheCubeGame deimped because we just shut things down and move on to SelectARandomGame.cs 
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Player")) ExitTheCubeGame();
+    //}
+    //void ExitTheCubeGame()
+    //{
+    //    if (cubesOccupied > 0)  //replicated from SetupNewCubeGameRound()
+    //    {
+    //        cubesToBeSentHome = cubesOccupied;
+    //        cubeGameIsResetting = true;
+    //        //aDebug.Log("ExitTheCubeGame() calling SendCubesToHomePositions() cubeGameIsActive = " + cubeGameIsActive + ", resetting = " + cubeGameIsResetting);
+    //        SendCubesToHomePositions(); //acts as if cubeGameIsActive is already true!  the OnExitTriggers in CESMatrix.cs? yes but what do we do about it?
+    //    }
+    //    //cubeGameCam.Priority = originalCamPriority;// 2/3/23 try moving to 3rd round is over to when start(Done) is pressed 
+    //    // //aDebug.Log("ExitTheCubeGame() calling SendCubesToHomePositions()");
+    //    // SendCubesToHomePositions();
+    //    roundsLost = 0;
+    //    roundsWon = 0;
+    //    EnableDisableUIButtons(true);
+    //    if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
+    //    if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
+    //    if (cubeGameExitButton) cubeGameExitButton.SetActive(false);
+    //    animator.speed = 1;
+    //    // EnableDisableInputControls(true); // 5/18/23 already done by OnCubeGameStartButtonPressed() which is now a "DONE" button
+    //}
 
     public void OnGameBoardUpStoreCubeHomePositions()
     {
