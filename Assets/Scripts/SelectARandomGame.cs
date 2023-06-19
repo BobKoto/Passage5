@@ -4,15 +4,25 @@ using UnityEngine;
 using TMPro;
 
 public class SelectARandomGame: MonoBehaviour
-{
+{//Component of SelectARandomGameTrigger
     AudioManager audioManager;
     BoxCollider boxCollider;
+    [Header ("The Signage")]
     public GameObject selectRandomGameSign;     //The whole sign
     public TMP_Text selectRandomGameSignText; //And the text
+
+    [Header("The Teleportals")]
+    public GameObject portal01;
+    public GameObject portal02;
+    public GameObject portal03;
+
+    GameObject[] teleportals;
+
     private void Start()
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         boxCollider = gameObject.GetComponent<BoxCollider>();
+        DisableThePortals();  //6/17/23 a case for a game manager - but let's keep going because we might not go too much farther 
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -24,22 +34,38 @@ public class SelectARandomGame: MonoBehaviour
         SelectARandomGameIntro();
 
     }
+    void DisableThePortals()
+    {
+        teleportals = GameObject.FindGameObjectsWithTag("RandomGamePortal");
+        Debug.Log("found " + teleportals.Length + " portals for the random game ...............");
+        for (int i = 0; i <= teleportals.Length -1; i++)
+        {
+            teleportals[i].SetActive(false);
+        }
+    }
     void SelectARandomGameIntro()
     {
        // Debug.Log(this.name + "  You won " + CubeGameHandler.roundsWon + " rounds in the Cube Game");
         switch (CubeGameHandler.roundsWon)
         {
             case 0: //Debug.Log("You won zero cube rounds. YOU ARE DEAD!!!! Goodbye...");
-                selectRandomGameSignText.text = "You won zero cube rounds. YOU ARE DEAD!!!! Goodbye...";
+                selectRandomGameSignText.text = "Zero cube rounds won. YOU ARE DEAD!!!! Goodbye...";
                 break;
             case 1: //Debug.Log("You won 1 cube round your only choice is to enter this world...");
-                selectRandomGameSignText.text = "You won 1 cube round your only choice is to enter this world...";
+                selectRandomGameSignText.text = "1 cube round won. The only choice is to enter this world. Walk forward to enter...";
+                teleportals[0].SetActive(true);
                 break;
             case 2: //Debug.Log("You won 2 cube rounds. You can pick from these 2 worlds");
-                selectRandomGameSignText.text = "You won 2 cube rounds. You can pick from these 2 worlds";
+                selectRandomGameSignText.text = "2 cube rounds won. Pick from these 2 worlds. Walk into your choice...";
+                teleportals[0].SetActive(true);
+                teleportals[1].SetActive(true);
                 break;
             case 3: //Debug.Log("You won 3 cube rounds. You can pick from these 3 worlds");
-                selectRandomGameSignText.text = "You won 3 cube rounds. You can pick from these 3 worlds";
+                selectRandomGameSignText.text = "3 cube rounds won. Pick from these 3 worlds. Walk into your choice...";
+                teleportals[0].SetActive(true);
+                teleportals[1].SetActive(true);
+                teleportals[2].SetActive(true);
+
                 break;
 
         }
