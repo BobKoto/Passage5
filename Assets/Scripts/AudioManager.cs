@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip strom;
     public AudioClip tick;
     public AudioClip theetone;
+    public AudioClip teleport1;
 
     public AudioSource audioSource;
 

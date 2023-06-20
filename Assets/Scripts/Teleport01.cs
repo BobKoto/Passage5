@@ -14,13 +14,15 @@ public class Teleport01 : MonoBehaviour
     [Header("Cinemachine")]
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
     public GameObject CinemachineCameraTarget;
+    AudioManager audioManager;
 
     // IEnumerator WaitToMove;
 
     // Start is called before the first frame update
     void Start()
     {
-       // Debug.Log("hello from teleport01");
+        audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        // Debug.Log("hello from teleport01");
     }
 
     // Update is called once per frame
@@ -47,7 +49,8 @@ public class Teleport01 : MonoBehaviour
         //var destination = Vector3.Lerp(playerTransform.position, teleportPlayerToPosition, 0.1f);
         //playerTransform.position = destination;
 
-        Physics.SyncTransforms();  
+        Physics.SyncTransforms();
+        audioManager.PlayAudio(audioManager.teleport1);
     }
     //private void OnTriggerStay(Collider other)
     //{

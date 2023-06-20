@@ -17752,6 +17752,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5030263983362490183, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
+      propertyPath: m_text
+      value: 'Amazed
+
+
+
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655948, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -20111,6 +20120,7 @@ MonoBehaviour:
   strom: {fileID: 8300000, guid: f7870d8b5d8adfe42a04322647f5f38a, type: 3}
   tick: {fileID: 8300000, guid: e70a684a23a240c44944d8558cc72c30, type: 3}
   theetone: {fileID: 8300000, guid: c78b60ca5b44d6a4ba904d24fa5d15fa, type: 3}
+  teleport1: {fileID: 8300000, guid: 09dfcda862041f249a603da851b89af0, type: 3}
   audioSource: {fileID: 935131225}
   audioClipFinishedEvent:
     m_PersistentCalls:
@@ -26014,6 +26024,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5030263983362490183, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
+      propertyPath: m_text
+      value: 'Yellow Carpet Ride...
+
+
+
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655948, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -46290,6 +46309,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SelectARandomGameSign
       objectReference: {fileID: 0}
+    - target: {fileID: 7245276463742115217, guid: bf88f021c95f0814baa2c7e8f22226a7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7245276463742115245, guid: bf88f021c95f0814baa2c7e8f22226a7, type: 3}
       propertyPath: m_RootOrder
       value: 49
@@ -46304,7 +46327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7245276463742115245, guid: bf88f021c95f0814baa2c7e8f22226a7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -220.8157
+      value: -215.85
       objectReference: {fileID: 0}
     - target: {fileID: 7245276463742115245, guid: bf88f021c95f0814baa2c7e8f22226a7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -46335,6 +46358,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7245276463987765082, guid: bf88f021c95f0814baa2c7e8f22226a7, type: 3}
+      propertyPath: m_text
+      value: 'You have these choices
+
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7245276463987765082, guid: bf88f021c95f0814baa2c7e8f22226a7, type: 3}
       propertyPath: m_fontSize
       value: 0.5
       objectReference: {fileID: 0}
@@ -46345,6 +46375,10 @@ PrefabInstance:
     - target: {fileID: 7245276463987765084, guid: bf88f021c95f0814baa2c7e8f22226a7, type: 3}
       propertyPath: m_Name
       value: SelectARandomGameSignText
+      objectReference: {fileID: 0}
+    - target: {fileID: 7245276463987765085, guid: bf88f021c95f0814baa2c7e8f22226a7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.048
       objectReference: {fileID: 0}
     - target: {fileID: 7245276463987765085, guid: bf88f021c95f0814baa2c7e8f22226a7, type: 3}
       propertyPath: m_AnchoredPosition.y
