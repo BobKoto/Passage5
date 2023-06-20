@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
-using System;
-using System.Linq;
-using UnityEngine.InputSystem.Controls;
+//using System.Collections.Generic;  //6/19/23 comment these 4 usings not used 
+//using System;
+//using System.Linq;
+//using UnityEngine.InputSystem.Controls;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class ResetVirtualJoystick : MonoBehaviour
@@ -29,7 +29,7 @@ public class ResetVirtualJoystick : MonoBehaviour
         moveAction.Enable();
         moveAction.ApplyBindingOverride("leftStick", "<Vector2>{" + Vector2.zero.x + "," + Vector2.zero.y + "}");
        // Debug.Log("moveAction.BindingDisplayString is " + moveAction.GetBindingDisplayString(InputBinding.DisplayStringOptions.DontOmitDevice));
-        // Now mimic touch - we fixed x/y coord of jstick (Gamepad.anything doesn't work for virtual GPs) 
+        // Now mimic touch - we fixed x/y coord of jstick (Gamepad.anything doesn't work for virtual GamePads) 
         // Start touch.  This and the next 2 statements work!
         InputSystem.QueueStateEvent(Touchscreen.current,
             new UnityEngine.InputSystem.LowLevel.TouchState { touchId = 1, phase = TouchPhase.Began, position = new Vector2(194f, 199f) });
