@@ -243,9 +243,10 @@ public class MontyStopTrigger : MonoBehaviour
                 break;
 
             case MontyGameState.MontyGameOver:
+                //Debug.Log("OnCanvasNextPagePressedEvent  entered block for MontyGameOver ");
                 //if (nextPage) nextPage.SetActive(false);  //6/4/23
-                montyGameCam.Priority = originalMontyGameCamPriority;
-                Debug.Log("reactivate  player....................... MontyGameState = " + montyGameState);
+                montyGameCam.Priority = originalMontyGameCamPriority;  //switch cam to the twin ? my own invention of confusion :{
+                Debug.Log("reactivate  player....................... MontyGameState = " + montyGameState + " camOnTwin priority = " + camOnTwin.Priority);
                 thirdPersonController.enabled = true;
                 CallResetJoystick();
                 thirdPersonController.SprintSpeed = originalSprintSpeed;
@@ -588,9 +589,10 @@ public class MontyStopTrigger : MonoBehaviour
         agent1OriginalSpeed = agent1.speed;
         anim1OriginalSpeed = anim1.speed;
         agent1.speed = 0;
+        anim1.speed = 0; //6/19/23 moved here from 2 lines below - should not make a difference except for readability
         GameObject montyGoal = GameObject.Find("MontyGoal(Clone)");
         if (montyGoal) montyGoal.SetActive(false);
-        anim1.speed = 0;
+
         // //  cam priorities: when set back to their original priorities reactivate the PlayerFollowCamera with priority of 11 //   
         camOnTwin.Priority = 13; //or maybe b4
         StartCoroutine(ZoomTwinCam());
@@ -668,11 +670,11 @@ public class MontyStopTrigger : MonoBehaviour
         //anim1.speed = anim1OriginalSpeed;
 
     }
-    IEnumerator WaitSecondsThenSwitchCam(float timeToWait)
-    {
-        yield return new WaitForSeconds(timeToWait);
-        camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
-    }
+    //IEnumerator WaitSecondsThenSwitchCam(float timeToWait)
+    //{
+    //    yield return new WaitForSeconds(timeToWait);
+    //    camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
+    //}
     private IEnumerator ZoomTwinCam()  //added 5/22/23 to consolidate Good and Evil Twin cam zoom ops
     {
         var originalFOV = camOnTwin.m_Lens.FieldOfView;
