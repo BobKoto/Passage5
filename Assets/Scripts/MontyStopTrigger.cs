@@ -247,12 +247,12 @@ public class MontyStopTrigger : MonoBehaviour
                 //if (nextPage) nextPage.SetActive(false);  //6/4/23
                 montyGameCam.Priority = originalMontyGameCamPriority;  //switch cam to the twin ? my own invention of confusion :{
                 Debug.Log("reactivate  player....................... MontyGameState = " + montyGameState + " camOnTwin priority = " + camOnTwin.Priority);
-                thirdPersonController.enabled = true;
-                CallResetJoystick();
-                thirdPersonController.SprintSpeed = originalSprintSpeed;
-                animPlayer.speed = originalPlayerSpeed;
-                if (characterController) characterController.enabled = true;
-                characterController.enabled = true;
+                //thirdPersonController.enabled = true;
+                //CallResetJoystick();
+                //thirdPersonController.SprintSpeed = originalSprintSpeed;
+                //animPlayer.speed = originalPlayerSpeed;
+                //if (characterController) characterController.enabled = true;
+                //characterController.enabled = true;
                // montyGameEnded = twinActivated;     // (evilTwinActivated || goodTwinActivated);  //5/27/23  //6/4/23
                                                     // StartCoroutine(WaitSecondsThenSwitchCam(1.5f));   //6/3/23 moved to dialogue case 
                 break;
@@ -640,7 +640,7 @@ public class MontyStopTrigger : MonoBehaviour
         {
             TellTextCloud(playerSpeakstoEvilTwin2, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
-        montyGameState = MontyGameState.MontyGameOver;
+        montyGameState = MontyGameState.MontyGameOver; 
 
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
         camOnPlayer.Priority = originalCamOnPlayerPriority;
@@ -656,6 +656,14 @@ public class MontyStopTrigger : MonoBehaviour
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
         yield return new WaitForSeconds(6f);
+
+        Debug.Log(this.name + " switch back to playerfollowcam????");//6/20/23 trying to pinpoint when we should call resetjstick
+        thirdPersonController.enabled = true;
+        CallResetJoystick();
+        thirdPersonController.SprintSpeed = originalSprintSpeed;
+        animPlayer.speed = originalPlayerSpeed;
+        if (characterController) characterController.enabled = true;
+        characterController.enabled = true;
         camOnTwin.Priority = originalCamOnTwinPriority;
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
