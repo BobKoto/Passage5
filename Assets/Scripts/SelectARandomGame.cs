@@ -11,12 +11,11 @@ public class SelectARandomGame: MonoBehaviour
     public GameObject selectRandomGameSign;     //The whole sign
     public TMP_Text selectRandomGameSignText; //And the text
 
-    [Header("The Teleportals")]
-    public GameObject portal01;
-    public GameObject portal02;
-    public GameObject portal03;
-
     GameObject[] teleportals;
+
+    Vector3 leftPortal =   new Vector3(203.74f, 4.82f, -231.45f);   //make these public?
+    Vector3 centerPortal = new Vector3(203.74f, 4.82f, -217.2f);
+    Vector3 rightPortal =  new Vector3(203.74f, 4.82f, -202.94f);
 
     private void Start()
     {
@@ -34,7 +33,7 @@ public class SelectARandomGame: MonoBehaviour
         SelectARandomGameIntro();
 
     }
-    void DisableThePortals()
+    void DisableThePortals()   //this should be temporary
     {
         teleportals = GameObject.FindGameObjectsWithTag("RandomGamePortal");
         Debug.Log("found " + teleportals.Length + " portals for the random game ...............");
@@ -52,18 +51,24 @@ public class SelectARandomGame: MonoBehaviour
                 selectRandomGameSignText.text = "Zero cube rounds won. YOU ARE DEAD!!!! Goodbye...";
                 break;
             case 1: //Debug.Log("You won 1 cube round your only choice is to enter this world...");
-                selectRandomGameSignText.text = "1 cube round won. The only choice is to enter this world. Walk forward to enter...";
+                selectRandomGameSignText.text = "1 cube round won. The only choice is to enter this portal. Walk forward to enter...";
+                teleportals[0].transform.position = centerPortal;
                 teleportals[0].SetActive(true);
                 break;
             case 2: //Debug.Log("You won 2 cube rounds. You can pick from these 2 worlds");
-                selectRandomGameSignText.text = "2 cube rounds won. Pick from these 2 worlds. Walk into your choice...";
+                selectRandomGameSignText.text = "2 cube rounds won. Pick from these 2 portals. Walk into your choice...";
+                teleportals[0].transform.position = leftPortal;
                 teleportals[0].SetActive(true);
+                teleportals[1].transform.position = rightPortal;
                 teleportals[1].SetActive(true);
                 break;
             case 3: //Debug.Log("You won 3 cube rounds. You can pick from these 3 worlds");
-                selectRandomGameSignText.text = "3 cube rounds won. Pick from these 3 worlds. Walk into your choice...";
+                selectRandomGameSignText.text = "3 cube rounds won. Pick from these 3 portals. Walk into your choice...";
+                teleportals[0].transform.position = leftPortal;
                 teleportals[0].SetActive(true);
+                teleportals[1].transform.position = centerPortal;
                 teleportals[1].SetActive(true);
+                teleportals[2].transform.position = rightPortal;
                 teleportals[2].SetActive(true);
 
                 break;
