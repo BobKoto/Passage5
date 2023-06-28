@@ -11,18 +11,27 @@ public class SelectARandomGame: MonoBehaviour
     public GameObject selectRandomGameSign;     //The whole sign
     public TMP_Text selectRandomGameSignText; //And the text
 
-    [Header("The Teleportals")]
-    public GameObject portal01;
-    public GameObject portal02;
-    public GameObject portal03;
-
     GameObject[] teleportals;
 
+    Vector3 leftPortal =   new Vector3(203.74f, 4.82f, -231.45f);   //make these public?
+    Vector3 centerPortal = new Vector3(203.74f, 4.82f, -217.2f);
+    Vector3 rightPortal =  new Vector3(203.74f, 4.82f, -202.94f);
+
+    private SetRandomPortals randomPortalsGenerator;
+    const int numberOfPortals = 3;
+    int[] randomNumbers;
     private void Start()
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         boxCollider = gameObject.GetComponent<BoxCollider>();
         DisableThePortals();  //6/17/23 a case for a game manager - but let's keep going because we might not go too much farther 
+
+        randomPortalsGenerator = FindObjectOfType<SetRandomPortals>();
+        randomNumbers = randomPortalsGenerator.GetRandomNumbers(numberOfPortals);
+        foreach (int number in randomNumbers)
+        {
+            Debug.Log("random portal = " + number);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -34,7 +43,7 @@ public class SelectARandomGame: MonoBehaviour
         SelectARandomGameIntro();
 
     }
-    void DisableThePortals()
+    void DisableThePortals()   //this should be temporary
     {
         teleportals = GameObject.FindGameObjectsWithTag("RandomGamePortal");
         Debug.Log("found " + teleportals.Length + " portals for the random game ...............");
@@ -52,22 +61,79 @@ public class SelectARandomGame: MonoBehaviour
                 selectRandomGameSignText.text = "Zero cube rounds won. YOU ARE DEAD!!!! Goodbye...";
                 break;
             case 1: //Debug.Log("You won 1 cube round your only choice is to enter this world...");
-                selectRandomGameSignText.text = "1 cube round won. The only choice is to enter this world. Walk forward to enter...";
-                teleportals[0].SetActive(true);
+                selectRandomGameSignText.text = "1 cube round won. The only choice is to enter this portal. Walk forward to enter...";
+                teleportals[randomNumbers[0]].transform.position = centerPortal;
+                teleportals[randomNumbers[0]].SetActive(true);
                 break;
             case 2: //Debug.Log("You won 2 cube rounds. You can pick from these 2 worlds");
-                selectRandomGameSignText.text = "2 cube rounds won. Pick from these 2 worlds. Walk into your choice...";
-                teleportals[0].SetActive(true);
-                teleportals[1].SetActive(true);
+                selectRandomGameSignText.text = "2 cube rounds won. Pick from these 2 portals. Walk into your choice...";
+                teleportals[randomNumbers[0]].transform.position = centerPortal;
+                teleportals[randomNumbers[0]].SetActive(true);
+                teleportals[randomNumbers[1]].transform.position = rightPortal;
+                teleportals[randomNumbers[1]].SetActive(true);
                 break;
             case 3: //Debug.Log("You won 3 cube rounds. You can pick from these 3 worlds");
-                selectRandomGameSignText.text = "3 cube rounds won. Pick from these 3 worlds. Walk into your choice...";
-                teleportals[0].SetActive(true);
-                teleportals[1].SetActive(true);
-                teleportals[2].SetActive(true);
-
+                selectRandomGameSignText.text = "3 cube rounds won. Pick from these 3 portals. Walk into your choice...";
+                teleportals[randomNumbers[0]].transform.position = leftPortal;
+                teleportals[randomNumbers[0]].SetActive(true);
+                teleportals[randomNumbers[1]].transform.position = centerPortal;
+                teleportals[randomNumbers[1]].SetActive(true);
+                teleportals[randomNumbers[2]].transform.position = rightPortal;
+                teleportals[randomNumbers[2]].SetActive(true);
                 break;
-
         }
     }
 }
+// following 2 classes rightoutta GPT FWIW
+//public class RandomNumberGenerator : MonoBehaviour
+//{
+//    private int[] numbers = { 1, 2, 3, 4 }; //, 5, 6, 7, 8, 9, 10, 11, 12 };
+
+//    private void Start()
+//    {
+//        Debug.Log(" Hello from RandomNumberGenerator");
+//        int[] randomNumbers = GetRandomNumbers(3);
+
+//        foreach (int number in randomNumbers)
+//        {
+//            Debug.Log(number);
+//        }
+//    }
+
+//    public int[] GetRandomNumbers(int count)
+//    {
+//        List<int> remainingNumbers = new List<int>(numbers);
+//        List<int> randomNumbers = new List<int>();
+
+//        for (int i = 0; i < count; i++)
+//        {
+//            int index = Random.Range(0, remainingNumbers.Count);
+//            int randomNumber = remainingNumbers[index];
+//            remainingNumbers.RemoveAt(index);
+//            randomNumbers.Add(randomNumber);
+//        }
+
+//        return randomNumbers.ToArray();
+//    }
+//}
+//================== now call it ====================   moved into our original Start()
+//using UnityEngine;
+
+//public class RandomNumberCaller : MonoBehaviour
+//{
+//    private RandomNumberGenerator randomNumberGenerator;
+//    const int numberOfPortals = 3;
+//    private void Start()
+//    {
+//        randomNumberGenerator = FindObjectOfType<RandomNumberGenerator>();
+
+//        // Call the GetRandomNumbers method from the RandomNumberGenerator script
+//        int[] randomNumbers = randomNumberGenerator.GetRandomNumbers(numberOfPortals);
+
+//        foreach (int number in randomNumbers)
+//        {
+//            Debug.Log("random portal = " + number);
+//        }
+//    }
+//}
+
