@@ -10209,7 +10209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_Name
-      value: Teleportal01
+      value: LandOfEyesPortal01
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_TagString
@@ -12086,7 +12086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5030263983362490183, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_text
-      value: 'The Back Alley
+      value: 'Back Alley
 
 
 
@@ -12162,7 +12162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_Name
-      value: Teleportal06
+      value: BackAlleyPortal06
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_IsActive
@@ -18073,7 +18073,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_Name
-      value: Teleportal02
+      value: AmazedPortal02
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_TagString
@@ -18625,7 +18625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_Name
-      value: Teleportal04
+      value: GreenCarpetPortal04
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_IsActive
@@ -27245,7 +27245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_Name
-      value: Teleportal03
+      value: YellowCarpetPortal03
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_TagString
@@ -41366,7 +41366,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5030263983362490183, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_text
-      value: 'The Outland
+      value: 'Outland
 
 
 '
@@ -41441,7 +41441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_Name
-      value: Teleportal05
+      value: OutlandPortal05
       objectReference: {fileID: 0}
     - target: {fileID: 7010252025004655951, guid: 2bfbcb8c5fe5e0941b3e2015409fa89f, type: 3}
       propertyPath: m_IsActive
@@ -47704,6 +47704,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4945718185701007824, guid: 718ce378ee3952d47bcb327b5a63195e, type: 3}
+      propertyPath: m_Name
+      value: Text OutlandEntrance
+      objectReference: {fileID: 0}
+    - target: {fileID: 4945718185701007827, guid: 718ce378ee3952d47bcb327b5a63195e, type: 3}
+      propertyPath: m_text
+      value: 'En Trance?
+
+
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 4945718185701007829, guid: 718ce378ee3952d47bcb327b5a63195e, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.01
