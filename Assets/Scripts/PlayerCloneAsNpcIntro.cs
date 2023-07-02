@@ -66,28 +66,10 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         inputControls.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = 12;  //6/10/23 change from 25 back to 12 
         //Debug.Log(this.name + "  camOnPlayerCloneAsNPC.Priority = 12;  should set the Active Cam to camOnPlayerCloneAsNPC *****");
-
-        // Find the active cam
-        CinemachineVirtualCameraBase[] virtualCameras = FindObjectsOfType<CinemachineVirtualCameraBase>();
-        float highestPriority = float.MinValue;
-        CinemachineVirtualCameraBase activeVirtualCamera = null;
-        foreach (CinemachineVirtualCameraBase virtualCamera in virtualCameras)
-        {
-            if (virtualCamera.Priority > highestPriority)
-            {
-                highestPriority = virtualCamera.Priority;
-                activeVirtualCamera = virtualCamera;
-            }
-        }
-        if (activeVirtualCamera != null)
-        {
-            // Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);  //6/10/23 comment for now - we may use
-        }
-
         TellTextCloud(playerCloneAsNPCSpeaks1, true);
         waitingForTextExtinguishEvent = true;
         m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
-        yield return new WaitUntil(() => !waitingForTextExtinguishEvent);  //when TCH sees NextPage press and extinguishes text cloud 
+        yield return new WaitUntil(() => !waitingForTextExtinguishEvent);  //when TCHandler sees NextPage press and extinguishes text cloud 
 
       //  Debug.Log(this.name + " *****  GOT TextExtinguishEvent so set player active and do NEXT CLOUD ***** ");
         playerArmature.SetActive(true);
@@ -97,6 +79,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         camOnPlayerCloneAsNPC.Priority = originalCamOnPlayerCloneAsNPCPriority;
 
         TellTextCloud(playerCloneAsNPCSpeaks2, true);
+
         waitingForTextExtinguishEvent = true;
         m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
 
@@ -106,6 +89,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         playerCloneAsNPC.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
 
+        Missions.missions[Missions.randomlyPickedMission].SetActive(true);
         if (nowPlay) nowPlay.SetActive(true);
         audioManager.PlayAudio(audioManager.clipapert);
         if (inputControls) inputControls.SetActive(true);
@@ -134,7 +118,6 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
             m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent); //5/24/23
             m_CanvasNextPagePressedEvent.Invoke();
         }
-
     }
     public void OnCloudTextExtinguishedEvent()
     {
@@ -153,3 +136,20 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         StopAllCoroutines();
     }
 }
+
+// Find the active cam  //6/30/23 not using but nice to have...
+//CinemachineVirtualCameraBase[] virtualCameras = FindObjectsOfType<CinemachineVirtualCameraBase>();
+//float highestPriority = float.MinValue;
+//CinemachineVirtualCameraBase activeVirtualCamera = null;
+//foreach (CinemachineVirtualCameraBase virtualCamera in virtualCameras)
+//{
+//    if (virtualCamera.Priority > highestPriority)
+//    {
+//        highestPriority = virtualCamera.Priority;
+//        activeVirtualCamera = virtualCamera;
+//    }
+//}
+//if (activeVirtualCamera != null)
+//{
+//    // Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);  //6/10/23 comment for now - we may use
+//}

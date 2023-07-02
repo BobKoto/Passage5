@@ -119,6 +119,7 @@ public class MontyStopTrigger : MonoBehaviour
     MontyGameState montyGameState;
     void Start()
     {
+       // Missions.missions[Missions.randomlyPickedMission].SetActive(false);
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         animDoor1 = montyDoor1.GetComponent<Animator>();
         animDoor2 = montyDoor2.GetComponent<Animator>();
@@ -170,6 +171,7 @@ public class MontyStopTrigger : MonoBehaviour
             {
                 PlayTheMontyGame();  //so let's enable the door touches here - i bet no diff  //OK so we should add a start/play button
                 montyGameCam.Priority = 12;
+                Missions.missions[Missions.randomlyPickedMission].SetActive(false);//7/2/23
                 if (montyGameIntro) montyGameIntro.SetActive(true);  //then we need to remove/fade it out to allow play
                 animMontyGameIntro.SetTrigger("RaiseCubeGameIntro");
                 audioManager.PlayAudio(audioManager.clipapert);

@@ -17,6 +17,7 @@ TagManager:
   - MontyGameDoor
   - EvilTwin
   - RandomGamePortal
+  - Mission
   layers:
   - Default
   - TransparentFX
