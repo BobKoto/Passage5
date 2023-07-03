@@ -20,6 +20,8 @@ public class MontyStopTrigger : MonoBehaviour
 
     public GameObject randomTest; //contains the script that instantiates the randomized text of winners and losers 
 
+    public GameObject thoughtText;
+
     [Header("Text Above the Doors")]
     public GameObject mainMontySign;
     public TMP_Text montyGameSignText;
@@ -108,6 +110,8 @@ public class MontyStopTrigger : MonoBehaviour
 
     const string evilTwinSpeaks3 = "Ha ha ha. LMAO, ha ha ha.";
     const string goodTwinSpeaks3 = "Hashy, what would we do without you?";
+
+    const string playerThinks1 = "What the hey?!? Tik Tak is supposed to be in trouble.";
 
     enum MontyGameState :int
     {
@@ -614,7 +618,12 @@ public class MontyStopTrigger : MonoBehaviour
         camOnPlayer.Priority = 13;
         if (goodTwinActivated)    //the true parameter causes TTC to set nextPage active
         {
-            TellTextCloud(playerSpeaksToGoodTwin1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+            if (Missions.randomlyPickedMission == 1)  // is it tik tak in trouble mission?
+            {
+                thoughtText.GetComponent<TextMeshProUGUI>().text = playerThinks1;
+                TellTextCloud(playerSpeaksToGoodTwin1, true, 8);
+            }
+           else TellTextCloud(playerSpeaksToGoodTwin1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
         else
         {
@@ -706,6 +715,13 @@ public class MontyStopTrigger : MonoBehaviour
     void TellTextCloud(string caption, bool waitForNextPagePressed)
     {
         m_CloudTextEvent.Invoke(6, 4, caption);
+        waitingForNextPagePressEvent = true;
+        waitingForTextExtinguishEvent = true;
+        m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
+    }
+    void TellTextCloud(string caption, bool waitForNextPagePressed, int option)   //7/2/23 a dirty fix - maybe 
+    {
+        m_CloudTextEvent.Invoke(option, 4, caption);
         waitingForNextPagePressEvent = true;
         waitingForTextExtinguishEvent = true;
         m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);

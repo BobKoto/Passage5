@@ -10,6 +10,10 @@ public class TextCloudHandler : MonoBehaviour
     public AudioManager audioManager;
     public GameObject textCloud;
     public GameObject cloudText;
+
+    public GameObject thoughtCloud;  // parent of the text
+
+
     public GameObject menuButton;
     public GameObject lightButton;
     [Header("The UI stuff as GameObjects")]
@@ -32,7 +36,9 @@ public class TextCloudHandler : MonoBehaviour
     enum CloudBehavior :int
     {
         followTimeOut =  5,
-        waitForNextPagePress = 6
+        waitForNextPagePress = 6,
+        addThoughtAndFollowTimeOut = 7,
+        addThoughtAndWaitForNextPagePress = 8    //what mostly will be used when we have a thought
     }
     // Start is called before the first frame update
     void Start()
@@ -66,28 +72,22 @@ public class TextCloudHandler : MonoBehaviour
                 break;
 
             case CloudBehavior.waitForNextPagePress:
-                //   Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed)); ....NEW CASE");
                 m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
                 waitingForNextPagePress = true;
-                // Find the active cam
-                CinemachineVirtualCameraBase[] virtualCameras = FindObjectsOfType<CinemachineVirtualCameraBase>();
-                float highestPriority = float.MinValue;
-                CinemachineVirtualCameraBase activeVirtualCamera = null;
-                foreach (CinemachineVirtualCameraBase virtualCamera in virtualCameras)
-                {
-                    if (virtualCamera.Priority > highestPriority)
-                    {
-                        highestPriority = virtualCamera.Priority;
-                        activeVirtualCamera = virtualCamera;
-                    }
-                }
-                if (activeVirtualCamera != null)
-                {
-                  //  Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);  //6/10/23 comment for now - we may use
-                }
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
                 break;
 
+            case CloudBehavior.addThoughtAndFollowTimeOut:   //7/2/23 BEWARE we're NOT using this yet and more logic will be needed!!!
+                StartCoroutine(RemoveCloudAfterXSeconds(cloudTimeout));
+                break;
+
+            case CloudBehavior.addThoughtAndWaitForNextPagePress:
+               // cloudText.GetComponent<TextMeshProUGUI>().text = "right outta textcloudH.cs";  // a fuck up
+                thoughtCloud.SetActive(true);
+                m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
+                waitingForNextPagePress = true;
+                StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
+                break;
             default:
                 Debug.Log(this.name + " EnableTheTextCloud recvd INVALID Behavior code ");
                 break;
@@ -108,6 +108,7 @@ public class TextCloudHandler : MonoBehaviour
         yield return new WaitUntil(() => nextPagePressed);
         nextPagePressed = false;
         // playerFacingCamera.Priority = originalCamPriority; //2/2/23 don't activate/use this Cam until we have a clean flow - if ever
+        thoughtCloud.SetActive(false);
         textCloud.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
       //  Debug.Log(this.name + "  ****** now invoking m_CloudTextExtinguishedEvent ***** ");
@@ -128,13 +129,7 @@ public class TextCloudHandler : MonoBehaviour
             waitingForNextPagePress = false;
         }
     }
-    //public void OnCloudTextEventExtinguished()    //5/20/23 only invoke the event - let other scripts handle
-    //{
-    //    Debug.Log(this.name + " says the cloud went away... So enable the Play box");
-    //    m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextEventExtinguished);
-    //    if (nowPlay) nowPlay.SetActive(true);
-    //    if (inputControls) inputControls.SetActive(true);
-    //}
+
     private void OnDisable()
     {
         //  m_CloudTextEvent.RemoveListener(EnableTheTextCloud);  //I guess we should do this
@@ -150,4 +145,27 @@ public class TextCloudHandler : MonoBehaviour
 //    Debug.Log(this.name + " call StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));... OLD CASE");
 //    m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);  //moved here from START()
 //    StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
+//}
+//// Find the active cam   keep for maybe use later 
+//CinemachineVirtualCameraBase[] virtualCameras = FindObjectsOfType<CinemachineVirtualCameraBase>();
+//float highestPriority = float.MinValue;
+//CinemachineVirtualCameraBase activeVirtualCamera = null;
+//foreach (CinemachineVirtualCameraBase virtualCamera in virtualCameras)
+//{
+//    if (virtualCamera.Priority > highestPriority)
+//    {
+//        highestPriority = virtualCamera.Priority;
+//        activeVirtualCamera = virtualCamera;
+//    }
+//}
+//if (activeVirtualCamera != null)
+//{
+//  //  Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);  //6/10/23 comment for now - we may use
+//}
+//public void OnCloudTextEventExtinguished()    //5/20/23 only invoke the event - let other scripts handle  //7/2/23 designed out I'm pretty sure 
+//{
+//    Debug.Log(this.name + " says the cloud went away... So enable the Play box");
+//    m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextEventExtinguished);
+//    if (nowPlay) nowPlay.SetActive(true);
+//    if (inputControls) inputControls.SetActive(true);
 //}
