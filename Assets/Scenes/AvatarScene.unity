@@ -6689,7 +6689,7 @@ RectTransform:
   m_GameObject: {fileID: 268448166}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 38.573975, y: 34.372845, z: 27.776035}
+  m_LocalScale: {x: 33.46022, y: 29.816036, z: 24.093765}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1827908973}
@@ -6697,7 +6697,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 231.81, y: -193}
+  m_AnchoredPosition: {x: 79.21, y: -113.72}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &268448168
@@ -11914,7 +11914,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526115160}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 11dbd1d6fb62a4b44a38a08da689b994, type: 2}
   m_CullingMode: 0
@@ -13498,7 +13498,7 @@ RectTransform:
   m_GameObject: {fileID: 581499320}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 38.573975, y: 34.372845, z: 27.776035}
+  m_LocalScale: {x: 26.065512, y: 23.226692, z: 18.769043}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1827908973}
@@ -13506,7 +13506,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 212.74, y: -221}
+  m_AnchoredPosition: {x: 55.79, y: -136.28}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &581499322
@@ -15631,7 +15631,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631892744}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 11dbd1d6fb62a4b44a38a08da689b994, type: 2}
   m_CullingMode: 0
@@ -28913,7 +28913,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199821527}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 11dbd1d6fb62a4b44a38a08da689b994, type: 2}
   m_CullingMode: 0
@@ -42013,7 +42013,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -24, y: 190}
+  m_AnchoredPosition: {x: 59, y: 190}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1830030013 stripped

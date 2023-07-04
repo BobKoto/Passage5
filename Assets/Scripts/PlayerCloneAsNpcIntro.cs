@@ -28,8 +28,9 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
     const string playerCloneAsNPCSpeaks1 = "#Hello. Pardon the #'s. \n#A former employer.";
     const string playerCloneAsNPCSpeaks2 = "#My new job is yours to figure out.\n #Lead on!";
- 
+    const string playerCloneAsNPCSpeaks3 = "#OK. Forward!";
     int originalCamOnPlayerCloneAsNPCPriority;
+   // public bool nextPagePressed; //TEMP to see in editor at runtime  - put back on next line
     bool nextPagePressed, waitingNextPagePress, waitingForTextExtinguishEvent, testExtinguishedReceived;
     AudioManager audioManager;
     // Start is called before the first frame update
@@ -85,12 +86,16 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
        // Debug.Log(this.name + " *****  Drop into wait on !waitingForTextExtinguishEvent ***** ");
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);//5/24/23
-      //  Debug.Log(this.name + " *****  Drop OUT OF wait on nextPagePressed & !waitingTextExtinguish ***** ");
-        playerCloneAsNPC.SetActive(false);
-        if (nextPage) nextPage.SetActive(false);
+        if (nextPage) nextPage.SetActive(true);     //7/3/23 
+        waitingNextPagePress = true;
+        Missions.missions[Missions.randomlyPickedMission].SetActive(true);   //need a sound here 
+        yield return new WaitUntil(() => nextPagePressed); //7/3/23 
+        TellTextCloud(playerCloneAsNPCSpeaks3);
+        playerCloneAsNPC.SetActive(false); //7/3/23 TIL Setting this false calls OnDisable() then continues to run! it killed this coroutine... 
+        waitingNextPagePress = false;
+        if (nextPage) nextPage.SetActive(false);           //7/3/23 
 
-        Missions.missions[Missions.randomlyPickedMission].SetActive(true);
-        if (nowPlay) nowPlay.SetActive(true);
+       // if (nowPlay) nowPlay.SetActive(true);  //7/3/23 need a better prompt for player to move robot forward
         audioManager.PlayAudio(audioManager.clipapert);
         if (inputControls) inputControls.SetActive(true);
 
@@ -106,7 +111,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
     void OnCanvasNextPagePressedEvent()
     {
-        Debug.Log(this.name + " says next page pressed SET TRUE");
+       // Debug.Log(this.name + " says next page pressed SET TRUE");
         nextPagePressed = true;
         m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent); //5/24/23
     }
@@ -114,7 +119,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     {
         if (waitingNextPagePress)  //5/25/23 
         {
-         //   Debug.Log(this.name + " DOING...    m_CanvasNextPagePressedEvent.Invoke();");
+           // Debug.Log(this.name + " DOING...    m_CanvasNextPagePressedEvent.Invoke();");
             m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent); //5/24/23
             m_CanvasNextPagePressedEvent.Invoke();
         }
@@ -131,6 +136,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     }
     void OnDisable()
     {
+        Debug.Log(this.name + "  did OnDisable() !!!!!");
         m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);
         m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);
         StopAllCoroutines();
