@@ -4243,6 +4243,10 @@ PrefabInstance:
       propertyPath: agentGoals.Array.data[1]
       value: 
       objectReference: {fileID: 1583961218}
+    - target: {fileID: 2602016999775281683, guid: c3a287aaf9b2f0544ab78d3d9ca183f3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4636406140433975661, guid: c3a287aaf9b2f0544ab78d3d9ca183f3, type: 3}
       propertyPath: m_RootOrder
       value: 32
@@ -6304,7 +6308,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh32060
+  m_Name: pb_Mesh35200
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11104,6 +11108,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 962241034900705883, guid: 22685d34e648cb24cbb0a27e769203b9, type: 3}
   m_PrefabInstance: {fileID: 842249381}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &470620654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 470620656}
+  - component: {fileID: 470620655}
+  m_Layer: 0
+  m_Name: ScriptFinder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &470620655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470620654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce2cc60584d8de4abe17fa8a5ef51c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &470620656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470620654}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 57
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &475168229
 GameObject:
   m_ObjectHideFlags: 0
@@ -13362,6 +13410,10 @@ PrefabInstance:
       propertyPath: agentGoals.Array.data[3]
       value: 
       objectReference: {fileID: 1101301770}
+    - target: {fileID: 8390143717606101374, guid: d200f56d7e00478458cbbaeb53cbfa35, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d200f56d7e00478458cbbaeb53cbfa35, type: 3}
 --- !u!4 &562457238 stripped
@@ -17780,8 +17832,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713081666}
-  m_LocalRotation: {x: -0.036065433, y: 0.9287071, z: -0.09384077, w: -0.3569262}
-  m_LocalPosition: {x: 0.33999634, y: 19.98, z: 44.119995}
+  m_LocalRotation: {x: -0.03381482, y: 0.9446089, z: -0.10312628, w: -0.3097347}
+  m_LocalPosition: {x: -2.7000122, y: 19.98, z: 46.90001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23753,6 +23805,10 @@ PrefabInstance:
       propertyPath: agentGoals.Array.data[1]
       value: 
       objectReference: {fileID: 1583961218}
+    - target: {fileID: 2602016999775281683, guid: c3a287aaf9b2f0544ab78d3d9ca183f3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4636406140433975661, guid: c3a287aaf9b2f0544ab78d3d9ca183f3, type: 3}
       propertyPath: m_RootOrder
       value: 27
@@ -32185,7 +32241,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1304362604
 Transform:
   m_ObjectHideFlags: 0
@@ -35156,7 +35212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1492320852
 Transform:
   m_ObjectHideFlags: 0
@@ -40958,6 +41014,10 @@ PrefabInstance:
       propertyPath: agentGoals.Array.data[3]
       value: 
       objectReference: {fileID: 1101301770}
+    - target: {fileID: 8390143717606101374, guid: d200f56d7e00478458cbbaeb53cbfa35, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d200f56d7e00478458cbbaeb53cbfa35, type: 3}
 --- !u!1 &1569880854
@@ -52233,6 +52293,10 @@ PrefabInstance:
       propertyPath: agentGoals.Array.data[1]
       value: 
       objectReference: {fileID: 1583961218}
+    - target: {fileID: 2602016999775281683, guid: c3a287aaf9b2f0544ab78d3d9ca183f3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4636406140433975661, guid: c3a287aaf9b2f0544ab78d3d9ca183f3, type: 3}
       propertyPath: m_RootOrder
       value: 30
@@ -56036,6 +56100,10 @@ PrefabInstance:
       propertyPath: agentGoals.Array.data[3]
       value: 
       objectReference: {fileID: 1101301770}
+    - target: {fileID: 8390143717606101374, guid: d200f56d7e00478458cbbaeb53cbfa35, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d200f56d7e00478458cbbaeb53cbfa35, type: 3}
 --- !u!1001 &8196280735179236937
