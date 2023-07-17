@@ -10,7 +10,7 @@ public class CubeGameBoard : MonoBehaviour
 
     void OnCubeGameBoardIsUp()
     {
-       // Debug.Log("CubeGameBoard.cs SAYS the cube game board is up !!!!!");
+     //   Debug.Log("CubeGameBoard.cs SAYS the cube game board is up !!!!! doing cubeGameBoardUpEvent.Invoke()");
         //here we send an event to AOTouch to then call AlignCam()  and to CGHandler to then call OnCubeGameBoardUpStore...
         cubeGameBoardUpEvent.Invoke();
     }

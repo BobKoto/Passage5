@@ -40,7 +40,7 @@ public class SelectARandomGame: MonoBehaviour
         boxCollider.enabled = false;
         if (selectRandomGameSign) selectRandomGameSign.SetActive(true);
         audioManager.PlayAudio(audioManager.theetone);
-        SelectARandomGameIntro();
+        ShowRandomPortals();
 
     }
     void DisableThePortals()   //this should be temporary
@@ -52,36 +52,16 @@ public class SelectARandomGame: MonoBehaviour
             teleportals[i].SetActive(false);
         }
     }
-    void SelectARandomGameIntro()
+    void ShowRandomPortals()    // 7/13/23 Replaces SelectARandomGameIntro() cuz we took out cube game - original code is down below :|
     {
-       // Debug.Log(this.name + "  You won " + CubeGameHandler.roundsWon + " rounds in the Cube Game");
-        switch (CubeGameHandler.roundsWon)
-        {
-            case 0: //Debug.Log("You won zero cube rounds. YOU ARE DEAD!!!! Goodbye...");
-                selectRandomGameSignText.text = "Zero cube rounds won. YOU ARE DEAD!!!! Goodbye...";
-                break;
-            case 1: //Debug.Log("You won 1 cube round your only choice is to enter this world...");
-                selectRandomGameSignText.text = "1 cube round won. The only choice is to enter this portal. Walk forward to enter...";
-                teleportals[randomNumbers[0]].transform.position = centerPortal;
-                teleportals[randomNumbers[0]].SetActive(true);
-                break;
-            case 2: //Debug.Log("You won 2 cube rounds. You can pick from these 2 worlds");
-                selectRandomGameSignText.text = "2 cube rounds won. Pick from these 2 portals. Walk into your choice...";
-                teleportals[randomNumbers[0]].transform.position = centerPortal;
-                teleportals[randomNumbers[0]].SetActive(true);
-                teleportals[randomNumbers[1]].transform.position = rightPortal;
-                teleportals[randomNumbers[1]].SetActive(true);
-                break;
-            case 3: //Debug.Log("You won 3 cube rounds. You can pick from these 3 worlds");
-                selectRandomGameSignText.text = "3 cube rounds won. Pick from these 3 portals. Walk into your choice...";
-                teleportals[randomNumbers[0]].transform.position = leftPortal;
-                teleportals[randomNumbers[0]].SetActive(true);
-                teleportals[randomNumbers[1]].transform.position = centerPortal;
-                teleportals[randomNumbers[1]].SetActive(true);
-                teleportals[randomNumbers[2]].transform.position = rightPortal;
-                teleportals[randomNumbers[2]].SetActive(true);
-                break;
-        }
+        // Debug.Log(this.name + "  You won " + CubeGameHandler.roundsWon + " rounds in the Cube Game");
+        selectRandomGameSignText.text = "Pick from these 3 portals. Walk into your choice...";
+        teleportals[randomNumbers[0]].transform.position = leftPortal;
+        teleportals[randomNumbers[0]].SetActive(true);
+        teleportals[randomNumbers[1]].transform.position = centerPortal;
+        teleportals[randomNumbers[1]].SetActive(true);
+        teleportals[randomNumbers[2]].transform.position = rightPortal;
+        teleportals[randomNumbers[2]].SetActive(true);
     }
 }
 // following 2 classes rightoutta GPT FWIW
@@ -136,4 +116,34 @@ public class SelectARandomGame: MonoBehaviour
 //        }
 //    }
 //}
-
+//void SelectARandomGameIntro()    // removed 7/13/23 - good working code WITH a cube game  
+//{
+//    // Debug.Log(this.name + "  You won " + CubeGameHandler.roundsWon + " rounds in the Cube Game");
+//    switch (CubeGameHandler.roundsWon)
+//    {
+//        case 0: //Debug.Log("You won zero cube rounds. YOU ARE DEAD!!!! Goodbye...");
+//            selectRandomGameSignText.text = "Zero cube rounds won. YOU ARE DEAD!!!! Goodbye...";
+//            break;
+//        case 1: //Debug.Log("You won 1 cube round your only choice is to enter this world...");
+//            selectRandomGameSignText.text = "1 cube round won. The only choice is to enter this portal. Walk forward to enter...";
+//            teleportals[randomNumbers[0]].transform.position = centerPortal;
+//            teleportals[randomNumbers[0]].SetActive(true);
+//            break;
+//        case 2: //Debug.Log("You won 2 cube rounds. You can pick from these 2 worlds");
+//            selectRandomGameSignText.text = "2 cube rounds won. Pick from these 2 portals. Walk into your choice...";
+//            teleportals[randomNumbers[0]].transform.position = centerPortal;
+//            teleportals[randomNumbers[0]].SetActive(true);
+//            teleportals[randomNumbers[1]].transform.position = rightPortal;
+//            teleportals[randomNumbers[1]].SetActive(true);
+//            break;
+//        case 3: //Debug.Log("You won 3 cube rounds. You can pick from these 3 worlds");
+//            selectRandomGameSignText.text = "3 cube rounds won. Pick from these 3 portals. Walk into your choice...";
+//            teleportals[randomNumbers[0]].transform.position = leftPortal;
+//            teleportals[randomNumbers[0]].SetActive(true);
+//            teleportals[randomNumbers[1]].transform.position = centerPortal;
+//            teleportals[randomNumbers[1]].SetActive(true);
+//            teleportals[randomNumbers[2]].transform.position = rightPortal;
+//            teleportals[randomNumbers[2]].SetActive(true);
+//            break;
+//    }
+//}

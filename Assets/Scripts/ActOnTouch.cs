@@ -27,11 +27,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler
             cubeGameBoardUpEvent = new CubeGameBoardUpEvent();
         cubeGameBoardUpEvent.AddListener(OnGameBoardUp);
     }
-    public void OnGameBoardUp()
-    {
-        //Debug.Log("AOTouch recvd event for OnGameBoardUp  Calling AlignCam....");
-        AlignCam();
-    }
+    public void OnGameBoardUp() => AlignCam();  //we really only need this once but it seems cheap
     void AlignCam()  //moved from Start in prep to align ONLY when player enters CubeGame - else where the player starts is an issue 
     {
         cam = Camera.main;  //
@@ -39,7 +35,6 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler
         yPositionFixed = transform.position.y;  // *cube as in the thing(s) we want to drag 
         zPositionFixed = transform.position.z;
         camCubeXDelta = cVCam.transform.position.x - transform.position.x; //for ScreenToWorldPoint - use pos X of cVCam which will "become" cam when Live
-
         yPositionTopLimit = cubeGameTopWall.transform.position.y - transform.localScale.y /2;
         zPositionLeftLimit = cubeGameLeftWall.transform.position.z;//
         zPositionRightLimit = cubeGameRightWall.transform.position.z;// 
@@ -63,7 +58,7 @@ public class ActOnTouch : MonoBehaviour, IDragHandler,  IEndDragHandler
     {
         if (CubeGameHandler.cubeGameIsActive)  // added if clause 1/30/23 
         {
-            //Debug.Log("AOTouch END Drag detected !!!! " + this.name);
+
             fingerPointerEvent.Invoke(this.gameObject, "finger UP  Drag ENDED");
         }
     }

@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
 using Cinemachine;
-using StarterAssets; 
+using StarterAssets;
+using UnityEngine.SceneManagement;
 
 public class CubeGameHandler : MonoBehaviour
 //Component of CubeGame -- receives events from CubeEnteredSolutionMatrix.cs(was)/is now PlacementHandler  -- calculates row/column totals
@@ -85,7 +86,11 @@ public class CubeGameHandler : MonoBehaviour
          70, 30, 60, 40  //index 60
          };
     readonly int[] winningGameSumsIndex = new int[] { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 }; // so we have 16
-                                                                                                                     // int[] variableGameSums = new int[4];
+
+    // int[] variableGameSums = new int[4];
+    string sceneName;
+    bool isAvatarScene;
+
     Animator animCubeGame; 
 
     Animator animator, animPlayer;
@@ -109,6 +114,7 @@ public class CubeGameHandler : MonoBehaviour
     BoxCollider entryCollider;
     [Header("Barrier used after Cube Game ends to pass control ")]
     public GameObject cubeGameBarriers;  //6/13/23 to set them active(false) at the end of cubeGame 
+    GameObject playButton1;
 
     // Start is called before the first frame update
     void Start()
@@ -152,18 +158,25 @@ public class CubeGameHandler : MonoBehaviour
             cubeGameTargetSumText[i] = cubeGameTargetSum[i].GetComponent<TMP_Text>();
         }
         originalCamPriority = cubeGameCam.Priority;
-        animator = player.GetComponent<Animator>();
         animCubeGame = cubeGame.GetComponent<Animator>();
-        thirdPersonController = player.GetComponent<ThirdPersonController>();
-        // ////////////////////END MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
-        thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
-        animPlayer = playerArmature.GetComponent<Animator>();
-        characterController = playerArmature.GetComponent<CharacterController>();
-        originalMoveSpeed = thirdPersonController.MoveSpeed;
-        originalSprintSpeed = thirdPersonController.SprintSpeed;
-        originalPlayerSpeed = animPlayer.speed;
-        entryCollider = gameObject.GetComponent<BoxCollider>();
-
+        Scene scene = SceneManager.GetActiveScene();
+        sceneName = scene.name;
+        if (sceneName == "AvatarScene")
+        {
+            isAvatarScene = true;
+            animator = player.GetComponent<Animator>();
+            thirdPersonController = player.GetComponent<ThirdPersonController>();
+            // ////////////////////END MERGE OF PlayerEnterCubeGame.cs ///////////////////////////
+            thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
+            animPlayer = playerArmature.GetComponent<Animator>();
+            characterController = playerArmature.GetComponent<CharacterController>();
+            originalMoveSpeed = thirdPersonController.MoveSpeed;
+            originalSprintSpeed = thirdPersonController.SprintSpeed;
+            originalPlayerSpeed = animPlayer.speed;
+            entryCollider = gameObject.GetComponent<BoxCollider>();
+        }
+        //  if (!isAvatarScene) StartGameWithoutTrigger();
+        playButton1 = GameObject.FindGameObjectWithTag("PlayButton1");
     }
     //public void PlayButtonPressedOnIntro()  //DeImp 0n 5/7/23
     //{
@@ -180,7 +193,7 @@ public class CubeGameHandler : MonoBehaviour
             animCubeGame.SetTrigger("RaiseCubeGame");
             cubeGameIntro.SetActive(false);
           //  cubeGameStartButton.SetActive(true); //2/27/23 moved here from OnTriggerEnter  //5/23/23
-            TellTextCloud(helpNeedHI);//2/27/23 moved here from OnTriggerEnter
+          if (isAvatarScene)  TellTextCloud(helpNeedHI);//2/27/23 moved here from OnTriggerEnter
             if (nextPage) nextPage.SetActive(false);
             if (gameBoardIsUp)  //added 5/24/23
             {
@@ -188,11 +201,6 @@ public class CubeGameHandler : MonoBehaviour
             }
         }
     }
-    //public void MoveOnButtonPressed()   //DeImp 0n 5/7/23
-    //{
-    //    Debug.Log("CubeGame MoveOn Button Pressed!!");
-
-    //}
 
     public void CheckCubeMovement(GameObject go, string cubeName)  //ActOnTouch sent a fingerUp event - meaning player dragged a cube 
     {
@@ -385,12 +393,10 @@ public class CubeGameHandler : MonoBehaviour
         timeLimiter = StartCoroutine(CubeGameTimer(cubeGameTimeLimit));  //moved from OnCubeGameStartButtonPressed()
     }
     IEnumerator SetCubeGameIsActiveAfterCubesSentHome()
-    {  //need to revamp this coroutine to look for something like cubesToBeSentHome == 0
-        //yield return new WaitForSeconds(_delay);
+    {  
         yield return new WaitUntil(() => cubesToBeSentHome == 0);
         cubeGameIsActive = true;
         cubeGameIsResetting = false;  //99% sure this is setting BEFORE SendCubesToHomePositions() triggers our exit events
-        //aDebug.Log("SetCubeGameIsActiveAfterDelay set cubeGameIsActive = TRUE; ");
     }
     void SetCubeGameRoundsWonLostText()
     {
@@ -514,6 +520,22 @@ public class CubeGameHandler : MonoBehaviour
             if (lightButton) lightButton.SetActive(false);
         }
     }
+    public void OnPlayPressed()
+    {
+        StartGameWithoutTrigger();
+    }
+    void StartGameWithoutTrigger()   // 7/13/23 for cube game NOT in avatar scene  a clone of OnTriggerEnter  with some omissions
+    {
+
+        playButton1.SetActive(false);
+        cubeGameRoundNumber = 1;
+        cubeGameCam.Priority = 12;
+        audioManager.PlayAudio(audioManager.clipDRUMROLL);
+        ResetCubeGameOnEntry(); //2/27/23 a little maint.
+        nonPluggedSeed = Random.Range(1, 4); //which round to call SeedCubePuzzle() - other rounds get a Winnable
+        cubeGameIntro.SetActive(true);
+        nextPage.SetActive(true);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -525,21 +547,17 @@ public class CubeGameHandler : MonoBehaviour
             EnableDisableUIButtons(false);
             audioManager.PlayAudio(audioManager.clipDRUMROLL);
 
-            animator.speed = 0;
+            if (isAvatarScene) animator.speed = 0;
             ResetCubeGameOnEntry(); //2/27/23 a little maint.
 
             if (thirdPersonController) thirdPersonController.enabled = false;
             nonPluggedSeed = Random.Range(1, 4); //which round to call SeedCubePuzzle() - other rounds get a Winnable
             cubeGameIntro.SetActive(true);
             nextPage.SetActive(true);
-            //ADDED These 6 lines 6/10/23 
-            //thirdPersonController.MoveSpeed = 0;  //6/17/23 pretty sure we don't need to set speed settings as we're disabling thirdPC entirely
-            //thirdPersonController.SprintSpeed = 0;
-            thirdPersonController.enabled = false;
-            animPlayer.speed = 0;
+
+            if (isAvatarScene) animPlayer.speed = 0;
             if (characterController) characterController.enabled = false;
             if (inputControls) inputControls.SetActive(false);  //redundant cuz done above, but wait until we finish integrating reset jstick 
-            // END These 6 lines 6/10/23 
         }
     }
     void ResetCubeGameOnEntry()
@@ -593,8 +611,6 @@ public class CubeGameHandler : MonoBehaviour
         for (int i = 0; i <= cubeGameCubes.Length - 1; i++)
         {
             cubeTransformStartPosition[i] = cubeGameCubes[i].transform.position;
-            //  Debug.Log("OnGameBoardUpStoreCubeHomePositions() Transform position = " + cubeGameCubes[i].transform.position);
-
         }
         if (cubeGameStartButton) cubeGameStartButton.SetActive(true);  //5/23/23 so we wait until game board is up 
     }
@@ -656,18 +672,25 @@ public class CubeGameHandler : MonoBehaviour
             cubeGameIsUnsolvableButton.GetComponent<Button>().interactable = true;
             return;  //we still have rounds to play
         }
-       //Here Start button is "DONE" - Let Player move robot out of game to OnTriggerExit  //The Cube Gam is OVER 
-            if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
+        //Here Start button is "DONE" - Let Player move robot out of game to OnTriggerExit  //The Cube Gam is OVER 
+        //Or in the case of a standalone cube game invite to play again ...
+        if (cubeGameStartButton) cubeGameStartButton.SetActive(false);
+
+        cubeGameRoundNumber = 0;
+        if (playButton1) playButton1.SetActive(true);
+        if (isAvatarScene)
+        {
             TellTextCloud(okLetsGo);
-            cubeGameRoundNumber = 0;
             cubeGameCam.Priority = originalCamPriority;// 2/3/23 try moving to 3rd round is over to when start(Done) is pressed 
             animator.speed = 1;
             if (thirdPersonController) thirdPersonController.enabled = true;
             EnableDisableInputControls(true);
-        entryCollider.isTrigger = false; //6/10/23 and now we'll probably need to get rid of it altogether 
-        entryCollider.enabled = false;
-        if (characterController) characterController.enabled = true;
-        CallResetJoystick(); //6/10/23 
+            entryCollider.isTrigger = false; //6/10/23 and now we'll probably need to get rid of it altogether 
+            entryCollider.enabled = false;
+            if (characterController) characterController.enabled = true;
+            CallResetJoystick(); //6/10/23 
+        }
+ 
         if (cubeGame) cubeGame.SetActive(false);  //6/11/23  make it all go away
         if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
         if (cubeGameBarriers) cubeGameBarriers.SetActive(false); // 6/13/23 now next game needs to address barriers

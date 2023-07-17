@@ -18,6 +18,7 @@ TagManager:
   - EvilTwin
   - RandomGamePortal
   - Mission
+  - PlayButton1
   layers:
   - Default
   - TransparentFX
