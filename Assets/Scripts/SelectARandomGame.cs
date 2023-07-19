@@ -13,9 +13,9 @@ public class SelectARandomGame: MonoBehaviour
 
     GameObject[] teleportals;
 
-    Vector3 leftPortal =   new Vector3(203.74f, 4.82f, -231.45f);   //make these public?
-    Vector3 centerPortal = new Vector3(203.74f, 4.82f, -217.2f);
-    Vector3 rightPortal =  new Vector3(203.74f, 4.82f, -202.94f);
+    public Vector3 leftPortal =   new Vector3(203.74f, 4.82f, -231.45f);   //make these public?
+    public Vector3 centerPortal = new Vector3(203.74f, 4.82f, -217.2f);
+    public Vector3 rightPortal =  new Vector3(203.74f, 4.82f, -202.94f);
 
     private SetRandomPortals randomPortalsGenerator;
     const int numberOfPortals = 3;
