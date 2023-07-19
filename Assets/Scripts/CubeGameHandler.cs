@@ -689,9 +689,11 @@ public class CubeGameHandler : MonoBehaviour
             entryCollider.enabled = false;
             if (characterController) characterController.enabled = true;
             CallResetJoystick(); //6/10/23 
+            if (cubeGame) cubeGame.SetActive(false);  //6/11/23  make it all go away
+
         }
- 
-        if (cubeGame) cubeGame.SetActive(false);  //6/11/23  make it all go away
+
+       // if (cubeGame) cubeGame.SetActive(false);  //6/11/23  make it all go away // 7/17/23 moved up to allow replays in standalone (non AvatarScene) 
         if (cubeGameIsUnsolvableButton) cubeGameIsUnsolvableButton.SetActive(false);
         if (cubeGameBarriers) cubeGameBarriers.SetActive(false); // 6/13/23 now next game needs to address barriers
       //  Debug.Log("cubeGameInnerCenterBarrier is now set to isTrigger so we need an OnTrigger in a new script, right?");
