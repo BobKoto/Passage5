@@ -55,6 +55,9 @@ public class MontyStopTrigger : MonoBehaviour
     public Animation animDoor1Down;
     public Animation animDoor2Down;
     public Animation animDoor3Down;
+
+    [Header("Position Good/Evil Twin in Final Selected Monty Box")]
+   // public Vector3 
     public float xPos = 200;
     //int originalMontyGameCamPriority, originalCamOnEvilTwinPriority, originalCamOnGoodTwinPriority, originalCamOnTwinPriority; 6/2/23
     int originalMontyGameCamPriority, originalCamOnPlayerPriority, originalCamOnTwinPriority;
@@ -568,13 +571,16 @@ public class MontyStopTrigger : MonoBehaviour
         switch (outOfDoor)
         {
             case 1:
-                twinNpc.transform.position = new Vector3(xPos, 0, -228);
+               // twinNpc.transform.position = new Vector3(xPos, 0, -228);
+                twinNpc.transform.position = new Vector3(195.48f, 0, -217f); 
                 break;
             case 2:
-                twinNpc.transform.position = new Vector3(xPos, 0, -221);
+               // twinNpc.transform.position = new Vector3(xPos, 0, -221);
+                twinNpc.transform.position = new Vector3(188.51f, 0, -217f);
                 break;
             case 3:
-                twinNpc.transform.position = new Vector3(xPos, 0, -214);
+              //  twinNpc.transform.position = new Vector3(xPos, 0, -214);
+                twinNpc.transform.position = new Vector3(179.9f, 0, -217f);
                 break;
             default:
                 break;
