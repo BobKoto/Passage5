@@ -12,10 +12,12 @@ public class OpenDoor : MonoBehaviour
     public string operateButton = "DoorSlideDown";  // we change in the prefab(s)
     public GameObject doorOpener;  //the button and text prompts 
     public GameObject stepsRaiser; //the button and text prompts 
+    public float delayForAnimation = .5f;
 
     public CloudTextEvent m_CloudTextEvent;
     const string firstDoor = "#What's here?...";
     const string firstSteps = "#Take a dip!";
+    bool _wasTriggered;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,30 +43,66 @@ public class OpenDoor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)   //robot touched the collider so do the animation and deactivate the button and text
     {
-        //var thisCollider = other.GetComponent<Collider>();
-        //print("entered " + thisCollider);
-        audioManager.PlayAudio(audioManager.clipapert);
-        anim.SetTrigger(operateButton);
-        string myName = this.name;
-        switch (myName)
+        if (!_wasTriggered)
         {
-            case "DoorOpener":
-                {
-                    doorOpener.SetActive(false);
-                    TellTextCloud(firstDoor);
-                    break;
-                }
-            case "StepsRaise":
-                {
-                    stepsRaiser.SetActive(false);
-                    TellTextCloud(firstSteps);
-                    break;  
-                }
+            _wasTriggered = true; 
+            print("entered " + other.name);
+            audioManager.PlayAudio(audioManager.clipapert);
+            anim.SetTrigger(operateButton);
+            //string myName = this.name; //don't need to do this ?
+            //switch (this.name)
+            //{
+            //    case "DoorOpener":
+            //        {
+            //            TellTextCloud(firstDoor);
+            //            doorOpener.SetActive(false);
+            //            break;
+            //        }
+            //    case "StepsRaise":
+            //        {
+            //            TellTextCloud(firstSteps);
+            //            stepsRaiser.SetActive(false);
+            //            break;
+            //        }
+            //}
+
+            StartCoroutine(DelayForAnimation(delayForAnimation));
         }
+
     }
     public void TellTextCloud(string caption)
     {
         m_CloudTextEvent.Invoke(5, 4, caption);
+    }
+    IEnumerator DelayForAnimation(float delaySeconds)
+    {
+        while (audioManager.audioSource.isPlaying)
+        {
+           // Debug.Log("Audio IS Playing");
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(delaySeconds);
+        //string myName = this.name; //don't need to do this 
+        switch (this.name)
+        {
+            case "DoorOpener":
+                {
+                    TellTextCloud(firstDoor);
+                    doorOpener.SetActive(false);
+                    break;
+                }
+            case "StepsRaise":
+                {
+                    TellTextCloud(firstSteps);
+                    stepsRaiser.SetActive(false);
+                    break;  
+                }
+        }
+    }
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 }
 // original stuff 
