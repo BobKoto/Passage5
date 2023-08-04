@@ -8,11 +8,6 @@ public class BubbleRoomCamSwitcher : MonoBehaviour
 
     public CinemachineVirtualCamera thirdPersonFollowCam;
     public CinemachineClearShot bubbleRoomClearShotCam;
-    // Start is called before the first frame update
-    void Start()
-    {
-      //  thirdPersonFollowCam.
-    }
 
     public void OnTriggerEnter(Collider other)   //probably should check if the Player is doing the entering and exiting
     {
@@ -23,10 +18,5 @@ public class BubbleRoomCamSwitcher : MonoBehaviour
     {
         //thirdPersonFollowCam.MoveToTopOfPrioritySubqueue();
         bubbleRoomClearShotCam.Priority = 7;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
