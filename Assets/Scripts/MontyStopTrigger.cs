@@ -672,6 +672,7 @@ public class MontyStopTrigger : MonoBehaviour
         }
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
+        ShutDownMontySignsAndDoors();
         yield return new WaitForSeconds(6f);
 
         Debug.Log(this.name + " switch back to playerfollowcam????");//6/20/23 trying to pinpoint when we should call resetjstick
@@ -682,18 +683,30 @@ public class MontyStopTrigger : MonoBehaviour
         if (characterController) characterController.enabled = true;
         characterController.enabled = true;
         camOnTwin.Priority = originalCamOnTwinPriority;
+        // Following 8 lines moved to ShutDownMontySignsAndDoors()
+        //if (mainMontySign) mainMontySign.SetActive(false);
+        //if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
+        //GameObject montyGameBarriers = GameObject.Find("MontyGameBarriers");
+        //if (montyGameBarriers) montyGameBarriers.SetActive(false);
+        //GameObject missed1 = GameObject.Find("Missed1(Clone)");
+        //if (missed1) missed1.SetActive(false);
+        //GameObject missed3 = GameObject.Find("Missed3(Clone)");
+        //if (missed3) missed3.SetActive(false);
+
+        //agent1.speed = agent1OriginalSpeed; //6/14/23 moved up so cam is on twin as it begins walking 
+        //anim1.speed = anim1OriginalSpeed;
+
+    }
+    private void ShutDownMontySignsAndDoors()
+    {
         if (mainMontySign) mainMontySign.SetActive(false);
         if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
-
         GameObject montyGameBarriers = GameObject.Find("MontyGameBarriers");
         if (montyGameBarriers) montyGameBarriers.SetActive(false);
         GameObject missed1 = GameObject.Find("Missed1(Clone)");
         if (missed1) missed1.SetActive(false);
         GameObject missed3 = GameObject.Find("Missed3(Clone)");
         if (missed3) missed3.SetActive(false);
-        //agent1.speed = agent1OriginalSpeed; //6/14/23 moved up so cam is on twin as it begins walking 
-        //anim1.speed = anim1OriginalSpeed;
-
     }
     //IEnumerator WaitSecondsThenSwitchCam(float timeToWait)
     //{
