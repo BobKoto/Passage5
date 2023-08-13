@@ -24,45 +24,21 @@ public class Teleport01 : MonoBehaviour
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         // Debug.Log("hello from teleport01");
     }
-
-    // Update is called once per frame
-    //void Update()
-    //{
-
-    //}
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log("teleport01 sees TriggerENTER " + other.ToString());
-    //    if (!teleportPerformed)
-    //    {
-    //        playerTransform.SetPositionAndRotation(teleportToThisPosition, rotateToThisRotation);
-    //        StartCoroutine(WaitToMove());
-    //      //  teleportPerformed = true;
-    //    }
-    //}
-
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TriggerEnter ... Teleport player to " + teleportPlayerToPosition);
-        playerTransform.position = teleportPlayerToPosition; //original worked but with Jank
-        //var destination = Vector3.Lerp(playerTransform.position, teleportPlayerToPosition, 0.1f);
-        //playerTransform.position = destination;
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("TriggerEnter ... Teleport player to " + teleportPlayerToPosition);
+            playerTransform.position = teleportPlayerToPosition; //original worked but with Jank
+                                                                 //var destination = Vector3.Lerp(playerTransform.position, teleportPlayerToPosition, 0.1f);
+                                                                 //playerTransform.position = destination;
 
-        Physics.SyncTransforms();
-        audioManager.PlayAudio(audioManager.teleport1);
+            Physics.SyncTransforms();
+            audioManager.PlayAudio(audioManager.teleport1);
+        }
+
     }
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (!teleportPerformed)
-    //    {
-    //        Debug.Log("teleport01 sees TriggerSTAY " + other.ToString());
-    //        playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
-    //       // playerCameraRootTransform.Rotate(rotateVector);
 
-    //        // teleportPerformed = true;
-    //    }
-    //}
     private void OnTriggerExit(Collider other)
     {
         Debug.Log("teleport01 sees TriggerEXIT " + other.ToString());
@@ -71,16 +47,6 @@ public class Teleport01 : MonoBehaviour
         StartCoroutine(RotatePlayerCameraRoot());  //doesn't seem to work anyway
     }
 
-    //private void OnCollisionEnter(Collision other)
-    //{
-    //    Debug.Log("teleport01 sees collision " + other.ToString());
-    //    playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
-    //}
-    //private void OnCollisionStay(Collision other)
-    //{
-    //    Debug.Log("teleport01 sees collisionSTAY " + other.ToString());
-    //    playerTransform.SetPositionAndRotation(teleportPlayerToPosition, rotatePlayerToRotation);
-    //}
     IEnumerator RotatePlayerCameraRoot()
     {
         Debug.Log("teleport01/RotatePlayerCameraRoot supposedly SPIN THE CAM?  BEFORE yield");
