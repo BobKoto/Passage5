@@ -14,7 +14,7 @@ namespace StarterAssets
     [RequireComponent(typeof(PlayerInput))]
 #endif
     [System.Serializable]
-    public class PlayerEnteredRelevantTrigger : UnityEvent<int>   //this declaration i guess is needed to accept
+    public class PlayerEnteredRelevantTrigger : UnityEvent<float>   //this declaration i guess is needed to accept
     {                                                             //other scripts Invokes
     }
     public class ThirdPersonController : MonoBehaviour
@@ -160,19 +160,13 @@ namespace StarterAssets
             _characterTargetYaw = transform.eulerAngles.y;  //added 11/27/22 to prevent snap to rot y 0    - seems ok 
                                                             //Debug.Log("ON START _characterTargetYaw = " + _characterTargetYaw + "   tform rot = " + transform.rotation);
 
-            triggerEvent.AddListener(PlayerEnteredTrigger);
+            triggerEvent.AddListener(SetTheCameraAngle);
         }
-        public void PlayerEnteredTrigger(int theTrigger)   //event Invoked by some other script 
+        public void SetTheCameraAngle(float theAngle)   //event Invoked by other scripts that want to set the Cam angle/rotation 
         {
-            Debug.Log("player entered MontyTrigger , even tho we commented 162&163");
-            switch (theTrigger)
-            {
-                case 1:
-                    Debug.Log("player entered MontyTrigger , can we rotate it");
-                    transform.rotation = Quaternion.Euler(0f, 180f, 0.0f);  //rotate the player
-                    _cinemachineTargetYaw = 180f;                           // rotate the Cam
-                    break;
-            }
+            Debug.Log("player entered trigger , rotate it to the new angle " + theAngle + " on the Y axis");
+            transform.rotation = Quaternion.Euler(0f, theAngle, 0.0f);  //rotate the player
+            _cinemachineTargetYaw = theAngle;                           // rotate the Cam
         }
         private void Update()
         {

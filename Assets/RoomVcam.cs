@@ -65,3 +65,41 @@ public class RoomVcam : MonoBehaviour
 //        }
 //    }
 //}
+/*
+using UnityEngine;
+using Cinemachine;
+
+public class CameraPositionBehindTarget : MonoBehaviour
+{
+    public CinemachineVirtualCamera vcam;
+    public Transform followTarget;
+    private Vector3 initialOffset; // Offset from the target's starting position
+    private Quaternion initialRotation; // Rotation offset from the target's starting rotation
+
+    private void Awake()
+    {
+        // Calculate the initial offset and rotation
+        initialOffset = vcam.transform.position - followTarget.position;
+        initialRotation = Quaternion.Inverse(followTarget.rotation) * vcam.transform.rotation;
+    }
+
+    // This method will be called when the camera becomes live
+    public void PositionCameraBehindTarget(ICinemachineCamera previousCamera, ICinemachineCamera newCamera)
+    {
+        // Check if the newly live camera is the VCam we're handling
+        if (newCamera == vcam)
+        {
+            // Calculate the desired camera position behind the target's new position
+            Vector3 desiredPosition = followTarget.position + initialOffset;
+
+            // Calculate the desired camera rotation based on the target's rotation
+            Quaternion desiredRotation = followTarget.rotation * initialRotation;
+
+            // Set the camera's position and rotation to the calculated values
+            vcam.transform.position = desiredPosition;
+            vcam.transform.rotation = desiredRotation;
+        }
+    }
+}
+
+ */
