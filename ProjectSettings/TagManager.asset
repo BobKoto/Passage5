@@ -19,6 +19,7 @@ TagManager:
   - RandomGamePortal
   - Mission
   - PlayButton1
+  - Teleportable
   layers:
   - Default
   - TransparentFX
