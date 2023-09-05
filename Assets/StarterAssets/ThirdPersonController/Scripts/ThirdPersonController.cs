@@ -163,8 +163,8 @@ namespace StarterAssets
             triggerEvent.AddListener(SetTheCameraAngle);
         }
         public void SetTheCameraAngle(float theAngle)   //event Invoked by other scripts that want to set the Cam angle/rotation 
-        {
-            Debug.Log("player entered trigger , rotate it to the new angle " + theAngle + " on the Y axis");
+        {                                               //BK 9/4/23 this method is ok if followed by joystick move input  
+            Debug.Log("THIRDPERSONCONTROLLER rotate player & cam to the new angle " + theAngle + " on the Y axis");
             transform.rotation = Quaternion.Euler(0f, theAngle, 0.0f);  //rotate the player
             _cinemachineTargetYaw = theAngle;                           // rotate the Cam
         }
@@ -210,21 +210,14 @@ namespace StarterAssets
         }
         private void PlayerLookRotation()     //This method added by BK on 9/20/22 - rotate player on look input - called by Update()
         {
-
             // if there is an input and camera position is not fixed
-
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
-                //Debug.Log("_characterTargetYaw = " + _characterTargetYaw +
-                //    "   Before _characterTargetYaw += _input.look.x * deltaTimeMultiplier;");
                 float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;   //IsCurrentDeviceMouse = False on Touch/GamePad 
                 _characterTargetYaw += _input.look.x * deltaTimeMultiplier;
-                //Debug.Log("_characterTargetYaw = " + _characterTargetYaw +
-                //    "after _characterTargetYaw += _input.look.x * deltaTimeMultiplier;");
-                // clamp our rotations so our values are limited 360 degrees
+
                 _characterTargetYaw = ClampAngle(_characterTargetYaw, float.MinValue, float.MaxValue);
                 transform.rotation = Quaternion.Euler(0.0f,_characterTargetYaw, 0.0f);
-               // Debug.Log("_characterTargetYaw = " + _characterTargetYaw);
             }
         }  //END Add Method on 9/20/22 
         private void CameraRotation()
@@ -292,10 +285,8 @@ namespace StarterAssets
             // if there is a move input rotate player when the player is moving
             if (_input.move != Vector2.zero)
             {
-                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
-                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-                    RotationSmoothTime);
+                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +_mainCamera.transform.eulerAngles.y;
+                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
@@ -306,10 +297,10 @@ namespace StarterAssets
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
             // move the player
+
             if (_speed * Time.deltaTime > Time.deltaTime) // added 4/27/23
             {
-                _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
               // Debug.Log(this.name + " doing Move  _speed = " + _speed + "  _speed * Time.deltaTime = " + (_speed * Time.deltaTime));
             }
 
