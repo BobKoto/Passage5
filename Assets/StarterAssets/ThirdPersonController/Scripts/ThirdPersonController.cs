@@ -164,7 +164,7 @@ namespace StarterAssets
         }
         public void SetTheCameraAngle(float theAngle)   //event Invoked by other scripts that want to set the Cam angle/rotation 
         {                                               //BK 9/4/23 this method is ok if followed by joystick move input  
-            Debug.Log("THIRDPERSONCONTROLLER rotate player & cam to the new angle " + theAngle + " on the Y axis");
+           // Debug.Log("THIRDPERSONCONTROLLER rotate player & cam to the new angle " + theAngle + " on the Y axis");
             transform.rotation = Quaternion.Euler(0f, theAngle, 0.0f);  //rotate the player
             _cinemachineTargetYaw = theAngle;                           // rotate the Cam
         }
@@ -174,7 +174,7 @@ namespace StarterAssets
 
             JumpAndGravity();
             GroundedCheck();
-            PlayerLookRotation(); // added on 9/20/22 
+          //  PlayerLookRotation(); // added on 9/20/22 
 
             Move();
 

@@ -20780,7 +20780,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713081666}
-  m_LocalRotation: {x: 0.06716651, y: -0.03395375, z: 0.002287047, w: 0.99716127}
+  m_LocalRotation: {x: 0.06716651, y: -0.033953745, z: 0.0022870465, w: 0.99716127}
   m_LocalPosition: {x: -18.802795, y: 19.00027, z: -1.4989471}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -25547,7 +25547,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 917148886}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 186.64, y: 1.0999999, z: -223.9}
+  m_LocalPosition: {x: 186.64, y: 1.0999999, z: -229.69}
   m_LocalScale: {x: 0.07959612, y: 3.344862, z: 8.533473}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -34956,7 +34956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0033344778
+      value: 0.0033344775
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.x
@@ -59171,14 +59171,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c606adc7806fb14ca6dfbcfa14463e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastDistance: 20
-  raycastInterval: 5
-  transformTranslateDelay: 5
+  raycastDistance: 50
+  raycastInterval: 1
+  transformTranslateDelay: 1
   noColliderInFront: 0
+  debugDistance: 0
   zipButton: {fileID: 1241399956}
   buttonCanvasGroup: {fileID: 0}
   followCamera: {fileID: 824859301}
-  setCamAngle:
+  setCamAndPlayerAngle:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1228386540}
