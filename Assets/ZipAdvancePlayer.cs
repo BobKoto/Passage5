@@ -21,15 +21,25 @@ public class ZipAdvancePlayer : MonoBehaviour
     public PlayerEnteredRelevantTrigger setCamAndPlayerAngle;
     bool startRan;
     float moveDistance;
-
+    float originalTopClamp; //set to +45f so player can look down if "flying" - about 10 units +Y  
+    ThirdPersonController thirdPersonController;
+    
     private void OnEnable()
     {
+        //if (thirdPersonController == null) Debug.LogError("thirdPersonController is null.");   //not if Player is disabled !!!
+        //else Debug.Log("thirdPersonController is NOT Null");
+        //if (!startRan)
+        //{
+        //    originalTopClamp = thirdPersonController.TopClamp;
+        //}
+
         if (startRan) Start();
         //Debug.Log("RayCasting enabled OnEnable ....");
     }
 
     private void Start()
     {
+
         startRan = true;
        // Debug.Log("RayCasting enabled in START()....");
         // Get the CharacterController component
@@ -93,6 +103,15 @@ public class ZipAdvancePlayer : MonoBehaviour
             var minRay = Math.Max(hit.distance, raycastDistance);
 
             Debug.DrawRay(rayOrigin, followCamera.transform.TransformDirection(Vector3.forward) * minRay , Color.yellow, raycastInterval -.5f);
+            //if (thirdPersonController)   //caused stutter?
+            //{
+            //    if (transform.position.y > 9)
+            //    {
+            //        thirdPersonController.TopClamp = 45f;
+            //    }
+            //    else thirdPersonController.TopClamp = originalTopClamp;
+            //}
+
             yield return new WaitForSeconds(raycastInterval);
 
         }
