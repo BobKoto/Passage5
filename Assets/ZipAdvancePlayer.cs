@@ -22,7 +22,7 @@ public class ZipAdvancePlayer : MonoBehaviour
     bool startRan;
     float moveDistance;
     float originalTopClamp; //set to +45f so player can look down if "flying" - about 10 units +Y  
-    ThirdPersonController thirdPersonController;
+    //ThirdPersonController thirdPersonController;
     
     private void OnEnable()
     {

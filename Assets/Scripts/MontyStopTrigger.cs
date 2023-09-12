@@ -80,7 +80,7 @@ public class MontyStopTrigger : MonoBehaviour
     int doorNumberDown, theWinningDoor;
     float originalMoveSpeed, originalSprintSpeed, originalPlayerSpeed;
 
-    ThirdPersonController thirdPersonController;
+    ThirdPersonControllerOriginal thirdPersonController;
     CharacterController characterController;
 
     public PlayerEnteredRelevantTrigger triggerEvent;
@@ -136,7 +136,7 @@ public class MontyStopTrigger : MonoBehaviour
         animMontyGameIntro = montyGameIntro.GetComponent<Animator>();
         animPlayer = playerArmature.GetComponent<Animator>();
 
-        thirdPersonController = playerArmature.GetComponent<ThirdPersonController>();
+        thirdPersonController = playerArmature.GetComponent<ThirdPersonControllerOriginal>();
         characterController = playerArmature.GetComponent<CharacterController>();
         originalMoveSpeed = thirdPersonController.MoveSpeed;
         originalSprintSpeed = thirdPersonController.SprintSpeed;

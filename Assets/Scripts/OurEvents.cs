@@ -7,6 +7,9 @@ using UnityEngine.Events;
 // Here we keep a master list of Events
 
 [System.Serializable]
+public class PlayerEnteredRelevantTrigger : UnityEvent<float> { }
+
+[System.Serializable]
 public class CanvasNextPagePressedEvent : UnityEvent { }
 [System.Serializable]
 public class CloudTextEvent : UnityEvent<int, int, string>{ }
