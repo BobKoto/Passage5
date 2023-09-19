@@ -9,7 +9,7 @@ using StarterAssets;
 public class ZipAdvancePlayer : MonoBehaviour
 {// Component of PlayerArmature    // written by ChatGPT with about 8 prompts over about an hour  & a week to get working 
 
-    public float raycastDistance = 50.0f;
+    public float raycastDistance = 100.0f;
     public float raycastInterval = 1.0f;
     public float transformTranslateDelay = 1.0f;
     public bool noColliderInFront = false; // Set to true if no collider in front
@@ -17,11 +17,12 @@ public class ZipAdvancePlayer : MonoBehaviour
     public Button zipButton; // Reference to the "ZIP->" button
     public CanvasGroup buttonCanvasGroup; // Reference to the button's CanvasGroup
     public CinemachineVirtualCamera followCamera;
-    private CharacterController characterController;
+    //private CharacterController characterController;
     public PlayerEnteredRelevantTrigger setCamAndPlayerAngle;
     bool startRan;
     float moveDistance;
     float originalTopClamp; //set to +45f so player can look down if "flying" - about 10 units +Y  
+    Vector3 rayOriginFixedHeight;
     //ThirdPersonController thirdPersonController;
     
     private void OnEnable()
@@ -43,7 +44,7 @@ public class ZipAdvancePlayer : MonoBehaviour
         startRan = true;
        // Debug.Log("RayCasting enabled in START()....");
         // Get the CharacterController component
-        characterController = GetComponent<CharacterController>();
+       // characterController = GetComponent<CharacterController>();
 
         // Get a reference to the "ZIP->" button
         zipButton = GameObject.Find("ZipButton").GetComponent<Button>();
@@ -60,7 +61,7 @@ public class ZipAdvancePlayer : MonoBehaviour
 
     private void OnZipButtonClick()
     {
-        if (buttonCanvasGroup.alpha == 1)
+        if (buttonCanvasGroup.alpha == 0) return;
         {
             StartCoroutine (ZipPlayerForward());
             // Hide the button again
@@ -77,9 +78,9 @@ public class ZipAdvancePlayer : MonoBehaviour
             Vector3 rayOrigin = followCamera.transform.position - halfHeightOfCamera;
             Vector3 rayDirection = followCamera.transform.forward;
             //Debug.Log("rayDirection = " + rayDirection);
-
+            rayOriginFixedHeight = new Vector3(rayOrigin.x, transform.position.y+2 , rayOrigin.z);
             // Perform the raycast
-            if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, raycastDistance))
+            if (Physics.Raycast(rayOriginFixedHeight, rayDirection, out RaycastHit hit, raycastDistance))
             {
                 // A collider was hit   10 is cam 5f behind player + 5f for minimum zipable  
                 if (hit.distance <= 10f) buttonCanvasGroup.alpha = 0; // Hide the button
@@ -102,7 +103,7 @@ public class ZipAdvancePlayer : MonoBehaviour
             }
             var minRay = Math.Max(hit.distance, raycastDistance);
 
-            Debug.DrawRay(rayOrigin, followCamera.transform.TransformDirection(Vector3.forward) * minRay , Color.yellow, raycastInterval -.5f);
+          Debug.DrawRay(rayOriginFixedHeight, followCamera.transform.TransformDirection(Vector3.forward) * minRay , Color.yellow, raycastInterval -.5f);
             //if (thirdPersonController)   //caused stutter?
             //{
             //    if (transform.position.y > 9)
@@ -118,12 +119,18 @@ public class ZipAdvancePlayer : MonoBehaviour
     }
     private IEnumerator ZipPlayerForward()
     {
-        // Debug.Log("transformForward * 4 is  = " + followCamera.transform.forward + " * " + moveDistance  + " moveDistance");
+        Debug.Log("transform.Translate(Vector3.forward *  moveDistance  + " + moveDistance + "  logRayOrigin = " + rayOriginFixedHeight);
+
         setCamAndPlayerAngle.Invoke(followCamera.transform.eulerAngles.y);    //BK 9/4/23 if this works we can just call move once?
         yield return new WaitForSeconds(transformTranslateDelay);
         transform.Translate(Vector3.forward * moveDistance);
     }
-
+    private void OnDrawGizmos()
+    {
+        // Draw a raycast Gizmo from the GameObject's position
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(rayOriginFixedHeight, followCamera.transform.forward * raycastDistance);
+    }
     private void OnDisable()
     {
        // Debug.Log("RayCasting DISABLED OnDisable....");
