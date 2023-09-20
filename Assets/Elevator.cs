@@ -8,17 +8,17 @@ public class Elevator : MonoBehaviour
     public float ascentSpeed = 1.5f;
     public float ascentIncrement = .1f;
     public float elevatorFloorPosition = .1f;
-    bool elevatorAtTop, elevatorLowered, elevatorIsRising, elevatorIsGrounded;
+    bool elevatorAtTop, elevatorIsRising, elevatorIsGrounded;
     Coroutine raiseCoroutine, lowerCoroutine;
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(" Hello from Elevator ...........  ");
+      //  Debug.Log(" Hello from Elevator ...........  ");
         elevatorIsGrounded = true;
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(" Elevator ENTERED ...........by  " + other.gameObject);
+      //  Debug.Log(" Elevator ENTERED ...........by  " + other.gameObject);
         if (!other.gameObject.CompareTag("Player")) return;
         if (elevatorIsGrounded)
         {
@@ -27,7 +27,7 @@ public class Elevator : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log(" Elevator EXITED...........by  " + other.gameObject);
+     //   Debug.Log(" Elevator EXITED...........by  " + other.gameObject);
         if (!other.gameObject.CompareTag("Player")) return;
         if (elevatorAtTop)
         {
@@ -40,23 +40,10 @@ public class Elevator : MonoBehaviour
             elevatorIsRising = false;
             lowerCoroutine = StartCoroutine(LowerElevator());
         }
-        //{
-        //    if (raiseCoroutine != null && !raiseCoroutine.Equals(null))
-        //    {
-        //        Debug.Log("RaiseElevator is running......Stopping ");
-        //        StopCoroutine(raiseCoroutine);
-        //        //Debug.Log(" Player is on Elevator...........");
-        //        if (!elevatorLowered)
-        //        {
-
-        //        }
-        //        // elevatorLowered = true;
-        //    }
-        //}
     }
     IEnumerator RaiseElevator()
     {
-        Debug.Log("Raise elevator Started...");
+      //  Debug.Log("Raise elevator Started...");
         elevatorIsRising = true;
         elevatorIsGrounded = false;
         while (transform.position.y < elevatorHeight)
@@ -67,21 +54,19 @@ public class Elevator : MonoBehaviour
         elevatorAtTop = true;
         elevatorIsRising = false;
         //elevatorIsGrounded = false;
-        Debug.Log("Raise elevator finished...");
+     //   Debug.Log("Raise elevator finished...");
     }
     IEnumerator LowerElevator()
     {
-        Debug.Log("Lower elevator Started...");
+      //  Debug.Log("Lower elevator Started...");
         elevatorAtTop = false;
         while (transform.position.y > elevatorFloorPosition)
         {
             transform.Translate(Vector3.down * Time.deltaTime * ascentSpeed, Space.World);
             yield return new WaitForEndOfFrame();  //WaitForSeconds(ascentIncrement);
         }
-        //elevatorLowered = false;
-
         elevatorIsGrounded = true;
-        Debug.Log("Lower elevator finished...");
+     //   Debug.Log("Lower elevator finished...");
     }
     private void OnDisable()
     {
