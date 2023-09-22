@@ -17,12 +17,13 @@ public class ZipAdvancePlayer : MonoBehaviour
     public Button zipButton; // Reference to the "ZIP->" button
     public CanvasGroup buttonCanvasGroup; // Reference to the button's CanvasGroup
     public CinemachineVirtualCamera followCamera;
+    public GameObject crossHair;
     //private CharacterController characterController;
     public PlayerEnteredRelevantTrigger setCamAndPlayerAngle;
     bool startRan;
-    float moveDistance;
+    float zipDistance;
     float originalTopClamp; //set to +45f so player can look down if "flying" - about 10 units +Y  
-    Vector3 rayOriginFixedHeight;
+    Vector3 rayOriginFixedHeight, crossHairPosition;
     //ThirdPersonController thirdPersonController;
     
     private void OnEnable()
@@ -54,6 +55,8 @@ public class ZipAdvancePlayer : MonoBehaviour
         // Add an onClick listener to the button
         zipButton.onClick.AddListener(OnZipButtonClick);
 
+        crossHairPosition = followCamera.transform.position;
+
         // Start the coroutine to perform raycasts at intervals
         StartCoroutine(RaycastCoroutine());
         Debug.Log("ZipAdvancePlayer started coroutine");
@@ -71,40 +74,59 @@ public class ZipAdvancePlayer : MonoBehaviour
 
     private IEnumerator RaycastCoroutine()
     {
+
         while (true)
         {
             // Calculate the ray's origin and direction from the Cinemachine camera
+            float minRay =0;
             Vector3 halfHeightOfCamera = new Vector3 (0f, followCamera.transform.position.y / 2, 0f);
             Vector3 rayOrigin = followCamera.transform.position - halfHeightOfCamera;
-            Vector3 rayDirection = followCamera.transform.forward;
+            Vector3 rayDirection = new Vector3(followCamera.transform.forward.x, 0, followCamera.transform.forward.z) ;
+            if (debugDistance) Debug.Log("rayDirection = " + rayDirection);
             //Debug.Log("rayDirection = " + rayDirection);
-            rayOriginFixedHeight = new Vector3(rayOrigin.x, transform.position.y+2 , rayOrigin.z);
+            rayOriginFixedHeight = new Vector3(rayOrigin.x, transform.position.y + 2, rayOrigin.z);
             // Perform the raycast
             if (Physics.Raycast(rayOriginFixedHeight, rayDirection, out RaycastHit hit, raycastDistance))
             {
                 // A collider was hit   10 is cam 5f behind player + 5f for minimum zipable  
-                if (hit.distance <= 10f) buttonCanvasGroup.alpha = 0; // Hide the button
-                if (hit.distance > 10f)  // we can enable zipping
+                if (hit.distance <= 10f)
                 {
-                    buttonCanvasGroup.alpha = 1; // Show the button
-                    moveDistance = hit.distance - 8f;  //raycastDistance less (distance from cam + 3f buffer )
-                    if (debugDistance)  Debug.Log("Distance to collider: " + hit.distance + "  hit " + hit.collider);
+                    buttonCanvasGroup.alpha = 0; // Hide the button
+                    crossHair.SetActive(false);
+
                 }
 
+                if (hit.distance > 10f)  // we can enable zipping
+                {
+                    if (!crossHair.activeSelf) crossHair.SetActive(true);
+                    buttonCanvasGroup.alpha = 1; // Show the button
+                    zipDistance = hit.distance - 8f;  //raycastDistance less (distance from cam + 3f buffer )
+                    if (debugDistance)  Debug.Log("Distance to collider: " + hit.distance + "  hit " + hit.collider);
+                    crossHair.transform.position = hit.point;
+                }
             }
             else
             {
 
                 // No collider hit  - So set moveDistance to move player the entire raycastDistance less (distance from cam + 3f buffer )
-                moveDistance = raycastDistance -8;
-                buttonCanvasGroup.alpha = 1; // Show the button
-               // Debug.Log("No collider hit   distance " + hit.distance);
-               // Debug.DrawRay(transform.position + characterController.center, transform.TransformDirection(Vector3.forward) * (hit.distance +5), Color.yellow, 4f);
-            }
-            var minRay = Math.Max(hit.distance, raycastDistance);
+                zipDistance = raycastDistance - 8;
+                if (!crossHair.activeSelf) crossHair.SetActive(true);
+                minRay = Math.Max(hit.distance, raycastDistance);
+                if (minRay == raycastDistance)
+                {
 
-          Debug.DrawRay(rayOriginFixedHeight, followCamera.transform.TransformDirection(Vector3.forward) * minRay , Color.yellow, raycastInterval -.5f);
-            //if (thirdPersonController)   //caused stutter?
+                    crossHair.transform.position = followCamera.transform.position + followCamera.transform.forward * minRay;
+                }
+                buttonCanvasGroup.alpha = 1; // Show the button
+                                             // Debug.Log("No collider hit   distance " + hit.distance);
+                                             // Debug.DrawRay(transform.position + characterController.center, transform.TransformDirection(Vector3.forward) * (hit.distance +5), Color.yellow, 4f);
+            }
+
+
+            //   crossHairPosition = new Vector3(followCamera.transform.position.x, followCamera.transform.position.y, followCamera.transform.position.z + minRay);
+            //   crossHair.transform.position = crossHairPosition;
+            Debug.DrawRay(rayOriginFixedHeight, followCamera.transform.TransformDirection(Vector3.forward) * minRay , Color.yellow, raycastInterval -.5f);
+            //if (thirdPersonController)   //caused stutter? probably not 
             //{
             //    if (transform.position.y > 9)
             //    {
@@ -113,17 +135,17 @@ public class ZipAdvancePlayer : MonoBehaviour
             //    else thirdPersonController.TopClamp = originalTopClamp;
             //}
 
-            yield return new WaitForSeconds(raycastInterval);
+            yield return new WaitForSeconds(raycastInterval);   //try return null ? maybe better and less GC ?
 
         }
     }
     private IEnumerator ZipPlayerForward()
     {
-        Debug.Log("transform.Translate(Vector3.forward *  moveDistance  + " + moveDistance + "  logRayOrigin = " + rayOriginFixedHeight);
+        Debug.Log("transform.Translate(Vector3.forward *  moveDistance  + " + zipDistance + "  logRayOrigin = " + rayOriginFixedHeight);
 
         setCamAndPlayerAngle.Invoke(followCamera.transform.eulerAngles.y);    //BK 9/4/23 if this works we can just call move once?
         yield return new WaitForSeconds(transformTranslateDelay);
-        transform.Translate(Vector3.forward * moveDistance);
+        transform.Translate(Vector3.forward * zipDistance);
     }
     private void OnDrawGizmos()
     {
