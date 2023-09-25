@@ -74,7 +74,6 @@ public class ZipAdvancePlayer : MonoBehaviour
 
     private IEnumerator RaycastCoroutine()
     {
-
         while (true)
         {
             // Calculate the ray's origin and direction from the Cinemachine camera
@@ -93,9 +92,7 @@ public class ZipAdvancePlayer : MonoBehaviour
                 {
                     buttonCanvasGroup.alpha = 0; // Hide the button
                     crossHair.SetActive(false);
-
                 }
-
                 if (hit.distance > 10f)  // we can enable zipping
                 {
                     if (!crossHair.activeSelf) crossHair.SetActive(true);
@@ -105,27 +102,18 @@ public class ZipAdvancePlayer : MonoBehaviour
                     crossHair.transform.position = hit.point;
                 }
             }
-            else
+            else   // No collider hit  - So set zipDistance to the entire raycastDistance// maybe less (distance from cam + 3f buffer )
             {
-
-                // No collider hit  - So set moveDistance to move player the entire raycastDistance less (distance from cam + 3f buffer )
-                zipDistance = raycastDistance - 8;
                 if (!crossHair.activeSelf) crossHair.SetActive(true);
-                minRay = Math.Max(hit.distance, raycastDistance);
-                if (minRay == raycastDistance)
-                {
-
-                    crossHair.transform.position = followCamera.transform.position + followCamera.transform.forward * minRay;
-                }
+               // crossHair.transform.position = followCamera.transform.position + followCamera.transform.forward * raycastDistance;
+                crossHair.transform.position = followCamera.transform.position + rayDirection * raycastDistance;
+                zipDistance = raycastDistance;
                 buttonCanvasGroup.alpha = 1; // Show the button
-                                             // Debug.Log("No collider hit   distance " + hit.distance);
-                                             // Debug.DrawRay(transform.position + characterController.center, transform.TransformDirection(Vector3.forward) * (hit.distance +5), Color.yellow, 4f);
             }
+            minRay = Math.Max(hit.distance, raycastDistance);
+            //Debug.DrawRay(rayOriginFixedHeight, followCamera.transform.TransformDirection(Vector3.forward) * minRay , Color.yellow, raycastInterval -.5f);
+            Debug.DrawRay(rayOriginFixedHeight, rayDirection * minRay, Color.yellow, raycastInterval - .5f);
 
-
-            //   crossHairPosition = new Vector3(followCamera.transform.position.x, followCamera.transform.position.y, followCamera.transform.position.z + minRay);
-            //   crossHair.transform.position = crossHairPosition;
-            Debug.DrawRay(rayOriginFixedHeight, followCamera.transform.TransformDirection(Vector3.forward) * minRay , Color.yellow, raycastInterval -.5f);
             //if (thirdPersonController)   //caused stutter? probably not 
             //{
             //    if (transform.position.y > 9)
@@ -134,14 +122,12 @@ public class ZipAdvancePlayer : MonoBehaviour
             //    }
             //    else thirdPersonController.TopClamp = originalTopClamp;
             //}
-
             yield return new WaitForSeconds(raycastInterval);   //try return null ? maybe better and less GC ?
-
         }
     }
     private IEnumerator ZipPlayerForward()
     {
-        Debug.Log("transform.Translate(Vector3.forward *  moveDistance  + " + zipDistance + "  logRayOrigin = " + rayOriginFixedHeight);
+        Debug.Log("transform.Translate(Vector3.forward *  zipDistance  + " + zipDistance + "  logRayOrigin = " + rayOriginFixedHeight);
 
         setCamAndPlayerAngle.Invoke(followCamera.transform.eulerAngles.y);    //BK 9/4/23 if this works we can just call move once?
         yield return new WaitForSeconds(transformTranslateDelay);
@@ -151,7 +137,8 @@ public class ZipAdvancePlayer : MonoBehaviour
     {
         // Draw a raycast Gizmo from the GameObject's position
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(rayOriginFixedHeight, followCamera.transform.forward * raycastDistance);
+        Vector3 rayDirection = new Vector3(followCamera.transform.forward.x, 0, followCamera.transform.forward.z);
+        Gizmos.DrawRay(rayOriginFixedHeight, rayDirection * raycastDistance);
     }
     private void OnDisable()
     {
