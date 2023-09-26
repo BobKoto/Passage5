@@ -15,7 +15,7 @@ public class Missions : MonoBehaviour
         missions = GameObject.FindGameObjectsWithTag("Mission");
         for (int i = 0; i < missions.Length; i++)
         {
-            Debug.Log(this.name + "  " + missions[i].name);
+           // Debug.Log(this.name + "  " + missions[i].name);
             missions[i].SetActive(false);
         }
         randomlyPickedMission = GetRandomMission(numberOfMissions);
@@ -23,7 +23,7 @@ public class Missions : MonoBehaviour
     int GetRandomMission(int missionsToChooseFrom)
     {
         int xRandom = Random.Range(0, missionsToChooseFrom);
-        Debug.Log("Mission randomly picked is " + xRandom);
+     //   Debug.Log("Mission randomly picked is " + xRandom);
         return xRandom;
     }
 }

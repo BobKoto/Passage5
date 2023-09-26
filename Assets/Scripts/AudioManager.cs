@@ -25,6 +25,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip tick;
     public AudioClip theetone;
     public AudioClip teleport1;
+    public AudioClip compVoice0;
+    public AudioClip compVoice1;
+    public AudioClip compVoice2;
+    public AudioClip compVoice3;
+    public AudioClip laser1;
 
     public AudioSource audioSource;
 
@@ -32,6 +37,7 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+       // PlayAudio(tick, .1f); //just to see if the timeout bug (not stopping ) only affects 1st sound played - no help 
     }
     public void PlayAudio(AudioClip clip)
     {
@@ -51,7 +57,7 @@ public class AudioManager : MonoBehaviour
     public void PlayAudio(AudioClip clip, float playTimeStop)
     {
         audioSource.clip = clip;
-        //Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
+        Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
 
         audioSource.loop = false;
         audioSource.Play();
@@ -71,6 +77,6 @@ public class AudioManager : MonoBehaviour
     {
          yield return new WaitForSeconds(stopAfter);
         audioSource.Stop();
-        //Debug.Log("AUDIO STOPPED after ................" + stopAfter + " seconds");
+       Debug.Log("AUDIO STOPPED after ................" + stopAfter + " seconds");
     }
 }

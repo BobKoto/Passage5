@@ -41,7 +41,18 @@ public class TextCloudHandler : MonoBehaviour
     {
         cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
         textCloud.SetActive(true);
-        audioManager.PlayAudio(audioManager.strom, 1f); //here maybe we can look for spaces in the string to adjust audio length
+        int randomVoice = Random.Range(0, 4);  //As per doc this returns 0,1,2 or 3  (not 4)
+
+        Debug.Log("Random audio = " + randomVoice);
+        switch (randomVoice)
+        {
+           case 0: audioManager.PlayAudio(audioManager.compVoice0, 1f); break;
+           case 1: audioManager.PlayAudio(audioManager.compVoice1, 1f); break;
+           case 2: audioManager.PlayAudio(audioManager.compVoice2, 1f); break;
+           case 3: audioManager.PlayAudio(audioManager.compVoice3, 1f); break;
+           default:break;
+        }
+       // audioManager.PlayAudio(audioManager.compVoice0, 1f); //here maybe we can look for spaces in the string to adjust audio length
         switch ((CloudBehavior)cloudBehavior)
         {
             case CloudBehavior.followTimeOut:

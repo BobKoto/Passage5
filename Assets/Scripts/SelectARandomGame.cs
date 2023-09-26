@@ -28,10 +28,10 @@ public class SelectARandomGame: MonoBehaviour
 
         randomPortalsGenerator = FindObjectOfType<SetRandomPortals>();
         randomNumbers = randomPortalsGenerator.GetRandomNumbers(numberOfPortals);
-        foreach (int number in randomNumbers)
-        {
-            Debug.Log("random portal = " + number);
-        }
+        //foreach (int number in randomNumbers)
+        //{
+        //    Debug.Log("random portal = " + number);
+        //}
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -46,7 +46,7 @@ public class SelectARandomGame: MonoBehaviour
     void DisableThePortals()   //this should be temporary
     {
         teleportals = GameObject.FindGameObjectsWithTag("RandomGamePortal");
-        Debug.Log("found " + teleportals.Length + " portals for the random game ...............");
+      //  Debug.Log("found " + teleportals.Length + " portals for the random game ...............");
         for (int i = 0; i <= teleportals.Length -1; i++)
         {
             teleportals[i].SetActive(false);
