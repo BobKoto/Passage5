@@ -37,16 +37,13 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-       // PlayAudio(tick, .1f); //just to see if the timeout bug (not stopping ) only affects 1st sound played - no help 
     }
     public void PlayAudio(AudioClip clip)
     {
         audioSource.clip = clip;
-        //Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
         audioSource.loop = false;
         audioSource.Play();
         if (clip.name == "dramaCut2") StartCoroutine(SendEventWhenAudioFinished(audioSource));  //until we think of a better way
-      //  else Debug.Log("clip.name is " + clip.name);
     }
     public void PlayAudio(AudioClip clip, bool loop)
     {
@@ -57,11 +54,15 @@ public class AudioManager : MonoBehaviour
     public void PlayAudio(AudioClip clip, float playTimeStop)
     {
         audioSource.clip = clip;
-        Debug.Log("audioSource.clip Length is " + audioSource.clip.length + " seconds   Clip = " + audioSource.clip.name);
-
         audioSource.loop = false;
+        //audioSource.time = 4;
         audioSource.Play();
         StartCoroutine(StopAudioOnPlayTimeStop(audioSource, playTimeStop));
+    }
+    IEnumerator StopAudioOnPlayTimeStop(AudioSource audioSource, float stopAfter)
+    {
+        yield return new WaitForSeconds(stopAfter);
+        audioSource.Stop();     
     }
     IEnumerator SendEventWhenAudioFinished(AudioSource thisClip)
     {
@@ -69,14 +70,7 @@ public class AudioManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
         }
-        //Debug.Log("AUDIO FINISHED................" + thisClip + " now Invoke event.....");
         //Broadcast an event here like audioClipFinishedEvent.Invoke();
         audioClipFinishedEvent.Invoke();
-    }
-    IEnumerator StopAudioOnPlayTimeStop(AudioSource audioSource, float stopAfter)
-    {
-         yield return new WaitForSeconds(stopAfter);
-        audioSource.Stop();
-       Debug.Log("AUDIO STOPPED after ................" + stopAfter + " seconds");
     }
 }

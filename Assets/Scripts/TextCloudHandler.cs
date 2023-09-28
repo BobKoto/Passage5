@@ -34,6 +34,8 @@ public class TextCloudHandler : MonoBehaviour
             m_CloudTextExtinguishedEvent = new CloudTextExtinguishedEvent();
 
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        //audioManager.PlayAudio(audioManager.tick, .09f);
+
         if (menuButton) menuButton.SetActive(false);
         if (lightButton) lightButton.SetActive(false);
     }
@@ -43,7 +45,7 @@ public class TextCloudHandler : MonoBehaviour
         textCloud.SetActive(true);
         int randomVoice = Random.Range(0, 4);  //As per doc this returns 0,1,2 or 3  (not 4)
 
-        Debug.Log("Random audio = " + randomVoice);
+        //Debug.Log("Random audio = " + randomVoice);
         switch (randomVoice)
         {
            case 0: audioManager.PlayAudio(audioManager.compVoice0, 1f); break;

@@ -2,6 +2,7 @@ using System.Collections;
 //using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.UI;
 //using UnityEngine.Events;
 
 public class PlayerCloneAsNpcIntro : MonoBehaviour
@@ -25,6 +26,8 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     [Header("The UI stuff as GameObjects")]
     public GameObject nextPage;
     public GameObject nowPlay;
+    public GameObject startAvatarIntro;
+    public CanvasGroup imageCanvasGroup; // Reference to the button's CanvasGroup
 
     const string playerCloneAsNPCSpeaks1 = "#Hello. Pardon the #'s. \n#A former employer.";
     const string playerCloneAsNPCSpeaks2 = "#My new job is yours to figure out.\n #Lead on!";
@@ -33,6 +36,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
    // public bool nextPagePressed; //TEMP to see in editor at runtime  - put back on next line
     bool nextPagePressed, waitingNextPagePress, waitingForTextExtinguishEvent, testExtinguishedReceived;
     AudioManager audioManager;
+   // Color imageToFade;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,9 +61,28 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
         if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
+        // StartCoroutine(Intro());
+        imageCanvasGroup = startAvatarIntro.GetComponent<CanvasGroup>();
+    }
+    public void OnStartAvatarIntroButtonPress()
+    {
+
+       // imageToFade = startAvatarIntro.GetComponent<Image>().color;
+        StartCoroutine(FadeImage());
         StartCoroutine(Intro());
     }
-
+    IEnumerator FadeImage()
+    {
+        float alphaSetting = 1f;
+        while (alphaSetting > 0)
+        {
+            alphaSetting -= .1f;
+            imageCanvasGroup.alpha = alphaSetting;
+            yield return new WaitForSeconds(.1f);
+        }
+        startAvatarIntro.SetActive(false);
+        yield return null;
+    }
     IEnumerator Intro()
     {
       //  Debug.Log(" PlayerCloneAsNpcIntro Execute IEnumerator Intro(float duration)");
