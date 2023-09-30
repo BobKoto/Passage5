@@ -66,13 +66,13 @@ public class MontyStopTrigger : MonoBehaviour
 
     [Header("The Now Play Sign and NextPage button aka The UI stuff as GameObjects")]
     public GameObject nextPage;
-    public GameObject nowPlay;
+    //public GameObject nowPlay;
 
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick, playerPickedWinner, doorResultsShowing;
    // bool ignoreNextPagePress; //, nextPagePressed;   //5/31/23 nextPagePressed not used //6/1/23 neither is ignoreNextPagePress
     bool waitingForTextExtinguishEvent, waitingForNextPagePressEvent;
-
+    public static bool evilTwinSpeaking;
     public static bool montyGameAllowDoorTouch;   // 6/3/23 leave this as only public static   (getter/setter instead?)
     //bool twinActivated; //,  montyGameAllowDoorTouch ;     //evilTwinActivated, goodTwinActivated,montyGameActive,// 6/4/23 montyGameEnded,
     bool montyDoorDownEventReceived, montyDramaAudioFinishedEventReceived;
@@ -189,23 +189,15 @@ public class MontyStopTrigger : MonoBehaviour
     private void PlayTheMontyGame()  //Called by LockPlayerInTheMontyGameTriggerArea() 
     {
         //Here we need to turn off PlayBox and inputcontrols - then enable NextPage
-
-
         thirdPersonController.MoveSpeed = 0;  
         thirdPersonController.SprintSpeed = 0;
         thirdPersonController.enabled = false;
         animPlayer.speed = 0;
         if (characterController) characterController.enabled = false;
         if (inputControls) inputControls.SetActive(false);
-
-        if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(true);
-      //  Debug.Log("PlayTheMontyGame() set  montyGameActive = true AND Wait for user action like 'next page' ");
-        // m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);   //The Listener get removed every occurence
         waitingForNextPagePressEvent = true;
-       // montyGameActive = true;   //Now we just wait for a user action like "nextPage"  //6/4/23
         montyGameState = MontyGameState.MontyGameInProgress;  // 6/3/23 in prep to replace montyGameActive and other bools to track game State 
-
         montyGameAllowDoorTouch = true;
     }
     public void OnCloudTextExtinguishedEvent()
@@ -256,21 +248,11 @@ public class MontyStopTrigger : MonoBehaviour
                 //if (nextPage) nextPage.SetActive(false);  //6/4/23
                 montyGameCam.Priority = originalMontyGameCamPriority;  //switch cam to the twin ? my own invention of confusion :{
                 Debug.Log("reactivate  player....................... MontyGameState = " + montyGameState + " camOnTwin priority = " + camOnTwin.Priority);
-                //thirdPersonController.enabled = true;
-                //CallResetJoystick();
-                //thirdPersonController.SprintSpeed = originalSprintSpeed;
-                //animPlayer.speed = originalPlayerSpeed;
-                //if (characterController) characterController.enabled = true;
-                //characterController.enabled = true;
-               // montyGameEnded = twinActivated;     // (evilTwinActivated || goodTwinActivated);  //5/27/23  //6/4/23
-                                                    // StartCoroutine(WaitSecondsThenSwitchCam(1.5f));   //6/3/23 moved to dialogue case 
                 break;
             default: Debug.Log("switch (montyGameState) got ??? state");
                 break;
         }
-
     }
-
     private void CallResetJoystick()
     {
       //  Debug.Log("MontyST CallResetJoystick()    doing SendMessage....");
@@ -610,14 +592,15 @@ public class MontyStopTrigger : MonoBehaviour
         StartCoroutine(ZoomTwinCam());
         yield return new WaitUntil(() => montyDoorDownEventReceived);  //every frame checked??? could be better
         yield return new WaitForSeconds(2f);
-
         if (goodTwinActivated)    //the true parameter causes TTC to set nextPage active
         {
             TellTextCloud(goodTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
         else
         {
+            evilTwinSpeaking = true;
             TellTextCloud(evilTwinSpeaks1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+            evilTwinSpeaking = false;
         }
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
         camOnTwin.Priority = originalCamOnTwinPriority;
@@ -644,7 +627,9 @@ public class MontyStopTrigger : MonoBehaviour
         }
         else
         {
+            evilTwinSpeaking = true;
             TellTextCloud(evilTwinSpeaks2, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+            evilTwinSpeaking = false;
         }
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
         camOnTwin.Priority = originalCamOnTwinPriority;
@@ -668,14 +653,16 @@ public class MontyStopTrigger : MonoBehaviour
         }
         else
         {
+            evilTwinSpeaking = true;
             TellTextCloud(evilTwinSpeaks3);
+            evilTwinSpeaking = false;
         }
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
         ShutDownMontySignsAndDoors();
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(3f);
 
-        Debug.Log(this.name + " switch back to playerfollowcam????");//6/20/23 trying to pinpoint when we should call resetjstick
+        //Debug.Log(this.name + " switch back to playerfollowcam????");//6/20/23 trying to pinpoint when we should call resetjstick
         thirdPersonController.enabled = true;
         CallResetJoystick();
         thirdPersonController.SprintSpeed = originalSprintSpeed;
@@ -683,19 +670,6 @@ public class MontyStopTrigger : MonoBehaviour
         if (characterController) characterController.enabled = true;
         characterController.enabled = true;
         camOnTwin.Priority = originalCamOnTwinPriority;
-        // Following 8 lines moved to ShutDownMontySignsAndDoors()
-        //if (mainMontySign) mainMontySign.SetActive(false);
-        //if (montyDoorsAndBoxes) montyDoorsAndBoxes.SetActive(false);
-        //GameObject montyGameBarriers = GameObject.Find("MontyGameBarriers");
-        //if (montyGameBarriers) montyGameBarriers.SetActive(false);
-        //GameObject missed1 = GameObject.Find("Missed1(Clone)");
-        //if (missed1) missed1.SetActive(false);
-        //GameObject missed3 = GameObject.Find("Missed3(Clone)");
-        //if (missed3) missed3.SetActive(false);
-
-        //agent1.speed = agent1OriginalSpeed; //6/14/23 moved up so cam is on twin as it begins walking 
-        //anim1.speed = anim1OriginalSpeed;
-
     }
     private void ShutDownMontySignsAndDoors()
     {
@@ -708,11 +682,6 @@ public class MontyStopTrigger : MonoBehaviour
         GameObject missed3 = GameObject.Find("Missed3(Clone)");
         if (missed3) missed3.SetActive(false);
     }
-    //IEnumerator WaitSecondsThenSwitchCam(float timeToWait)
-    //{
-    //    yield return new WaitForSeconds(timeToWait);
-    //    camOnTwin.Priority = originalCamOnTwinPriority;  // disable the camOnTwin and revert to follow cam
-    //}
     private IEnumerator ZoomTwinCam()  //added 5/22/23 to consolidate Good and Evil Twin cam zoom ops
     {
         var originalFOV = camOnTwin.m_Lens.FieldOfView;

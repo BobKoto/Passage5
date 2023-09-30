@@ -47,7 +47,7 @@ public class Teleport01 : MonoBehaviour
             }
             else
             {
-                Debug.Log("TriggerEnter ... Teleport something ELSE to " + teleportPlayerToPosition + " Other xform is " + otherTransform);
+               // Debug.Log("TriggerEnter ... Teleport something ELSE to " + teleportPlayerToPosition + " Other xform is " + otherTransform);
                 otherTransform.position = teleportPlayerToPosition;
             }
 

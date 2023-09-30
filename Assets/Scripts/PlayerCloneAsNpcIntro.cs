@@ -63,6 +63,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         if (nextPage) nextPage.SetActive(false);
         // StartCoroutine(Intro());
         imageCanvasGroup = startAvatarIntro.GetComponent<CanvasGroup>();
+        if (startAvatarIntro) startAvatarIntro.SetActive(true);
     }
     public void OnStartAvatarIntroButtonPress()
     {
@@ -116,13 +117,13 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         yield return new WaitUntil(() => nextPagePressed); //7/3/23 
         nextPagePressed = false; //7/4/23 keep it tidy even tho we may not use it again 
         TellTextCloud(2,playerCloneAsNPCSpeaks3);
-        playerCloneAsNPC.SetActive(false); //7/3/23 TIL Setting this false calls OnDisable() then continues to run! it killed this coroutine... 
         waitingNextPagePress = false;
         if (nextPage) nextPage.SetActive(false);           //7/3/23 
 
        // if (nowPlay) nowPlay.SetActive(true);  //7/3/23 need a better prompt for player to move robot forward
-        audioManager.PlayAudio(audioManager.clipapert);
+        //audioManager.PlayAudio(audioManager.clipapert);
         if (inputControls) inputControls.SetActive(true);
+        playerCloneAsNPC.SetActive(false); //7/3/23 TIL Setting this false calls OnDisable() then continues to run! it killed this coroutine... 
 
     }
     void TellTextCloud(int timeout, string caption) => m_CloudTextEvent.Invoke(5, timeout, caption);  //(int cloudBehavior, int cloudTimeout, string _caption)

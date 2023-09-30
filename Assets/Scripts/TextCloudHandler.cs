@@ -46,6 +46,11 @@ public class TextCloudHandler : MonoBehaviour
         int randomVoice = Random.Range(0, 4);  //As per doc this returns 0,1,2 or 3  (not 4)
 
         //Debug.Log("Random audio = " + randomVoice);
+        if (MontyStopTrigger.evilTwinSpeaking)
+        {
+            audioManager.PlayAudio(audioManager.strom, 1f);  //play evilTwin's voice
+        }
+        else //play voice of goodTwin or our player
         switch (randomVoice)
         {
            case 0: audioManager.PlayAudio(audioManager.compVoice0, 1f); break;

@@ -24,8 +24,9 @@ public class ZipAdvancePlayer : MonoBehaviour
     float zipDistance;
     float originalTopClamp; //set to +45f so player can look down if "flying" - about 10 units +Y  
     Vector3 rayOriginFixedHeight, crossHairPosition;
+    AudioManager audioManager;
     //ThirdPersonController thirdPersonController;
-    
+
     private void OnEnable()
     {
         //if (thirdPersonController == null) Debug.LogError("thirdPersonController is null.");   //not if Player is disabled !!!
@@ -41,7 +42,7 @@ public class ZipAdvancePlayer : MonoBehaviour
 
     private void Start()
     {
-
+        if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         startRan = true;
        // Debug.Log("RayCasting enabled in START()....");
         // Get the CharacterController component
@@ -127,10 +128,11 @@ public class ZipAdvancePlayer : MonoBehaviour
     }
     private IEnumerator ZipPlayerForward()
     {
-        Debug.Log("transform.Translate(Vector3.forward *  zipDistance  + " + zipDistance + "  logRayOrigin = " + rayOriginFixedHeight);
+        //Debug.Log("transform.Translate(Vector3.forward *  zipDistance  + " + zipDistance + "  logRayOrigin = " + rayOriginFixedHeight);
 
         setCamAndPlayerAngle.Invoke(followCamera.transform.eulerAngles.y);    //BK 9/4/23 if this works we can just call move once?
         yield return new WaitForSeconds(transformTranslateDelay);
+        audioManager.PlayAudio(audioManager.WHOOSH);
         transform.Translate(Vector3.forward * zipDistance);
     }
     private void OnDrawGizmos()
