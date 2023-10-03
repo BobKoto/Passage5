@@ -12,6 +12,7 @@ public class ZipAdvancePlayer : MonoBehaviour
     public float raycastDistance = 100.0f;
     public float raycastInterval = 1.0f;
     public float transformTranslateDelay = 1.0f;
+    public float adjustedZipDistance = 8f; // to avoid overshooting crossHair and prevent entering/going thru walls 
     public bool noColliderInFront = false; // Set to true if no collider in front
     public bool debugDistance = false;
     public Button zipButton; // Reference to the "ZIP->" button
@@ -20,7 +21,7 @@ public class ZipAdvancePlayer : MonoBehaviour
     public GameObject crossHair;
     //private CharacterController characterController;
     public PlayerEnteredRelevantTrigger setCamAndPlayerAngle;
-    bool startRan;
+    bool startRan, playerIsZipping;
     float zipDistance;
     float originalTopClamp; //set to +45f so player can look down if "flying" - about 10 units +Y  
     Vector3 rayOriginFixedHeight, crossHairPosition;
@@ -44,12 +45,13 @@ public class ZipAdvancePlayer : MonoBehaviour
     {
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         startRan = true;
-       // Debug.Log("RayCasting enabled in START()....");
+        Debug.Log("RayCasting enabled in START()....");
         // Get the CharacterController component
        // characterController = GetComponent<CharacterController>();
 
         // Get a reference to the "ZIP->" button
-        zipButton = GameObject.Find("ZipButton").GetComponent<Button>();
+        if (!zipButton) zipButton = GameObject.Find("ZipButton").GetComponent<Button>();
+        Debug.Log("Did a find on ZipButton...." + zipButton.name);
         buttonCanvasGroup = zipButton.GetComponent<CanvasGroup>();
         buttonCanvasGroup.alpha = 0; // Hide the button by default
 
@@ -67,9 +69,11 @@ public class ZipAdvancePlayer : MonoBehaviour
     {
         if (buttonCanvasGroup.alpha == 0) return;
         {
-            StartCoroutine (ZipPlayerForward());
-            // Hide the button again
             buttonCanvasGroup.alpha = 0;
+            zipButton.gameObject.SetActive(false);
+            if (!playerIsZipping) StartCoroutine (ZipPlayerForward());
+            // Hide the button again
+           // buttonCanvasGroup.alpha = 0;   //moved 2 b 4 coroutine 
         }
     }
 
@@ -91,6 +95,7 @@ public class ZipAdvancePlayer : MonoBehaviour
                 // A collider was hit   10 is cam 5f behind player + 5f for minimum zipable  
                 if (hit.distance <= 10f)
                 {
+                    zipButton.gameObject.SetActive(false); //disable the button 
                     buttonCanvasGroup.alpha = 0; // Hide the button
                     crossHair.SetActive(false);
                 }
@@ -98,7 +103,8 @@ public class ZipAdvancePlayer : MonoBehaviour
                 {
                     if (!crossHair.activeSelf) crossHair.SetActive(true);
                     buttonCanvasGroup.alpha = 1; // Show the button
-                    zipDistance = hit.distance - 8f;  //raycastDistance less (distance from cam + 3f buffer )
+                    zipButton.gameObject.SetActive(true);  //enable the button
+                    zipDistance = hit.distance - adjustedZipDistance;  //raycastDistance less (distance from cam + 3f buffer )
                     if (debugDistance)  Debug.Log("Distance to collider: " + hit.distance + "  hit " + hit.collider);
                     crossHair.transform.position = hit.point;
                 }
@@ -108,12 +114,13 @@ public class ZipAdvancePlayer : MonoBehaviour
                 if (!crossHair.activeSelf) crossHair.SetActive(true);
                // crossHair.transform.position = followCamera.transform.position + followCamera.transform.forward * raycastDistance;
                 crossHair.transform.position = followCamera.transform.position + rayDirection * raycastDistance;
-                zipDistance = raycastDistance;
+                zipDistance = raycastDistance - adjustedZipDistance;
                 buttonCanvasGroup.alpha = 1; // Show the button
+                zipButton.gameObject.SetActive(true); //enable the button
             }
             minRay = Math.Max(hit.distance, raycastDistance);
             //Debug.DrawRay(rayOriginFixedHeight, followCamera.transform.TransformDirection(Vector3.forward) * minRay , Color.yellow, raycastInterval -.5f);
-            Debug.DrawRay(rayOriginFixedHeight, rayDirection * minRay, Color.yellow, raycastInterval - .5f);
+            Debug.DrawRay(rayOriginFixedHeight, rayDirection * minRay, Color.yellow, raycastInterval / 2f);
 
             //if (thirdPersonController)   //caused stutter? probably not 
             //{
@@ -123,17 +130,21 @@ public class ZipAdvancePlayer : MonoBehaviour
             //    }
             //    else thirdPersonController.TopClamp = originalTopClamp;
             //}
-            yield return new WaitForSeconds(raycastInterval);   //try return null ? maybe better and less GC ?
+            yield return new WaitForSeconds(raycastInterval);   //try return null ? maybe better and less GC
+           // yield return null;   //try return null ? maybe better and less GC ? are we now raycasting every frame? cost?
+                                                                //
         }
     }
     private IEnumerator ZipPlayerForward()
     {
         //Debug.Log("transform.Translate(Vector3.forward *  zipDistance  + " + zipDistance + "  logRayOrigin = " + rayOriginFixedHeight);
-
+        playerIsZipping = true;
         setCamAndPlayerAngle.Invoke(followCamera.transform.eulerAngles.y);    //BK 9/4/23 if this works we can just call move once?
-        yield return new WaitForSeconds(transformTranslateDelay);
+       // yield return new WaitForSeconds(transformTranslateDelay); //try eoframe
+        yield return new WaitForEndOfFrame();    //
         audioManager.PlayAudio(audioManager.WHOOSH);
         transform.Translate(Vector3.forward * zipDistance);
+        playerIsZipping = false;
     }
     private void OnDrawGizmos()
     {
