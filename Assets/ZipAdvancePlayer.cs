@@ -139,7 +139,8 @@ public class ZipAdvancePlayer : MonoBehaviour
     {
         //Debug.Log("transform.Translate(Vector3.forward *  zipDistance  + " + zipDistance + "  logRayOrigin = " + rayOriginFixedHeight);
         playerIsZipping = true;
-        setCamAndPlayerAngle.Invoke(followCamera.transform.eulerAngles.y);    //BK 9/4/23 if this works we can just call move once?
+        setCamAndPlayerAngle.Invoke(followCamera.transform.eulerAngles.y, true);    //BK 9/4/23 if this works we can just call move once?
+                                                                                    // 10/3/23 added bool,  NOT used for now
        // yield return new WaitForSeconds(transformTranslateDelay); //try eoframe
         yield return new WaitForEndOfFrame();    //
         audioManager.PlayAudio(audioManager.WHOOSH);

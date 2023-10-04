@@ -7,7 +7,7 @@ using UnityEngine.Events;
 // Here we keep a master list of Events
 
 [System.Serializable]
-public class PlayerEnteredRelevantTrigger : UnityEvent<float> { }
+public class PlayerEnteredRelevantTrigger : UnityEvent<float, bool> { }
 
 [System.Serializable]
 public class CanvasNextPagePressedEvent : UnityEvent { }

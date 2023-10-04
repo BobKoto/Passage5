@@ -83,7 +83,7 @@ public class MontyStopTrigger : MonoBehaviour
     ThirdPersonControllerOriginal thirdPersonController;
     CharacterController characterController;
 
-    public PlayerEnteredRelevantTrigger triggerEvent;
+    // public PlayerEnteredRelevantTrigger triggerEvent;   //not used - comment on 10/3/23
 
     MontyDoorTouchEvent montyDoorTouchEvent;
    // public MontyPlayButtonTouchEvent montyPlayButtonTouchEvent;
@@ -142,8 +142,8 @@ public class MontyStopTrigger : MonoBehaviour
         originalSprintSpeed = thirdPersonController.SprintSpeed;
         originalPlayerSpeed = animPlayer.speed;
 
-        if (triggerEvent == null)
-            triggerEvent = new PlayerEnteredRelevantTrigger();
+        //if (triggerEvent == null)   //not used - comment on 10/3/23
+        //    triggerEvent = new PlayerEnteredRelevantTrigger();
 
         if (montyDoorTouchEvent == null)
             montyDoorTouchEvent = new MontyDoorTouchEvent();

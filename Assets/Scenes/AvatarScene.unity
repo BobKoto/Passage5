@@ -12601,13 +12601,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459772258}
   m_LocalRotation: {x: -0.0009813712, y: 0.9582423, z: 0.003288805, w: 0.2859371}
-  m_LocalPosition: {x: 201.6, y: 2, z: -303}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 127.52518, y: 1.07, z: -147.50595}
+  m_LocalScale: {x: 1.1676067, y: 1, z: 0.97606}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2044021986}
-  m_Father: {fileID: 986836721}
-  m_RootOrder: 10
+  m_Father: {fileID: 550025156}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &459772260
 MonoBehaviour:
@@ -20640,7 +20640,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 986836721}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &695206778
 BoxCollider:
@@ -20932,7 +20932,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713081666}
-  m_LocalRotation: {x: 0.06716651, y: -0.033953745, z: 0.0022870465, w: 0.99716127}
+  m_LocalRotation: {x: 0.06716651, y: -0.03395375, z: 0.002287047, w: 0.99716127}
   m_LocalPosition: {x: -18.802795, y: 19.00027, z: -1.4989471}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -22071,7 +22071,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 986836721}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &752671327
 BoxCollider:
@@ -25388,21 +25388,6 @@ MonoBehaviour:
   xPos: 237
   inputControls: {fileID: 2041336491}
   nextPage: {fileID: 1574509613}
-  triggerEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StarterAssets.ThirdPersonController, Assembly-CSharp
-        m_MethodName: PlayerEnteredTrigger
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   m_CloudTextEvent:
     m_PersistentCalls:
       m_Calls:
@@ -27804,7 +27789,6 @@ Transform:
   - {fileID: 420044398}
   - {fileID: 1128456474}
   - {fileID: 924437361}
-  - {fileID: 459772259}
   - {fileID: 1999278491}
   - {fileID: 752671326}
   - {fileID: 1720776936}
@@ -41163,7 +41147,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 986836721}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1425073105
 BoxCollider:
@@ -54238,7 +54222,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 986836721}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1720776937
 BoxCollider:
@@ -55877,7 +55861,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 986836721}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1799628866
 BoxCollider:
@@ -59426,7 +59410,7 @@ Transform:
   - {fileID: 1646117152}
   - {fileID: 713081667}
   m_Father: {fileID: 550025156}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1930008035
 MonoBehaviour:
@@ -59449,12 +59433,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 1420585012}
   m_Follow: {fileID: 0}
   m_ShowDebugText: 0
-  m_ChildCameras:
-  - {fileID: 1105988392}
-  - {fileID: 578853957}
-  - {fileID: 625143762}
-  - {fileID: 1646117154}
-  - {fileID: 713081669}
+  m_ChildCameras: []
   m_ActivateAfter: 0
   m_MinDuration: 0
   m_RandomizeChoice: 0
@@ -61594,7 +61573,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 986836721}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1999278492
 BoxCollider:
@@ -66087,7 +66066,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 986836721}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2097806183
 BoxCollider:

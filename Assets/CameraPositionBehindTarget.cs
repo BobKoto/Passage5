@@ -35,9 +35,9 @@ public class CameraPositionBehindTarget : MonoBehaviour
                // fromCamRotation = Quaternion.identity; // (fromCam.rotation);
                 Debug.Log(fromCam.name + "  rotation needed here -- fromCamRotation is  " + fromCam.transform.eulerAngles + "TRYING");
                 var rot = fromCam.transform.eulerAngles;
-                vcam.transform.eulerAngles = rot; // fromCam.transform.eulerAngles;
+                //vcam.transform.eulerAngles = rot; // fromCam.transform.eulerAngles;  //10/3/23 only letting 3RDPersCtrlr 
                 Debug.Log(vcam.name + "  rotation tried here -- vcamRotation is " + vcam.transform.eulerAngles + "TRIED rot is " + rot);
-                rotateCam.Invoke(fromCam.transform.eulerAngles.y);
+                rotateCam.Invoke(fromCam.transform.eulerAngles.y,false);  //10/3/23 added bool NOT Used for now 
             }
         }
 

@@ -67,6 +67,8 @@ namespace StarterAssets
 		private float _cinemachineTargetYaw;
 		private float _cinemachineTargetPitch;
 
+		// character   // 9/21/22 
+		private float _characterTargetYaw;
 		// player
 		private float _speed;
 		private float _animationBlend;
@@ -119,11 +121,13 @@ namespace StarterAssets
 			_fallTimeoutDelta = FallTimeout;
 			triggerEvent.AddListener(SetTheCameraAngle);
 		}
-		public void SetTheCameraAngle(float theAngle)   //event Invoked by other scripts that want to set the Cam angle/rotation 
-		{                                               //BK 9/4/23 this method is ok if followed by joystick move input  
-														// Debug.Log("THIRDPERSONCONTROLLER rotate player & cam to the new angle " + theAngle + " on the Y axis");
-			transform.rotation = Quaternion.Euler(0f, theAngle, 0.0f);  //rotate the player
-			_cinemachineTargetYaw = theAngle;                           // rotate the Cam
+		public void SetTheCameraAngle(float theAngle, bool rotatePlayer)   //event Invoked by other scripts that want to set the Cam angle/rotation 
+																		   // 10/3/23 added bool,  Not used but keep 
+		{                                               //BK 9/4/23 this method is ok if followed by joystick move input -- not sure this is true anymore
+		//	Debug.Log("THIRDPERSONCONTROLLER rotate player & cam to the new angle " + theAngle + " on the Y axis");
+			//if (rotatePlayer)  transform.rotation = Quaternion.Euler(0f, theAngle, 0.0f);  //rotate the player replaced by _characterTargetYaw
+			_characterTargetYaw = theAngle;     // rotate the player
+			_cinemachineTargetYaw = theAngle;   // rotate the Cam
 		}
 		private void Update()
 		{
@@ -131,6 +135,7 @@ namespace StarterAssets
 
 			JumpAndGravity();
 			GroundedCheck();
+			PlayerLookRotation(); // added on 9/20/22 and restored here on 10/2/23
 			Move();
 		}
 
@@ -160,7 +165,19 @@ namespace StarterAssets
 				_animator.SetBool(_animIDGrounded, Grounded);
 			}
 		}
+		private void PlayerLookRotation()     //This method added by BK on 9/20/22 - rotate player on look input - called by Update()
+		{
+			// if there is an input and camera position is not fixed
+			if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
+			{
+				//float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;   //IsCurrentDeviceMouse = False on Touch/GamePad 
+				float deltaTimeMultiplier = Time.deltaTime;   //IsCurrentDeviceMouse = False on Touch/GamePad 
+				_characterTargetYaw += _input.look.x * deltaTimeMultiplier;
 
+				_characterTargetYaw = ClampAngle(_characterTargetYaw, float.MinValue, float.MaxValue);
+				transform.rotation = Quaternion.Euler(0.0f, _characterTargetYaw, 0.0f);
+			}
+		}  //END Add Method on 9/20/22 
 		private void CameraRotation()
 		{
 			// if there is an input and camera position is not fixed
