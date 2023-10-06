@@ -61827,7 +61827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastDistance: 100
   raycastInterval: 1
-  transformTranslateDelay: 1
+  transformTranslateDelay: 0.5
   adjustedZipDistance: 8
   noColliderInFront: 0
   debugDistance: 0

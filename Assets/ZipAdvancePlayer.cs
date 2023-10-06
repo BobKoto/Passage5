@@ -11,7 +11,7 @@ public class ZipAdvancePlayer : MonoBehaviour
 
     public float raycastDistance = 100.0f;
     public float raycastInterval = 1.0f;
-    public float transformTranslateDelay = 1.0f;
+    public float transformTranslateDelay = .5f;
     public float adjustedZipDistance = 8f; // to avoid overshooting crossHair and prevent entering/going thru walls 
     public bool noColliderInFront = false; // Set to true if no collider in front
     public bool debugDistance = false;
@@ -147,10 +147,11 @@ public class ZipAdvancePlayer : MonoBehaviour
     {
         //Debug.Log("transform.Translate(Vector3.forward *  zipDistance  + " + zipDistance + "  logRayOrigin = " + rayOriginFixedHeight);
         playerIsZipping = true;
+        transform.rotation = Quaternion.Euler(0f, followCamera.transform.eulerAngles.y, 0.0f);  //10/5/23
         setCamAndPlayerAngle.Invoke(followCamera.transform.eulerAngles.y, true);    //BK 9/4/23 if this works we can just call move once?
                                                                                     // 10/3/23 added bool,  NOT used for now
-       // yield return new WaitForSeconds(transformTranslateDelay); //try eoframe
-        yield return new WaitForEndOfFrame();    //
+        yield return new WaitForSeconds(transformTranslateDelay); //try eoframe
+        //yield return new WaitForEndOfFrame();    //
         audioManager.PlayAudio(audioManager.WHOOSH);
         transform.Translate(Vector3.forward * zipDistance);
         playerIsZipping = false;
