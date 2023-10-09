@@ -1,5 +1,4 @@
 using System.Collections;
-//using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
@@ -17,7 +16,6 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     [Header("Text Cloud Events")]
     public CloudTextEvent m_CloudTextEvent;  //for TextCloud 
     CanvasNextPagePressedEvent m_CanvasNextPagePressedEvent;
-    //CloudTextWaitNextPageEvent m_CloudTextEventWaitNextPage;  //deimped in favor of using int param in CloudTextEvent to drive behavior
     CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
@@ -27,17 +25,16 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     public GameObject nextPage;
     public GameObject nowPlay;
     public GameObject startAvatarIntro;
+    public GameObject parachuteButton;
     public CanvasGroup imageCanvasGroup; // Reference to the button's CanvasGroup
 
     const string playerCloneAsNPCSpeaks1 = "#Hello. Pardon the #'s. \n#A former employer.";
     const string playerCloneAsNPCSpeaks2 = "#My new job is yours to figure out.\n #Lead on!";
     const string playerCloneAsNPCSpeaks3 = "#OK. Forward!";
     int originalCamOnPlayerCloneAsNPCPriority;
-   // public bool nextPagePressed; //TEMP to see in editor at runtime  - put back on next line
     bool nextPagePressed, waitingNextPagePress, waitingForTextExtinguishEvent, testExtinguishedReceived;
     AudioManager audioManager;
-   // Color imageToFade;
-    // Start is called before the first frame update
+
     void Start()
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
@@ -50,25 +47,18 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
 
         if (m_CanvasNextPagePressedEvent == null)
             m_CanvasNextPagePressedEvent = new CanvasNextPagePressedEvent();
-      //  m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent);//5/25/23
-
-        //if (m_CloudTextEventWaitNextPage == null)
-        //    m_CloudTextEventWaitNextPage = new CloudTextWaitNextPageEvent();
 
         if (m_CloudTextExtinguishedEvent == null)
             m_CloudTextExtinguishedEvent = new CloudTextExtinguishedEvent();
-      //  m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);//5/25/23 move to Intro()
 
         if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
-        // StartCoroutine(Intro());
+        if (parachuteButton) parachuteButton.SetActive(false);
         imageCanvasGroup = startAvatarIntro.GetComponent<CanvasGroup>();
         if (startAvatarIntro) startAvatarIntro.SetActive(true);
     }
     public void OnStartAvatarIntroButtonPress()
     {
-
-       // imageToFade = startAvatarIntro.GetComponent<Image>().color;
         StartCoroutine(FadeImage());
         StartCoroutine(Intro());
     }
@@ -86,30 +76,23 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     }
     IEnumerator Intro()
     {
-      //  Debug.Log(" PlayerCloneAsNpcIntro Execute IEnumerator Intro(float duration)");
         playerArmature.SetActive(false);
         inputControls.SetActive(false);
         camOnPlayerCloneAsNPC.Priority = 12;  //6/10/23 change from 25 back to 12 
-        //Debug.Log(this.name + "  camOnPlayerCloneAsNPC.Priority = 12;  should set the Active Cam to camOnPlayerCloneAsNPC *****");
         TellTextCloud(playerCloneAsNPCSpeaks1, true);
         waitingForTextExtinguishEvent = true;
         m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);  //when TCHandler sees NextPage press and extinguishes text cloud 
-
-      //  Debug.Log(this.name + " *****  GOT TextExtinguishEvent so set player active and do NEXT CLOUD ***** ");
         playerArmature.SetActive(true);
 
-        // playerCloneAsNPC.SetActive(false);//5/25/23 //7/4/23 caused a bug where we stopped here - calls OnDisable() which Stops coroutines!
         skinnedMeshRendererPlayerCloneAsNPC.enabled = false;  //5/26/23 so instead we do this 
         camOnPlayerCloneAsNPC.Priority = originalCamOnPlayerCloneAsNPCPriority;
 
         TellTextCloud(playerCloneAsNPCSpeaks2, true);
-
         waitingForTextExtinguishEvent = true;
         m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
-
-       // Debug.Log(this.name + " *****  Drop into wait on !waitingForTextExtinguishEvent ***** ");
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);//5/24/23
+
         if (nextPage) nextPage.SetActive(true);     //7/3/23 
         waitingNextPagePress = true;
         Missions.missions[Missions.randomlyPickedMission].SetActive(true);   
@@ -120,8 +103,6 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         waitingNextPagePress = false;
         if (nextPage) nextPage.SetActive(false);           //7/3/23 
 
-       // if (nowPlay) nowPlay.SetActive(true);  //7/3/23 need a better prompt for player to move robot forward
-        //audioManager.PlayAudio(audioManager.clipapert);
         if (inputControls) inputControls.SetActive(true);
         playerCloneAsNPC.SetActive(false); //7/3/23 TIL Setting this false calls OnDisable() then continues to run! it killed this coroutine... 
 
@@ -138,10 +119,8 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     }
     public void OnCloudTextExtinguishedEvent()
     {
-      //  Debug.Log(this.name + " says the cloud went away... waitingTextExtinguish = " + waitingForTextExtinguishEvent);
         if (waitingForTextExtinguishEvent)  //7/4/23 if true there is a coroutine waiting for this
         {
-      //      Debug.Log(this.name + " says RemoveListener(OnCloudTextExtinguishedEvent)  and  SEwaitingForTextExtinguishEvent = false;");
             m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);  //5/24/23
             waitingForTextExtinguishEvent = false;
         }
@@ -149,42 +128,8 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     void OnDisable()
     {
         Debug.Log(this.name + "  did OnDisable() !!!!!");
-        //  m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent);  //7/4/23 removed/simplified
         m_CloudTextExtinguishedEvent.RemoveListener(OnCloudTextExtinguishedEvent);
         StopAllCoroutines();
+        if (parachuteButton) parachuteButton.SetActive(true);
     }
 }
-
-// Find the active cam  //6/30/23 not using but nice to have...
-//CinemachineVirtualCameraBase[] virtualCameras = FindObjectsOfType<CinemachineVirtualCameraBase>();
-//float highestPriority = float.MinValue;
-//CinemachineVirtualCameraBase activeVirtualCamera = null;
-//foreach (CinemachineVirtualCameraBase virtualCamera in virtualCameras)
-//{
-//    if (virtualCamera.Priority > highestPriority)
-//    {
-//        highestPriority = virtualCamera.Priority;
-//        activeVirtualCamera = virtualCamera;
-//    }
-//}
-//if (activeVirtualCamera != null)
-//{
-//    // Debug.Log(this.name + "  Active Cinemachine Camera: " + activeVirtualCamera.Name);  //6/10/23 comment for now - we may use
-//}
-//public void OnCanvasNextPagePressed()   replaced/cleaned up on 7/4/23
-//{
-//    if (waitingNextPagePress)  //5/25/23 
-//    {
-//        // Debug.Log(this.name + " DOING...    m_CanvasNextPagePressedEvent.Invoke();");
-//        //m_CanvasNextPagePressedEvent.AddListener(OnCanvasNextPagePressedEvent); //5/24/23   //7/4/23 removed/simplified
-//        //m_CanvasNextPagePressedEvent.Invoke();                                              //7/4/23 removed/simplified
-//        nextPagePressed = true;   //7/4/23 predicated on coroutine waiting for this 
-//    }
-//}
-
-//void OnCanvasNextPagePressedEvent()   //7/4/23 removed/simplified 
-//{
-//   // Debug.Log(this.name + " says next page pressed SET TRUE");
-//    nextPagePressed = true;
-//    m_CanvasNextPagePressedEvent.RemoveListener(OnCanvasNextPagePressedEvent); //5/24/23
-//}

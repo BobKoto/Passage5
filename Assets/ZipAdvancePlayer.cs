@@ -84,6 +84,7 @@ public class ZipAdvancePlayer : MonoBehaviour
     {
         while (true)
         {
+            buttonCanvasGroup.alpha = 0;   //10/8/23 In case the button is ON -- SetActive(false) instead? - we'll see 
             bool followCamIsLive = cinemachineBrain.IsLive(followCamera);
             if (followCamIsLive)  //10/4/23  only do if cam is live 
             {

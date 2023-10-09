@@ -4,19 +4,22 @@ using UnityEngine;
 using Cinemachine;
 
 public class BubbleRoomCamSwitcher : MonoBehaviour
-{
+{  // Component of ClearShotCamCollideramCollider  Assumes PlayerFollowCamera.Priority = 11
 
-    public CinemachineVirtualCamera thirdPersonFollowCam;
     public CinemachineClearShot bubbleRoomClearShotCam;
 
-    public void OnTriggerEnter(Collider other)   //probably should check if the Player is doing the entering and exiting
+    public void OnTriggerEnter(Collider other)  
     {
-        //bubbleRoomClearShotCam.MoveToTopOfPrioritySubqueue();
-        bubbleRoomClearShotCam.Priority = 12;
+        if (other.CompareTag("Player"))
+        {
+            bubbleRoomClearShotCam.Priority = 12;
+        }
     }
     public void OnTriggerExit(Collider other)
     {
-        //thirdPersonFollowCam.MoveToTopOfPrioritySubqueue();
-        bubbleRoomClearShotCam.Priority = 7;
+        if (other.CompareTag("Player"))
+        {
+            bubbleRoomClearShotCam.Priority = 7;
+        }
     }
 }
