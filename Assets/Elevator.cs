@@ -12,6 +12,7 @@ public class Elevator : MonoBehaviour
     GameObject jumpButton;
     public bool elevatorAtTop, elevatorIsRising, elevatorIsGrounded;  //public just so we can see in editor for testing
     bool reportOnStay = true;
+    Vector3 originalPosition;
     Coroutine raiseCoroutine, lowerCoroutine;
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,7 @@ public class Elevator : MonoBehaviour
       //  Debug.Log(" Hello from Elevator ...........  ");
         elevatorIsGrounded = true;
         jumpButton = GameObject.Find("UI_Virtual_Button_Jump");
+        originalPosition = transform.position;
     }
     private void OnTriggerStay(Collider other)
     {
@@ -70,14 +72,16 @@ public class Elevator : MonoBehaviour
     }
     IEnumerator LowerElevator()
     {
-      //  Debug.Log("Lower elevator Started...");
+        //  Debug.Log("Lower elevator Started...");
+        transform.position = originalPosition;  //10/10/23 down fast and mostly unseen 
         elevatorAtTop = false;
-        while (transform.position.y > elevatorFloorPosition)
-        {
-            transform.Translate(Vector3.down * Time.deltaTime * descentSpeed, Space.World);
-            yield return null; //10/9/23  new WaitForEndOfFrame();  //WaitForSeconds(ascentIncrement);
-        }
+        //while (transform.position.y > elevatorFloorPosition)
+        //{
+        //    transform.Translate(Vector3.down * Time.deltaTime * descentSpeed, Space.World);
+        //    yield return null; //10/9/23  new WaitForEndOfFrame();  //WaitForSeconds(ascentIncrement);
+        //}
         elevatorIsGrounded = true;
+        yield return null;
      //   Debug.Log("Lower elevator finished...");
     }
     private void OnDisable()
