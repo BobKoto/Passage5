@@ -23,7 +23,6 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     public float introDuration = 4;
     [Header("The UI stuff as GameObjects")]
     public GameObject nextPage;
-    public GameObject nowPlay;
     public GameObject startAvatarIntro;
     public GameObject parachuteButton;
     public CanvasGroup imageCanvasGroup; // Reference to the button's CanvasGroup
@@ -39,7 +38,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         Debug.Log("Hello from PlayerCloneAsNpcIntro");
-
+        inputControls.SetActive(false); //10/12/23 moved here from Intro() (ensure controls are invisible on handheld at start)
         originalCamOnPlayerCloneAsNPCPriority = camOnPlayerCloneAsNPC.Priority;
 
         if (m_CloudTextEvent == null)
@@ -51,7 +50,6 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
         if (m_CloudTextExtinguishedEvent == null)
             m_CloudTextExtinguishedEvent = new CloudTextExtinguishedEvent();
 
-        if (nowPlay) nowPlay.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
         if (parachuteButton) parachuteButton.SetActive(false);
         imageCanvasGroup = startAvatarIntro.GetComponent<CanvasGroup>();
@@ -77,7 +75,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     IEnumerator Intro()
     {
         playerArmature.SetActive(false);
-        inputControls.SetActive(false);
+
         camOnPlayerCloneAsNPC.Priority = 12;  //6/10/23 change from 25 back to 12 
         TellTextCloud(playerCloneAsNPCSpeaks1, true);
         waitingForTextExtinguishEvent = true;

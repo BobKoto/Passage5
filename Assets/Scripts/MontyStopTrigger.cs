@@ -64,9 +64,8 @@ public class MontyStopTrigger : MonoBehaviour
     [Header("The Input System canvas Joystick etc.")]
     public GameObject inputControls;
 
-    [Header("The Now Play Sign and NextPage button aka The UI stuff as GameObjects")]
+    [Header("UI stuff as GameObjects")]
     public GameObject nextPage;
-    //public GameObject nowPlay;
 
     bool playerPickedDoor1, playerPickedDoor2, playerPickedDoor3, door1Down, door2Down, door3Down;
     bool awaitingFinalDoorPick, playerPickedWinner, doorResultsShowing;
@@ -247,7 +246,7 @@ public class MontyStopTrigger : MonoBehaviour
                 //Debug.Log("OnCanvasNextPagePressedEvent  entered block for MontyGameOver ");
                 //if (nextPage) nextPage.SetActive(false);  //6/4/23
                 montyGameCam.Priority = originalMontyGameCamPriority;  //switch cam to the twin ? my own invention of confusion :{
-                Debug.Log("reactivate  player....................... MontyGameState = " + montyGameState + " camOnTwin priority = " + camOnTwin.Priority);
+               // Debug.Log("reactivate  player....................... MontyGameState = " + montyGameState + " camOnTwin priority = " + camOnTwin.Priority);
                 break;
             default: Debug.Log("switch (montyGameState) got ??? state");
                 break;
