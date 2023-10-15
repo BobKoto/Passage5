@@ -38,6 +38,7 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         Debug.Log("Hello from PlayerCloneAsNpcIntro");
+
         inputControls.SetActive(false); //10/12/23 moved here from Intro() (ensure controls are invisible on handheld at start)
         originalCamOnPlayerCloneAsNPCPriority = camOnPlayerCloneAsNPC.Priority;
 

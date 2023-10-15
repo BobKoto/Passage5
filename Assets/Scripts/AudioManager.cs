@@ -30,13 +30,19 @@ public class AudioManager : MonoBehaviour
     public AudioClip compVoice2;
     public AudioClip compVoice3;
     public AudioClip laser1;
+    public AudioClip BkGround01;
+    public AudioClip BkGroundwallewal;
 
-    public AudioSource audioSource;
+    public AudioSource audioSource, loopAudioSource;
 
     public AudioClipFinishedEvent audioClipFinishedEvent;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+       // loopAudioSource = GetComponent<AudioSource>();
+        loopAudioSource.loop = true;
+        loopAudioSource.clip = BkGroundwallewal;
+        loopAudioSource.Play();
     }
     public void PlayAudio(AudioClip clip)
     {
