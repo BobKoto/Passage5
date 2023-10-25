@@ -3,41 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Elevator : MonoBehaviour
-{
+{  //Components of Elevators
     AudioManager audioManager;
     public float elevatorHeight = 11f;
     public float ascentSpeed = 1.5f;
     public float descentSpeed = 3.6f;
     public float ascentIncrement = .1f;
     public float elevatorFloorPosition = .1f;
-    GameObject jumpButton;
+
     public bool elevatorAtTop, elevatorIsRising;  //public just so we can see in editor for testing
     bool elevatorEmpty = true;
     bool elevatorIsGrounded = true;
     bool playerIsOnElevator;
     Vector3 originalPosition, targetPosition;
     Transform target;
+    GameObject jumpButton;
+    GameObject destCube;
     //Coroutine raiseCoroutine; //, lowerCoroutine;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        Application.targetFrameRate = 30;
+    }
     void Start()
     {
-        var destCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        destCube.GetComponent<MeshRenderer>().enabled = false;  //can/should we just destroy after using for target?
+        destCube = GameObject.CreatePrimitive(PrimitiveType.Cube);  //so we can use vector3.MoveTowards
+        destCube.GetComponent<MeshRenderer>().enabled = false; 
         destCube.GetComponent<BoxCollider>().enabled = false;
         //  Debug.Log(" Hello from Elevator ...........  ");
         jumpButton = GameObject.Find("UI_Virtual_Button_Jump");
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
-        //audioManager.PlayAudio(audioManager.tick, .09f);
         originalPosition = transform.position;
-        //  targetPosition = new Vector3(transform.position.x, elevatorHeight, transform.position.z);
         target = destCube.transform;
         target.position = new Vector3(transform.position.x, elevatorHeight, transform.position.z);
     }
     private void Update()
     {
-        /*
-         * FixedUpdate() and using fixedDeltaTime stutters pretty bad
-         */
+    // FixedUpdate() and using fixedDeltaTime stutters pretty bad - so unless we learn different Update() it is
+        
         if (playerIsOnElevator)
         {
             ascentSpeed = Time.deltaTime;
@@ -95,7 +98,7 @@ public class Elevator : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Player")) return;
         audioManager.PlayAudio(audioManager.tick);
-        Debug.Log("Player exited or LOST Contact w/Elevator...");
+        //Debug.Log("Player exited or LOST Contact w/Elevator...");
         playerIsOnElevator = false;
         if (!elevatorIsGrounded)
         {
