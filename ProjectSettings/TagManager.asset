@@ -20,6 +20,7 @@ TagManager:
   - Mission
   - PlayButton1
   - Teleportable
+  - Elevator
   layers:
   - Default
   - TransparentFX

@@ -38,6 +38,7 @@ public class AddRemoveChild : MonoBehaviour
                     movingPlatform.speed = 0;
                     break;
                 }
+                default: break; //10/25/23 added to all cases 
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -97,8 +98,10 @@ public class AddRemoveChild : MonoBehaviour
                     if (anim) anim.SetBool("runSwitch", true);
                     break;
                 }
+                default: break;
+
+            }
         }
-    }
     void HandleTriggerExitPerGameObject(string thisName)
     {
         switch (thisName)
@@ -123,8 +126,9 @@ public class AddRemoveChild : MonoBehaviour
                     if (anim) anim.SetBool("runSwitch", false);
                     break;
                 }
+                default: break;
+            }
         }
-    }
     public void OnPlatformStopButtonPressed()
     {
         movingPlatform.speed = 0;

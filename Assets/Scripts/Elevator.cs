@@ -12,21 +12,29 @@ public class Elevator : MonoBehaviour
     public float elevatorFloorPosition = .1f;
 
     public bool elevatorAtTop, elevatorIsRising;  //public just so we can see in editor for testing
-    bool elevatorEmpty = true;
     bool elevatorIsGrounded = true;
     bool playerIsOnElevator;
     Vector3 originalPosition, targetPosition;
     Transform target;
     GameObject jumpButton;
     GameObject destCube;
-    //Coroutine raiseCoroutine; //, lowerCoroutine;
-    // Start is called before the first frame update
+    // Stuff for swapping child/parent
+    GameObject thePlayer;
+    public Transform originalParent;
+    public Transform newParent;
+
     private void Awake()
     {
         Application.targetFrameRate = 30;
     }
     void Start()
     {
+        // Set child/parent stuff up
+
+        thePlayer = GameObject.Find("PlayerArmature");
+        if (thePlayer) originalParent = thePlayer.GetComponent<Transform>().transform.parent;            //transform.parent.name
+        newParent = transform;
+        //Debug.Log("Elevator: originalparent = " + originalParent.name + "  newparent (will be) = " + newParent.name);
         destCube = GameObject.CreatePrimitive(PrimitiveType.Cube);  //so we can use vector3.MoveTowards
         destCube.GetComponent<MeshRenderer>().enabled = false; 
         destCube.GetComponent<BoxCollider>().enabled = false;
@@ -64,9 +72,11 @@ public class Elevator : MonoBehaviour
     //}
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log("? entered or Contact w/Elevator... " + other);
         if (!other.gameObject.CompareTag("Player")) return;
         elevatorIsGrounded = false;
         playerIsOnElevator = true;
+        thePlayer.transform.SetParent(newParent);
     }
     //private void OnTriggerStay(Collider other)
     //{
@@ -96,7 +106,9 @@ public class Elevator : MonoBehaviour
     //}
     private void OnTriggerExit(Collider other)
     {
+        //Debug.Log("? exited or LOST Contact w/Elevator... " + other);
         if (!other.gameObject.CompareTag("Player")) return;
+        thePlayer.transform.SetParent(originalParent);
         audioManager.PlayAudio(audioManager.tick);
         //Debug.Log("Player exited or LOST Contact w/Elevator...");
         playerIsOnElevator = false;
