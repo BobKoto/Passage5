@@ -13,7 +13,6 @@ public class OpenDoor : MonoBehaviour
     public GameObject doorOpener;  //the button and text prompts 
     public GameObject stepsRaiser; //the button and text prompts 
     public float delayForAnimation = .5f;
-
     public CloudTextEvent m_CloudTextEvent;
     const string firstDoor = "#What's here?...";
     const string firstSteps = "#Take a dip!";
@@ -40,7 +39,6 @@ public class OpenDoor : MonoBehaviour
         if (m_CloudTextEvent == null)
             m_CloudTextEvent = new CloudTextEvent();
     }
-
     private void OnTriggerEnter(Collider other)   //robot touched the collider so do the animation and deactivate the button and text
     {
         if (!_wasTriggered)
@@ -49,26 +47,8 @@ public class OpenDoor : MonoBehaviour
             print("entered " + other.name);
             audioManager.PlayAudio(audioManager.clipapert);
             anim.SetTrigger(operateButton);
-            //string myName = this.name; //don't need to do this ?
-            //switch (this.name)
-            //{
-            //    case "DoorOpener":
-            //        {
-            //            TellTextCloud(firstDoor);
-            //            doorOpener.SetActive(false);
-            //            break;
-            //        }
-            //    case "StepsRaise":
-            //        {
-            //            TellTextCloud(firstSteps);
-            //            stepsRaiser.SetActive(false);
-            //            break;
-            //        }
-            //}
-
             StartCoroutine(DelayForAnimation(delayForAnimation));
         }
-
     }
     public void TellTextCloud(string caption)
     {
@@ -98,6 +78,7 @@ public class OpenDoor : MonoBehaviour
                     stepsRaiser.SetActive(false);
                     break;  
                 }
+            default:break;
         }
     }
     private void OnDisable()

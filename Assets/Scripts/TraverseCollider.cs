@@ -20,24 +20,19 @@ public class TraverseCollider : MonoBehaviour  // find on CubeFacingCameraOnGree
               Debug.Log("Player entered collider and is on the platform - Start Waving");
               anim.SetBool("avatarSceneWave", true);
             }
-
         }
     }
     public void OnTriggerExit(Collider other)
     {
+        //Debug.Log("Something exited moving platform");
+
         if (other.CompareTag("Player"))
         {
-            if (MovingPlatformAction.playerIsOnPlatform)
+          //  if (MovingPlatformAction.playerIsOnPlatform) //10/26/23 commented to stop waving if player stops then exits platform
             {
                 Debug.Log("Player exited collider and is on the platform - Stop Waving");
                 anim.SetBool("avatarSceneWave", false);
             }
         }
     }
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
 }
