@@ -18,6 +18,7 @@ public class Elevator : MonoBehaviour
     Transform target;
     GameObject jumpButton;
     GameObject destCube;
+    GameObject blueCubeChild;
     // Stuff for swapping child/parent
     GameObject thePlayer;
     public Transform originalParent;
@@ -44,6 +45,7 @@ public class Elevator : MonoBehaviour
         originalPosition = transform.position;
         target = destCube.transform;
         target.position = new Vector3(transform.position.x, elevatorHeight, transform.position.z);
+        blueCubeChild = this.gameObject.transform.GetChild(0).gameObject;
     }
     private void Update()
     {
@@ -53,6 +55,12 @@ public class Elevator : MonoBehaviour
         {
             ascentSpeed = Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target.position, ascentSpeed);
+            if ((Vector3.Distance(transform.position,targetPosition) < 1) && audioManager.audioSource.isPlaying)
+            {
+                var dist = Vector3.Distance(transform.position, targetPosition);
+                Debug.Log("Distance = " + dist);
+                audioManager.audioSource.Stop();
+            }
         }
 
     }
@@ -72,6 +80,8 @@ public class Elevator : MonoBehaviour
     //}
     private void OnTriggerEnter(Collider other)
     {
+        audioManager.PlayAudio(audioManager.BkGround01);
+        blueCubeChild.SetActive(false);
         //Debug.Log("? entered or Contact w/Elevator... " + other);
         if (!other.gameObject.CompareTag("Player")) return;
         elevatorIsGrounded = false;
@@ -106,6 +116,8 @@ public class Elevator : MonoBehaviour
     //}
     private void OnTriggerExit(Collider other)
     {
+        if (audioManager.audioSource.isPlaying) audioManager.audioSource.Stop();
+        blueCubeChild.SetActive(true);
         //Debug.Log("? exited or LOST Contact w/Elevator... " + other);
         if (!other.gameObject.CompareTag("Player")) return;
         thePlayer.transform.SetParent(originalParent);
