@@ -32,6 +32,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip laser1;
     public AudioClip BkGround01;
     public AudioClip BkGroundwallewal;
+    public AudioClip elevatorUp;
 
     public AudioSource audioSource, loopAudioSource;
 
