@@ -16,9 +16,6 @@ public class Teleport01 : MonoBehaviour
     public GameObject CinemachineCameraTarget;
     AudioManager audioManager;
 
-    // IEnumerator WaitToMove;
-
-    // Start is called before the first frame update
     void Start()
     {
         audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
@@ -26,12 +23,14 @@ public class Teleport01 : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+       // Debug.Log("Teleport TriggerEnter ... " + other);
         if (other.CompareTag("Player"))
         {
             Debug.Log("TriggerEnter ... Teleport player to " + teleportPlayerToPosition);
             playerTransform.position = teleportPlayerToPosition; //original worked but with Jank
-                                                                 //var destination = Vector3.Lerp(playerTransform.position, teleportPlayerToPosition, 0.1f);
-                                                                 //playerTransform.position = destination;
+            Physics.SyncTransforms();
+            audioManager.PlayAudio(audioManager.teleport1);
+            return;
         }
         if (other.CompareTag("Teleportable"))
         {
@@ -43,18 +42,15 @@ public class Teleport01 : MonoBehaviour
                 Vector3 offsetTeleportPlayerToPosition = teleportPlayerToPosition + offsetForYScale;
                 Debug.Log("TriggerEnter ... Teleport something ELSE to Lower level" + offsetTeleportPlayerToPosition + " Other xform is " + otherTransform);
                 otherTransform.position = offsetTeleportPlayerToPosition;
-
             }
             else
             {
-               // Debug.Log("TriggerEnter ... Teleport something ELSE to " + teleportPlayerToPosition + " Other xform is " + otherTransform);
+                // Debug.Log("TriggerEnter ... Teleport something ELSE to " + teleportPlayerToPosition + " Other xform is " + otherTransform);
                 otherTransform.position = teleportPlayerToPosition;
             }
-
+            Physics.SyncTransforms();
+            audioManager.PlayAudio(audioManager.teleport1);
         }
-        Physics.SyncTransforms();
-        audioManager.PlayAudio(audioManager.teleport1);
-
     }
 }
 
