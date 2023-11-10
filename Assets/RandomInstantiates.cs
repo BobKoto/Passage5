@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RandomInstantiates : MonoBehaviour
-{
-    // Instantiates prefabs in a random formation  //or it will soon
+{//Component of ProceduralGenerates
+    // Instantiates prefabs in a random formation  //kinda lame but it works and will do for now
     public GameObject prefab;
     public Transform centerTransform;
     public int numberOfObjects = 3;
@@ -20,9 +20,10 @@ public class RandomInstantiates : MonoBehaviour
             float randomHigh = radius * 2;
             randomRadiusX = (int)Random.Range(radius - 1, radius * 2);
             randomRadiusZ = (int)Random.Range(radius - 1, radius * 2);
-            Debug.Log("random range = " + randomLow + "  " + randomHigh  +"   randomRadius = " + randomRadius);
             float x = Mathf.Cos(angle) * randomRadiusX;
             float z = Mathf.Sin(angle) * randomRadiusZ;
+            //Debug.Log("random range = " + randomLow + "  " + randomHigh  +"   randomRadiusXandZ = " + randomRadiusX + "  angle = " + angle);
+            //Debug.Log("x = Mathf.Cos(angle) * randomRadiusX; " + x + "     z = Mathf.Sin(angle) * randomRadiusZ;  " + z);
             Vector3 pos = centerTransform.position + new Vector3(x, yPos, z);
             //float angleDegrees = -angle * Mathf.Rad2Deg;
             //Quaternion rot = Quaternion.Euler(0, angleDegrees, 0);
