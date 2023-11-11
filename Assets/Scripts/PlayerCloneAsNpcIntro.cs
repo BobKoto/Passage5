@@ -63,12 +63,13 @@ public class PlayerCloneAsNpcIntro : MonoBehaviour
     }
     IEnumerator FadeImage()
     {
+        WaitForSeconds pointOne = new WaitForSeconds(.1f);
         float alphaSetting = 1f;
         while (alphaSetting > 0)
         {
             alphaSetting -= .1f;
             imageCanvasGroup.alpha = alphaSetting;
-            yield return new WaitForSeconds(.1f);
+            yield return pointOne; ;
         }
         startAvatarIntro.SetActive(false);
         yield return null;

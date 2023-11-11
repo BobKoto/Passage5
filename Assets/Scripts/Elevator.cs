@@ -24,6 +24,14 @@ public class Elevator : MonoBehaviour
     GameObject thePlayer;
     public Transform originalParent;
     public Transform newParent;
+    const string elevatorComment1 = "#Who makes these elevators?";
+   // public CloudTextEvent m_CloudTextEvent;  //for TextCloud //11/9/23 replaced (editor assignment) with method assignment in this code 
+    bool elevatorCommentDone;
+    // Define a delegate with the same signature as the method you want to invoke
+    public delegate void CloudTextDelegate(int value, int timeout, string caption);
+    // Declare an instance of the delegate
+    public CloudTextDelegate cloudTextDelegate;
+    GameObject textCloudHandler;
 
     private void Awake()
     {
@@ -36,35 +44,38 @@ public class Elevator : MonoBehaviour
         if (thePlayer) originalParent = thePlayer.GetComponent<Transform>().transform.parent;            //transform.parent.name
         newParent = transform;
 
-        //Debug.Log("Elevator: originalparent = " + originalParent.name + "  newparent (will be) = " + newParent.name);
         destCube = GameObject.CreatePrimitive(PrimitiveType.Cube);  //so we can use vector3.MoveTowards
         destCube.GetComponent<MeshRenderer>().enabled = false; 
         destCube.GetComponent<BoxCollider>().enabled = false;
         //  Debug.Log(" Hello from Elevator ...........  ");
-        jumpButton = GameObject.Find("UI_Virtual_Button_Jump");
         if (!audioManager) audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         originalPosition = transform.position;
         target = destCube.transform;
         target.position = new Vector3(transform.position.x, elevatorHeight, transform.position.z);
         blueCubeChild = gameObject.transform.GetChild(0).gameObject;
+
+        textCloudHandler = GameObject.Find("TextCloudHandleHolder");
+        cloudTextDelegate = textCloudHandler.GetComponent<TextCloudHandler>().EnableTheTextCloud;  
     }
     private void Update()
     {
-    // FixedUpdate() and using fixedDeltaTime stutters pretty bad - so unless we learn different Update() it is
-        
+    // FixedUpdate() and using fixedDeltaTime stutters pretty bad - so unless we learn different Update() it is 
         if (playerIsOnElevator)
         {
             ascentSpeed = Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target.position, ascentSpeed);
 
+            if ((Vector3.Distance(transform.position, target.position) < elevatorHeight /2) && !elevatorCommentDone)
+            {
+                    cloudTextDelegate.Invoke(5, 3, elevatorComment1);
+                    elevatorCommentDone = true;
+            }
+
             if (Vector3.Distance(transform.position,target.position) < 1 && audioManager.audioSource.isPlaying)
             {
-             //   var dist = Vector3.Distance(transform.position, target.position);
-             //   Debug.Log("Distance = " + dist);
                 audioManager.audioSource.Stop();
             }
         }
-
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -79,13 +90,11 @@ public class Elevator : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        //Debug.Log("? exited or LOST Contact w/Elevator... " + other);
         if (!other.gameObject.CompareTag("Player")) return;
         if (audioManager.audioSource.isPlaying) audioManager.audioSource.Stop();
         blueCubeChild.SetActive(true);
         thePlayer.transform.SetParent(originalParent);
         audioManager.PlayAudio(audioManager.tick);
-        //Debug.Log("Player exited or LOST Contact w/Elevator...");
         playerIsOnElevator = false;
         if (!elevatorIsGrounded)
         {
@@ -94,7 +103,6 @@ public class Elevator : MonoBehaviour
     }
     void LowerElevator()
     {
-        //  Debug.Log("Lower elevator Started...");
         transform.position = originalPosition;  //10/10/23 down fast and mostly unseen 
         elevatorAtTop = false;
         elevatorIsGrounded = true;
@@ -104,3 +112,28 @@ public class Elevator : MonoBehaviour
         StopAllCoroutines();
     }
 }
+/*
+ * using UnityEngine;
+
+public class EventInvoker : MonoBehaviour
+{
+    // Define a delegate with the same signature as the method you want to invoke
+    public delegate void CloudTextDelegate(int value, float timeout, string caption);
+
+    // Declare an instance of the delegate
+    public CloudTextDelegate cloudTextDelegate;
+
+    void Start()
+    {
+        // Assign the target GameObject and method to the delegate
+        GameObject targetObject = /* Set your target object here * /
+cloudTextDelegate = targetObject.GetComponent<YourTargetScript>().YourTargetMethod;
+
+// Invoke the delegate
+if (cloudTextDelegate != null)
+{
+    cloudTextDelegate.Invoke(5, 10.0f, "Hello, World!");
+}
+    }
+}
+*/
