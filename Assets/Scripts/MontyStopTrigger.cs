@@ -114,6 +114,7 @@ public class MontyStopTrigger : MonoBehaviour
     const string goodTwinSpeaks3 = "Hashy, what would we do without you?";
 
     const string playerThinks1 = "What the hey?!? Tik Tak is supposed to be in trouble.";
+    const string playerThinks2 = "Obviously that's not TikTak. Maybe it's Xutube?";
 
     enum MontyGameState :int
     {
@@ -606,18 +607,23 @@ public class MontyStopTrigger : MonoBehaviour
         camOnPlayer.Priority = 13;
         if (goodTwinActivated)    //the true parameter causes TTC to set nextPage active
         {
-            if (Missions.randomlyPickedMission == 1)  // is it tik tak in trouble mission?
-            {
-                thoughtText.GetComponent<TextMeshProUGUI>().text = playerThinks1;
-                TellTextCloud(playerSpeaksToGoodTwin1, true, 8);
-            }
-           else TellTextCloud(playerSpeaksToGoodTwin1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
+            TellTextCloud(playerSpeaksToGoodTwin1, true);//11/12/23 start with a clean slate b4 adding thought cloud
         }
-        else
+        else   // the evil twin (Metal) is Activated so use dialogue directed to evil twin (Metal)
         {
             TellTextCloud(playerSpeakstoEvilTwin1, true);  //5/26/23 now wait for nextPage press which TextCloudHandler.cs will raise 
         }
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
+
+        //here is where we add a thought cloud AND wait for a NextPage press
+        if (Missions.randomlyPickedMission == 1  && goodTwinActivated)  // is it tik tak in trouble mission? then we want a thought cloud
+        {
+           // thoughtText.GetComponent<TextMeshProUGUI>().text = playerThinks1;
+            TellTextCloud(playerThinks1, true, 8);
+            yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
+        }
+
+
         camOnPlayer.Priority = originalCamOnPlayerPriority;
         camOnTwin.Priority = 13;
         if (goodTwinActivated)    //the true parameter causes TTC to set nextPage active
@@ -659,8 +665,11 @@ public class MontyStopTrigger : MonoBehaviour
         agent1.speed = agent1OriginalSpeed;
         anim1.speed = anim1OriginalSpeed;
         ShutDownMontySignsAndDoors();
-        yield return new WaitForSeconds(3f);
-
+        yield return new WaitForSeconds(5f);  //ready to move player on, and twin starts walking
+        if (Missions.randomlyPickedMission == 1 && goodTwinActivated)  // is it tik tak in trouble mission? then we want another thought cloud
+        {
+            TellTextCloud(playerThinks2, 10, 9);
+        }
         //Debug.Log(this.name + " switch back to playerfollowcam????");//6/20/23 trying to pinpoint when we should call resetjstick
         thirdPersonController.enabled = true;
         CallResetJoystick();
@@ -712,6 +721,10 @@ public class MontyStopTrigger : MonoBehaviour
         waitingForNextPagePressEvent = true;
         waitingForTextExtinguishEvent = true;
         m_CloudTextExtinguishedEvent.AddListener(OnCloudTextExtinguishedEvent);
+    }
+    void TellTextCloud(string caption, int timeout, int option)   //11/12/23 note how we confuse the params :<
+    {
+        m_CloudTextEvent.Invoke(option, timeout, caption);
     }
     private void CloseTheFirstOpenedDoor()  //do we really want to do this?
     {

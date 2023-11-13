@@ -7,9 +7,10 @@ using TMPro;
 public class TextCloudHandler : MonoBehaviour
 {//Component of TextCloudHandleHolder
     public AudioManager audioManager;
-    public GameObject textCloud;
-    public GameObject cloudText;
+    public GameObject voiceCloud;
+    public GameObject voiceCloudText;
     public GameObject thoughtCloud;  // parent of the text
+    public GameObject thoughtCloudText;
     public GameObject menuButton;
     public GameObject lightButton;
     [Header("The UI stuff as GameObjects")]
@@ -17,14 +18,15 @@ public class TextCloudHandler : MonoBehaviour
     public GameObject nowPlay;
 
     public CloudTextExtinguishedEvent m_CloudTextExtinguishedEvent;
-    bool nextPagePressed, waitingForNextPagePress;
+    bool nextPagePressed, waitingForNextPagePress, isSilentThought;
 
     enum CloudBehavior :int
     {
         followTimeOut =  5,
         waitForNextPagePress = 6,
         addThoughtAndFollowTimeOut = 7,
-        addThoughtAndWaitForNextPagePress = 8    //what mostly will be used when we have a thought
+        addThoughtAndWaitForNextPagePress = 8,   //what mostly will be used when we have a thought
+        waitForNextPageOrTimeout = 9  //fade out if user doesn't press NextPage
     }
     // Start is called before the first frame update
     void Start()
@@ -41,25 +43,24 @@ public class TextCloudHandler : MonoBehaviour
     }
     public void EnableTheTextCloud(int cloudBehavior, int cloudTimeout, string _caption)
     {
-        cloudText.GetComponent<TextMeshProUGUI>().text = _caption;
-        textCloud.SetActive(true);
-        int randomVoice = Random.Range(0, 4);  //As per doc this returns 0,1,2 or 3  (not 4)
+        voiceCloud.SetActive(false);     // just to be sure 
+        thoughtCloud.SetActive(false);
+        isSilentThought = ((CloudBehavior)cloudBehavior == CloudBehavior.addThoughtAndFollowTimeOut
+                        || (CloudBehavior)cloudBehavior == CloudBehavior.addThoughtAndWaitForNextPagePress
+                        || (CloudBehavior)cloudBehavior == CloudBehavior.waitForNextPageOrTimeout);
+        if (!isSilentThought)  // just play voices
+        {
+            voiceCloudText.GetComponent<TextMeshProUGUI>().text = _caption;
+            voiceCloud.SetActive(true);
+            PlayVoice();
+            // audioManager.PlayAudio(audioManager.compVoice0, 1f); //here maybe we can look for spaces in the string to adjust audio length
+        }
+        else // handle a thought 
+        {
+            thoughtCloudText.GetComponent<TextMeshProUGUI>().text = _caption;
+            thoughtCloud.SetActive(true);
+        }
 
-        //Debug.Log("Random audio = " + randomVoice);
-        if (MontyStopTrigger.evilTwinSpeaking)
-        {
-            audioManager.PlayAudio(audioManager.strom, 1f);  //play evilTwin's voice
-        }
-        else //play voice of goodTwin or our player
-        switch (randomVoice)
-        {
-           case 0: audioManager.PlayAudio(audioManager.compVoice0, 1f); break;
-           case 1: audioManager.PlayAudio(audioManager.compVoice1, 1f); break;
-           case 2: audioManager.PlayAudio(audioManager.compVoice2, 1f); break;
-           case 3: audioManager.PlayAudio(audioManager.compVoice3, 1f); break;
-           default:break;
-        }
-       // audioManager.PlayAudio(audioManager.compVoice0, 1f); //here maybe we can look for spaces in the string to adjust audio length
         switch ((CloudBehavior)cloudBehavior)
         {
             case CloudBehavior.followTimeOut:
@@ -69,23 +70,47 @@ public class TextCloudHandler : MonoBehaviour
                 waitingForNextPagePress = true;
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
                 break;
-            case CloudBehavior.addThoughtAndFollowTimeOut:   //7/2/23 BEWARE we're NOT using this yet and more logic will be needed!!!
+            case CloudBehavior.addThoughtAndFollowTimeOut:   //11/12/23 option 7
                 StartCoroutine(RemoveCloudAfterXSeconds(cloudTimeout));
                 break;
-            case CloudBehavior.addThoughtAndWaitForNextPagePress:
-                thoughtCloud.SetActive(true);
+            case CloudBehavior.addThoughtAndWaitForNextPagePress:    //11/12/23 option 8
                 waitingForNextPagePress = true;
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
                 break;
+            case CloudBehavior.waitForNextPageOrTimeout: //11/12/23 
+                waitingForNextPagePress = true;
+                StartCoroutine(RemoveCloudAfterNextPagePressOrTimeout(true,cloudTimeout));
+                break;
             default:
-                Debug.Log(this.name + " EnableTheTextCloud recvd INVALID Behavior code ");
+                Debug.Log(this.name + " EnableTheTextCloud recvd INVALID Behavior code " + (CloudBehavior)cloudBehavior);
                 break;
         }
     }
+    void PlayVoice()
+    {
+        int randomVoice = Random.Range(0, 4);  //As per doc this returns 0,1,2 or 3  (not 4)
+
+        //Debug.Log("Random audio = " + randomVoice);
+        if (MontyStopTrigger.evilTwinSpeaking)
+        {
+            audioManager.PlayAudio(audioManager.strom, 1f);  //play evilTwin's voice
+        }
+        else //play voice of goodTwin or our player
+            switch (randomVoice)
+            {
+                case 0: audioManager.PlayAudio(audioManager.compVoice0, 1f); break;
+                case 1: audioManager.PlayAudio(audioManager.compVoice1, 1f); break;
+                case 2: audioManager.PlayAudio(audioManager.compVoice2, 1f); break;
+                case 3: audioManager.PlayAudio(audioManager.compVoice3, 1f); break;
+                default: break;
+            }
+    }
     IEnumerator RemoveCloudAfterXSeconds(int paramCloudTimeout)
     {
+        Debug.Log(this.name + "  ****** RemoveCloudAfterXSeconds Called ***** wait timeout then deactivate voice & thought clouds");
         yield return new WaitForSeconds (paramCloudTimeout);
-        textCloud.SetActive(false);
+        voiceCloud.SetActive(false);
+        thoughtCloud.SetActive(false);
         m_CloudTextExtinguishedEvent.Invoke();
     }
     IEnumerator RemoveCloudAfterNextPagePressed(bool nextPressed)
@@ -95,9 +120,32 @@ public class TextCloudHandler : MonoBehaviour
         yield return new WaitUntil(() => nextPagePressed);
         nextPagePressed = false;
         thoughtCloud.SetActive(false);
-        textCloud.SetActive(false);
+        voiceCloud.SetActive(false);
         if (nextPage) nextPage.SetActive(false);
       //  Debug.Log(this.name + "  ****** now invoking m_CloudTextExtinguishedEvent ***** ");
+        m_CloudTextExtinguishedEvent.Invoke();
+    }
+    IEnumerator RemoveCloudAfterNextPagePressOrTimeout(bool nextPressed, int timeout)   //11/12/23
+    {
+        float startTime = Time.unscaledTime;
+        float thisTime;
+        bool waitTimeOver = false;
+        if (nextPage) nextPage.SetActive(true);  
+        while (!waitTimeOver && !nextPagePressed)
+        {
+            thisTime = Time.unscaledTime;
+            waitTimeOver = thisTime - startTime > timeout;
+            yield return null;
+        }
+        yield return new WaitForSeconds(1f);  //added 6/4/23
+        if (nextPage) nextPage.SetActive(true);  //moved here 6/4/23
+
+
+        yield return new WaitUntil(() => nextPagePressed || waitTimeOver) ;
+        nextPagePressed = false;
+        thoughtCloud.SetActive(false);
+        voiceCloud.SetActive(false);
+        if (nextPage) nextPage.SetActive(false);
         m_CloudTextExtinguishedEvent.Invoke();
     }
     public void OnCanvasNextPagePressed()
@@ -105,7 +153,7 @@ public class TextCloudHandler : MonoBehaviour
         if (waitingForNextPagePress)
         {
             nextPagePressed = true;
-            textCloud.SetActive(false);
+            voiceCloud.SetActive(false);
             waitingForNextPagePress = false;
         }
     }

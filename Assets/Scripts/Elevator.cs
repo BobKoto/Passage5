@@ -67,8 +67,8 @@ public class Elevator : MonoBehaviour
 
             if ((Vector3.Distance(transform.position, target.position) < elevatorHeight /2) && !elevatorCommentDone)
             {
-                    cloudTextDelegate.Invoke(5, 3, elevatorComment1);
-                    elevatorCommentDone = true;
+                cloudTextDelegate.Invoke(7, 3, elevatorComment1);
+                elevatorCommentDone = true;
             }
 
             if (Vector3.Distance(transform.position,target.position) < 1 && audioManager.audioSource.isPlaying)
