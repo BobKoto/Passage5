@@ -107,7 +107,7 @@ public class TextCloudHandler : MonoBehaviour
     }
     IEnumerator RemoveCloudAfterXSeconds(int paramCloudTimeout)
     {
-        Debug.Log(this.name + "  ****** RemoveCloudAfterXSeconds Called ***** wait timeout then deactivate voice & thought clouds");
+        //Debug.Log(this.name + "  ****** RemoveCloudAfterXSeconds Called ***** wait timeout then deactivate voice & thought clouds");
         yield return new WaitForSeconds (paramCloudTimeout);
         voiceCloud.SetActive(false);
         thoughtCloud.SetActive(false);
