@@ -13,6 +13,7 @@ public class OpenDoor : MonoBehaviour
     public GameObject doorOpener;  //the button and text prompts 
     public GameObject stepsRaiser; //the button and text prompts 
     public float delayForAnimation = .5f;
+    public int cloudTimeout = 3;
     public CloudTextEvent m_CloudTextEvent;
     const string firstDoor = "#What's here?...";
     const string firstSteps = "#Take a dip!";
@@ -52,7 +53,7 @@ public class OpenDoor : MonoBehaviour
     }
     public void TellTextCloud(string caption)
     {
-        m_CloudTextEvent.Invoke(5, 4, caption);
+        m_CloudTextEvent.Invoke(5, cloudTimeout, caption);
     }
     IEnumerator DelayForAnimation(float delaySeconds)
     {
