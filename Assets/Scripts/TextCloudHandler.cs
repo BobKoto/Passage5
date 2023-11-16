@@ -26,7 +26,7 @@ public class TextCloudHandler : MonoBehaviour
         waitForNextPagePress = 6,
         addThoughtAndFollowTimeOut = 7,
         addThoughtAndWaitForNextPagePress = 8,   //what mostly will be used when we have a thought
-        waitForNextPageOrTimeout = 9  //fade out if user doesn't press NextPage
+        addThoughtAndWaitForNextPageOrTimeout = 9  //fade out if user doesn't press NextPage
     }
     // Start is called before the first frame update
     void Start()
@@ -47,7 +47,7 @@ public class TextCloudHandler : MonoBehaviour
         thoughtCloud.SetActive(false);
         isSilentThought = ((CloudBehavior)cloudBehavior == CloudBehavior.addThoughtAndFollowTimeOut
                         || (CloudBehavior)cloudBehavior == CloudBehavior.addThoughtAndWaitForNextPagePress
-                        || (CloudBehavior)cloudBehavior == CloudBehavior.waitForNextPageOrTimeout);
+                        || (CloudBehavior)cloudBehavior == CloudBehavior.addThoughtAndWaitForNextPageOrTimeout);
         if (!isSilentThought)  // just play voices
         {
             voiceCloudText.GetComponent<TextMeshProUGUI>().text = _caption;
@@ -63,10 +63,10 @@ public class TextCloudHandler : MonoBehaviour
 
         switch ((CloudBehavior)cloudBehavior)
         {
-            case CloudBehavior.followTimeOut:
+            case CloudBehavior.followTimeOut:   //option 5
                 StartCoroutine(RemoveCloudAfterXSeconds(cloudTimeout));
                 break;
-            case CloudBehavior.waitForNextPagePress:
+            case CloudBehavior.waitForNextPagePress:  //option 6 
                 waitingForNextPagePress = true;
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
                 break;
@@ -77,7 +77,7 @@ public class TextCloudHandler : MonoBehaviour
                 waitingForNextPagePress = true;
                 StartCoroutine(RemoveCloudAfterNextPagePressed(nextPagePressed));
                 break;
-            case CloudBehavior.waitForNextPageOrTimeout: //11/12/23 
+            case CloudBehavior.addThoughtAndWaitForNextPageOrTimeout: //11/12/23 option 9
                 waitingForNextPagePress = true;
                 StartCoroutine(RemoveCloudAfterNextPagePressOrTimeout(true,cloudTimeout));
                 break;

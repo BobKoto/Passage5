@@ -113,7 +113,7 @@ public class MontyStopTrigger : MonoBehaviour
     const string evilTwinSpeaks3 = "Ha ha ha. LMAO, ha ha ha.";
     const string goodTwinSpeaks3 = "Hashy, what would we do without you?";
 
-    const string playerThinks1 = "What the hey?!? Tik Tak is supposed to be in trouble.";
+    const string playerThinks1 = "What the hey? Tik Tak is supposed to be in trouble.\nPlay along for now...";
     const string playerThinks2 = "Obviously that's not TikTak. Maybe it's Xutube?";
 
     enum MontyGameState :int
@@ -605,6 +605,15 @@ public class MontyStopTrigger : MonoBehaviour
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
         camOnTwin.Priority = originalCamOnTwinPriority;
         camOnPlayer.Priority = 13;
+
+        //here is where we add a thought cloud AND wait for a NextPage press
+        if (Missions.randomlyPickedMission == 1  && goodTwinActivated)  // is it tik tak in trouble mission? then we want a thought cloud
+        {
+           // thoughtText.GetComponent<TextMeshProUGUI>().text = playerThinks1;
+            TellTextCloud(playerThinks1, true, 8);
+            yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
+        }
+
         if (goodTwinActivated)    //the true parameter causes TTC to set nextPage active
         {
             TellTextCloud(playerSpeaksToGoodTwin1, true);//11/12/23 start with a clean slate b4 adding thought cloud
@@ -615,13 +624,7 @@ public class MontyStopTrigger : MonoBehaviour
         }
         yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
 
-        //here is where we add a thought cloud AND wait for a NextPage press
-        if (Missions.randomlyPickedMission == 1  && goodTwinActivated)  // is it tik tak in trouble mission? then we want a thought cloud
-        {
-           // thoughtText.GetComponent<TextMeshProUGUI>().text = playerThinks1;
-            TellTextCloud(playerThinks1, true, 8);
-            yield return new WaitUntil(() => !waitingForTextExtinguishEvent);
-        }
+
 
 
         camOnPlayer.Priority = originalCamOnPlayerPriority;

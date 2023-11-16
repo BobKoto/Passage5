@@ -19,6 +19,8 @@ public class ShowAThoughtCloud : MonoBehaviour
     //public CinemachineVirtualCamera followCamera;
     Vector3 rayOriginFixedHeight;
     public float raycastDistance = 100.0f;
+    public int thoughtCloudOption = 9;
+    public int thoughtCloudTimeout = 5;
     GameObject playerArmature;
     GameObject followCamera;
     Coroutine showThoughtOnSubject;
@@ -26,6 +28,7 @@ public class ShowAThoughtCloud : MonoBehaviour
     private void Start()
     {
         textCloudHandler = GameObject.Find("TextCloudHandleHolder");
+        //11/14/23 Now do this instead of assigning in Editor  
         if (textCloudHandler != null)
             cloudTextDelegate = textCloudHandler.GetComponent<TextCloudHandler>().EnableTheTextCloud;
         // Get the CinemachineBrain component attached to the camera
@@ -42,8 +45,8 @@ public class ShowAThoughtCloud : MonoBehaviour
             // Object went inside the collider, stage the comment string 
             if (!entryCommentDone)
             {
-                ChooseEntryComment();
-                //if (commentFound) cloudTextDelegate.Invoke(7, 5, entryComment1);  //11/14/23 moved to 
+                ChooseEntryComment();  //sets the thought string based on name of collider entered 
+                //if (commentFound) cloudTextDelegate.Invoke(7, 5, entryComment1);  //11/14/23 moved to - but keep for possible use
                 //entryCommentDone = true;
                 if (showThoughtOnSubject == null) showThoughtOnSubject = StartCoroutine(ShowThoughtOnSubject());
             }
@@ -61,8 +64,8 @@ public class ShowAThoughtCloud : MonoBehaviour
     }
     IEnumerator ShowThoughtOnSubject()
     {
-        WaitForSeconds waitTime = new WaitForSeconds(1);
-        Debug.Log(this.name + " started ShowThoughtOnSubject() ");
+        WaitForSeconds waitTime = new WaitForSeconds(1);  //used to limit raycast frequency
+       // Debug.Log(this.name + " started ShowThoughtOnSubject() ");
         while (true)
         {
             if (playerIsInsideCollider && !entryCommentDone)
@@ -79,7 +82,6 @@ public class ShowAThoughtCloud : MonoBehaviour
                     // A collider was hit. Is it one that should trigger a thought cloud? 
                     string hitName = hit.collider.name;
                     ShowThoughtIfSubjectHit(hitName);
-
                 }
             }
             yield return waitTime;
@@ -90,13 +92,13 @@ public class ShowAThoughtCloud : MonoBehaviour
     {
         switch (hitName)   //
         {
-            default: return;
             case "InfluencersForceField":
             case "HiveForceField":
             case "XorBitAntForceField": 
-                if (commentFound) cloudTextDelegate.Invoke(7, 5, entryComment1);
+                if (commentFound) cloudTextDelegate.Invoke(thoughtCloudOption, thoughtCloudTimeout, entryComment1);
                 entryCommentDone = true;
                 return;
+            default: return;
         }
     }
     void ChooseEntryComment()   //choose a comment based on our GO name  - coming soon
